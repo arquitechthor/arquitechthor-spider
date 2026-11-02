@@ -42,8 +42,15 @@ no third-party requests).
   trademarks).
 - `assets/logo.svg` (+ `favicon-32.png`, `apple-touch-icon.png` rendered from it with headless
   Chrome): site logo, excluded from the CC BY-SA license like in aws-cert-study.
-- `index.html` + `assets/inicio.js`: provisional home (Phase 2) with the 13 area cards. In Phase 3
-  it becomes the map, with the **Telaraña** (spider web) view as default and "Cajas" as alternative.
+- `index.html`: the home page is the map. `assets/mapa.js` is the controller (state in the URL as
+  `?n=<focused node>&s=<selected node>` with history, breadcrumbs, detail panel, self-assessment in
+  `spider.autoevaluacion`); `assets/telarana.js` (`SpiderTelarana`) only draws the default
+  **Telaraña** view as SVG: focused node in the center, children on ring 1 (horizontal labels),
+  grandchildren on ring 2 (radial labels; dots only on mobile), viewBox fitted to the content.
+  Every node is a real `<a href>`; Tab goes clockwise, arrows move along the ring, Esc goes up.
+  Areas carry `nombreCorto`, used for the 13 areas around the root. Below the map, the area cards
+  (`pintarAreas`) link each area and block to the web. `assets/arbol.js` (`SpiderArbol`): tree helpers and
+  accent-insensitive search. The "Cajas" view (`cajas.js`) is still to come (task 3.6).
 - `aviso-legal.html`: legal notice, trademarks, license and privacy. Keep it consistent with any
   new feature (anything stored in `localStorage` must be covered by its privacy section).
 

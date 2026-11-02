@@ -26,8 +26,9 @@ FECHA = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 PALABRA = re.compile(r'[a-z0-9áéíóúüñ]+')
 FRASE_MIN, FRASE_MAX = 60, 90
 MIN_PREGUNTAS = 5
+MAX_CORTO = 14
 MESES_VOLATIL = 6
-CAMPOS = {'id', 'nombre', 'nombreEs', 'tipo', 'padre', 'area', 'accesos', 'color', 'frase', 'estado',
+CAMPOS = {'id', 'nombre', 'nombreEs', 'nombreCorto', 'tipo', 'padre', 'area', 'accesos', 'color', 'frase', 'estado',
           'evaluable', 'prioridad', 'volatil', 'alias', 'relacionados', 'externo', 'revisado',
           'certificaciones'}
 
@@ -119,6 +120,12 @@ def revisar():
                 error(f'{nid}: falta el icono assets/iconos/areas/{nid}.svg')
         elif 'color' in n:
             error(f'{nid}: solo las áreas llevan color')
+
+        corto = n.get('nombreCorto')
+        if tipo == 'area' and not (corto and len(corto) <= MAX_CORTO):
+            error(f'{nid}: un área necesita nombreCorto de {MAX_CORTO} caracteres como mucho (se usa en la telaraña en móvil)')
+        elif tipo != 'area' and corto:
+            error(f'{nid}: nombreCorto solo se usa en áreas')
 
         if tipo in ('area', 'bloque') and not hijos.get(nid):
             error(f'{nid}: un {tipo} tiene que tener hijos (si no, es un tema)')

@@ -25,9 +25,12 @@ línea al "Registro de sesiones".
 - **Fase 2 completa (2026-11-02)** salvo el enlace desde las otras tres webs (tarea 2.6, aplazada):
   web publicada en GitHub Pages con portada provisional (las 13 áreas como tarjetas), aviso legal,
   logo y favicons propios, `datos.js` y `CLAUDE.md` del repo.
-- **Próximo paso:** Fase 3 (el mapa), empezando por `arbol.js` y el prototipo de la Telaraña con
-  el área "Backend y Spring" para revisarlo con el usuario. Al publicar el mapa, cerrar la 2.6.
-- **Última actualización:** 2026-11-02 (Fase 2)
+- **Fase 3 en curso (2026-11-02):** prototipo de la Telaraña hecho en local (sin publicar):
+  `arbol.js`, `telarana.js` y `mapa.js` con recentrado, migas, URL e historial, teclado, panel de
+  detalle y autoevaluación (tareas 3.1–3.4), probado a escritorio y a 375 px.
+- **Próximo paso:** que el usuario revise el prototipo; después, publicarlo y seguir con 3.5
+  (buscador, filtros y "Color por"). Al publicar el mapa, cerrar la 2.6.
+- **Última actualización:** 2026-11-02 (Fase 3, prototipo)
 
 ---
 
@@ -107,7 +110,6 @@ Consecuencias para el diseño:
 ```
 arquitechthor-spider/
 ├── index.html                # portada = mapa interactivo (telaraña / cajas) + panel de detalle
-│                             #   (en la Fase 2, provisional: tarjetas de las 13 áreas con assets/inicio.js)
 ├── tema.html                 # página genérica de un nodo (?id=): resumen de un bloque o "Próximamente"
 ├── evaluacion.html           # test de un tema, bloque o área (?id=&n=10) y repaso de falladas (?repaso=1)
 ├── certificaciones.html      # lista de certificaciones temáticas (Fase 6)
@@ -125,8 +127,9 @@ arquitechthor-spider/
 ├── assets/
 │   ├── datos.js              # cargador común (window.SpiderDatos): rutas, árbol, progreso
 │   ├── arbol.js              # utilidades del árbol: hijos, ancestros, hojas, búsqueda, agregados
-│   ├── mapa.js               # vista "Cajas" (alternativa)
-│   ├── telarana.js           # vista "Telaraña" (predeterminada de la portada)
+│   ├── mapa.js               # controlador de la portada: estado en la URL, migas, panel, autoevaluación
+│   ├── telarana.js           # vista "Telaraña" (predeterminada): solo dibuja el SVG
+│   ├── cajas.js              # vista "Cajas" (alternativa, tarea 3.6)
 │   ├── radar.js              # gráfico de radar (progreso por área) en SVG propio
 │   ├── preguntas.js          # copiado de aws-cert-study (window.SpiderPreguntas)
 │   ├── quiz.js               # test al final de cada guía
@@ -188,6 +191,7 @@ Los campos opcionales **se omiten** cuando están vacíos o tienen su valor por 
 | `padre` | ubicación principal en el mapa. |
 | `accesos` | otros padres donde el nodo aparece como **acceso** (borde discontinuo y ↗, lleva al nodo real). Resuelve los duplicados sin copiar progreso ni preguntas: `solid` vive en "Principios de diseño" y tiene acceso en "Principios de arquitectura". En el padre del acceso se pinta **después de sus hijos propios**. |
 | `area` | área de nivel 1; redundante con `padre` pero ahorra recorridos y el validador la comprueba. |
+| `nombreCorto` | solo en áreas, obligatorio, como mucho 14 caracteres (Fundamentos, Testing, Backend, APIs, Datos, Arquitectura, Seguridad, DevOps, Nube, Observabilidad, Frontend, Profesional, IA): lo usa la telaraña en móvil, donde los 13 nombres completos no caben alrededor del centro. |
 | `color` | solo en áreas (`#rrggbb`): 13 tonos repartidos por el círculo cromático con la misma luminosidad (HSL, L 65 %, S 80 %), legibles sobre el fondo oscuro. El icono está en `assets/iconos/areas/<id>.svg` (trazo `currentColor`, para usar como máscara CSS o en línea). |
 | `frase` | 60–90 caracteres, qué es en una frase, sin repetir palabras de 4 letras o más del `nombre` ni el id (mismo criterio que `revisar_frases.py` de aws-cert-study). **Obligatoria en áreas y en sus hijos directos** (ya escritas); en el resto de temas, al publicarlos. Se ve en el mapa al pasar el ratón y en el panel de detalle. |
 | `estado` | `pendiente` (página "Próximamente") o `publicado` (existe `temas/<id>.html`). |
@@ -225,6 +229,9 @@ Los nombres de los niveles 1 y 2 reciben traducción (`nombreEs`) y se muestran 
 
 Cambios hechos sobre `docs/tecnologias.md` antes de la importación. Tras la Fase 1 los cambios se
 hacen en `data/nodos.json` y se anotan aquí igualmente.
+
+**2026-11-02: `nombreCorto` en las 13 áreas** (Fase 3, para la telaraña en móvil), añadido
+directamente en `data/nodos.json` (el importador ya no se usa; con `--forzar` se perdería).
 
 **2026-11-02: ampliación del área 13** (propuesta del usuario, ajustada y aprobada):
 - "Emerging Technologies" → **AI Engineering**; dos bloques nuevos: **AI in Production (LLMOps)**
@@ -360,11 +367,27 @@ anillos concéntricos de fondo dibujan la tela.
 - **"Vista general" opcional** (pantallas anchas): el árbol radial completo (13 sectores, todos
   los temas en el borde, etiquetas solo al pasar el ratón) como mapa de orientación; un clic
   recentra la telaraña enfocada en ese punto.
-- **Etiquetas** horizontales (nunca giradas), a izquierda o derecha según el lado del círculo,
-  recortadas con tooltip si son largas. Objetivos táctiles de 44 px como mínimo.
-- **Móvil (≤ 760 px):** la misma telaraña enfocada a todo el ancho, con el segundo anillo
-  reducido a puntos con número y la lista de hijos debajo como respaldo legible. Sin scroll
-  horizontal a 375 px.
+- **Etiquetas** (cambiado en el prototipo, 2026-11-02): las del **primer anillo** son
+  horizontales, a izquierda o derecha según el lado del círculo (arriba y abajo, centradas),
+  partidas en líneas sin dejar "y"/"de" colgando. Las del **segundo anillo** van **radiales**
+  (giradas en la dirección del hilo y siempre legibles de izquierda a derecha), recortadas a 26
+  caracteres con el nombre completo en `<title>`: con hasta 56 nodos en el anillo exterior (la
+  raíz) las horizontales se pisaban arriba y abajo; las radiales caben siempre. El texto del
+  centro ajusta el radio del círculo y la letra a su longitud. El `viewBox` se ajusta al
+  contenido (cuadrado centrado en el nodo enfocado), así que una rama con pocos nodos no queda
+  pequeña.
+- **Móvil (≤ 760 px):** la misma telaraña enfocada a todo el ancho, con letra más grande, el
+  segundo anillo solo como puntos (sin etiquetas) y el panel con la lista "Contiene" debajo como
+  respaldo legible. En la raíz, las áreas usan su `nombreCorto` (Fundamentos, Testing, Backend…).
+  Sin scroll horizontal a 375 px.
+- **Tras la primera revisión del usuario (2026-11-02):** letra más grande, lienzo sin tope de
+  altura (ocupa todo el ancho de su columna; la página hace scroll), las áreas de la raíz con su
+  `nombreCorto` también en escritorio (los nombres completos se pisaban) y, **debajo de la
+  telaraña, las tarjetas de las 13 áreas** (icono, frase, bloques y número de temas): el área y
+  cada bloque enlazan a la telaraña enfocada en ellos y la página sube al mapa.
+- **Cabecera de la portada (petición del usuario):** se mantiene el hero de la Fase 2 (etiqueta,
+  título, descripción y botones "Explorar la telaraña", "Ver las áreas" y "Apuntes AWS"), algo más
+  bajo, encima de la telaraña. Menú: Inicio · Telaraña · Áreas · Sobre mí.
 - **Implementación:** SVG generado a mano en `assets/telarana.js` (dos anillos = ángulos
   repartidos según el número de descendientes; no hace falta librería). Para la "Vista general"
   se valora `d3-hierarchy` en copia local (MIT) si el layout a mano se complica.
@@ -552,14 +575,24 @@ Completa el 2026-11-02.
       confirmación al usuario antes de hacer push en esos repos.
 
 ### Fase 3: el mapa
-- [ ] 3.1 `arbol.js`: construir el árbol, hijos/ancestros/hojas, accesos, búsqueda, agregados de
-      progreso por rama (con pruebas sencillas en una página `pruebas.html` noindex o en consola).
-- [ ] 3.2 Vista **Telaraña** (predeterminada): telaraña enfocada de dos anillos, recentrado
-      animado, etiquetas a izquierda/derecha, hilos de accesos y relacionados. Prototipo primero
-      con el área "Backend y Spring" y revisión con el usuario antes de pulir.
-- [ ] 3.3 Navegación: recentrar/subir, migas de pan, URL `?n=`, historial, teclado (Tab y flechas
-      por el anillo), foco.
-- [ ] 3.4 Panel de detalle (escritorio lateral, móvil inferior) con autoevaluación.
+- [x] 3.1 `arbol.js` (`SpiderArbol`): ancestros, ruta, área, accesos y búsqueda sin tildes
+      (nombre, alias y frase). Los hijos con accesos y `temasDe()` ya estaban en `datos.js`. Los
+      agregados de progreso se añaden con la 3.5 ("Color por progreso").
+- [x] 3.2 Vista **Telaraña** (prototipo, pendiente de revisión): dos anillos con sectores según el
+      número de nietos, tela de anillos cóncavos, enlaces del color del área, nodos con anillo
+      doble si contienen más, accesos con borde discontinuo y ↗, ☁ para AWS, hilos discontinuos
+      entre relacionados a la vista, resaltado de la rama al pasar el ratón o el foco y animación
+      de entrada (sin ella con `prefers-reduced-motion`).
+- [x] 3.3 Navegación: clic en un nodo con hijos = entrar, en una hoja = seleccionarla, en el
+      centro = subir; migas de pan; estado en la URL (`?n=&s=`) con historial (atrás/adelante);
+      cada nodo es un `<a href>` real; Tab en el sentido de las agujas del reloj, flechas por el
+      anillo, Esc sube (o quita la selección) y el foco vuelve a la rama de la que se viene.
+      Comprobado con una prueba automática en Chrome sin interfaz.
+- [x] 3.4b Tarjetas de áreas debajo de la telaraña, enlazadas a ella (petición del usuario).
+- [x] 3.4 Panel de detalle (lateral y pegado en escritorio, debajo en móvil): tipo y área,
+      nombre, frase, estado, "Lo esencial", "Mi nivel" (0–4, `spider.autoevaluacion`; pulsar el
+      mismo número lo quita), guía y evaluación (desactivadas hasta las fases 4 y 5; AWS enlaza a
+      su guía), "Contiene", "Vive en" / "También aparece en" (accesos) y "Relacionados".
 - [ ] 3.5 Buscador con resaltado y salto; filtros y "Color por" con leyenda; estado en la URL.
 - [ ] 3.6 Vista **Cajas** (alternativa) y conmutador "Telaraña | Cajas" que conserva el contexto.
 - [ ] 3.7 Responsive (375 px sin scroll horizontal, telaraña reducida + lista en móvil),
@@ -651,6 +684,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-02 | **Fase 3 (prototipo, en local):** `arbol.js`, `telarana.js` y `mapa.js`; la portada pasa a ser el mapa (fuera `inicio.js` y las tarjetas). Etiquetas radiales en el segundo anillo, `viewBox` ajustado al contenido, `nombreCorto` de las áreas para móvil. Pendiente de revisión del usuario. |
 | 2026-11-02 | **Fase 2:** esqueleto publicado en GitHub Pages (portada provisional con las áreas, aviso legal, logo, `datos.js`, `CLAUDE.md`); 2.6 aplazada salvo `kopi/CLAUDE.md`. |
 | 2026-11-02 | **Fase 1 completa:** `scripts/importar_arbol.py` → `data/nodos.json` (355 nodos, 12 accesos, 21 externos), `nombreEs` y frases de áreas y bloques, colores e iconos de las áreas, `scripts/revisar_arbol.py` en verde. Decisiones de detalle: `bloque` = nodo que solo agrupa; color en el nodo de área (sin `areas.json`); campos opcionales omitidos. |
 | 2026-11-02 | Ampliación del área 13 → AI Engineering (propuesta del usuario con ajustes: fusiones, Fine-Tuning nuevo, GDPR al área 7 en "Compliance & Privacy"); aplicada en `docs/tecnologias.md` (364 nodos). Campos `revisado` y `volatil`. |

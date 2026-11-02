@@ -28,6 +28,7 @@
     </a>
     <div class="nav-links">
       <a href="#top">Inicio</a>
+      <a href="#mapa">Telaraña</a>
       <a href="#areas">Áreas</a>
       <a href="https://arquitechthor.github.io/">Sobre mí</a>
     </div>
@@ -36,8 +37,8 @@
 </nav>
 
 <main>
-<header class="hero" id="top">
-  <div class="container">
+<header class="hero hero-compacto" id="top">
+  <div class="container container-ancho">
     <span class="eyebrow">Proyecto personal · Educativo · Sin fines comerciales</span>
     <h1><span class="gradient-text">Tech Spider</span></h1>
     <p class="hero-desc">
@@ -46,22 +47,44 @@
       certificaciones temáticas como Java OCP, Spring o Scrum.
     </p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="#areas">Ver las áreas →</a>
+      <a class="btn btn-primary" href="#mapa">Explorar la telaraña →</a>
+      <a class="btn btn-secondary" href="#areas">Ver las áreas</a>
       <a class="btn btn-secondary" href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
     </div>
   </div>
 </header>
 
-<section id="areas">
-  <div class="container">
-    <div class="aviso-obras" role="note">
-      <img src="assets/logo.svg" alt="" width="28" height="28" style="flex:none;border-radius:6px">
-      <span><strong>En construcción.</strong> El mapa interactivo en forma de telaraña, las guías y
-        las evaluaciones llegarán por fases. Mientras tanto, estas son las áreas que cubrirá.</span>
+<section class="mapa" id="mapa">
+  <div class="container container-ancho">
+    <header class="mapa-cab">
+      <h2>La telaraña</h2>
+      <p>Pulsa un nodo para entrar en él y el centro para subir.</p>
+      <p class="mapa-obras"><img src="assets/logo.svg" alt="" width="18" height="18"> En construcción: las guías y
+        las evaluaciones llegarán por fases.</p>
+    </header>
+    <nav class="migas" id="migas" aria-label="Ruta en el mapa"></nav>
+    <div class="mapa-layout">
+      <div class="mapa-lienzo">
+        <svg id="telarana" role="group" aria-label="Telaraña de tecnologías" aria-describedby="mapa-ayuda"></svg>
+        <p class="leyenda" id="mapa-ayuda">
+          <span><span class="ley ley-anillo" aria-hidden="true"></span>contiene más: pulsa para entrar</span>
+          <span><span class="ley" aria-hidden="true"></span>tema</span>
+          <span><span class="ley ley-acceso" aria-hidden="true"></span>↗ acceso: vive en otra rama</span>
+          <span>☁ guía en Apuntes AWS</span>
+          <span><span class="ley-relacion" aria-hidden="true"></span>relacionados</span>
+          <span class="ley-teclado">Teclado: Tab y flechas recorren los nodos; Esc sube.</span>
+        </p>
+      </div>
+      <aside class="panel" id="panel" aria-live="polite" aria-label="Detalle del nodo"></aside>
     </div>
+  </div>
+</section>
+
+<section id="areas">
+  <div class="container container-ancho">
     <div class="section-head">
       <h2>Áreas</h2>
-      <p id="areas-resumen">Cargando…</p>
+      <p id="areas-resumen">Las áreas del mapa. Pulsa una, o uno de sus bloques, para verlo en la telaraña.</p>
     </div>
     <div class="area-grid" id="area-grid"></div>
   </div>
@@ -100,6 +123,8 @@
 
 <script src="assets/nav.js" defer></script>
 <script src="assets/datos.js" defer></script>
-<script src="assets/inicio.js" defer></script>
+<script src="assets/arbol.js" defer></script>
+<script src="assets/telarana.js" defer></script>
+<script src="assets/mapa.js" defer></script>
 </body>
 </html>
