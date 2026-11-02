@@ -1,0 +1,3805 @@
+[
+  {
+    "id": "software-engineer",
+    "nombre": "Software Engineer",
+    "nombreEs": "Ingeniería de software",
+    "tipo": "raiz"
+  },
+  {
+    "id": "fundamentals",
+    "nombre": "Software Engineering Fundamentals",
+    "nombreEs": "Fundamentos de ingeniería de software",
+    "tipo": "area",
+    "padre": "software-engineer",
+    "area": "fundamentals",
+    "color": "#5e8eed",
+    "frase": "Lenguaje, principios de diseño, patrones, algoritmos y herramientas del día a día."
+  },
+  {
+    "id": "programming",
+    "nombre": "Programming",
+    "nombreEs": "Programación",
+    "tipo": "bloque",
+    "padre": "fundamentals",
+    "area": "fundamentals",
+    "frase": "Java a fondo y los paradigmas orientado a objetos, funcional y reactivo."
+  },
+  {
+    "id": "java",
+    "nombre": "Java",
+    "tipo": "tema",
+    "padre": "programming",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "java-fundamentals",
+    "nombre": "Java Language Fundamentals",
+    "tipo": "tema",
+    "padre": "java",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "collections-framework",
+    "nombre": "Collections Framework",
+    "tipo": "tema",
+    "padre": "java",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "generics",
+    "nombre": "Generics",
+    "tipo": "tema",
+    "padre": "java",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "streams-lambdas",
+    "nombre": "Streams & Lambda Expressions",
+    "tipo": "tema",
+    "padre": "java",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "concurrency",
+    "nombre": "Concurrency & Multithreading",
+    "tipo": "tema",
+    "padre": "java",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "jvm-memory",
+    "nombre": "JVM & Memory Management",
+    "tipo": "tema",
+    "padre": "java",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "garbage-collection",
+    "nombre": "Garbage Collection",
+    "tipo": "tema",
+    "padre": "java",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "modern-java",
+    "nombre": "Modern Java (8-21+)",
+    "tipo": "tema",
+    "padre": "java",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1,
+    "volatil": true
+  },
+  {
+    "id": "programming-paradigms",
+    "nombre": "Programming Paradigms",
+    "tipo": "tema",
+    "padre": "programming",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "oop",
+    "nombre": "Object-Oriented Programming",
+    "tipo": "tema",
+    "padre": "programming-paradigms",
+    "area": "fundamentals",
+    "accesos": [
+      "java"
+    ],
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1,
+    "alias": [
+      "OOP",
+      "POO"
+    ]
+  },
+  {
+    "id": "functional-programming",
+    "nombre": "Functional Programming",
+    "tipo": "tema",
+    "padre": "programming-paradigms",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "reactive-programming",
+    "nombre": "Reactive Programming",
+    "tipo": "tema",
+    "padre": "programming-paradigms",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "software-design-principles",
+    "nombre": "Software Design Principles",
+    "nombreEs": "Principios de diseño de software",
+    "tipo": "bloque",
+    "padre": "fundamentals",
+    "area": "fundamentals",
+    "frase": "Reglas para escribir código legible y fácil de cambiar: código limpio, SOLID, DRY…"
+  },
+  {
+    "id": "clean-code",
+    "nombre": "Clean Code",
+    "tipo": "tema",
+    "padre": "software-design-principles",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "solid",
+    "nombre": "SOLID",
+    "tipo": "tema",
+    "padre": "software-design-principles",
+    "area": "fundamentals",
+    "accesos": [
+      "architectural-principles"
+    ],
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "dry",
+    "nombre": "DRY",
+    "tipo": "tema",
+    "padre": "software-design-principles",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "kiss",
+    "nombre": "KISS",
+    "tipo": "tema",
+    "padre": "software-design-principles",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "yagni",
+    "nombre": "YAGNI",
+    "tipo": "tema",
+    "padre": "software-design-principles",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "design-patterns",
+    "nombre": "Design Patterns",
+    "nombreEs": "Patrones de diseño",
+    "tipo": "bloque",
+    "padre": "fundamentals",
+    "area": "fundamentals",
+    "frase": "Soluciones probadas a problemas recurrentes: creacionales, estructurales y más."
+  },
+  {
+    "id": "creational-patterns",
+    "nombre": "Creational Patterns",
+    "tipo": "tema",
+    "padre": "design-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "structural-patterns",
+    "nombre": "Structural Patterns",
+    "tipo": "tema",
+    "padre": "design-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "behavioral-patterns",
+    "nombre": "Behavioral Patterns",
+    "tipo": "tema",
+    "padre": "design-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "enterprise-integration-patterns",
+    "nombre": "Enterprise Integration Patterns",
+    "tipo": "tema",
+    "padre": "design-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "data-structures-algorithms",
+    "nombre": "Data Structures & Algorithms",
+    "nombreEs": "Estructuras de datos y algoritmos",
+    "tipo": "bloque",
+    "padre": "fundamentals",
+    "area": "fundamentals",
+    "frase": "Listas, árboles, grafos y mapas, cómo recorrerlos y cuánto cuesta cada operación."
+  },
+  {
+    "id": "data-structures",
+    "nombre": "Data Structures",
+    "tipo": "tema",
+    "padre": "data-structures-algorithms",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "algorithms",
+    "nombre": "Algorithms",
+    "tipo": "tema",
+    "padre": "data-structures-algorithms",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "big-o",
+    "nombre": "Complexity Analysis (Big O)",
+    "tipo": "tema",
+    "padre": "data-structures-algorithms",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "problem-solving",
+    "nombre": "Problem Solving",
+    "tipo": "tema",
+    "padre": "data-structures-algorithms",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "development-environment",
+    "nombre": "Development Environment",
+    "nombreEs": "Entorno de desarrollo",
+    "tipo": "bloque",
+    "padre": "fundamentals",
+    "area": "fundamentals",
+    "frase": "Herramientas de trabajo diario: Git, Linux, la terminal, el IDE y nociones de redes."
+  },
+  {
+    "id": "git",
+    "nombre": "Git",
+    "tipo": "tema",
+    "padre": "development-environment",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "linux",
+    "nombre": "Linux",
+    "tipo": "tema",
+    "padre": "development-environment",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "bash",
+    "nombre": "Bash / Shell Scripting",
+    "tipo": "tema",
+    "padre": "development-environment",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "ides",
+    "nombre": "IDEs",
+    "tipo": "tema",
+    "padre": "development-environment",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "networking-fundamentals",
+    "nombre": "Networking Fundamentals",
+    "tipo": "tema",
+    "padre": "development-environment",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "testing",
+    "nombre": "Testing & Quality Engineering",
+    "nombreEs": "Pruebas y calidad del software",
+    "tipo": "area",
+    "padre": "software-engineer",
+    "area": "testing",
+    "color": "#5eed9a",
+    "frase": "Cómo comprobar que el código funciona y mantenerlo sano: tipos de prueba y métricas."
+  },
+  {
+    "id": "testing-fundamentals",
+    "nombre": "Testing Fundamentals",
+    "nombreEs": "Fundamentos de pruebas",
+    "tipo": "bloque",
+    "padre": "testing",
+    "area": "testing",
+    "frase": "Tipos de prueba según su alcance, de la unidad aislada al sistema completo y la carga."
+  },
+  {
+    "id": "unit-testing",
+    "nombre": "Unit Testing",
+    "tipo": "tema",
+    "padre": "testing-fundamentals",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "integration-testing",
+    "nombre": "Integration Testing",
+    "tipo": "tema",
+    "padre": "testing-fundamentals",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "component-testing",
+    "nombre": "Component Testing",
+    "tipo": "tema",
+    "padre": "testing-fundamentals",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "contract-testing",
+    "nombre": "Contract Testing",
+    "tipo": "tema",
+    "padre": "testing-fundamentals",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "end-to-end-testing",
+    "nombre": "End-to-End Testing",
+    "tipo": "tema",
+    "padre": "testing-fundamentals",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "performance-testing",
+    "nombre": "Performance Testing",
+    "tipo": "tema",
+    "padre": "testing-fundamentals",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "testing-strategies",
+    "nombre": "Testing Strategies",
+    "nombreEs": "Estrategias de pruebas",
+    "tipo": "bloque",
+    "padre": "testing",
+    "area": "testing",
+    "frase": "TDD, BDD, pirámide de pruebas, dobles de prueba y mutaciones para medir su eficacia."
+  },
+  {
+    "id": "tdd",
+    "nombre": "Test-Driven Development (TDD)",
+    "tipo": "tema",
+    "padre": "testing-strategies",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "bdd",
+    "nombre": "Behavior-Driven Development (BDD)",
+    "tipo": "tema",
+    "padre": "testing-strategies",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "test-pyramid",
+    "nombre": "Test Pyramid",
+    "tipo": "tema",
+    "padre": "testing-strategies",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "test-doubles",
+    "nombre": "Test Doubles",
+    "tipo": "tema",
+    "padre": "testing-strategies",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "mutation-testing",
+    "nombre": "Mutation Testing",
+    "tipo": "tema",
+    "padre": "testing-strategies",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "java-testing-ecosystem",
+    "nombre": "Java Testing Ecosystem",
+    "nombreEs": "Ecosistema de pruebas en Java",
+    "tipo": "bloque",
+    "padre": "testing",
+    "area": "testing",
+    "frase": "JUnit 5, Mockito, AssertJ, Testcontainers, WireMock y REST Assured en la práctica."
+  },
+  {
+    "id": "junit-5",
+    "nombre": "JUnit 5",
+    "tipo": "tema",
+    "padre": "java-testing-ecosystem",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "mockito",
+    "nombre": "Mockito",
+    "tipo": "tema",
+    "padre": "java-testing-ecosystem",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "assertj",
+    "nombre": "AssertJ",
+    "tipo": "tema",
+    "padre": "java-testing-ecosystem",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "testcontainers",
+    "nombre": "Testcontainers",
+    "tipo": "tema",
+    "padre": "java-testing-ecosystem",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "wiremock",
+    "nombre": "WireMock",
+    "tipo": "tema",
+    "padre": "java-testing-ecosystem",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "rest-assured",
+    "nombre": "REST Assured",
+    "tipo": "tema",
+    "padre": "java-testing-ecosystem",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "code-quality",
+    "nombre": "Code Quality",
+    "nombreEs": "Calidad del código",
+    "tipo": "bloque",
+    "padre": "testing",
+    "area": "testing",
+    "frase": "Análisis estático, cobertura de pruebas, SonarQube y revisiones entre compañeros."
+  },
+  {
+    "id": "static-code-analysis",
+    "nombre": "Static Code Analysis",
+    "tipo": "tema",
+    "padre": "code-quality",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "code-coverage",
+    "nombre": "Code Coverage",
+    "tipo": "tema",
+    "padre": "code-quality",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "sonarqube",
+    "nombre": "SonarQube",
+    "tipo": "tema",
+    "padre": "code-quality",
+    "area": "testing",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "code-reviews",
+    "nombre": "Code Reviews",
+    "tipo": "tema",
+    "padre": "code-quality",
+    "area": "testing",
+    "accesos": [
+      "collaboration"
+    ],
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "backend",
+    "nombre": "Backend Development & Spring Ecosystem",
+    "nombreEs": "Desarrollo backend y ecosistema Spring",
+    "tipo": "area",
+    "padre": "software-engineer",
+    "area": "backend",
+    "color": "#8eed5e",
+    "frase": "Servidores en Java: inyección de dependencias, persistencia y construcción del proyecto."
+  },
+  {
+    "id": "java-backend",
+    "nombre": "Java Backend",
+    "nombreEs": "Backend en Java",
+    "tipo": "bloque",
+    "padre": "backend",
+    "area": "backend",
+    "frase": "HTTP, la API de Servlets, inyección de dependencias y configuración de aplicaciones."
+  },
+  {
+    "id": "servlet-api",
+    "nombre": "Servlet API",
+    "tipo": "tema",
+    "padre": "java-backend",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "dependency-injection",
+    "nombre": "Dependency Injection",
+    "tipo": "tema",
+    "padre": "java-backend",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "relacionados": [
+      "spring-core"
+    ]
+  },
+  {
+    "id": "application-configuration",
+    "nombre": "Application Configuration",
+    "tipo": "tema",
+    "padre": "java-backend",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "spring-framework",
+    "nombre": "Spring Framework",
+    "tipo": "bloque",
+    "padre": "backend",
+    "area": "backend",
+    "frase": "El marco más usado en servidores: núcleo, Boot, MVC, datos, seguridad, nube y lotes."
+  },
+  {
+    "id": "spring-core",
+    "nombre": "Spring Core",
+    "tipo": "tema",
+    "padre": "spring-framework",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1,
+    "relacionados": [
+      "dependency-injection"
+    ]
+  },
+  {
+    "id": "spring-context",
+    "nombre": "Spring Context",
+    "tipo": "tema",
+    "padre": "spring-framework",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "spring-boot",
+    "nombre": "Spring Boot",
+    "tipo": "tema",
+    "padre": "spring-framework",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1,
+    "volatil": true
+  },
+  {
+    "id": "spring-mvc",
+    "nombre": "Spring MVC",
+    "tipo": "tema",
+    "padre": "spring-framework",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "spring-data",
+    "nombre": "Spring Data",
+    "tipo": "tema",
+    "padre": "spring-framework",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "spring-data-jpa",
+    "nombre": "Spring Data JPA",
+    "tipo": "tema",
+    "padre": "spring-data",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1,
+    "relacionados": [
+      "jpa"
+    ]
+  },
+  {
+    "id": "spring-data-mongodb",
+    "nombre": "Spring Data MongoDB",
+    "tipo": "tema",
+    "padre": "spring-data",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "spring-security",
+    "nombre": "Spring Security",
+    "tipo": "tema",
+    "padre": "spring-framework",
+    "area": "backend",
+    "accesos": [
+      "identity-access-management"
+    ],
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "spring-cloud",
+    "nombre": "Spring Cloud",
+    "tipo": "tema",
+    "padre": "spring-framework",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "spring-batch",
+    "nombre": "Spring Batch",
+    "tipo": "tema",
+    "padre": "spring-framework",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "spring-webflux",
+    "nombre": "Spring WebFlux",
+    "tipo": "tema",
+    "padre": "spring-framework",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "orm-persistence",
+    "nombre": "ORM & Persistence",
+    "nombreEs": "ORM y persistencia",
+    "tipo": "bloque",
+    "padre": "backend",
+    "area": "backend",
+    "frase": "Guardar objetos en bases relacionales con JPA, Hibernate, JDBC y transacciones."
+  },
+  {
+    "id": "jpa",
+    "nombre": "Jakarta Persistence (JPA)",
+    "tipo": "tema",
+    "padre": "orm-persistence",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1,
+    "relacionados": [
+      "spring-data-jpa",
+      "hibernate",
+      "jdbc"
+    ]
+  },
+  {
+    "id": "hibernate",
+    "nombre": "Hibernate",
+    "tipo": "tema",
+    "padre": "orm-persistence",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1,
+    "relacionados": [
+      "jpa"
+    ]
+  },
+  {
+    "id": "jdbc",
+    "nombre": "JDBC",
+    "tipo": "tema",
+    "padre": "orm-persistence",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "relacionados": [
+      "jpa"
+    ]
+  },
+  {
+    "id": "transaction-management",
+    "nombre": "Transaction Management",
+    "tipo": "tema",
+    "padre": "orm-persistence",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "build-dependency-management",
+    "nombre": "Build & Dependency Management",
+    "nombreEs": "Construcción y dependencias",
+    "tipo": "bloque",
+    "padre": "backend",
+    "area": "backend",
+    "frase": "Compilar, empaquetar y gestionar librerías externas con Maven o Gradle."
+  },
+  {
+    "id": "maven",
+    "nombre": "Maven",
+    "tipo": "tema",
+    "padre": "build-dependency-management",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "gradle",
+    "nombre": "Gradle",
+    "tipo": "tema",
+    "padre": "build-dependency-management",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "dependency-management",
+    "nombre": "Dependency Management",
+    "tipo": "tema",
+    "padre": "build-dependency-management",
+    "area": "backend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "apis",
+    "nombre": "APIs & Communication",
+    "nombreEs": "APIs y comunicación",
+    "tipo": "area",
+    "padre": "software-engineer",
+    "area": "apis",
+    "color": "#5eedda",
+    "frase": "Cómo se diseñan, documentan y conectan los servicios que hablan entre sí por la red."
+  },
+  {
+    "id": "api-design",
+    "nombre": "API Design",
+    "nombreEs": "Diseño de APIs",
+    "tipo": "bloque",
+    "padre": "apis",
+    "area": "apis",
+    "frase": "REST, GraphQL y gRPC: cuándo usar cada estilo y cómo versionar un contrato público."
+  },
+  {
+    "id": "rest",
+    "nombre": "REST",
+    "tipo": "tema",
+    "padre": "api-design",
+    "area": "apis",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "graphql",
+    "nombre": "GraphQL",
+    "tipo": "tema",
+    "padre": "api-design",
+    "area": "apis",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "grpc",
+    "nombre": "gRPC",
+    "tipo": "tema",
+    "padre": "api-design",
+    "area": "apis",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "api-versioning",
+    "nombre": "API Versioning",
+    "tipo": "tema",
+    "padre": "api-design",
+    "area": "apis",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "api-documentation",
+    "nombre": "API Documentation",
+    "nombreEs": "Documentación de APIs",
+    "tipo": "bloque",
+    "padre": "apis",
+    "area": "apis",
+    "frase": "Describir un contrato con OpenAPI y ofrecerlo navegable y probable con Swagger UI."
+  },
+  {
+    "id": "openapi",
+    "nombre": "OpenAPI",
+    "tipo": "tema",
+    "padre": "api-documentation",
+    "area": "apis",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "swagger-ui",
+    "nombre": "Swagger UI",
+    "tipo": "tema",
+    "padre": "api-documentation",
+    "area": "apis",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "communication-protocols",
+    "nombre": "Communication Protocols",
+    "nombreEs": "Protocolos de comunicación",
+    "tipo": "bloque",
+    "padre": "apis",
+    "area": "apis",
+    "frase": "HTTP y HTTPS, WebSockets y TCP/IP: cómo viajan los datos entre dos máquinas."
+  },
+  {
+    "id": "http",
+    "nombre": "HTTP / HTTPS",
+    "tipo": "tema",
+    "padre": "communication-protocols",
+    "area": "apis",
+    "accesos": [
+      "java-backend"
+    ],
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "alias": [
+      "HTTP Fundamentals"
+    ]
+  },
+  {
+    "id": "websockets",
+    "nombre": "WebSockets",
+    "tipo": "tema",
+    "padre": "communication-protocols",
+    "area": "apis",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "tcp-ip",
+    "nombre": "TCP/IP",
+    "tipo": "tema",
+    "padre": "communication-protocols",
+    "area": "apis",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "inter-service-communication",
+    "nombre": "Inter-Service Communication",
+    "nombreEs": "Comunicación entre servicios",
+    "tipo": "bloque",
+    "padre": "apis",
+    "area": "apis",
+    "frase": "Llamadas síncronas que esperan respuesta frente a mensajes asíncronos con colas."
+  },
+  {
+    "id": "synchronous-communication",
+    "nombre": "Synchronous Communication",
+    "tipo": "tema",
+    "padre": "inter-service-communication",
+    "area": "apis",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "asynchronous-communication",
+    "nombre": "Asynchronous Communication",
+    "tipo": "tema",
+    "padre": "inter-service-communication",
+    "area": "apis",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "data",
+    "nombre": "Data Management",
+    "nombreEs": "Gestión de datos",
+    "tipo": "area",
+    "padre": "software-engineer",
+    "area": "data",
+    "color": "#edc95e",
+    "frase": "Bases relacionales y NoSQL, modelado, rendimiento de consultas y migraciones de esquema."
+  },
+  {
+    "id": "relational-databases",
+    "nombre": "Relational Databases (SQL)",
+    "nombreEs": "Bases de datos relacionales (SQL)",
+    "tipo": "bloque",
+    "padre": "data",
+    "area": "data",
+    "frase": "PostgreSQL, MySQL, Oracle y SQL Server: tablas, claves y consultas declarativas.",
+    "alias": [
+      "SQL"
+    ]
+  },
+  {
+    "id": "postgresql",
+    "nombre": "PostgreSQL",
+    "tipo": "tema",
+    "padre": "relational-databases",
+    "area": "data",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "relacionados": [
+      "pgvector"
+    ]
+  },
+  {
+    "id": "mysql",
+    "nombre": "MySQL",
+    "tipo": "tema",
+    "padre": "relational-databases",
+    "area": "data",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "oracle-database",
+    "nombre": "Oracle Database",
+    "tipo": "tema",
+    "padre": "relational-databases",
+    "area": "data",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "sql-server",
+    "nombre": "SQL Server",
+    "tipo": "tema",
+    "padre": "relational-databases",
+    "area": "data",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "nosql-databases",
+    "nombre": "NoSQL Databases",
+    "nombreEs": "Bases de datos NoSQL",
+    "tipo": "bloque",
+    "padre": "data",
+    "area": "data",
+    "frase": "Documentos, clave-valor y cachés: MongoDB, DynamoDB y Redis, y cuándo elegirlos."
+  },
+  {
+    "id": "mongodb",
+    "nombre": "MongoDB (Document)",
+    "tipo": "tema",
+    "padre": "nosql-databases",
+    "area": "data",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "redis",
+    "nombre": "Redis (Key-Value)",
+    "tipo": "tema",
+    "padre": "nosql-databases",
+    "area": "data",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "database-engineering",
+    "nombre": "Database Engineering",
+    "nombreEs": "Ingeniería de bases de datos",
+    "tipo": "bloque",
+    "padre": "data",
+    "area": "data",
+    "frase": "Modelado, normalización, índices, transacciones, aislamiento y cambios de esquema."
+  },
+  {
+    "id": "data-modeling",
+    "nombre": "Data Modeling",
+    "tipo": "tema",
+    "padre": "database-engineering",
+    "area": "data",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "database-normalization",
+    "nombre": "Database Normalization",
+    "tipo": "tema",
+    "padre": "database-engineering",
+    "area": "data",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "indexing",
+    "nombre": "Indexing",
+    "tipo": "tema",
+    "padre": "database-engineering",
+    "area": "data",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "query-optimization",
+    "nombre": "Query Optimization",
+    "tipo": "tema",
+    "padre": "database-engineering",
+    "area": "data",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "transactions-acid",
+    "nombre": "Transactions & ACID",
+    "tipo": "tema",
+    "padre": "database-engineering",
+    "area": "data",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "isolation-levels",
+    "nombre": "Isolation Levels",
+    "tipo": "tema",
+    "padre": "database-engineering",
+    "area": "data",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "database-migrations",
+    "nombre": "Database Migrations",
+    "tipo": "tema",
+    "padre": "database-engineering",
+    "area": "data",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "data-access-migration-tools",
+    "nombre": "Data Access & Migration Tools",
+    "nombreEs": "Herramientas de acceso y migración de datos",
+    "tipo": "bloque",
+    "padre": "data",
+    "area": "data",
+    "frase": "Versionar el esquema de la base junto al código de la aplicación con Liquibase y Flyway."
+  },
+  {
+    "id": "liquibase",
+    "nombre": "Liquibase",
+    "tipo": "tema",
+    "padre": "data-access-migration-tools",
+    "area": "data",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "flyway",
+    "nombre": "Flyway",
+    "tipo": "tema",
+    "padre": "data-access-migration-tools",
+    "area": "data",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "architecture",
+    "nombre": "Software Architecture & Distributed Systems",
+    "nombreEs": "Arquitectura de software y sistemas distribuidos",
+    "tipo": "area",
+    "padre": "software-engineer",
+    "area": "architecture",
+    "color": "#a65eed",
+    "frase": "Cómo organizar sistemas grandes: estilos, DDD, patrones, resiliencia y mensajería."
+  },
+  {
+    "id": "architectural-principles",
+    "nombre": "Architectural Principles",
+    "nombreEs": "Principios de arquitectura",
+    "tipo": "bloque",
+    "padre": "architecture",
+    "area": "architecture",
+    "frase": "Separar responsabilidades, alta cohesión, bajo acoplamiento y módulos bien definidos."
+  },
+  {
+    "id": "separation-of-concerns",
+    "nombre": "Separation of Concerns",
+    "tipo": "tema",
+    "padre": "architectural-principles",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "high-cohesion-low-coupling",
+    "nombre": "High Cohesion & Low Coupling",
+    "tipo": "tema",
+    "padre": "architectural-principles",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "modularity",
+    "nombre": "Modularity",
+    "tipo": "tema",
+    "padre": "architectural-principles",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "architectural-styles",
+    "nombre": "Architectural Styles",
+    "nombreEs": "Estilos arquitectónicos",
+    "tipo": "bloque",
+    "padre": "architecture",
+    "area": "architecture",
+    "frase": "Capas, arquitectura limpia, hexagonal, monolito modular, microservicios y eventos."
+  },
+  {
+    "id": "layered-architecture",
+    "nombre": "Layered Architecture",
+    "tipo": "tema",
+    "padre": "architectural-styles",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "clean-architecture",
+    "nombre": "Clean Architecture",
+    "tipo": "tema",
+    "padre": "architectural-styles",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "hexagonal-architecture",
+    "nombre": "Hexagonal Architecture",
+    "tipo": "tema",
+    "padre": "architectural-styles",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "modular-monolith",
+    "nombre": "Modular Monolith",
+    "tipo": "tema",
+    "padre": "architectural-styles",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "microservices-architecture",
+    "nombre": "Microservices Architecture",
+    "tipo": "tema",
+    "padre": "architectural-styles",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "event-driven-architecture",
+    "nombre": "Event-Driven Architecture",
+    "tipo": "tema",
+    "padre": "architectural-styles",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "relacionados": [
+      "kafka"
+    ]
+  },
+  {
+    "id": "ddd",
+    "nombre": "Domain-Driven Design (DDD)",
+    "nombreEs": "Diseño guiado por el dominio (DDD)",
+    "tipo": "bloque",
+    "padre": "architecture",
+    "area": "architecture",
+    "frase": "Modelar el software alrededor del negocio con contextos, agregados y lenguaje común."
+  },
+  {
+    "id": "strategic-design",
+    "nombre": "Strategic Design",
+    "tipo": "tema",
+    "padre": "ddd",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "tactical-design",
+    "nombre": "Tactical Design",
+    "tipo": "tema",
+    "padre": "ddd",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "bounded-contexts",
+    "nombre": "Bounded Contexts",
+    "tipo": "tema",
+    "padre": "ddd",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "aggregates",
+    "nombre": "Aggregates",
+    "tipo": "tema",
+    "padre": "ddd",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "ubiquitous-language",
+    "nombre": "Ubiquitous Language",
+    "tipo": "tema",
+    "padre": "ddd",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "distributed-systems",
+    "nombre": "Distributed Systems",
+    "nombreEs": "Sistemas distribuidos",
+    "tipo": "bloque",
+    "padre": "architecture",
+    "area": "architecture",
+    "frase": "Teorema CAP, consistencia, tolerancia a fallos, idempotencia y transacciones repartidas."
+  },
+  {
+    "id": "cap-theorem",
+    "nombre": "CAP Theorem",
+    "tipo": "tema",
+    "padre": "distributed-systems",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "consistency-models",
+    "nombre": "Consistency Models",
+    "tipo": "tema",
+    "padre": "distributed-systems",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "fault-tolerance",
+    "nombre": "Fault Tolerance",
+    "tipo": "tema",
+    "padre": "distributed-systems",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "resilience-patterns",
+    "nombre": "Resilience Patterns",
+    "tipo": "tema",
+    "padre": "distributed-systems",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "relacionados": [
+      "rate-limits-retries-fallbacks",
+      "circuit-breaker"
+    ]
+  },
+  {
+    "id": "circuit-breaker",
+    "nombre": "Circuit Breaker",
+    "tipo": "tema",
+    "padre": "resilience-patterns",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "relacionados": [
+      "resilience-patterns"
+    ]
+  },
+  {
+    "id": "retry",
+    "nombre": "Retry",
+    "tipo": "tema",
+    "padre": "resilience-patterns",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "timeout",
+    "nombre": "Timeout",
+    "tipo": "tema",
+    "padre": "resilience-patterns",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "bulkhead",
+    "nombre": "Bulkhead",
+    "tipo": "tema",
+    "padre": "resilience-patterns",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "idempotency",
+    "nombre": "Idempotency",
+    "tipo": "tema",
+    "padre": "distributed-systems",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "distributed-transactions",
+    "nombre": "Distributed Transactions",
+    "tipo": "tema",
+    "padre": "distributed-systems",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "architectural-patterns",
+    "nombre": "Architectural Patterns",
+    "nombreEs": "Patrones de arquitectura",
+    "tipo": "bloque",
+    "padre": "architecture",
+    "area": "architecture",
+    "frase": "CQRS, Event Sourcing, Saga, Outbox, Strangler Fig y pasarela de API entre servicios."
+  },
+  {
+    "id": "cqrs",
+    "nombre": "CQRS",
+    "tipo": "tema",
+    "padre": "architectural-patterns",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "event-sourcing",
+    "nombre": "Event Sourcing",
+    "tipo": "tema",
+    "padre": "architectural-patterns",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "saga-pattern",
+    "nombre": "Saga Pattern",
+    "tipo": "tema",
+    "padre": "architectural-patterns",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "outbox-pattern",
+    "nombre": "Outbox Pattern",
+    "tipo": "tema",
+    "padre": "architectural-patterns",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "strangler-fig",
+    "nombre": "Strangler Fig",
+    "tipo": "tema",
+    "padre": "architectural-patterns",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "api-gateway-pattern",
+    "nombre": "API Gateway Pattern",
+    "tipo": "tema",
+    "padre": "architectural-patterns",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "messaging-event-streaming",
+    "nombre": "Messaging & Event Streaming",
+    "nombreEs": "Mensajería y flujos de eventos",
+    "tipo": "bloque",
+    "padre": "architecture",
+    "area": "architecture",
+    "frase": "Comunicar servicios de forma asíncrona con Kafka, RabbitMQ, SQS o EventBridge."
+  },
+  {
+    "id": "kafka",
+    "nombre": "Apache Kafka",
+    "tipo": "tema",
+    "padre": "messaging-event-streaming",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "relacionados": [
+      "event-driven-architecture"
+    ]
+  },
+  {
+    "id": "rabbitmq",
+    "nombre": "RabbitMQ",
+    "tipo": "tema",
+    "padre": "messaging-event-streaming",
+    "area": "architecture",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "security",
+    "nombre": "Security Engineering",
+    "nombreEs": "Ingeniería de seguridad",
+    "tipo": "area",
+    "padre": "software-engineer",
+    "area": "security",
+    "color": "#ed5e5e",
+    "frase": "Proteger aplicaciones y datos: identidad, cifrado, código seguro y cumplimiento legal."
+  },
+  {
+    "id": "security-fundamentals",
+    "nombre": "Security Fundamentals",
+    "nombreEs": "Fundamentos de seguridad",
+    "tipo": "bloque",
+    "padre": "security",
+    "area": "security",
+    "frase": "Autenticación, autorización, cifrado, hashing y los diez riesgos web de OWASP."
+  },
+  {
+    "id": "authentication",
+    "nombre": "Authentication",
+    "tipo": "tema",
+    "padre": "security-fundamentals",
+    "area": "security",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "authorization",
+    "nombre": "Authorization",
+    "tipo": "tema",
+    "padre": "security-fundamentals",
+    "area": "security",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "relacionados": [
+      "least-privilege-agents"
+    ]
+  },
+  {
+    "id": "encryption",
+    "nombre": "Encryption",
+    "tipo": "tema",
+    "padre": "security-fundamentals",
+    "area": "security",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "hashing",
+    "nombre": "Hashing",
+    "tipo": "tema",
+    "padre": "security-fundamentals",
+    "area": "security",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "owasp-top-10",
+    "nombre": "OWASP Top 10",
+    "tipo": "tema",
+    "padre": "security-fundamentals",
+    "area": "security",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "relacionados": [
+      "owasp-llm-top-10"
+    ]
+  },
+  {
+    "id": "identity-access-management",
+    "nombre": "Identity & Access Management",
+    "nombreEs": "Gestión de identidades y accesos",
+    "tipo": "bloque",
+    "padre": "security",
+    "area": "security",
+    "frase": "OAuth 2.0, OpenID Connect, JWT y los servidores que emiten y validan los tokens."
+  },
+  {
+    "id": "oauth2",
+    "nombre": "OAuth 2.0",
+    "tipo": "tema",
+    "padre": "identity-access-management",
+    "area": "security",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "oidc",
+    "nombre": "OpenID Connect (OIDC)",
+    "tipo": "tema",
+    "padre": "identity-access-management",
+    "area": "security",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "jwt",
+    "nombre": "JSON Web Token (JWT)",
+    "tipo": "tema",
+    "padre": "identity-access-management",
+    "area": "security",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "keycloak",
+    "nombre": "Keycloak",
+    "tipo": "tema",
+    "padre": "identity-access-management",
+    "area": "security",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "application-security",
+    "nombre": "Application Security",
+    "nombreEs": "Seguridad de aplicaciones",
+    "tipo": "bloque",
+    "padre": "security",
+    "area": "security",
+    "frase": "Código seguro, secretos fuera del repositorio y vulnerabilidades en dependencias."
+  },
+  {
+    "id": "secure-coding",
+    "nombre": "Secure Coding",
+    "tipo": "tema",
+    "padre": "application-security",
+    "area": "security",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "secrets-management",
+    "nombre": "Secrets Management",
+    "tipo": "tema",
+    "padre": "application-security",
+    "area": "security",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "vulnerability-management",
+    "nombre": "Vulnerability Management",
+    "tipo": "tema",
+    "padre": "application-security",
+    "area": "security",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "dependency-security",
+    "nombre": "Dependency Security",
+    "tipo": "tema",
+    "padre": "application-security",
+    "area": "security",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "compliance-privacy",
+    "nombre": "Compliance & Privacy",
+    "nombreEs": "Cumplimiento y privacidad",
+    "tipo": "bloque",
+    "padre": "security",
+    "area": "security",
+    "frase": "Normas legales sobre datos personales que condicionan cómo se diseña un sistema."
+  },
+  {
+    "id": "gdpr",
+    "nombre": "GDPR",
+    "tipo": "tema",
+    "padre": "compliance-privacy",
+    "area": "security",
+    "accesos": [
+      "ai-security-governance"
+    ],
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "alias": [
+      "RGPD"
+    ]
+  },
+  {
+    "id": "devops",
+    "nombre": "DevOps & Infrastructure",
+    "nombreEs": "DevOps e infraestructura",
+    "tipo": "area",
+    "padre": "software-engineer",
+    "area": "devops",
+    "color": "#ed9a5e",
+    "frase": "Contenedores, orquestación, infraestructura como código y entrega continua de versiones."
+  },
+  {
+    "id": "containers",
+    "nombre": "Containers",
+    "nombreEs": "Contenedores",
+    "tipo": "bloque",
+    "padre": "devops",
+    "area": "devops",
+    "frase": "Empaquetar una aplicación con todo lo que necesita para ejecutarse usando Docker."
+  },
+  {
+    "id": "docker",
+    "nombre": "Docker",
+    "tipo": "tema",
+    "padre": "containers",
+    "area": "devops",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "docker-compose",
+    "nombre": "Docker Compose",
+    "tipo": "tema",
+    "padre": "containers",
+    "area": "devops",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "container-registries",
+    "nombre": "Container Registries",
+    "tipo": "tema",
+    "padre": "containers",
+    "area": "devops",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "container-orchestration",
+    "nombre": "Container Orchestration",
+    "nombreEs": "Orquestación de contenedores",
+    "tipo": "bloque",
+    "padre": "devops",
+    "area": "devops",
+    "frase": "Desplegar y escalar contenedores en un clúster con Kubernetes, Helm y Kustomize."
+  },
+  {
+    "id": "kubernetes",
+    "nombre": "Kubernetes",
+    "tipo": "tema",
+    "padre": "container-orchestration",
+    "area": "devops",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "helm",
+    "nombre": "Helm",
+    "tipo": "tema",
+    "padre": "container-orchestration",
+    "area": "devops",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "kustomize",
+    "nombre": "Kustomize",
+    "tipo": "tema",
+    "padre": "container-orchestration",
+    "area": "devops",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "iac",
+    "nombre": "Infrastructure as Code (IaC)",
+    "nombreEs": "Infraestructura como código (IaC)",
+    "tipo": "bloque",
+    "padre": "devops",
+    "area": "devops",
+    "frase": "Describir servidores y redes en ficheros versionados con Terraform, CloudFormation o CDK."
+  },
+  {
+    "id": "terraform",
+    "nombre": "Terraform",
+    "tipo": "tema",
+    "padre": "iac",
+    "area": "devops",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "cdk",
+    "nombre": "AWS CDK",
+    "tipo": "tema",
+    "padre": "iac",
+    "area": "devops",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "cdk",
+      "url": "../aws-cert-study/servicios/cdk.html"
+    }
+  },
+  {
+    "id": "ci-cd",
+    "nombre": "CI/CD",
+    "nombreEs": "Integración y entrega continuas (CI/CD)",
+    "tipo": "bloque",
+    "padre": "devops",
+    "area": "devops",
+    "frase": "Compilar, probar y desplegar en cada cambio con GitHub Actions, Jenkins o Azure DevOps.",
+    "alias": [
+      "CI",
+      "CD"
+    ]
+  },
+  {
+    "id": "github-actions",
+    "nombre": "GitHub Actions",
+    "tipo": "tema",
+    "padre": "ci-cd",
+    "area": "devops",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "jenkins",
+    "nombre": "Jenkins",
+    "tipo": "tema",
+    "padre": "ci-cd",
+    "area": "devops",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "azure-devops",
+    "nombre": "Azure DevOps",
+    "tipo": "tema",
+    "padre": "ci-cd",
+    "area": "devops",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "configuration-deployment",
+    "nombre": "Configuration & Deployment",
+    "nombreEs": "Configuración y despliegue",
+    "tipo": "bloque",
+    "padre": "devops",
+    "area": "devops",
+    "frase": "Entornos, gestión de ajustes y estrategias para publicar versiones sin cortes."
+  },
+  {
+    "id": "environment-management",
+    "nombre": "Environment Management",
+    "tipo": "tema",
+    "padre": "configuration-deployment",
+    "area": "devops",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "configuration-management",
+    "nombre": "Configuration Management",
+    "tipo": "tema",
+    "padre": "configuration-deployment",
+    "area": "devops",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "release-strategies",
+    "nombre": "Release Strategies",
+    "tipo": "tema",
+    "padre": "configuration-deployment",
+    "area": "devops",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "cloud",
+    "nombre": "Cloud Computing",
+    "nombreEs": "Computación en la nube",
+    "tipo": "area",
+    "padre": "software-engineer",
+    "area": "cloud",
+    "color": "#5ec9ed",
+    "frase": "Modelos de servicio, alta disponibilidad, servicios de AWS y arquitecturas nativas."
+  },
+  {
+    "id": "cloud-fundamentals",
+    "nombre": "Cloud Fundamentals",
+    "nombreEs": "Fundamentos de la nube",
+    "tipo": "bloque",
+    "padre": "cloud",
+    "area": "cloud",
+    "frase": "IaaS, PaaS y SaaS, escalado elástico y alta disponibilidad: lo básico de la nube."
+  },
+  {
+    "id": "iaas",
+    "nombre": "IaaS",
+    "tipo": "tema",
+    "padre": "cloud-fundamentals",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "paas",
+    "nombre": "PaaS",
+    "tipo": "tema",
+    "padre": "cloud-fundamentals",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "saas",
+    "nombre": "SaaS",
+    "tipo": "tema",
+    "padre": "cloud-fundamentals",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "scalability-elasticity",
+    "nombre": "Scalability & Elasticity",
+    "tipo": "tema",
+    "padre": "cloud-fundamentals",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "high-availability",
+    "nombre": "High Availability",
+    "tipo": "tema",
+    "padre": "cloud-fundamentals",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "aws",
+    "nombre": "Amazon Web Services (AWS)",
+    "tipo": "bloque",
+    "padre": "cloud",
+    "area": "cloud",
+    "frase": "Los servicios más usados del proveedor líder; sus guías están en Apuntes AWS.",
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": null,
+      "url": "../aws-cert-study/"
+    }
+  },
+  {
+    "id": "aws-compute",
+    "nombre": "Compute",
+    "nombreEs": "Computación",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "ec2",
+    "nombre": "EC2",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "ec2",
+      "url": "../aws-cert-study/servicios/ec2.html"
+    }
+  },
+  {
+    "id": "ecs",
+    "nombre": "ECS",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "ecs",
+      "url": "../aws-cert-study/servicios/ecs.html"
+    }
+  },
+  {
+    "id": "eks",
+    "nombre": "EKS",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "eks",
+      "url": "../aws-cert-study/servicios/eks.html"
+    }
+  },
+  {
+    "id": "lambda",
+    "nombre": "Lambda",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "lambda",
+      "url": "../aws-cert-study/servicios/lambda.html"
+    }
+  },
+  {
+    "id": "aws-storage",
+    "nombre": "Storage",
+    "nombreEs": "Almacenamiento",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "s3",
+    "nombre": "S3",
+    "tipo": "tema",
+    "padre": "aws-storage",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "s3",
+      "url": "../aws-cert-study/servicios/s3.html"
+    }
+  },
+  {
+    "id": "ebs",
+    "nombre": "EBS",
+    "tipo": "tema",
+    "padre": "aws-storage",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "ebs",
+      "url": "../aws-cert-study/servicios/ebs.html"
+    }
+  },
+  {
+    "id": "aws-databases",
+    "nombre": "Databases",
+    "nombreEs": "Bases de datos",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "rds",
+    "nombre": "RDS",
+    "tipo": "tema",
+    "padre": "aws-databases",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "rds",
+      "url": "../aws-cert-study/servicios/rds.html"
+    }
+  },
+  {
+    "id": "dynamodb",
+    "nombre": "DynamoDB",
+    "tipo": "tema",
+    "padre": "aws-databases",
+    "area": "cloud",
+    "accesos": [
+      "nosql-databases"
+    ],
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "dynamodb",
+      "url": "../aws-cert-study/servicios/dynamodb.html"
+    }
+  },
+  {
+    "id": "aws-networking",
+    "nombre": "Networking",
+    "nombreEs": "Redes",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "vpc",
+    "nombre": "VPC",
+    "tipo": "tema",
+    "padre": "aws-networking",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "vpc",
+      "url": "../aws-cert-study/servicios/vpc.html"
+    }
+  },
+  {
+    "id": "api-gateway",
+    "nombre": "API Gateway",
+    "tipo": "tema",
+    "padre": "aws-networking",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "api-gateway",
+      "url": "../aws-cert-study/servicios/api-gateway.html"
+    }
+  },
+  {
+    "id": "cloudfront",
+    "nombre": "CloudFront",
+    "tipo": "tema",
+    "padre": "aws-networking",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "cloudfront",
+      "url": "../aws-cert-study/servicios/cloudfront.html"
+    }
+  },
+  {
+    "id": "aws-messaging",
+    "nombre": "Messaging & Integration",
+    "nombreEs": "Mensajería e integración",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "sqs",
+    "nombre": "SQS",
+    "tipo": "tema",
+    "padre": "aws-messaging",
+    "area": "cloud",
+    "accesos": [
+      "messaging-event-streaming"
+    ],
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "alias": [
+      "Amazon SQS"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "sqs",
+      "url": "../aws-cert-study/servicios/sqs.html"
+    }
+  },
+  {
+    "id": "sns",
+    "nombre": "SNS",
+    "tipo": "tema",
+    "padre": "aws-messaging",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "sns",
+      "url": "../aws-cert-study/servicios/sns.html"
+    }
+  },
+  {
+    "id": "eventbridge",
+    "nombre": "EventBridge",
+    "tipo": "tema",
+    "padre": "aws-messaging",
+    "area": "cloud",
+    "accesos": [
+      "messaging-event-streaming"
+    ],
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "alias": [
+      "Amazon EventBridge"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "eventbridge",
+      "url": "../aws-cert-study/servicios/eventbridge.html"
+    }
+  },
+  {
+    "id": "aws-security",
+    "nombre": "Security & Identity",
+    "nombreEs": "Seguridad e identidad",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "iam",
+    "nombre": "IAM",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "iam",
+      "url": "../aws-cert-study/servicios/iam.html"
+    }
+  },
+  {
+    "id": "cognito",
+    "nombre": "Cognito",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "accesos": [
+      "identity-access-management"
+    ],
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "alias": [
+      "AWS Cognito"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "cognito",
+      "url": "../aws-cert-study/servicios/cognito.html"
+    }
+  },
+  {
+    "id": "aws-operations",
+    "nombre": "Operations",
+    "nombreEs": "Operaciones",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "cloudwatch",
+    "nombre": "CloudWatch",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "cloudwatch",
+      "url": "../aws-cert-study/servicios/cloudwatch.html"
+    }
+  },
+  {
+    "id": "systems-manager",
+    "nombre": "Systems Manager",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "systems-manager",
+      "url": "../aws-cert-study/servicios/systems-manager.html"
+    }
+  },
+  {
+    "id": "cloudformation",
+    "nombre": "CloudFormation",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "accesos": [
+      "iac"
+    ],
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2,
+    "alias": [
+      "AWS CloudFormation"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "cloudformation",
+      "url": "../aws-cert-study/servicios/cloudformation.html"
+    }
+  },
+  {
+    "id": "cloud-architecture",
+    "nombre": "Cloud Architecture",
+    "nombreEs": "Arquitectura en la nube",
+    "tipo": "bloque",
+    "padre": "cloud",
+    "area": "cloud",
+    "frase": "Sin servidor, nativa de la nube, en varias regiones y con los costes bajo control."
+  },
+  {
+    "id": "serverless-architecture",
+    "nombre": "Serverless Architecture",
+    "tipo": "tema",
+    "padre": "cloud-architecture",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "cloud-native-applications",
+    "nombre": "Cloud-Native Applications",
+    "tipo": "tema",
+    "padre": "cloud-architecture",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "multi-region-architecture",
+    "nombre": "Multi-Region Architecture",
+    "tipo": "tema",
+    "padre": "cloud-architecture",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "cost-optimization",
+    "nombre": "Cost Optimization",
+    "tipo": "tema",
+    "padre": "cloud-architecture",
+    "area": "cloud",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "observability",
+    "nombre": "Observability & Performance Engineering",
+    "nombreEs": "Observabilidad y rendimiento",
+    "tipo": "area",
+    "padre": "software-engineer",
+    "area": "observability",
+    "color": "#c9ed5e",
+    "frase": "Ver qué pasa en producción con logs, métricas y trazas, y hacer que todo vaya rápido."
+  },
+  {
+    "id": "observability-fundamentals",
+    "nombre": "Observability Fundamentals",
+    "nombreEs": "Fundamentos de observabilidad",
+    "tipo": "bloque",
+    "padre": "observability",
+    "area": "observability",
+    "frase": "Logs, métricas, trazas distribuidas y alertas para saber qué hace un sistema."
+  },
+  {
+    "id": "logging",
+    "nombre": "Logging",
+    "tipo": "tema",
+    "padre": "observability-fundamentals",
+    "area": "observability",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "metrics",
+    "nombre": "Metrics",
+    "tipo": "tema",
+    "padre": "observability-fundamentals",
+    "area": "observability",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "distributed-tracing",
+    "nombre": "Distributed Tracing",
+    "tipo": "tema",
+    "padre": "observability-fundamentals",
+    "area": "observability",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "relacionados": [
+      "llm-tracing"
+    ]
+  },
+  {
+    "id": "alerting",
+    "nombre": "Alerting",
+    "tipo": "tema",
+    "padre": "observability-fundamentals",
+    "area": "observability",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "observability-tools",
+    "nombre": "Observability Tools",
+    "nombreEs": "Herramientas de observabilidad",
+    "tipo": "bloque",
+    "padre": "observability",
+    "area": "observability",
+    "frase": "Prometheus, Grafana, OpenTelemetry, Jaeger y la pila ELK u OpenSearch en la práctica."
+  },
+  {
+    "id": "prometheus",
+    "nombre": "Prometheus",
+    "tipo": "tema",
+    "padre": "observability-tools",
+    "area": "observability",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "grafana",
+    "nombre": "Grafana",
+    "tipo": "tema",
+    "padre": "observability-tools",
+    "area": "observability",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "opentelemetry",
+    "nombre": "OpenTelemetry",
+    "tipo": "tema",
+    "padre": "observability-tools",
+    "area": "observability",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "relacionados": [
+      "llm-tracing"
+    ]
+  },
+  {
+    "id": "jaeger",
+    "nombre": "Jaeger",
+    "tipo": "tema",
+    "padre": "observability-tools",
+    "area": "observability",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "elk-opensearch",
+    "nombre": "ELK / OpenSearch",
+    "tipo": "tema",
+    "padre": "observability-tools",
+    "area": "observability",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "performance-engineering",
+    "nombre": "Performance Engineering",
+    "nombreEs": "Ingeniería de rendimiento",
+    "tipo": "bloque",
+    "padre": "observability",
+    "area": "observability",
+    "frase": "Perfilado de la JVM, pruebas de carga y estrés, cachés y planificación de capacidad."
+  },
+  {
+    "id": "jvm-profiling",
+    "nombre": "JVM Profiling",
+    "tipo": "tema",
+    "padre": "performance-engineering",
+    "area": "observability",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "load-testing",
+    "nombre": "Load Testing",
+    "tipo": "tema",
+    "padre": "performance-engineering",
+    "area": "observability",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "stress-testing",
+    "nombre": "Stress Testing",
+    "tipo": "tema",
+    "padre": "performance-engineering",
+    "area": "observability",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "caching",
+    "nombre": "Caching",
+    "tipo": "tema",
+    "padre": "performance-engineering",
+    "area": "observability",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "relacionados": [
+      "prompt-caching"
+    ]
+  },
+  {
+    "id": "capacity-planning",
+    "nombre": "Capacity Planning",
+    "tipo": "tema",
+    "padre": "performance-engineering",
+    "area": "observability",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "frontend",
+    "nombre": "Frontend & Full Stack Fundamentals",
+    "nombreEs": "Frontend y fundamentos full stack",
+    "tipo": "area",
+    "padre": "software-engineer",
+    "area": "frontend",
+    "color": "#ed5ea6",
+    "frase": "La parte que ve el usuario: HTML, CSS, JavaScript, TypeScript, Angular y React."
+  },
+  {
+    "id": "web-fundamentals",
+    "nombre": "Web Fundamentals",
+    "nombreEs": "Fundamentos web",
+    "tipo": "bloque",
+    "padre": "frontend",
+    "area": "frontend",
+    "frase": "HTML para la estructura, CSS para el aspecto y JavaScript para el comportamiento."
+  },
+  {
+    "id": "html",
+    "nombre": "HTML",
+    "tipo": "tema",
+    "padre": "web-fundamentals",
+    "area": "frontend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "css",
+    "nombre": "CSS",
+    "tipo": "tema",
+    "padre": "web-fundamentals",
+    "area": "frontend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "javascript",
+    "nombre": "JavaScript",
+    "tipo": "tema",
+    "padre": "web-fundamentals",
+    "area": "frontend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "typescript",
+    "nombre": "TypeScript",
+    "tipo": "tema",
+    "padre": "frontend",
+    "area": "frontend",
+    "frase": "JavaScript con tipos estáticos: detecta errores al compilar y mejora el autocompletado.",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "frontend-frameworks",
+    "nombre": "Frontend Frameworks",
+    "nombreEs": "Frameworks de frontend",
+    "tipo": "bloque",
+    "padre": "frontend",
+    "area": "frontend",
+    "frase": "Angular y React: componentes, estado y enrutado para aplicaciones de una sola página."
+  },
+  {
+    "id": "angular",
+    "nombre": "Angular",
+    "tipo": "tema",
+    "padre": "frontend-frameworks",
+    "area": "frontend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "react",
+    "nombre": "React",
+    "tipo": "tema",
+    "padre": "frontend-frameworks",
+    "area": "frontend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "nodejs-ecosystem",
+    "nombre": "Node.js Ecosystem",
+    "nombreEs": "Ecosistema Node.js",
+    "tipo": "bloque",
+    "padre": "frontend",
+    "area": "frontend",
+    "frase": "JavaScript en el servidor y aplicaciones modulares con NestJS sobre el mismo motor."
+  },
+  {
+    "id": "nodejs",
+    "nombre": "Node.js",
+    "tipo": "tema",
+    "padre": "nodejs-ecosystem",
+    "area": "frontend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "nestjs",
+    "nombre": "NestJS",
+    "tipo": "tema",
+    "padre": "nodejs-ecosystem",
+    "area": "frontend",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "professional",
+    "nombre": "Professional & Business Skills",
+    "nombreEs": "Habilidades profesionales y de negocio",
+    "tipo": "area",
+    "padre": "software-engineer",
+    "area": "professional",
+    "color": "#e15eed",
+    "frase": "Trabajo en equipo, metodologías ágiles, liderazgo técnico y comprensión del negocio."
+  },
+  {
+    "id": "agile-project-management",
+    "nombre": "Agile & Project Management",
+    "nombreEs": "Metodologías ágiles y gestión de proyectos",
+    "tipo": "bloque",
+    "padre": "professional",
+    "area": "professional",
+    "frase": "Scrum, Kanban y Jira para planificar, priorizar y entregar trabajo en iteraciones."
+  },
+  {
+    "id": "scrum",
+    "nombre": "Scrum",
+    "tipo": "tema",
+    "padre": "agile-project-management",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 1
+  },
+  {
+    "id": "kanban",
+    "nombre": "Kanban",
+    "tipo": "tema",
+    "padre": "agile-project-management",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "jira",
+    "nombre": "Jira",
+    "tipo": "tema",
+    "padre": "agile-project-management",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "collaboration",
+    "nombre": "Collaboration",
+    "nombreEs": "Colaboración",
+    "tipo": "bloque",
+    "padre": "professional",
+    "area": "professional",
+    "frase": "Comunicar bien, documentar, revisar el código de otros y compartir lo aprendido."
+  },
+  {
+    "id": "communication",
+    "nombre": "Communication",
+    "tipo": "tema",
+    "padre": "collaboration",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "technical-documentation",
+    "nombre": "Technical Documentation",
+    "tipo": "tema",
+    "padre": "collaboration",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "knowledge-sharing",
+    "nombre": "Knowledge Sharing",
+    "tipo": "tema",
+    "padre": "collaboration",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "technical-leadership",
+    "nombre": "Technical Leadership",
+    "nombreEs": "Liderazgo técnico",
+    "tipo": "bloque",
+    "padre": "professional",
+    "area": "professional",
+    "frase": "Mentorizar, tomar decisiones técnicas, revisar arquitecturas y guiar a un equipo."
+  },
+  {
+    "id": "mentoring",
+    "nombre": "Mentoring",
+    "tipo": "tema",
+    "padre": "technical-leadership",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "technical-decision-making",
+    "nombre": "Technical Decision Making",
+    "tipo": "tema",
+    "padre": "technical-leadership",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "architecture-reviews",
+    "nombre": "Architecture Reviews",
+    "tipo": "tema",
+    "padre": "technical-leadership",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "team-leadership",
+    "nombre": "Team Leadership",
+    "tipo": "tema",
+    "padre": "technical-leadership",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "product-business",
+    "nombre": "Product & Business Understanding",
+    "nombreEs": "Producto y negocio",
+    "tipo": "bloque",
+    "padre": "professional",
+    "area": "professional",
+    "frase": "Entender qué necesita el cliente, analizar requisitos y conocer bien el sector."
+  },
+  {
+    "id": "requirements-engineering",
+    "nombre": "Requirements Engineering",
+    "tipo": "tema",
+    "padre": "product-business",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "business-analysis",
+    "nombre": "Business Analysis",
+    "tipo": "tema",
+    "padre": "product-business",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "domain-knowledge",
+    "nombre": "Domain Knowledge",
+    "nombreEs": "Conocimiento del dominio",
+    "tipo": "bloque",
+    "padre": "product-business",
+    "area": "professional"
+  },
+  {
+    "id": "banking-fintech",
+    "nombre": "Banking & Fintech",
+    "tipo": "tema",
+    "padre": "domain-knowledge",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "healthcare",
+    "nombre": "Healthcare",
+    "tipo": "tema",
+    "padre": "domain-knowledge",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "retail-e-commerce",
+    "nombre": "Retail & E-commerce",
+    "tipo": "tema",
+    "padre": "domain-knowledge",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "logistics",
+    "nombre": "Logistics",
+    "tipo": "tema",
+    "padre": "domain-knowledge",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "languages",
+    "nombre": "Languages",
+    "nombreEs": "Idiomas",
+    "tipo": "bloque",
+    "padre": "professional",
+    "area": "professional",
+    "frase": "Español e inglés para trabajar, leer documentación y comunicarse con el equipo."
+  },
+  {
+    "id": "spanish",
+    "nombre": "Spanish",
+    "tipo": "tema",
+    "padre": "languages",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "english",
+    "nombre": "English",
+    "tipo": "tema",
+    "padre": "languages",
+    "area": "professional",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 2
+  },
+  {
+    "id": "ai",
+    "nombre": "AI Engineering",
+    "nombreEs": "Ingeniería de IA",
+    "tipo": "area",
+    "padre": "software-engineer",
+    "area": "ai",
+    "color": "#6a5eed",
+    "frase": "Modelos de lenguaje, agentes, integración en aplicaciones, producción y gobierno de la IA."
+  },
+  {
+    "id": "artificial-intelligence",
+    "nombre": "Artificial Intelligence",
+    "nombreEs": "Inteligencia artificial",
+    "tipo": "bloque",
+    "padre": "ai",
+    "area": "ai",
+    "frase": "IA generativa, modelos de lenguaje, prompts, RAG, ajuste fino y agentes autónomos."
+  },
+  {
+    "id": "generative-ai",
+    "nombre": "Generative AI",
+    "tipo": "tema",
+    "padre": "artificial-intelligence",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "llms",
+    "nombre": "Large Language Models (LLMs)",
+    "tipo": "tema",
+    "padre": "artificial-intelligence",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "alias": [
+      "LLM"
+    ]
+  },
+  {
+    "id": "tokens-context-window",
+    "nombre": "Tokens & Context Window",
+    "tipo": "tema",
+    "padre": "llms",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "sampling-parameters",
+    "nombre": "Sampling Parameters (Temperature, Top-p)",
+    "tipo": "tema",
+    "padre": "llms",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "inference-vs-training",
+    "nombre": "Inference vs Training",
+    "tipo": "tema",
+    "padre": "llms",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "hallucinations",
+    "nombre": "Hallucinations",
+    "tipo": "tema",
+    "padre": "llms",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "model-selection",
+    "nombre": "Model Selection (quality, cost, latency)",
+    "tipo": "tema",
+    "padre": "llms",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "prompt-engineering",
+    "nombre": "Prompt Engineering",
+    "tipo": "tema",
+    "padre": "artificial-intelligence",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "system-prompt",
+    "nombre": "System Prompt",
+    "tipo": "tema",
+    "padre": "prompt-engineering",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "few-shot-prompting",
+    "nombre": "Few-Shot Prompting",
+    "tipo": "tema",
+    "padre": "prompt-engineering",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "context-engineering",
+    "nombre": "Context Engineering",
+    "tipo": "tema",
+    "padre": "prompt-engineering",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "rag",
+    "nombre": "RAG",
+    "tipo": "tema",
+    "padre": "artificial-intelligence",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "fine-tuning"
+    ]
+  },
+  {
+    "id": "chunking",
+    "nombre": "Chunking",
+    "tipo": "tema",
+    "padre": "rag",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "semantic-hybrid-search",
+    "nombre": "Semantic & Hybrid Search",
+    "tipo": "tema",
+    "padre": "rag",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "embeddings"
+    ]
+  },
+  {
+    "id": "reranking",
+    "nombre": "Reranking",
+    "tipo": "tema",
+    "padre": "rag",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "fine-tuning",
+    "nombre": "Fine-Tuning",
+    "tipo": "tema",
+    "padre": "artificial-intelligence",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "rag"
+    ]
+  },
+  {
+    "id": "ai-agents",
+    "nombre": "AI Agents",
+    "tipo": "tema",
+    "padre": "artificial-intelligence",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "tool-calling",
+    "nombre": "Tool Calling",
+    "tipo": "tema",
+    "padre": "ai-agents",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "mcp"
+    ]
+  },
+  {
+    "id": "agent-loop",
+    "nombre": "Agent Loop",
+    "tipo": "tema",
+    "padre": "ai-agents",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "agent-memory",
+    "nombre": "Agent Memory",
+    "tipo": "tema",
+    "padre": "ai-agents",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "multi-agent-orchestration",
+    "nombre": "Multi-Agent Orchestration",
+    "tipo": "tema",
+    "padre": "ai-agents",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "human-in-the-loop",
+    "nombre": "Human-in-the-Loop",
+    "tipo": "tema",
+    "padre": "ai-agents",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "ai-assisted-software-engineering",
+    "nombre": "AI-Assisted Software Engineering",
+    "nombreEs": "Ingeniería de software asistida por IA",
+    "tipo": "bloque",
+    "padre": "ai",
+    "area": "ai",
+    "frase": "Programar con asistentes y agentes: especificaciones, contexto, pruebas y revisión."
+  },
+  {
+    "id": "ai-coding-assistants",
+    "nombre": "AI Coding Assistants",
+    "tipo": "tema",
+    "padre": "ai-assisted-software-engineering",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "agentic-development",
+    "nombre": "Agentic Development",
+    "tipo": "tema",
+    "padre": "ai-assisted-software-engineering",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "spec-driven-development",
+    "nombre": "Spec-Driven Development",
+    "tipo": "tema",
+    "padre": "agentic-development",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "project-context-files",
+    "nombre": "Project Context Files (CLAUDE.md, AGENTS.md…)",
+    "tipo": "tema",
+    "padre": "agentic-development",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "skills-subagents",
+    "nombre": "Skills & Subagents",
+    "tipo": "tema",
+    "padre": "agentic-development",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "ai-powered-testing",
+    "nombre": "AI-Powered Testing",
+    "tipo": "tema",
+    "padre": "ai-assisted-software-engineering",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "reviewing-ai-generated-code",
+    "nombre": "Reviewing AI-Generated Code",
+    "tipo": "tema",
+    "padre": "ai-assisted-software-engineering",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "ai-integration",
+    "nombre": "AI Integration",
+    "nombreEs": "Integración de IA",
+    "tipo": "bloque",
+    "padre": "ai",
+    "area": "ai",
+    "frase": "Llamar a modelos desde una aplicación: APIs, embeddings, vectores, MCP y Java."
+  },
+  {
+    "id": "model-apis",
+    "nombre": "Model APIs",
+    "tipo": "tema",
+    "padre": "ai-integration",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "structured-outputs",
+    "nombre": "Structured Outputs",
+    "tipo": "tema",
+    "padre": "model-apis",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "streaming",
+    "nombre": "Streaming",
+    "tipo": "tema",
+    "padre": "model-apis",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "prompt-caching",
+    "nombre": "Prompt Caching",
+    "tipo": "tema",
+    "padre": "model-apis",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "caching"
+    ]
+  },
+  {
+    "id": "rate-limits-retries-fallbacks",
+    "nombre": "Rate Limits, Retries & Fallbacks",
+    "tipo": "tema",
+    "padre": "model-apis",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "resilience-patterns"
+    ]
+  },
+  {
+    "id": "embeddings",
+    "nombre": "Embeddings",
+    "tipo": "tema",
+    "padre": "ai-integration",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "semantic-hybrid-search",
+      "vector-databases"
+    ]
+  },
+  {
+    "id": "vector-databases",
+    "nombre": "Vector Databases",
+    "tipo": "tema",
+    "padre": "ai-integration",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "embeddings"
+    ]
+  },
+  {
+    "id": "pgvector",
+    "nombre": "pgvector",
+    "tipo": "tema",
+    "padre": "vector-databases",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "postgresql"
+    ]
+  },
+  {
+    "id": "mcp",
+    "nombre": "Model Context Protocol (MCP)",
+    "tipo": "tema",
+    "padre": "ai-integration",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "mcp-java-sdk",
+      "tool-calling"
+    ]
+  },
+  {
+    "id": "ai-java-ecosystem",
+    "nombre": "Java Ecosystem",
+    "nombreEs": "Ecosistema Java",
+    "tipo": "bloque",
+    "padre": "ai-integration",
+    "area": "ai"
+  },
+  {
+    "id": "spring-ai",
+    "nombre": "Spring AI",
+    "tipo": "tema",
+    "padre": "ai-java-ecosystem",
+    "area": "ai",
+    "accesos": [
+      "spring-framework"
+    ],
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "langchain4j"
+    ]
+  },
+  {
+    "id": "langchain4j",
+    "nombre": "LangChain4j",
+    "tipo": "tema",
+    "padre": "ai-java-ecosystem",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "spring-ai"
+    ]
+  },
+  {
+    "id": "mcp-java-sdk",
+    "nombre": "MCP Java SDK",
+    "tipo": "tema",
+    "padre": "ai-java-ecosystem",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "mcp"
+    ]
+  },
+  {
+    "id": "llmops",
+    "nombre": "AI in Production (LLMOps)",
+    "nombreEs": "IA en producción (LLMOps)",
+    "tipo": "bloque",
+    "padre": "ai",
+    "area": "ai",
+    "frase": "Evaluar, trazar y vigilar coste y latencia de las funciones con modelos en vivo."
+  },
+  {
+    "id": "evals",
+    "nombre": "Evals & Golden Datasets",
+    "tipo": "tema",
+    "padre": "llmops",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "llm-tracing",
+    "nombre": "Tracing & Observability",
+    "tipo": "tema",
+    "padre": "llmops",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "opentelemetry",
+      "distributed-tracing"
+    ]
+  },
+  {
+    "id": "llm-cost-latency",
+    "nombre": "Cost & Latency",
+    "tipo": "tema",
+    "padre": "llmops",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "ai-security-governance",
+    "nombre": "AI Security & Governance",
+    "nombreEs": "Seguridad y gobierno de la IA",
+    "tipo": "bloque",
+    "padre": "ai",
+    "area": "ai",
+    "frase": "Inyección de prompts, fugas de datos, guardarraíles y normativa europea sobre IA."
+  },
+  {
+    "id": "prompt-injection",
+    "nombre": "Prompt Injection",
+    "tipo": "tema",
+    "padre": "ai-security-governance",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "owasp-llm-top-10",
+    "nombre": "OWASP Top 10 for LLM Applications",
+    "tipo": "tema",
+    "padre": "ai-security-governance",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "owasp-top-10"
+    ]
+  },
+  {
+    "id": "sensitive-data-leakage",
+    "nombre": "Sensitive Data Leakage",
+    "tipo": "tema",
+    "padre": "ai-security-governance",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "least-privilege-agents",
+    "nombre": "Least Privilege for Agents",
+    "tipo": "tema",
+    "padre": "ai-security-governance",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "authorization"
+    ]
+  },
+  {
+    "id": "guardrails",
+    "nombre": "Guardrails",
+    "tipo": "tema",
+    "padre": "ai-security-governance",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
+    "id": "eu-ai-act",
+    "nombre": "EU AI Act",
+    "tipo": "tema",
+    "padre": "ai-security-governance",
+    "area": "ai",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "alias": [
+      "Reglamento europeo de IA"
+    ]
+  }
+]
