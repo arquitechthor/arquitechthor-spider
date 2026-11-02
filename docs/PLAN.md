@@ -22,9 +22,12 @@ línea al "Registro de sesiones".
   Licencia cambiada a CC BY-SA 4.0 (tarea 0.3).
 - **Pendiente de datos del usuario:** sus propuestas de temáticas para fases posteriores (ver
   "Propuestas del usuario" en la Fase 8).
-- **Próximo paso:** Fase 2 (esqueleto publicado: estilos, menú y pie, `datos.js`, aviso legal,
-  `CLAUDE.md` del repo y activar GitHub Pages).
-- **Última actualización:** 2026-11-02 (Fase 1)
+- **Fase 2 completa (2026-11-02)** salvo el enlace desde las otras tres webs (tarea 2.6, aplazada):
+  web publicada en GitHub Pages con portada provisional (las 13 áreas como tarjetas), aviso legal,
+  logo y favicons propios, `datos.js` y `CLAUDE.md` del repo.
+- **Próximo paso:** Fase 3 (el mapa), empezando por `arbol.js` y el prototipo de la Telaraña con
+  el área "Backend y Spring" para revisarlo con el usuario. Al publicar el mapa, cerrar la 2.6.
+- **Última actualización:** 2026-11-02 (Fase 2)
 
 ---
 
@@ -103,7 +106,8 @@ Consecuencias para el diseño:
 
 ```
 arquitechthor-spider/
-├── index.html                # portada = mapa interactivo (cajas / telaraña) + panel de detalle
+├── index.html                # portada = mapa interactivo (telaraña / cajas) + panel de detalle
+│                             #   (en la Fase 2, provisional: tarjetas de las 13 áreas con assets/inicio.js)
 ├── tema.html                 # página genérica de un nodo (?id=): resumen de un bloque o "Próximamente"
 ├── evaluacion.html           # test de un tema, bloque o área (?id=&n=10) y repaso de falladas (?repaso=1)
 ├── certificaciones.html      # lista de certificaciones temáticas (Fase 6)
@@ -129,8 +133,9 @@ arquitechthor-spider/
 │   ├── evaluacion.js         # test por rama y repaso
 │   ├── simulacro.js          # Fase 6
 │   ├── progreso.js
-│   ├── siglas.js             # tooltips de siglas (copiado)
+│   ├── siglas.js             # tooltips de siglas (se copia en la Fase 4, con siglas.json)
 │   ├── nav.js                # menú móvil y aria-current (mismo bloque que en las otras webs)
+│   ├── logo.svg              # logo propio (+ favicon-32.png y apple-touch-icon.png, generados de él)
 │   └── iconos/areas/<id>.svg # iconos propios de las 13 áreas
 ├── scripts/
 │   ├── importar_arbol.py     # tecnologias.md → nodos.json (hecho; solo con --forzar lo rehace)
@@ -526,18 +531,25 @@ Completa el 2026-11-02.
 - [x] 1.5 `scripts/revisar_arbol.py` (validaciones de 4.4) en verde.
 
 ### Fase 2: esqueleto publicado
-- [ ] 2.1 Copiar `styles.css`, `nav.js`, `siglas.js` y estructura de páginas de aws-cert-study;
-      menú y pie según la política (D3).
-- [ ] 2.2 `assets/datos.js` (`SpiderDatos`): carga de JSON con rutas relativas, caché, lectura y
-      escritura de progreso con `try/catch`.
-- [ ] 2.3 `aviso-legal.html` (licencia, marcas de terceros, `localStorage`, ausencia de afiliación
-      con Oracle, Broadcom, etc.).
-- [ ] 2.4 `CLAUDE.md` del repo (stack, comandos, reglas de contenido, flujo "rellenar un tema"),
-      `README.md`, `.nojekyll`.
-- [ ] 2.5 Activar GitHub Pages (main / raíz) y comprobar la URL publicada.
-- [ ] 2.6 Fuera del repo: fila en la tabla de `kopi/CLAUDE.md`; política de webs en
-      `kopi-docs/politicas.md` (pasa a "cuatro webs") y enlace en el pie de las otras tres webs
-      (D3, aceptada): "Kopi Tools · Apuntes AWS · Tech Spider · Sobre mí".
+- [x] 2.1 `styles.css` (base, menú, botones, hero, tarjetas, chips, siglas, páginas interiores y
+      pie de aws-cert-study, sin lo específico de AWS, más las tarjetas de área) y `nav.js` copiados;
+      menú ("Inicio · Áreas · Sobre mí" por ahora) y pie con la línea común de cuatro webs.
+      `siglas.js` se trae en la Fase 4, cuando haya glosario y páginas que lo usen.
+- [x] 2.2 `assets/datos.js` (`SpiderDatos`): carga de `nodos.json` con rutas relativas y caché,
+      `hijos` (propios + accesos), `temasDe()`, nombre "español (original)", icono del área como
+      máscara CSS y `leer`/`guardar` de las claves `spider.*` con `try/catch`.
+- [x] 2.3 `aviso-legal.html` (sin afiliación con los titulares de las tecnologías, marcas, preguntas
+      originales, exactitud y temas legales, licencia, `localStorage` `spider.*`, GitHub Pages).
+- [x] 2.4 `CLAUDE.md` del repo, `README.md`, `.nojekyll`; logo propio (`assets/logo.svg`) y favicons
+      PNG generados de él con Chrome sin interfaz. Portada provisional con las 13 áreas
+      (`assets/inicio.js`), probada a escritorio y a 375 px (sin scroll horizontal).
+- [x] 2.5 GitHub Pages activado (main / raíz) y URL publicada comprobada.
+- [ ] 2.6 Fuera del repo. Hecho: fila de Tech Spider en la tabla de `kopi/CLAUDE.md` (y en el
+      párrafo de dominios). **Aplazado hasta publicar el mapa (Fase 3)**, para no enlazar desde tres
+      webs en producción a una portada provisional: política de webs en `kopi-docs/politicas.md`
+      (pasa a "cuatro webs") y enlace en el pie de `kopi-web`, `aws-cert-study` y
+      `arquitechthor.github.io`: "Kopi Tools · Apuntes AWS · Tech Spider · Sobre mí". Pedir
+      confirmación al usuario antes de hacer push en esos repos.
 
 ### Fase 3: el mapa
 - [ ] 3.1 `arbol.js`: construir el árbol, hijos/ancestros/hojas, accesos, búsqueda, agregados de
@@ -639,6 +651,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-02 | **Fase 2:** esqueleto publicado en GitHub Pages (portada provisional con las áreas, aviso legal, logo, `datos.js`, `CLAUDE.md`); 2.6 aplazada salvo `kopi/CLAUDE.md`. |
 | 2026-11-02 | **Fase 1 completa:** `scripts/importar_arbol.py` → `data/nodos.json` (355 nodos, 12 accesos, 21 externos), `nombreEs` y frases de áreas y bloques, colores e iconos de las áreas, `scripts/revisar_arbol.py` en verde. Decisiones de detalle: `bloque` = nodo que solo agrupa; color en el nodo de área (sin `areas.json`); campos opcionales omitidos. |
 | 2026-11-02 | Ampliación del área 13 → AI Engineering (propuesta del usuario con ajustes: fusiones, Fine-Tuning nuevo, GDPR al área 7 en "Compliance & Privacy"); aplicada en `docs/tecnologias.md` (364 nodos). Campos `revisado` y `volatil`. |
 | 2026-11-02 | D1 "Tech Spider", D4 aceptada, D6 aceptada salvo Scrum (detallado y con certificación). Licencia cambiada a CC BY-SA 4.0. |

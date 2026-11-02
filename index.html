@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Spider — Mapa de estudio de ingeniería de software</title>
+<meta name="description" content="Mapa interactivo para estudiar las tecnologías de un ingeniero de software: Java, Spring, testing, datos, arquitectura, seguridad, DevOps, nube, IA y más, con apuntes y evaluaciones por tema. Proyecto personal y educativo sin fines comerciales.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tech Spider">
+<meta property="og:title" content="Tech Spider — Mapa de estudio de ingeniería de software">
+<meta property="og:description" content="Las tecnologías de un ingeniero de software en una telaraña interactiva, con apuntes y evaluaciones por tema. Proyecto personal y educativo.">
+<meta property="og:url" content="https://arquitechthor.github.io/arquitechthor-spider/">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <img class="nav-logo" src="assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="#top">Inicio</a>
+      <a href="#areas">Áreas</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main>
+<header class="hero" id="top">
+  <div class="container">
+    <span class="eyebrow">Proyecto personal · Educativo · Sin fines comerciales</span>
+    <h1><span class="gradient-text">Tech Spider</span></h1>
+    <p class="hero-desc">
+      Las tecnologías de un ingeniero de software tejidas en una telaraña: de Java y Spring a la
+      arquitectura, la nube y la IA. Cada tema tendrá sus apuntes y su evaluación, y más adelante
+      certificaciones temáticas como Java OCP, Spring o Scrum.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#areas">Ver las áreas →</a>
+      <a class="btn btn-secondary" href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+    </div>
+  </div>
+</header>
+
+<section id="areas">
+  <div class="container">
+    <div class="aviso-obras" role="note">
+      <img src="assets/logo.svg" alt="" width="28" height="28" style="flex:none;border-radius:6px">
+      <span><strong>En construcción.</strong> El mapa interactivo en forma de telaraña, las guías y
+        las evaluaciones llegarán por fases. Mientras tanto, estas son las áreas que cubrirá.</span>
+    </div>
+    <div class="section-head">
+      <h2>Áreas</h2>
+      <p id="areas-resumen">Cargando…</p>
+    </div>
+    <div class="area-grid" id="area-grid"></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="assets/nav.js" defer></script>
+<script src="assets/datos.js" defer></script>
+<script src="assets/inicio.js" defer></script>
+</body>
+</html>
