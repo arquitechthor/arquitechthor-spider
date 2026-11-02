@@ -25,12 +25,15 @@ línea al "Registro de sesiones".
 - **Fase 2 completa (2026-11-02)** salvo el enlace desde las otras tres webs (tarea 2.6, aplazada):
   web publicada en GitHub Pages con portada provisional (las 13 áreas como tarjetas), aviso legal,
   logo y favicons propios, `datos.js` y `CLAUDE.md` del repo.
-- **Fase 3 en curso (2026-11-02):** prototipo de la Telaraña hecho en local (sin publicar):
-  `arbol.js`, `telarana.js` y `mapa.js` con recentrado, migas, URL e historial, teclado, panel de
-  detalle y autoevaluación (tareas 3.1–3.4), probado a escritorio y a 375 px.
-- **Próximo paso:** que el usuario revise el prototipo; después, publicarlo y seguir con 3.5
-  (buscador, filtros y "Color por"). Al publicar el mapa, cerrar la 2.6.
-- **Última actualización:** 2026-11-02 (Fase 3, prototipo)
+- **Fase 3 en curso (2026-11-02):** telaraña **publicada** (commit `adf8322`): `arbol.js`,
+  `telarana.js` y `mapa.js` con recentrado, migas, URL e historial, teclado, panel de detalle y
+  autoevaluación (tareas 3.1–3.4), revisada por el usuario. Portada: cabecera, telaraña y tarjetas
+  de áreas.
+- **Próximo paso:** 3.5 (buscador, filtros y "Color por" área/progreso/autoevaluación); después
+  3.6 (vista Cajas), 3.8 (radar) y 3.9 (vista general). **Tarea 2.6 pendiente:** con el mapa ya
+  publicado, pedir confirmación al usuario para enlazar Tech Spider desde el pie de `kopi-web`,
+  `aws-cert-study` y `arquitechthor.github.io` y actualizar `kopi-docs/politicas.md`.
+- **Última actualización:** 2026-11-02 (fin de sesión: telaraña publicada)
 
 ---
 
@@ -684,6 +687,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-02 | Revisión del usuario: letra mayor, lienzo más alto, tarjetas de áreas debajo de la telaraña, cabecera de la Fase 2 recuperada. **Telaraña publicada** (`adf8322`). |
 | 2026-11-02 | **Fase 3 (prototipo, en local):** `arbol.js`, `telarana.js` y `mapa.js`; la portada pasa a ser el mapa (fuera `inicio.js` y las tarjetas). Etiquetas radiales en el segundo anillo, `viewBox` ajustado al contenido, `nombreCorto` de las áreas para móvil. Pendiente de revisión del usuario. |
 | 2026-11-02 | **Fase 2:** esqueleto publicado en GitHub Pages (portada provisional con las áreas, aviso legal, logo, `datos.js`, `CLAUDE.md`); 2.6 aplazada salvo `kopi/CLAUDE.md`. |
 | 2026-11-02 | **Fase 1 completa:** `scripts/importar_arbol.py` → `data/nodos.json` (355 nodos, 12 accesos, 21 externos), `nombreEs` y frases de áreas y bloques, colores e iconos de las áreas, `scripts/revisar_arbol.py` en verde. Decisiones de detalle: `bloque` = nodo que solo agrupa; color en el nodo de área (sin `areas.json`); campos opcionales omitidos. |
