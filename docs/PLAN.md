@@ -36,7 +36,10 @@ línea al "Registro de sesiones".
   fichas publicadas del área IA y de 6 temas (IA, ML, DL, IA generativa, LLMs, agentes) con 71
   preguntas, glosario de siglas y conceptos con tooltip y enlace, evaluación por tema y por rama.
   Ampliado a petición del usuario (para sus pruebas) con parámetros, arquitectura, datos
-  estructurados, regresión, sesgo, varianza, NLP y Transformer.
+  estructurados, regresión, sesgo, varianza, NLP y Transformer. **Duda abierta:** "Estructura" se
+  cubrió en dos sentidos (arquitectura del modelo y datos estructurados); confirmar con el usuario si
+  se refería a otra cosa (p. ej. salidas estructuradas de un LLM). El usuario está haciendo pruebas
+  con esos conceptos: recoger su feedback antes de seguir.
 - **Próximo paso:** revisión del piloto con el usuario; después 3.7 (responsive), 3.8 (radar) y
   3.9 (vista general), y la pasada de bloques candidatos a tema (4.5). **Tarea 2.6 casi cerrada (2026-11-03):**
   enlaces publicados en `kopi-web`, `aws-cert-study`, `arquitechthor.github.io` y
