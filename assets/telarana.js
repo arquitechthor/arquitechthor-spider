@@ -2,7 +2,8 @@
  * Vista "Telaraña" (window.SpiderTelarana): dibuja en un <svg> la telaraña enfocada en un nodo:
  * el nodo en el centro, sus hijos en el primer anillo y sus nietos en el segundo, unidos por hilos
  * radiales sobre una tela de anillos concéntricos (docs/PLAN.md 5.1-A). Solo dibuja: qué pasa al
- * pulsar un nodo lo decide quien llama (assets/mapa.js) con op.destinoDe() y op.navegar().
+ * pulsar un nodo lo decide quien llama (assets/mapa.js) con op.destinoDe() y op.navegar(), y el
+ * color por nivel, los filtros y el buscador los aplica mapa.js después sobre los <a data-id>.
  *
  * Cada nodo es un <a href> real (se puede abrir en otra pestaña) enfocable con Tab, en orden de las
  * agujas del reloj; las flechas recorren su anillo y Escape sube un nivel.
@@ -171,8 +172,9 @@
   }
 
   function enlaceNodo(padre, nodo, destino, op, clase, etiqueta) {
+    // data-etiqueta guarda la etiqueta base: mapa.js le añade el nivel o la coincidencia al decorar.
     const a = el('a', {
-      href: op.urlDe(destino), class: clase, 'data-id': nodo.id, 'aria-label': etiqueta,
+      href: op.urlDe(destino), class: clase, 'data-id': nodo.id, 'aria-label': etiqueta, 'data-etiqueta': etiqueta,
     }, padre);
     a.addEventListener('click', (ev) => {
       if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button !== 0) return;

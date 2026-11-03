@@ -29,8 +29,9 @@ línea al "Registro de sesiones".
   `telarana.js` y `mapa.js` con recentrado, migas, URL e historial, teclado, panel de detalle y
   autoevaluación (tareas 3.1–3.4), revisada por el usuario. Portada: cabecera, telaraña y tarjetas
   de áreas.
-- **Próximo paso:** 3.5 (buscador, filtros y "Color por" área/progreso/autoevaluación); después
-  3.6 (vista Cajas), 3.8 (radar) y 3.9 (vista general). **Tarea 2.6 casi cerrada (2026-11-03):**
+- **3.5 publicada (2026-11-03):** buscador, "Color por" área/mi nivel y filtros.
+- **Próximo paso:** 3.6 (vista Cajas), 3.7
+  (responsive), 3.8 (radar) y 3.9 (vista general). **Tarea 2.6 casi cerrada (2026-11-03):**
   enlaces publicados en `kopi-web`, `aws-cert-study`, `arquitechthor.github.io` y
   `kopi-chess`; falta `kopi-docs/politicas.md` (clonar el repo).
 - **Última actualización:** 2026-11-03 (enlaces a Tech Spider desde las demás webs)
@@ -599,7 +600,18 @@ Completa el 2026-11-02.
       nombre, frase, estado, "Lo esencial", "Mi nivel" (0–4, `spider.autoevaluacion`; pulsar el
       mismo número lo quita), guía y evaluación (desactivadas hasta las fases 4 y 5; AWS enlaza a
       su guía), "Contiene", "Vive en" / "También aparece en" (accesos) y "Relacionados".
-- [ ] 3.5 Buscador con resaltado y salto; filtros y "Color por" con leyenda; estado en la URL.
+- [x] 3.5 (2026-11-03, publicada) Barra sobre la telaraña:
+      buscador *combobox* (nombre, alias y frase; lista de 12 con tipo y ruta; flechas, Enter y
+      Esc; al elegir, la telaraña se centra en el padre y el foco pasa al nodo), "Color por"
+      **Área / Mi nivel** (rojo → verde, gris sin marcar; ramas con la media de sus temas marcados,
+      también en el panel como "Mi nivel medio"), filtros **Estado** (publicado, próximamente,
+      Apuntes AWS) y **Lo esencial**, "Quitar filtros" y resumen en texto con `aria-live`. Lo que
+      no pasa se atenúa (sigue pulsable); las coincidencias llevan halo y lo dicen en su
+      `aria-label`. Estado en la URL (`q`, `color=nivel`, `estado`, `esencial=1`) con
+      `replaceState`, conservado por todos los enlaces. Leyenda de color siempre visible.
+      Comprobado con una prueba automática en Chrome sin interfaz (18 comprobaciones) y a 375 px.
+      **Aplazado:** "Color por progreso" a la Fase 5 (aún no hay evaluaciones) y el filtro de
+      certificación a la Fase 6.
 - [ ] 3.6 Vista **Cajas** (alternativa) y conmutador "Telaraña | Cajas" que conserva el contexto.
 - [ ] 3.7 Responsive (375 px sin scroll horizontal, telaraña reducida + lista en móvil),
       `prefers-reduced-motion`, revisión con lector de pantalla y teclado.
@@ -690,6 +702,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-03 | **Tarea 3.5 (publicada):** buscador con lista y salto, "Color por" área / mi nivel con leyenda, filtros Estado y Lo esencial, atenuado y halo en la telaraña, estado en la URL. `SpiderArbol.nivelMedio()`; `buscar()` sin límite por defecto. Progreso → Fase 5; certificación → Fase 6. |
 | 2026-11-03 | **Tarea 2.6:** Tech Spider enlazado en el pie común de `kopi-web`, `aws-cert-study`, `arquitechthor.github.io` y `kopi-chess` (`HomePageTest` en verde), y con sección propia en la web personal. El pie de Tech Spider se pone al día con Kopi Chess y Prompt Quest. Publicado en los cinco repos; pendiente `kopi-docs/politicas.md`. |
 | 2026-11-02 | Revisión del usuario: letra mayor, lienzo más alto, tarjetas de áreas debajo de la telaraña, cabecera de la Fase 2 recuperada. **Telaraña publicada** (`adf8322`). |
 | 2026-11-02 | **Fase 3 (prototipo, en local):** `arbol.js`, `telarana.js` y `mapa.js`; la portada pasa a ser el mapa (fuera `inicio.js` y las tarjetas). Etiquetas radiales en el segundo anillo, `viewBox` ajustado al contenido, `nombreCorto` de las áreas para móvil. Pendiente de revisión del usuario. |

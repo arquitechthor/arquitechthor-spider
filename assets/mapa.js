@@ -1,7 +1,9 @@
 /**
- * Portada: el mapa. Guarda el estado en la URL (?n=<nodo enfocado>&s=<nodo seleccionado>), de modo
- * que el botón atrás y los enlaces compartidos funcionan; pinta la telaraña (assets/telarana.js),
- * las migas de pan y el panel de detalle con la autoevaluación (localStorage spider.autoevaluacion).
+ * Portada: el mapa. Guarda el estado en la URL (?n=<nodo enfocado>&s=<nodo seleccionado>, más la
+ * vista: q=<búsqueda>&color=nivel&estado=<filtro>&esencial=1), de modo que el botón atrás y los
+ * enlaces compartidos funcionan; pinta la telaraña (assets/telarana.js) y la decora con el color, los
+ * filtros y la búsqueda; pinta las migas de pan y el panel de detalle con la autoevaluación
+ * (localStorage spider.autoevaluacion).
  */
 (async function () {
   const D = window.SpiderDatos;
@@ -13,8 +15,20 @@
   if (!svg) return;
 
   const NIVELES = ['No lo conozco', 'Me suena', 'Lo he usado', 'Lo domino', 'Podría enseñarlo'];
+  // Del rojo al verde; "sin marcar" en gris. El nivel va también en texto (aria-label y panel).
+  const COLOR_NIVEL = ['#f87171', '#fb923c', '#facc15', '#a3e635', '#4ade80'];
+  const SIN_MARCAR = '#6b7490';
+  const ESTADOS = { publicado: 'con guía publicada', pendiente: 'próximamente', aws: 'con guía en Apuntes AWS' };
   const TIPO = { raiz: 'Mapa completo', area: 'Área', bloque: 'Bloque', tema: 'Tema' };
   const movil = window.matchMedia('(max-width: 760px)');
+  const buscador = document.getElementById('buscar');
+  const lista = document.getElementById('buscar-lista');
+  const avisoBusqueda = document.getElementById('buscar-estado');
+  const selColor = document.getElementById('color-por');
+  const selEstado = document.getElementById('filtro-estado');
+  const btnEsencial = document.getElementById('filtro-esencial');
+  const btnQuitar = document.getElementById('filtros-quitar');
+  const leyendaColor = document.getElementById('leyenda-color');
 
   let datos;
   try {
@@ -26,6 +40,7 @@
   }
   const raizId = datos.raiz.id;
   let estado = desdeUrl();
+  let vista = vistaDesdeUrl();
 
   function desdeUrl() {
     const q = new URLSearchParams(location.search);
@@ -36,12 +51,37 @@
     return { n, s };
   }
 
+  /** Búsqueda, color y filtros: viajan en la URL con el nodo, para que un enlace compartido los conserve. */
+  function vistaDesdeUrl() {
+    const q = new URLSearchParams(location.search);
+    return {
+      q: (q.get('q') || '').slice(0, 80),
+      color: q.get('color') === 'nivel' ? 'nivel' : 'area',
+      estado: Object.hasOwn(ESTADOS, q.get('estado')) ? q.get('estado') : '',
+      esencial: q.get('esencial') === '1',
+    };
+  }
+
   function urlDe({ n, s }) {
     const q = new URLSearchParams();
     if (n && n !== raizId) q.set('n', n);
     if (s) q.set('s', s);
+    if (vista.q.trim()) q.set('q', vista.q.trim());
+    if (vista.color !== 'area') q.set('color', vista.color);
+    if (vista.estado) q.set('estado', vista.estado);
+    if (vista.esencial) q.set('esencial', '1');
     const texto = q.toString();
     return location.pathname + (texto ? `?${texto}` : '');
+  }
+
+  /** Cambios de la vista (teclear, filtros): reemplazan la entrada del historial, no añaden otra. */
+  function cambiarVista(cambios) {
+    vista = { ...vista, ...cambios };
+    history.replaceState(estado, '', urlDe(estado));
+    sincronizarControles();
+    decorar();
+    pintarLeyendaColor();
+    actualizarHrefs();
   }
 
   /** Adónde lleva pulsar un nodo: entrar si tiene hijos, seleccionarlo si no. */
@@ -75,10 +115,119 @@
       foco: estado.n, sel: estado.s, movil: movil.matches, animar: cambiaFoco,
       enfocar, destinoDe, navegar, urlDe,
     });
+    decorar();
     pintarMigas();
     pintarPanel();
     const actual = datos.porId.get(estado.s || estado.n);
     document.title = actual.tipo === 'raiz' ? 'Tech Spider — Mapa de estudio de ingeniería de software' : `${D.nombreTexto(actual)} — Tech Spider`;
+  }
+
+  function colorArea(n) {
+    const area = n.tipo === 'area' ? n : datos.porId.get(n.area);
+    return area ? area.color : '#22d3ee';
+  }
+
+  /** Nivel de un tema, o el medio de una rama: { indice (0–4) o null, texto para lectores de pantalla }. */
+  function nivelDe(n, auto) {
+    if (n.tipo === 'tema') {
+      const v = auto[n.id];
+      return Number.isInteger(v) ? { indice: v, texto: `Mi nivel: ${v}, ${NIVELES[v]}` } : { indice: null, texto: 'Mi nivel: sin marcar' };
+    }
+    const m = A.nivelMedio(datos, n.id, auto);
+    if (m.media === null) return { indice: null, texto: 'Mi nivel: ningún tema marcado' };
+    return {
+      indice: Math.round(m.media),
+      texto: `Mi nivel medio: ${m.media.toFixed(1).replace('.', ',')} (${m.marcados} de ${m.total} temas marcados)`,
+    };
+  }
+
+  function estadoDe(tema) {
+    if (tema.externo) return 'aws';
+    return tema.estado === 'publicado' ? 'publicado' : 'pendiente';
+  }
+
+  function hayFiltros() {
+    return Boolean(textoBusqueda() || vista.estado || vista.esencial);
+  }
+
+  /** Texto de búsqueda efectivo: con menos de 2 letras no se busca (saldría medio mapa). */
+  function textoBusqueda() {
+    const q = vista.q.trim();
+    return A.normalizar(q).length >= 2 ? q : '';
+  }
+
+  /**
+   * Qué nodos pasan la búsqueda y los filtros. Un tema pasa los filtros si cumple el estado y "Lo
+   * esencial"; una rama, si alguno de sus temas los cumple. Con búsqueda, pasa el nodo que coincide
+   * y cualquier rama que contenga una coincidencia (para poder llegar a ella).
+   */
+  function calcularFiltro() {
+    const cumple = (t) => (!vista.esencial || t.prioridad === 1) && (!vista.estado || estadoDe(t) === vista.estado);
+    const filtrando = vista.esencial || Boolean(vista.estado);
+    const cache = new Map();
+    const pasaFiltros = (n) => {
+      if (!filtrando) return true;
+      if (!cache.has(n.id)) cache.set(n.id, n.tipo === 'tema' ? cumple(n) : D.temasDe(datos, n.id).some(cumple));
+      return cache.get(n.id);
+    };
+    const q = textoBusqueda();
+    const coinciden = new Set();
+    const contienen = new Set();
+    if (q) {
+      for (const n of A.buscar(datos, q)) {
+        if (!pasaFiltros(n)) continue;
+        coinciden.add(n.id);
+        for (const anc of A.ancestros(datos, n.id)) contienen.add(anc.id);
+      }
+    }
+    return {
+      q, coinciden,
+      pasa: (n) => pasaFiltros(n) && (!q || coinciden.has(n.id) || contienen.has(n.id)),
+    };
+  }
+
+  /** Aplica a los nodos ya dibujados el color (área o nivel) y el atenuado de búsqueda y filtros. */
+  function decorar() {
+    const auto = D.leer('autoevaluacion');
+    const activos = hayFiltros();
+    const f = activos ? calcularFiltro() : null;
+    for (const a of svg.querySelectorAll('a.nodo[data-id]')) {
+      const n = datos.porId.get(a.dataset.id);
+      let extra = '';
+      if (vista.color === 'nivel') {
+        const nv = nivelDe(n, auto);
+        a.style.setProperty('--c', nv.indice === null ? SIN_MARCAR : COLOR_NIVEL[nv.indice]);
+        extra += `. ${nv.texto}`;
+      } else {
+        a.style.setProperty('--c', colorArea(n));
+      }
+      const coincide = Boolean(f && f.q && f.coinciden.has(n.id));
+      const centro = a.classList.contains('nodo-centro');
+      a.classList.toggle('coincide', coincide);
+      a.classList.toggle('atenua', Boolean(f) && !centro && !f.pasa(n));
+      if (coincide) extra += '. Coincide con la búsqueda';
+      a.setAttribute('aria-label', a.dataset.etiqueta + extra);
+    }
+    svg.classList.toggle('filtrando', activos);
+  }
+
+  function pintarLeyendaColor() {
+    if (vista.color === 'nivel') {
+      leyendaColor.innerHTML = '<span class="ley-titulo">Mi nivel:</span>'
+        + NIVELES.map((txt, i) => `<span><span class="ley ley-nivel" style="--c:${COLOR_NIVEL[i]}" aria-hidden="true"></span>${i} · ${txt}</span>`).join('')
+        + `<span><span class="ley ley-nivel" style="--c:${SIN_MARCAR}" aria-hidden="true"></span>sin marcar</span>`
+        + '<span class="ley-nota">En bloques y áreas, la media de sus temas marcados.</span>';
+    } else {
+      leyendaColor.innerHTML = '<span class="ley-titulo">Color:</span><span>el de cada área (sus iconos están en las tarjetas de debajo)</span>';
+    }
+  }
+
+  /** Tras cambiar la vista, los enlaces ya pintados (nodos, migas, tarjetas) pasan a llevarla. */
+  function actualizarHrefs() {
+    for (const a of document.querySelectorAll('#telarana a[href], #migas a[href], #area-grid a[href]')) {
+      const u = new URL(a.getAttribute('href'), location.href);
+      a.setAttribute('href', urlDe({ n: u.searchParams.get('n') || raizId, s: u.searchParams.get('s') }));
+    }
   }
 
   function pintarMigas() {
@@ -144,6 +293,15 @@
       partes.push(`<div class="panel-acciones"><a class="btn btn-primary btn-sm" href="${D.esc(D.url(n.externo.url))}">Abrir Apuntes AWS ↗</a></div>`);
     }
 
+    if (n.tipo !== 'tema') {
+      const m = A.nivelMedio(datos, n.id, auto);
+      if (m.media !== null) {
+        const i = Math.round(m.media);
+        partes.push(`<h3>Mi nivel medio</h3><p class="nivel-medio"><span class="punto-color" style="--c:${COLOR_NIVEL[i]}"></span>
+          ${m.media.toFixed(1).replace('.', ',')} · ${NIVELES[i]} <span class="text-faint">(${m.marcados} de ${m.total} temas marcados)</span></p>`);
+      }
+    }
+
     if (estado.s && hijos.length) {
       partes.push(`<div class="panel-acciones"><button class="btn btn-secondary btn-sm" type="button" data-ir="${D.esc(n.id)}">Abrir en la telaraña</button></div>`);
     }
@@ -187,6 +345,7 @@
       else auto[id] = valor;
       D.guardar('autoevaluacion', auto);
       pintarPanel();
+      decorar();
       panel.querySelector(`[data-nivel="${valor ?? 0}"]`)?.focus();
     }
   });
@@ -210,7 +369,136 @@
   window.addEventListener('popstate', () => {
     const antes = estado;
     estado = desdeUrl();
+    vista = vistaDesdeUrl();
+    sincronizarControles();
+    pintarLeyendaColor();
     pintar(antes);
+  });
+
+  /* ── Controles: color, filtros y buscador ─────────────────────────── */
+
+  function sincronizarControles() {
+    if (document.activeElement !== buscador) buscador.value = vista.q;
+    selColor.value = vista.color;
+    selEstado.value = vista.estado;
+    btnEsencial.setAttribute('aria-pressed', String(vista.esencial));
+    btnQuitar.hidden = !hayFiltros();
+    avisarResultados();
+  }
+
+  /** Resumen en texto (y para lectores de pantalla) de lo que dejan la búsqueda y los filtros. */
+  function avisarResultados() {
+    if (!hayFiltros()) { avisoBusqueda.textContent = ''; return; }
+    const f = calcularFiltro();
+    const partes = [];
+    if (f.q) partes.push(f.coinciden.size ? `${f.coinciden.size} ${f.coinciden.size === 1 ? 'coincidencia' : 'coincidencias'} con «${f.q}»` : `Nada coincide con «${f.q}»`);
+    if (vista.esencial || vista.estado) {
+      const temas = D.temasDe(datos, raizId).filter((t) => f.pasa(t)).length;
+      const filtro = [vista.esencial ? 'lo esencial' : '', vista.estado ? ESTADOS[vista.estado] : ''].filter(Boolean).join(', ');
+      partes.push(f.q ? `filtro: ${filtro}` : `Filtro «${filtro}»: ${temas} ${temas === 1 ? 'tema' : 'temas'}`);
+    }
+    avisoBusqueda.textContent = `${partes.join(' · ')}. Lo demás queda atenuado.`;
+  }
+
+  selColor.addEventListener('change', () => cambiarVista({ color: selColor.value }));
+  selEstado.addEventListener('change', () => cambiarVista({ estado: selEstado.value }));
+  btnEsencial.addEventListener('click', () => cambiarVista({ esencial: !vista.esencial }));
+  btnQuitar.addEventListener('click', () => {
+    buscador.value = '';
+    cerrarLista();
+    cambiarVista({ q: '', estado: '', esencial: false });
+  });
+
+  // Buscador: combobox con lista desplegable (patrón ARIA 1.2). Al elegir, la telaraña se centra en
+  // el padre del resultado y lo deja seleccionado; la búsqueda sigue resaltando las coincidencias.
+  let resultados = [];
+  let activo = -1;
+
+  function rutaCorta(n) {
+    return A.ancestros(datos, n.id).filter((x) => x.tipo !== 'raiz').map((x) => D.nombreTexto(x)).join(' › ');
+  }
+
+  function pintarLista() {
+    const q = textoBusqueda();
+    resultados = q ? A.buscar(datos, q, 12) : [];
+    activo = -1;
+    buscador.removeAttribute('aria-activedescendant');
+    if (!q) { cerrarLista(); return; }
+    lista.innerHTML = resultados.length
+      ? resultados.map((n, i) => {
+        const area = A.area(datos, n);
+        return `<li role="option" id="res-${i}" data-i="${i}" aria-selected="false">
+          <span class="punto-color" style="--c:${D.esc(area ? area.color : 'var(--cyan)')}"></span>
+          <span><span class="res-nombre">${D.esc(D.nombreTexto(n))}${n.externo ? ' ☁' : ''}</span>
+          <span class="res-ruta">${D.esc(TIPO[n.tipo])}${rutaCorta(n) ? ` · ${D.esc(rutaCorta(n))}` : ''}</span></span></li>`;
+      }).join('')
+      : '<li class="res-vacio" role="option" aria-disabled="true">Sin resultados</li>';
+    lista.hidden = false;
+    buscador.setAttribute('aria-expanded', 'true');
+  }
+
+  function cerrarLista() {
+    lista.hidden = true;
+    activo = -1;
+    buscador.setAttribute('aria-expanded', 'false');
+    buscador.removeAttribute('aria-activedescendant');
+  }
+
+  function marcarActivo(i) {
+    activo = i;
+    for (const li of lista.querySelectorAll('[data-i]')) li.setAttribute('aria-selected', String(Number(li.dataset.i) === i));
+    const li = lista.querySelector(`[data-i="${i}"]`);
+    if (li) {
+      buscador.setAttribute('aria-activedescendant', li.id);
+      li.scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  function elegir(i) {
+    const n = resultados[i];
+    if (!n) return;
+    cerrarLista();
+    navegar({ n: n.padre || raizId, s: n.id });
+    // El foco del teclado pasa al nodo elegido, y el lienzo se asoma si había quedado fuera.
+    svg.querySelector(`a[data-id="${CSS.escape(n.id)}"]`)?.focus({ preventScroll: true });
+    const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelector('.mapa-lienzo').scrollIntoView({ block: 'nearest', behavior: reducido ? 'auto' : 'smooth' });
+  }
+
+  buscador.addEventListener('input', () => {
+    vista = { ...vista, q: buscador.value };
+    history.replaceState(estado, '', urlDe(estado));
+    pintarLista();
+    decorar();
+    actualizarHrefs();
+    btnQuitar.hidden = !hayFiltros();
+    avisarResultados();
+  });
+  buscador.addEventListener('keydown', (ev) => {
+    if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') {
+      if (lista.hidden) pintarLista();
+      if (!resultados.length) return;
+      ev.preventDefault();
+      const d = ev.key === 'ArrowDown' ? 1 : -1;
+      marcarActivo(activo < 0 ? (d > 0 ? 0 : resultados.length - 1) : (activo + d + resultados.length) % resultados.length);
+    } else if (ev.key === 'Enter') {
+      if (!lista.hidden && resultados.length) {
+        ev.preventDefault();
+        elegir(activo < 0 ? 0 : activo);
+      }
+    } else if (ev.key === 'Escape') {
+      if (!lista.hidden) { ev.preventDefault(); cerrarLista(); }
+    }
+  });
+  buscador.addEventListener('focus', () => { if (textoBusqueda()) pintarLista(); });
+  buscador.addEventListener('blur', () => setTimeout(() => {
+    if (!lista.contains(document.activeElement)) cerrarLista();
+  }, 150));
+  // pointerdown + preventDefault: el clic en la lista no quita el foco al buscador antes de elegir.
+  lista.addEventListener('pointerdown', (ev) => ev.preventDefault());
+  lista.addEventListener('click', (ev) => {
+    const li = ev.target.closest('[data-i]');
+    if (li) elegir(Number(li.dataset.i));
   });
   movil.addEventListener('change', () => pintar(null));
 
@@ -243,6 +531,8 @@
   }
 
   history.replaceState(estado, '', urlDe(estado));
+  sincronizarControles();
+  pintarLeyendaColor();
   pintar(null);
   pintarAreas();
 })();

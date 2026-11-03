@@ -326,6 +326,35 @@ section.mapa { padding: 28px 0 48px; scroll-margin-top: 60px; }
 .mapa-cab .mapa-obras { display: inline-flex; align-items: center; gap: 6px; color: var(--text-faint); font-size: 13px; }
 .mapa-obras img { border-radius: 4px; }
 
+/* Barra del mapa: buscador, "Color por" y filtros (assets/mapa.js) */
+.mapa-herramientas { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 16px 0 0; }
+.buscador { position: relative; flex: 1 1 260px; max-width: 420px; }
+.buscador input {
+  width: 100%; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--border-strong);
+  background: var(--surface); color: var(--text); font: inherit; font-size: 14.5px;
+}
+.buscador input::placeholder { color: var(--text-faint); }
+.buscador input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.18); }
+.buscador-lista {
+  position: absolute; z-index: 20; top: calc(100% + 6px); left: 0; right: 0; max-height: 360px; overflow: auto;
+  list-style: none; margin: 0; padding: 6px; background: var(--surface-2); border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm); box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.7);
+}
+.buscador-lista li { display: flex; gap: 10px; align-items: baseline; padding: 7px 9px; border-radius: 8px; cursor: pointer; }
+.buscador-lista li .punto-color { transform: translateY(-1px); }
+.buscador-lista li[aria-selected="true"], .buscador-lista li:hover { background: rgba(34, 211, 238, 0.12); }
+.buscador-lista .res-vacio { cursor: default; color: var(--text-faint); }
+.res-nombre { display: block; color: var(--text); font-size: 14.5px; line-height: 1.35; }
+.res-ruta { display: block; color: var(--text-faint); font-size: 12.5px; line-height: 1.35; }
+.selector { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-muted); }
+.selector select {
+  padding: 7px 10px; border-radius: 8px; border: 1px solid var(--border-strong);
+  background: var(--surface); color: var(--text); font: inherit; font-size: 13.5px;
+}
+.mapa-herramientas .chip { padding: 8px 12px; }
+.buscador-estado { flex-basis: 100%; margin: 0; min-height: 1.5em; font-size: 13px; color: var(--text-muted); }
+.buscador-estado:empty { display: none; }
+
 .migas ol { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 8px; padding: 0; margin: 12px 0 10px; font-size: 14px; }
 .migas li + li::before { content: "›"; color: var(--text-faint); margin-right: 8px; }
 .migas a { color: var(--text-muted); }
@@ -346,6 +375,11 @@ section.mapa { padding: 28px 0 48px; scroll-margin-top: 60px; }
 .ley-acceso { border-style: dashed; }
 .ley-relacion { width: 22px; border-top: 1.5px dashed var(--text-faint); }
 @media (max-width: 760px) { .leyenda .ley-teclado { display: none; } }
+.leyenda-color { border-top: 0; padding-bottom: 0; }
+.leyenda-color + .leyenda { border-top: 0; }
+.leyenda .ley-titulo { font-weight: 700; color: var(--text-muted); }
+.ley-nivel { border-color: var(--c); background: color-mix(in srgb, var(--c) 35%, transparent); }
+.nivel-medio { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 14px; }
 
 /* SVG de la telaraña (assets/telarana.js). Cada nodo fija su color en --c. */
 .tela-hilos line, .tela-hilos path { stroke: rgba(148, 163, 184, 0.13); stroke-width: 1.5; fill: none; }
@@ -369,6 +403,11 @@ section.mapa { padding: 28px 0 48px; scroll-margin-top: 60px; }
 .nodo-centro .subir { fill: var(--text-faint); font-weight: 600; }
 svg.resaltando .nodo:not(.resalta):not(.nodo-centro),
 svg.resaltando .enlace:not(.resalta) { opacity: 0.25; }
+/* Búsqueda y filtros: lo que no pasa se atenúa (sigue siendo pulsable); las coincidencias, con halo. */
+svg.filtrando .nodo.atenua { opacity: 0.18; }
+svg.filtrando .nodo.atenua:hover, svg.filtrando .nodo.atenua:focus-visible { opacity: 0.7; }
+.nodo.coincide circle.punto { stroke: #fff; stroke-width: 3.5; fill-opacity: 0.7; filter: drop-shadow(0 0 6px var(--c)); }
+.nodo.coincide text { fill: #fff; font-weight: 700; }
 .tela-entra { animation: tela-entra .35s ease-out; }
 @keyframes tela-entra { from { opacity: 0; transform: scale(0.88) rotate(-8deg); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .tela-entra { animation: none; } }

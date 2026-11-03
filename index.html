@@ -62,10 +62,36 @@
       <p class="mapa-obras"><img src="assets/logo.svg" alt="" width="18" height="18"> En construcción: las guías y
         las evaluaciones llegarán por fases.</p>
     </header>
+    <div class="mapa-herramientas">
+      <div class="buscador" role="search">
+        <label for="buscar" class="visually-hidden">Buscar en el mapa</label>
+        <input id="buscar" type="search" placeholder="Buscar: Kafka, JPA, pruebas…" autocomplete="off" spellcheck="false"
+          role="combobox" aria-expanded="false" aria-controls="buscar-lista" aria-autocomplete="list" aria-describedby="buscar-estado">
+        <ul class="buscador-lista" id="buscar-lista" role="listbox" aria-label="Resultados" hidden></ul>
+      </div>
+      <label class="selector">Color por
+        <select id="color-por">
+          <option value="area">Área</option>
+          <option value="nivel">Mi nivel</option>
+        </select>
+      </label>
+      <label class="selector">Estado
+        <select id="filtro-estado">
+          <option value="">Todos</option>
+          <option value="publicado">Con guía publicada</option>
+          <option value="pendiente">Próximamente</option>
+          <option value="aws">Guía en Apuntes AWS</option>
+        </select>
+      </label>
+      <button type="button" class="chip" id="filtro-esencial" aria-pressed="false" title="Solo los temas con prioridad 1: Java, testing, Spring, JPA y Scrum">Lo esencial</button>
+      <button type="button" class="enlace-boton" id="filtros-quitar" hidden>Quitar filtros</button>
+      <p class="buscador-estado" id="buscar-estado" aria-live="polite"></p>
+    </div>
     <nav class="migas" id="migas" aria-label="Ruta en el mapa"></nav>
     <div class="mapa-layout">
       <div class="mapa-lienzo">
         <svg id="telarana" role="group" aria-label="Telaraña de tecnologías" aria-describedby="mapa-ayuda"></svg>
+        <p class="leyenda leyenda-color" id="leyenda-color"></p>
         <p class="leyenda" id="mapa-ayuda">
           <span><span class="ley ley-anillo" aria-hidden="true"></span>contiene más: pulsa para entrar</span>
           <span><span class="ley" aria-hidden="true"></span>tema</span>

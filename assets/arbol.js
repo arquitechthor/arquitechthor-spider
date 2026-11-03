@@ -43,7 +43,7 @@
    * Busca en nombre, nombre en español, alias y frase. Devuelve los nodos ordenados: primero los
    * que coinciden en el nombre o un alias (y, dentro de ellos, los que empiezan por el texto).
    */
-  function buscar(datos, texto, limite = 20) {
+  function buscar(datos, texto, limite = Infinity) {
     const q = normalizar(texto).trim();
     if (!q) return [];
     const resultados = [];
@@ -60,5 +60,16 @@
     return resultados.slice(0, limite).map((r) => r.n);
   }
 
-  window.SpiderArbol = { ancestros, ruta, area, tieneHijos, accesosDe, normalizar, buscar };
+  /**
+   * Autoevaluación de una rama: media de los temas marcados (0–4), cuántos lo están y cuántos hay.
+   * `auto` es el objeto de spider.autoevaluacion ({ id: nivel }). Media null si no hay ninguno.
+   */
+  function nivelMedio(datos, id, auto) {
+    const temas = window.SpiderDatos.temasDe(datos, id);
+    const marcados = temas.map((t) => auto[t.id]).filter((v) => Number.isInteger(v));
+    const media = marcados.length ? marcados.reduce((a, b) => a + b, 0) / marcados.length : null;
+    return { media, marcados: marcados.length, total: temas.length };
+  }
+
+  window.SpiderArbol = { ancestros, ruta, area, tieneHijos, accesosDe, normalizar, buscar, nivelMedio };
 })();

@@ -43,8 +43,10 @@ no third-party requests).
 - `assets/logo.svg` (+ `favicon-32.png`, `apple-touch-icon.png` rendered from it with headless
   Chrome): site logo, excluded from the CC BY-SA license like in aws-cert-study.
 - `index.html`: the home page is the map. `assets/mapa.js` is the controller (state in the URL as
-  `?n=<focused node>&s=<selected node>` with history, breadcrumbs, detail panel, self-assessment in
-  `spider.autoevaluacion`); `assets/telarana.js` (`SpiderTelarana`) only draws the default
+  `?n=<focused node>&s=<selected node>` with history, plus the view `q`, `color=nivel`, `estado`,
+  `esencial=1` kept with `replaceState`; breadcrumbs, detail panel, self-assessment in
+  `spider.autoevaluacion`; toolbar with the search combobox, "Color por" and filters, applied by
+  `decorar()` over the drawn `<a data-id>` nodes without redrawing); `assets/telarana.js` (`SpiderTelarana`) only draws the default
   **Telaraña** view as SVG: focused node in the center, children on ring 1 (horizontal labels),
   grandchildren on ring 2 (radial labels; dots only on mobile), viewBox fitted to the content.
   Every node is a real `<a href>`; Tab goes clockwise, arrows move along the ring, Esc goes up.
