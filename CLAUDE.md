@@ -50,8 +50,9 @@ no third-party requests).
   **Telaraña** view as SVG: focused node in the center, children on ring 1 (horizontal labels),
   grandchildren on ring 2 (radial labels; dots only on mobile), viewBox fitted to the content.
   Every node is a real `<a href>`; Tab goes clockwise, arrows move along the ring, Esc goes up.
-  Areas carry `nombreCorto`, used for the 13 areas around the root. Below the map, the area cards
-  (`pintarAreas`) link each area and block to the web. `assets/arbol.js` (`SpiderArbol`): tree helpers and
+  Areas carry `nombreCorto`, used for the 13 areas around the root. There is no separate "Áreas"
+  section any more (removed 2026-11-03 at the user's request): the Cajas view at the root shows the
+  same thing with the same look (area icon, original name, grey chips, no counts). `assets/arbol.js` (`SpiderArbol`): tree helpers and
   accent-insensitive search. `assets/cajas.js` (`SpiderCajas`) draws the alternative **Cajas** view
   (focused node as header, children as boxes sized with `flex-grow` by their topic count,
   grandchildren as chips); the "Telaraña | Cajas" switch keeps the context, goes in the URL as

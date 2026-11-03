@@ -27,8 +27,8 @@ línea al "Registro de sesiones".
   logo y favicons propios, `datos.js` y `CLAUDE.md` del repo.
 - **Fase 3 en curso (2026-11-02):** telaraña **publicada** (commit `adf8322`): `arbol.js`,
   `telarana.js` y `mapa.js` con recentrado, migas, URL e historial, teclado, panel de detalle y
-  autoevaluación (tareas 3.1–3.4), revisada por el usuario. Portada: cabecera, telaraña y tarjetas
-  de áreas.
+  autoevaluación (tareas 3.1–3.4), revisada por el usuario. Portada: cabecera y mapa (Telaraña o
+  Cajas); las tarjetas de áreas se retiraron el 2026-11-03.
 - **3.5 publicada (2026-11-03):** buscador, "Color por" área/mi nivel y filtros.
 - **3.6 publicada (2026-11-03):** vista Cajas y conmutador "Telaraña | Cajas", pendiente de que el
   usuario la pruebe en producción.
@@ -599,6 +599,9 @@ Completa el 2026-11-02.
       anillo, Esc sube (o quita la selección) y el foco vuelve a la rama de la que se viene.
       Comprobado con una prueba automática en Chrome sin interfaz.
 - [x] 3.4b Tarjetas de áreas debajo de la telaraña, enlazadas a ella (petición del usuario).
+      **Retiradas el 2026-11-03** (decisión del usuario): la vista Cajas en la raíz las sustituye
+      con el mismo aspecto. Fuera también el enlace "Áreas" del menú (portada y aviso legal); el
+      botón "Ver las áreas" de la cabecera pasa a "Ver como cajas".
 - [x] 3.4 Panel de detalle (lateral y pegado en escritorio, debajo en móvil): tipo y área,
       nombre, frase, estado, "Lo esencial", "Mi nivel" (0–4, `spider.autoevaluacion`; pulsar el
       mismo número lo quita), guía y evaluación (desactivadas hasta las fases 4 y 5; AWS enlaza a
@@ -627,6 +630,11 @@ Completa el 2026-11-02.
       Transitions API se descartó porque su callback asíncrono dejaba el DOM sin actualizar en
       Chrome sin interfaz. Prueba automática (16 comprobaciones) y 375 px sin scroll horizontal.
       La telaraña no tiene un enlace aparte "Ver como lista": el conmutador cumple esa función.
+      **Ajuste del usuario (2026-11-03):** aspecto de las antiguas tarjetas de áreas (superficie
+      neutra, borde superior del color, icono del área en las cajas de áreas y en la cabecera,
+      nombre original debajo del título) y chips grises sin el recuento "· N"; con "Color por:
+      Mi nivel" el borde del chip toma el color de su nivel. Ni recuento de temas ni de
+      evaluaciones en las cajas.
 - [ ] 3.7 Responsive (375 px sin scroll horizontal, telaraña reducida + lista en móvil),
       `prefers-reduced-motion`, revisión con lector de pantalla y teclado.
 - [ ] 3.8 Radar "Mi telaraña" (`radar.js`).
@@ -716,6 +724,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-03 | Cajas con el aspecto de las tarjetas de áreas (icono, nombre en inglés, chips grises, sin recuentos) y **sección "Áreas" retirada** de la portada (decisión del usuario). |
 | 2026-11-03 | **Tarea 3.6 (publicada):** vista Cajas (`assets/cajas.js`) con conmutador, vista en la URL y en `spider.vista`, buscador/filtros/color compartidos, fundido CSS en vez de View Transitions. |
 | 2026-11-03 | **Tarea 3.5 (publicada):** buscador con lista y salto, "Color por" área / mi nivel con leyenda, filtros Estado y Lo esencial, atenuado y halo en la telaraña, estado en la URL. `SpiderArbol.nivelMedio()`; `buscar()` sin límite por defecto. Progreso → Fase 5; certificación → Fase 6. |
 | 2026-11-03 | **Tarea 2.6:** Tech Spider enlazado en el pie común de `kopi-web`, `aws-cert-study`, `arquitechthor.github.io` y `kopi-chess` (`HomePageTest` en verde), y con sección propia en la web personal. El pie de Tech Spider se pone al día con Kopi Chess y Prompt Quest. Publicado en los cinco repos; pendiente `kopi-docs/politicas.md`. |

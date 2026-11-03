@@ -250,6 +250,7 @@
     }
     svg.classList.toggle('filtrando', activos);
     cajasEl.classList.toggle('filtrando', activos);
+    cajasEl.dataset.color = vista.color; // con "Mi nivel", los chips grises toman el color en el borde
   }
 
   function pintarLeyendaColor() {
@@ -259,13 +260,13 @@
         + `<span><span class="ley ley-nivel" style="--c:${SIN_MARCAR}" aria-hidden="true"></span>sin marcar</span>`
         + '<span class="ley-nota">En bloques y áreas, la media de sus temas marcados.</span>';
     } else {
-      leyendaColor.innerHTML = '<span class="ley-titulo">Color:</span><span>el de cada área (sus iconos están en las tarjetas de debajo)</span>';
+      leyendaColor.innerHTML = '<span class="ley-titulo">Color:</span><span>el de cada área</span>';
     }
   }
 
-  /** Tras cambiar la vista, los enlaces ya pintados (nodos, migas, tarjetas) pasan a llevarla. */
+  /** Tras cambiar la vista, los enlaces ya pintados (nodos, cajas, migas) pasan a llevarla. */
   function actualizarHrefs() {
-    for (const a of document.querySelectorAll('#telarana a[href], #cajas a[href], #migas a[href], #area-grid a[href]')) {
+    for (const a of document.querySelectorAll('#telarana a[href], #cajas a[href], #migas a[href]')) {
       const u = new URL(a.getAttribute('href'), location.href);
       a.setAttribute('href', urlDe({ n: u.searchParams.get('n') || raizId, s: u.searchParams.get('s') }));
     }
@@ -554,37 +555,8 @@
   });
   movil.addEventListener('change', () => pintar(null));
 
-  /** Tarjetas de las áreas, debajo del mapa. El área y sus bloques enlazan a la telaraña. */
-  function pintarAreas() {
-    const cont = document.getElementById('area-grid');
-    if (!cont) return;
-    cont.innerHTML = datos.areas.map((area) => {
-      const bloques = datos.hijos.get(area.id).filter((h) => !h.acceso).map((h) => h.nodo);
-      const temas = D.temasDe(datos, area.id);
-      const evaluables = temas.filter((t) => t.evaluable).length;
-      const cifras = `${temas.length} temas${evaluables < temas.length ? ` · ${evaluables} con evaluación` : ''}`;
-      return `<article class="area-card" style="--c:${D.esc(area.color)}">
-        <div class="area-card-head">
-          ${D.iconoArea(area)}
-          <h3><a href="${D.esc(urlDe({ n: area.id }))}" data-mapa="${D.esc(area.id)}">${D.nombreHtml(area)}</a></h3>
-        </div>
-        <p>${D.esc(area.frase)}</p>
-        <div class="chips">${bloques.map((b) => `<a class="chip" href="${D.esc(urlDe({ n: A.tieneHijos(datos, b.id) ? b.id : area.id, s: A.tieneHijos(datos, b.id) ? null : b.id }))}" data-mapa="${D.esc(b.id)}" title="${D.esc(b.frase || '')}">${D.esc(D.nombreTexto(b))}</a>`).join('')}</div>
-        <p class="area-cifras">${cifras}</p>
-      </article>`;
-    }).join('');
-    cont.addEventListener('click', (ev) => {
-      const a = ev.target.closest('a[data-mapa]');
-      if (!a || ev.metaKey || ev.ctrlKey || ev.shiftKey) return;
-      ev.preventDefault();
-      irA(a.dataset.mapa);
-      document.getElementById('mapa').scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-    });
-  }
-
   history.replaceState(estado, '', urlDe(estado));
   sincronizarControles();
   pintarLeyendaColor();
   pintar(null);
-  pintarAreas();
 })();

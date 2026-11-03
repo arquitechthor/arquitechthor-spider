@@ -299,27 +299,12 @@ abbr.sigla:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; 
   display: inline-block; flex: none; width: 28px; height: 28px; background: var(--c, var(--cyan));
   -webkit-mask: var(--icono) center / contain no-repeat; mask: var(--icono) center / contain no-repeat;
 }
-.area-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
-.area-card {
-  display: flex; flex-direction: column; gap: 10px; padding: 18px 18px 16px;
-  background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--c, var(--border-strong));
-  border-radius: var(--radius); transition: border-color .15s;
-}
-.area-card:hover { border-color: var(--c); }
-.area-card-head { display: flex; align-items: center; gap: 12px; }
-.area-card h3 { margin: 0; font-size: 16.5px; }
-.area-card h3 a { color: var(--text); }
-.area-card h3 .nombre-en { display: block; font-size: 12.5px; margin-top: 2px; }
-.area-card p { margin: 0; font-size: 14px; }
-.area-card .area-cifras { margin-top: auto; font-size: 12.5px; color: var(--text-faint); }
-.area-card .chips .chip { font-size: 12px; padding: 5px 9px; line-height: 1.3; }
 
 /* ── Mapa (portada) ──────────────────────────────────────── */
 .container-ancho { max-width: 1440px; }
 /* Portada: hero algo más bajo que el de aws-cert-study para que la telaraña asome. */
 .hero-compacto { padding: 48px 0 40px; }
 section.mapa { padding: 28px 0 48px; scroll-margin-top: 60px; }
-#areas { scroll-margin-top: 60px; }
 .mapa-cab { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px; }
 .mapa-cab h2 { font-size: clamp(22px, 2.8vw, 28px); margin: 0; }
 .mapa-cab p { margin: 0; font-size: 14.5px; }
@@ -424,34 +409,40 @@ svg.filtrando .nodo.atenua:hover, svg.filtrando .nodo.atenua:focus-visible { opa
 /* Leyenda: cada vista enseña solo lo suyo */
 .mapa-lienzo[data-vista="cajas"] .solo-telarana,
 .mapa-lienzo:not([data-vista="cajas"]) .solo-cajas { display: none !important; }
-.ley-chip { font-size: 11.5px; font-weight: 700; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--border-strong); color: var(--text-muted); }
 
-/* Vista Cajas (assets/cajas.js). Cada caja y cada chip fijan su color en --c. */
+/* Vista Cajas (assets/cajas.js). Cada caja y cada chip fijan su color en --c. Aspecto heredado de
+   las antiguas tarjetas de áreas: superficie neutra, borde superior del color, icono del área,
+   nombre original debajo y chips grises. */
 .cajas { padding: 18px; }
 .cajas-cab { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin-bottom: 14px; }
-.cajas-titulo { margin: 0; font-size: clamp(19px, 2.2vw, 24px); }
+.cajas-titulo { display: flex; align-items: center; gap: 12px; margin: 0; font-size: clamp(19px, 2.2vw, 24px); }
 .cajas-titulo .nombre-en { font-size: 14px; }
 .cajas-subir { font-size: 13.5px; font-weight: 600; color: var(--text-muted); order: -1; flex-basis: 100%; }
-.cajas-rejilla { display: flex; flex-wrap: wrap; gap: 12px; }
+.cajas-rejilla { display: flex; flex-wrap: wrap; gap: 16px; }
 .caja {
-  flex: var(--peso, 1) 1 230px; min-width: 0; padding: 12px 14px; border-radius: var(--radius-sm);
-  background: color-mix(in srgb, var(--c) 7%, var(--surface)); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent);
-  border-top: 3px solid var(--c); transition: opacity .15s, border-color .15s;
+  flex: var(--peso, 1) 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 10px;
+  padding: 18px 18px 16px; border-radius: var(--radius);
+  background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--c);
+  transition: opacity .15s, border-color .15s;
 }
+.caja:hover { border-color: var(--c); }
 .caja.acceso { border-style: dashed; border-top-style: solid; }
 .caja.es-sel { box-shadow: 0 0 0 2px #fff; }
-.caja-titulo { margin: 0; font-size: 15.5px; line-height: 1.35; }
+.caja-cab { display: flex; align-items: center; gap: 12px; }
+.caja-titulo { margin: 0; font-size: 16.5px; line-height: 1.35; }
+.caja-titulo .nombre-en { display: block; font-size: 12.5px; margin-top: 2px; }
 .caja-enlace { color: var(--text); }
 .caja-enlace:hover { color: #fff; }
-.caja-frase { margin: 4px 0 0; font-size: 13px; line-height: 1.45; color: var(--text-faint); }
-.caja-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; padding: 0; }
+.caja-frase { margin: 0; font-size: 14px; line-height: 1.5; }
+.caja-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; }
 .caja-chip {
-  display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12.5px; line-height: 1.35;
-  color: var(--text-muted); background: var(--surface-2); border: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
+  display: inline-block; padding: 5px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; line-height: 1.3;
+  color: var(--text-muted); background: var(--surface-2); border: 1px solid var(--border-strong);
   transition: opacity .15s;
 }
-.caja-chip:hover { color: var(--text); border-color: var(--c); text-decoration: none; }
-.caja-chip.con-hijos { font-weight: 600; color: var(--text); }
+.caja-chip:hover { color: var(--text); border-color: var(--cyan); text-decoration: none; }
+/* Con "Color por: Mi nivel", el chip gris enseña su nivel en el borde. */
+.cajas[data-color="nivel"] .caja-chip { border-color: color-mix(in srgb, var(--c) 70%, transparent); }
 .caja-chip.acceso { border-style: dashed; }
 .caja-chip.es-sel { background: color-mix(in srgb, var(--c) 35%, var(--surface-2)); color: #fff; border-color: #fff; }
 .cajas.filtrando .atenua { opacity: 0.3; }

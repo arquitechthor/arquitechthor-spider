@@ -43,7 +43,8 @@
     }
     const titulo = document.createElement('h3');
     titulo.className = 'cajas-titulo';
-    titulo.innerHTML = D.nombreHtml(foco);
+    titulo.innerHTML = D.iconoArea(esRaiz ? null : datos.porId.get(foco.tipo === 'area' ? foco.id : foco.area))
+      + `<span>${D.nombreHtml(foco)}</span>`;
     cab.appendChild(titulo);
     cont.appendChild(cab);
 
@@ -71,10 +72,18 @@
       if (n.externo) etiqueta += ', guía en Apuntes AWS';
       etiqueta += conHijos && !it.acceso ? `. Contiene ${datos.hijos.get(n.id).length}: pulsa para entrar` : '. Pulsa para ver el detalle';
 
+      // Cabecera como la de las antiguas tarjetas de áreas: icono (solo en las áreas; más abajo
+      // todas las cajas son de la misma área y ya lo lleva la cabecera) y el nombre original debajo.
+      const cabCaja = document.createElement('div');
+      cabCaja.className = 'caja-cab';
+      if (n.tipo === 'area') cabCaja.insertAdjacentHTML('beforeend', D.iconoArea(n));
       const h = document.createElement('h4');
       h.className = 'caja-titulo';
-      h.appendChild(enlace(destino, op, 'caja-enlace', n.id, nombre(n) + marca, etiqueta));
-      caja.appendChild(h);
+      const a = enlace(destino, op, 'caja-enlace', n.id, '', etiqueta);
+      a.innerHTML = D.nombreHtml(n).replace(/^([^<]*)/, `$1${D.esc(marca)}`);
+      h.appendChild(a);
+      cabCaja.appendChild(h);
+      caja.appendChild(cabCaja);
 
       if (n.frase) {
         const p = document.createElement('p');
@@ -94,9 +103,9 @@
           if (nt.acceso) et += `, vive en ${nombre(datos.porId.get(m.padre))}`;
           if (m.externo) et += ', guía en Apuntes AWS';
           et += conNietos ? `. Contiene ${datos.hijos.get(m.id).length}: pulsa para entrar` : '. Pulsa para ver el detalle';
-          const texto = nombre(m) + (nt.acceso ? ' ↗' : '') + (m.externo ? ' ☁' : '') + (conNietos ? ` · ${datos.hijos.get(m.id).length}` : '');
+          const texto = nombre(m) + (nt.acceso ? ' ↗' : '') + (m.externo ? ' ☁' : '');
           const a = enlace(op.destinoDe(m, { acceso: nt.acceso }), op,
-            `caja-chip${nt.acceso ? ' acceso' : ''}${conNietos ? ' con-hijos' : ''}${op.sel === m.id ? ' es-sel' : ''}`, m.id, texto, et);
+            `caja-chip${nt.acceso ? ' acceso' : ''}${op.sel === m.id ? ' es-sel' : ''}`, m.id, texto, et);
           a.dataset.decora = m.id;
           a.style.setProperty('--c', colorDe(datos, m));
           li.appendChild(a);
