@@ -33,7 +33,8 @@ línea al "Registro de sesiones".
 - **Próximo paso:** 3.6 (vista Cajas), 3.7
   (responsive), 3.8 (radar) y 3.9 (vista general). **Tarea 2.6 casi cerrada (2026-11-03):**
   enlaces publicados en `kopi-web`, `aws-cert-study`, `arquitechthor.github.io` y
-  `kopi-chess`; falta `kopi-docs/politicas.md` (clonar el repo).
+  `kopi-chess`; falta `kopi-docs/politicas.md`, que no está versionado y vive en otro ordenador: se
+  actualiza cuando se trabaje allí (política "Mismo menú y pie": añadir Tech Spider a la lista).
 - **Última actualización:** 2026-11-03 (enlaces a Tech Spider desde las demás webs)
 
 ---
@@ -579,7 +580,8 @@ Completa el 2026-11-02.
       proyectos" y botón en `#proyectos`. El pie común ya era "Kopi Tools · Apuntes AWS · Kopi
       Chess · Prompt Quest · Sobre mí"; queda **"Kopi Tools · Apuntes AWS · Tech Spider · Kopi
       Chess · Prompt Quest · Sobre mí"** (también en el pie de Tech Spider). Prompt Quest no
-      tiene el pie común. **Falta solo** `kopi-docs/politicas.md` (repo no clonado en local).
+      tiene el pie común. **Falta solo** `kopi-docs/politicas.md` (no versionado, en otro ordenador:
+      pendiente hasta trabajar en él).
 
 ### Fase 3: el mapa
 - [x] 3.1 `arbol.js` (`SpiderArbol`): ancestros, ruta, área, accesos y búsqueda sin tildes
