@@ -57,7 +57,7 @@ no third-party requests).
 Every page shares the same `<nav>` and footer as `kopi-web`, `aws-cert-study` and
 `arquitechthor.github.io` (policy "Mismo menú y pie" in `../kopi-docs/politicas.md`): "Inicio"
 first, "Sobre mí" last, no call-to-action button, active link via `aria-current`, and the footer
-ends with `.footer-sitios` (Kopi Tools · Apuntes AWS · Tech Spider · Sobre mí). Copy the `<nav>` and
+ends with `.footer-sitios` (Kopi Tools · Apuntes AWS · Tech Spider · Kopi Chess · Prompt Quest · Sobre mí). Copy the `<nav>` and
 `<footer>` from an existing page when creating a new one.
 
 ## Commands

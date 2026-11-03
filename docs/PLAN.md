@@ -30,10 +30,10 @@ línea al "Registro de sesiones".
   autoevaluación (tareas 3.1–3.4), revisada por el usuario. Portada: cabecera, telaraña y tarjetas
   de áreas.
 - **Próximo paso:** 3.5 (buscador, filtros y "Color por" área/progreso/autoevaluación); después
-  3.6 (vista Cajas), 3.8 (radar) y 3.9 (vista general). **Tarea 2.6 pendiente:** con el mapa ya
-  publicado, pedir confirmación al usuario para enlazar Tech Spider desde el pie de `kopi-web`,
-  `aws-cert-study` y `arquitechthor.github.io` y actualizar `kopi-docs/politicas.md`.
-- **Última actualización:** 2026-11-02 (fin de sesión: telaraña publicada)
+  3.6 (vista Cajas), 3.8 (radar) y 3.9 (vista general). **Tarea 2.6 casi cerrada (2026-11-03):**
+  enlaces publicados en `kopi-web`, `aws-cert-study`, `arquitechthor.github.io` y
+  `kopi-chess`; falta `kopi-docs/politicas.md` (clonar el repo).
+- **Última actualización:** 2026-11-03 (enlaces a Tech Spider desde las demás webs)
 
 ---
 
@@ -90,7 +90,7 @@ Consecuencias para el diseño:
 | AWS | **Decidido por el usuario (2026-11-02):** los temas de AWS viven en su web dedicada (`aws-cert-study`) y aquí solo se **enlazan**: ni apuntes ni preguntas propias, y no se evalúan en esta web. |
 | Vista predeterminada | **Decidido por el usuario (2026-11-02):** la **Telaraña** es la vista por defecto (es la temática del proyecto); las Cajas quedan como vista alternativa. |
 | Licencia | **CC BY-SA 4.0** (D2, aceptada el 2026-11-02), igual que `aws-cert-study`; sustituye a la GPL-3.0 inicial. |
-| Pie común | Enlace en `.footer-sitios` de las cuatro webs: "Kopi Tools · Apuntes AWS · Tech Spider · Sobre mí", y actualizar `kopi-docs/politicas.md`, `kopi/CLAUDE.md` (tabla de proyectos) y la web personal (D3, aceptada el 2026-11-02). |
+| Pie común | Enlace en `.footer-sitios` de las cuatro webs: "Kopi Tools · Apuntes AWS · Tech Spider · Kopi Chess · Prompt Quest · Sobre mí", y actualizar `kopi-docs/politicas.md`, `kopi/CLAUDE.md` (tabla de proyectos) y la web personal (D3, aceptada el 2026-11-02). |
 | Contenido inicial | **Java y Spring son los temas fundacionales** del proyecto (D5, aceptada el 2026-11-02): ruta Java → Testing con Java → Spring → JPA/Hibernate, todos con `prioridad: 1`. |
 | Nombre | **Tech Spider** (D1, elegido por el usuario el 2026-11-02 entre varias propuestas en inglés con *Spider*). Es el nombre visible (título, marca del menú, pie común); el repo sigue siendo `arquitechthor-spider`. |
 | Un tema, un sitio | **Cada tema existe una sola vez** (D4, aceptada el 2026-11-02): los duplicados del árbol, con el mismo nombre o con otro, se fusionan en un nodo con su ubicación principal y "accesos ↗" en las demás (tabla 4.2). |
@@ -571,11 +571,14 @@ Completa el 2026-11-02.
       (`assets/inicio.js`), probada a escritorio y a 375 px (sin scroll horizontal).
 - [x] 2.5 GitHub Pages activado (main / raíz) y URL publicada comprobada.
 - [ ] 2.6 Fuera del repo. Hecho: fila de Tech Spider en la tabla de `kopi/CLAUDE.md` (y en el
-      párrafo de dominios). **Aplazado hasta publicar el mapa (Fase 3)**, para no enlazar desde tres
-      webs en producción a una portada provisional: política de webs en `kopi-docs/politicas.md`
-      (pasa a "cuatro webs") y enlace en el pie de `kopi-web`, `aws-cert-study` y
-      `arquitechthor.github.io`: "Kopi Tools · Apuntes AWS · Tech Spider · Sobre mí". Pedir
-      confirmación al usuario antes de hacer push en esos repos.
+      párrafo de dominios). **2026-11-03 (publicado):** enlace en el `.footer-sitios`
+      de `kopi-web`, `aws-cert-study` (incluida `plantillas/servicio.html`),
+      `arquitechthor.github.io` y `kopi-chess` (plantilla Thymeleaf, clave `sites.techSpider` y
+      `HomePageTest`); en la web personal, además, sección `#tech-spider`, entrada en "Mis
+      proyectos" y botón en `#proyectos`. El pie común ya era "Kopi Tools · Apuntes AWS · Kopi
+      Chess · Prompt Quest · Sobre mí"; queda **"Kopi Tools · Apuntes AWS · Tech Spider · Kopi
+      Chess · Prompt Quest · Sobre mí"** (también en el pie de Tech Spider). Prompt Quest no
+      tiene el pie común. **Falta solo** `kopi-docs/politicas.md` (repo no clonado en local).
 
 ### Fase 3: el mapa
 - [x] 3.1 `arbol.js` (`SpiderArbol`): ancestros, ruta, área, accesos y búsqueda sin tildes
@@ -687,6 +690,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-03 | **Tarea 2.6:** Tech Spider enlazado en el pie común de `kopi-web`, `aws-cert-study`, `arquitechthor.github.io` y `kopi-chess` (`HomePageTest` en verde), y con sección propia en la web personal. El pie de Tech Spider se pone al día con Kopi Chess y Prompt Quest. Publicado en los cinco repos; pendiente `kopi-docs/politicas.md`. |
 | 2026-11-02 | Revisión del usuario: letra mayor, lienzo más alto, tarjetas de áreas debajo de la telaraña, cabecera de la Fase 2 recuperada. **Telaraña publicada** (`adf8322`). |
 | 2026-11-02 | **Fase 3 (prototipo, en local):** `arbol.js`, `telarana.js` y `mapa.js`; la portada pasa a ser el mapa (fuera `inicio.js` y las tarjetas). Etiquetas radiales en el segundo anillo, `viewBox` ajustado al contenido, `nombreCorto` de las áreas para móvil. Pendiente de revisión del usuario. |
 | 2026-11-02 | **Fase 2:** esqueleto publicado en GitHub Pages (portada provisional con las áreas, aviso legal, logo, `datos.js`, `CLAUDE.md`); 2.6 aplazada salvo `kopi/CLAUDE.md`. |
