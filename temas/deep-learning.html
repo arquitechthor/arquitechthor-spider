@@ -55,7 +55,12 @@
         <li><strong>Neurona artificial:</strong> suma ponderada de sus entradas seguida de una función no lineal (la
           <em>activación</em>). Sin esa no linealidad, apilar capas no aportaría nada: equivaldrían a una sola.</li>
         <li><strong>Capas:</strong> de entrada, ocultas (donde se aprende la representación) y de salida.</li>
-        <li><strong>Pesos:</strong> los parámetros que se aprenden. Una red grande tiene miles de millones.</li>
+        <li><strong>Pesos y sesgos:</strong> los <a class="concepto" data-concepto="parametros">parámetros</a> que se
+          aprenden: un peso por cada conexión entre neuronas y un sesgo por neurona (el número que se suma antes de la
+          activación). Una red grande tiene miles de millones.</li>
+        <li><strong>Arquitectura:</strong> la <a class="concepto" data-concepto="arquitectura-modelo">estructura</a> de la red
+          (qué tipo de capas, cuántas, de qué tamaño y cómo se conectan). La decide la persona antes de entrenar; el
+          entrenamiento solo cambia los valores de los parámetros que esa estructura contiene.</li>
         <li><strong>Retropropagación y descenso de gradiente:</strong> el método para entrenar: se calcula cuánto contribuye
           cada peso al error y se corrige un poco en la dirección que lo reduce, ejemplo tras ejemplo.</li>
         <li><strong>Representaciones y embeddings:</strong> lo que la red aprende son vectores que capturan el significado de
@@ -70,12 +75,48 @@
           <tbody>
             <tr><td>CNN (convolucional)</td><td>Filtros que recorren la imagen buscando el mismo patrón en cualquier posición.</td><td>Visión por computador.</td></tr>
             <tr><td>RNN (recurrente)</td><td>Procesa una secuencia elemento a elemento, con memoria de lo anterior.</td><td>Texto y voz antes de 2017; costaba recordar contextos largos.</td></tr>
-            <tr><td>Transformer</td><td>Mecanismo de <em>atención</em>: cada elemento mira directamente a todos los demás y decide cuáles le importan; se entrena en paralelo.</td><td>Los LLM y gran parte de la IA generativa actual.</td></tr>
+            <tr><td><a class="concepto" data-concepto="transformer">Transformer</a></td><td>Mecanismo de <em>atención</em>: cada elemento mira directamente a todos los demás y decide cuáles le importan; se entrena en paralelo.</td><td>Los LLM y gran parte de la IA generativa actual.</td></tr>
           </tbody>
         </table>
       </div>
-      <p>El Transformer, presentado en 2017 en el artículo "Attention Is All You Need", es la pieza que conecta esta ficha con
-        la de <a href="llms.html">LLMs</a>: permitió entrenar modelos enormes con cantidades de texto antes impensables.</p>
+      <p>Elegir arquitectura es elegir qué supone la red sobre sus datos: una CNN da por hecho que un patrón vale igual en
+        cualquier parte de la imagen; una RNN, que el orden importa y se lee de izquierda a derecha. Los datos tabulares
+        (<a class="concepto" data-concepto="datos-estructurados">estructurados</a>) rara vez necesitan nada de esto.</p>
+
+      <h2 id="transformer">El Transformer por dentro</h2>
+      <p>El <a class="concepto" data-concepto="transformer">Transformer</a> se presentó en 2017 en el artículo "Attention Is
+        All You Need" y es la pieza que conecta esta ficha con la de <a href="llms.html">LLMs</a>. Así procesa un texto:</p>
+      <ol>
+        <li><strong>Tokens:</strong> el texto se corta en tokens (palabras o trozos de palabra).</li>
+        <li><strong>Embeddings:</strong> cada token se convierte en un vector de números que representa su significado.</li>
+        <li><strong>Posición:</strong> como todos los tokens entran a la vez, a cada vector se le añade información de en qué
+          posición está; sin eso, "el perro muerde al hombre" y "el hombre muerde al perro" serían iguales.</li>
+        <li><strong>Autoatención</strong> (<em>self-attention</em>): cada token se compara con todos los demás y calcula
+          cuánto le importa cada uno; en "el banco cerró porque no tenía liquidez", <em>banco</em> presta atención a
+          <em>liquidez</em> y entiende que no es un asiento. Se hace varias veces en paralelo (<em>atención multicabeza</em>),
+          cada una fijándose en relaciones distintas.</li>
+        <li><strong>Capas apiladas:</strong> atención y una pequeña red se repiten en decenas de capas; cada una refina la
+          representación de la anterior.</li>
+        <li><strong>Salida:</strong> en un LLM, la última capa da la probabilidad de cada token posible como siguiente.</li>
+      </ol>
+      <p>Frente a las RNN tiene dos ventajas decisivas: cualquier token conecta directamente con cualquier otro, por lejos que
+        esté, y todos se procesan <strong>en paralelo</strong>, lo que aprovecha las GPU y permitió entrenar con cantidades de
+        texto antes impensables. Su coste crece con el cuadrado de la longitud del texto, una de las razones de que la
+        ventana de contexto tenga límite.</p>
+      <p>El diseño original tenía dos mitades, y de ellas salen dos familias de modelos:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parte</th><th>Qué hace</th><th>Ejemplo y uso</th></tr></thead>
+          <tbody>
+            <tr><td>Codificador (<em>encoder</em>)</td><td>Lee todo el texto en ambas direcciones y produce una representación
+              de él.</td><td>BERT: clasificar textos, buscar, generar embeddings.</td></tr>
+            <tr><td>Decodificador (<em>decoder</em>)</td><td>Genera texto token a token, mirando solo lo anterior.</td><td>GPT
+              y casi todos los LLM de chat: generar, resumir, responder.</td></tr>
+            <tr><td>Los dos</td><td>El codificador lee la entrada y el decodificador escribe la salida.</td><td>El
+              Transformer original, pensado para traducir.</td></tr>
+          </tbody>
+        </table>
+      </div>
 
       <h2 id="errores">Errores frecuentes</h2>
       <ul>
@@ -101,6 +142,7 @@
         <li><a href="https://www.ibm.com/think/topics/deep-learning" target="_blank" rel="noopener">What is deep learning?</a> (IBM, consultada el 03/11/2026).</li>
         <li><a href="https://d2l.ai/" target="_blank" rel="noopener">Dive into Deep Learning</a> (A. Zhang, Z. C. Lipton, M. Li y A. J. Smola, consultada el 03/11/2026).</li>
         <li><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Attention Is All You Need</a> (Vaswani et al., 2017, consultada el 03/11/2026).</li>
+        <li><a href="https://www.ibm.com/think/topics/transformer-model" target="_blank" rel="noopener">What is a transformer model?</a> (IBM, consultada el 03/11/2026).</li>
       </ul>
     </article>
   </div>

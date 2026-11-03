@@ -34,7 +34,12 @@
     "tipo": "emparejar",
     "nivel": 1,
     "enunciado": "Empareja cada tipo de aprendizaje con un problema típico.",
-    "opciones": ["Supervisado", "No supervisado", "Por refuerzo", "Autosupervisado"],
+    "opciones": [
+      "Supervisado",
+      "No supervisado",
+      "Por refuerzo",
+      "Autosupervisado"
+    ],
     "destinos": [
       "Agrupar clientes parecidos sin saber de antemano qué grupos hay.",
       "Predecir la siguiente palabra de un texto enorme sin etiquetar, como en el preentrenamiento de un LLM.",
@@ -150,5 +155,118 @@
     "correctas": [1],
     "explicacion": "La pérdida cuantifica el error del modelo en los ejemplos. El entrenamiento busca los parámetros que la minimizan.",
     "fuentes": ["https://developers.google.com/machine-learning/crash-course"]
+  },
+  {
+    "id": "machine-learning-011",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué diferencia a los parámetros de un modelo de sus hiperparámetros?",
+    "opciones": [
+      "Ninguna: son dos nombres para lo mismo.",
+      "Los hiperparámetros los aprende el modelo y los parámetros los fija la persona.",
+      "Los parámetros (pesos y sesgos) los ajusta el entrenamiento; los hiperparámetros (tasa de aprendizaje, número de épocas…) los decide la persona antes de entrenar.",
+      "Los parámetros solo existen en los LLM."
+    ],
+    "correctas": [2],
+    "explicacion": "Los parámetros son lo que el modelo calcula al entrenar; los hiperparámetros son los valores que controlas tú para dirigir ese entrenamiento.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course/linear-regression/hyperparameters"]
+  },
+  {
+    "id": "machine-learning-012",
+    "tipo": "emparejar",
+    "nivel": 1,
+    "enunciado": "Empareja cada problema con su tipo.",
+    "opciones": [
+      "Estimar el precio de venta de un piso.",
+      "Decidir si una reseña es positiva, neutra o negativa.",
+      "Predecir cuántos minutos tardará un pedido en llegar.",
+      "Detectar en qué idioma está escrito un texto."
+    ],
+    "destinos": [
+      "Clasificación",
+      "Regresión"
+    ],
+    "correctas": [1, 0, 1, 0],
+    "explicacion": "La regresión predice un número en un rango continuo (precio, minutos); la clasificación elige una categoría de una lista cerrada (sentimiento, idioma).",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course/linear-regression"]
+  },
+  {
+    "id": "machine-learning-013",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un modelo de regresión lineal predice el consumo de un coche con y' = b + w₁·x₁, donde x₁ es el peso del coche. ¿Qué son w₁ y b?",
+    "opciones": [
+      "w₁ es la pendiente (cuánto cambia el consumo por cada unidad de peso) y b el sesgo o punto de partida; los dos se aprenden al entrenar.",
+      "w₁ y b son hiperparámetros que hay que fijar a mano.",
+      "w₁ es el error del modelo y b la etiqueta correcta.",
+      "b es el sesgo ético del modelo y w₁ su varianza."
+    ],
+    "correctas": [0],
+    "explicacion": "En la regresión lineal, el peso es el coeficiente de la característica (la pendiente) y el sesgo es la ordenada en el origen. Ambos son parámetros: los ajusta el entrenamiento para minimizar la pérdida.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course/linear-regression"]
+  },
+  {
+    "id": "machine-learning-014",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un modelo comete muchos errores con los datos de entrenamiento y casi los mismos con los de validación. ¿Qué es lo más probable?",
+    "opciones": [
+      "Sobreajuste: varianza alta.",
+      "Fuga de datos.",
+      "Subajuste: sesgo alto; el modelo es demasiado simple para el patrón real.",
+      "Que el modelo está perfecto."
+    ],
+    "correctas": [2],
+    "explicacion": "Si falla ya con los ejemplos con los que aprendió, el problema no es memorizar de más sino no captar el patrón: sesgo alto. Ayuda un modelo más capaz o mejores características.",
+    "fuentes": ["https://www.ibm.com/think/topics/bias-variance-tradeoff", "https://developers.google.com/machine-learning/crash-course/overfitting/overfitting"]
+  },
+  {
+    "id": "machine-learning-015",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "Un modelo acierta casi todo en entrenamiento y bastante menos en validación. ¿Qué medidas ayudan? Elige 2.",
+    "opciones": [
+      "Conseguir más datos de entrenamiento.",
+      "Usar un modelo todavía más complejo.",
+      "Simplificar el modelo o aplicar regularización.",
+      "Evaluar con los datos de entrenamiento para que salga mejor."
+    ],
+    "correctas": [0, 2],
+    "explicacion": "Es varianza alta (sobreajuste): el modelo se ha aprendido el ruido. Más datos y un modelo más simple o regularizado lo reducen; más complejidad lo empeora y evaluar con los datos de entrenamiento solo lo esconde.",
+    "fuentes": ["https://www.ibm.com/think/topics/bias-variance-tradeoff", "https://developers.google.com/machine-learning/crash-course/overfitting/overfitting"]
+  },
+  {
+    "id": "machine-learning-016",
+    "tipo": "emparejar",
+    "nivel": 2,
+    "enunciado": "La palabra \"sesgo\" (bias) tiene varios sentidos en IA. Empareja cada frase con el suyo.",
+    "opciones": [
+      "\"El modelo concede menos préstamos a un barrio porque los datos históricos ya lo hacían.\"",
+      "\"Cada neurona suma sus entradas ponderadas más un número que también se aprende.\"",
+      "\"Una recta no puede seguir unos datos que hacen curva: falla incluso al entrenar.\""
+    ],
+    "destinos": [
+      "Término de sesgo (un parámetro)",
+      "Sesgo del modelo (subajuste)",
+      "Sesgo ético o social"
+    ],
+    "correctas": [2, 0, 1],
+    "explicacion": "Sesgo ético: tratar peor a un grupo, normalmente heredado de los datos. Término de sesgo: el b de una neurona o de la regresión lineal. Sesgo del modelo: error sistemático por ser demasiado simple.",
+    "fuentes": ["https://developers.google.com/machine-learning/glossary", "https://www.ibm.com/think/topics/bias-variance-tradeoff"]
+  },
+  {
+    "id": "machine-learning-017",
+    "tipo": "multiple",
+    "nivel": 1,
+    "enunciado": "¿Cuáles de estos son datos no estructurados? Elige 2.",
+    "opciones": [
+      "Una tabla de pedidos con fecha, cliente e importe.",
+      "Las grabaciones de las llamadas al servicio de atención al cliente.",
+      "Los correos que envían los clientes, en texto libre.",
+      "Un CSV con la temperatura de cada sensor por hora."
+    ],
+    "correctas": [1, 2],
+    "explicacion": "Audio y texto libre no tienen un esquema de columnas fijo: son no estructurados y suelen necesitar deep learning o NLP. Las tablas y los CSV con columnas fijas son estructurados.",
+    "fuentes": ["https://www.ibm.com/think/topics/structured-vs-unstructured-data"]
   }
 ]

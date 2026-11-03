@@ -79,7 +79,11 @@
     "tipo": "emparejar",
     "nivel": 2,
     "enunciado": "Empareja cada arquitectura con su idea principal.",
-    "opciones": ["CNN", "RNN", "Transformer"],
+    "opciones": [
+      "CNN",
+      "RNN",
+      "Transformer"
+    ],
     "destinos": [
       "Procesa una secuencia elemento a elemento, con memoria de lo anterior.",
       "Cada elemento atiende directamente a todos los demás y decide cuáles le importan; se entrena en paralelo.",
@@ -124,9 +128,78 @@
     "tipo": "unica",
     "nivel": 2,
     "enunciado": "Una red aprende a representar textos como vectores, de forma que textos parecidos quedan cerca. ¿Cómo se llaman esos vectores?",
-    "opciones": ["Embeddings", "Tokens", "Prompts", "Etiquetas"],
+    "opciones": [
+      "Embeddings",
+      "Tokens",
+      "Prompts",
+      "Etiquetas"
+    ],
     "correctas": [0],
     "explicacion": "Los embeddings son representaciones vectoriales aprendidas que capturan el significado; son la base de la búsqueda semántica y de RAG.",
     "fuentes": ["https://developers.google.com/machine-learning/crash-course"]
+  },
+  {
+    "id": "deep-learning-010",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Dos redes tienen exactamente la misma arquitectura pero se comportan de forma muy distinta. ¿Cómo es posible?",
+    "opciones": [
+      "No es posible: la arquitectura determina el comportamiento.",
+      "Tienen distintos valores en sus parámetros, porque se entrenaron con datos distintos o de forma distinta.",
+      "Una de ellas no tiene función de activación.",
+      "La arquitectura cambia sola durante el entrenamiento."
+    ],
+    "correctas": [1],
+    "explicacion": "La arquitectura (estructura) fija qué capas hay y dónde están los parámetros; lo que aprende el entrenamiento son los valores de esos parámetros, y de ellos depende el comportamiento.",
+    "fuentes": ["https://d2l.ai/"]
+  },
+  {
+    "id": "deep-learning-011",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "En la frase \"el banco cerró porque no tenía liquidez\", ¿qué hace la autoatención de un Transformer con la palabra \"banco\"?",
+    "opciones": [
+      "La procesa sin mirar las demás palabras.",
+      "Solo mira la palabra inmediatamente anterior.",
+      "Compara \"banco\" con todas las demás palabras y da más peso a las relevantes, como \"liquidez\", para representar su significado en contexto.",
+      "La busca en un diccionario."
+    ],
+    "correctas": [2],
+    "explicacion": "En la autoatención cada token se compara con todos los demás y calcula cuánto le importa cada uno; así su representación depende del contexto.",
+    "fuentes": ["https://www.ibm.com/think/topics/transformer-model", "https://arxiv.org/abs/1706.03762"]
+  },
+  {
+    "id": "deep-learning-012",
+    "tipo": "emparejar",
+    "nivel": 3,
+    "enunciado": "Empareja cada variante del Transformer con su uso típico.",
+    "opciones": [
+      "Solo codificador (como BERT)",
+      "Solo decodificador (como GPT)",
+      "Codificador y decodificador"
+    ],
+    "destinos": [
+      "Traducir: leer una frase entera y escribir otra en otro idioma.",
+      "Clasificar textos y generar embeddings para búsqueda.",
+      "Generar texto token a token, como un asistente de chat."
+    ],
+    "correctas": [1, 2, 0],
+    "explicacion": "El codificador lee todo el texto en ambas direcciones y lo representa (clasificar, embeddings). El decodificador genera mirando solo lo anterior (chat). El diseño original, con ambas partes, se pensó para traducir.",
+    "fuentes": ["https://www.ibm.com/think/topics/transformer-model", "https://arxiv.org/abs/1706.03762"]
+  },
+  {
+    "id": "deep-learning-013",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "¿Por qué un Transformer necesita añadir información de posición a cada token?",
+    "opciones": [
+      "Porque procesa todos los tokens a la vez y, sin ella, no sabría en qué orden están: \"el perro muerde al hombre\" y \"el hombre muerde al perro\" serían iguales.",
+      "Para ahorrar memoria.",
+      "Porque las GPU no pueden procesar texto.",
+      "No la necesita: lee el texto palabra a palabra como una RNN."
+    ],
+    "correctas": [0],
+    "explicacion": "A diferencia de una RNN, el Transformer no recorre la secuencia en orden; procesa todos los tokens en paralelo, así que el orden tiene que ir codificado en cada vector.",
+    "fuentes": ["https://www.ibm.com/think/topics/transformer-model"]
   }
 ]

@@ -138,9 +138,59 @@
     "tipo": "unica",
     "nivel": 1,
     "enunciado": "¿En qué arquitectura de red neuronal se basan casi todos los LLM actuales?",
-    "opciones": ["Transformer", "Red convolucional (CNN)", "Árbol de decisión", "Red recurrente simple"],
+    "opciones": [
+      "Transformer",
+      "Red convolucional (CNN)",
+      "Árbol de decisión",
+      "Red recurrente simple"
+    ],
     "correctas": [0],
     "explicacion": "El Transformer, con su mecanismo de atención y su entrenamiento en paralelo, permitió entrenar modelos de lenguaje enormes.",
     "fuentes": ["https://arxiv.org/abs/1706.03762"]
+  },
+  {
+    "id": "llms-011",
+    "tipo": "ordenar",
+    "nivel": 2,
+    "enunciado": "Ordena las etapas del procesamiento del lenguaje natural (NLP), de la más antigua a la actual.",
+    "opciones": [
+      "Redes neuronales recurrentes (RNN).",
+      "Transformer y LLM: un solo modelo para casi todas las tareas.",
+      "Reglas gramaticales escritas a mano.",
+      "Modelos estadísticos que aprenden probabilidades de los textos."
+    ],
+    "correctas": [2, 3, 0, 1],
+    "explicacion": "Primero reglas, luego modelos estadísticos, después redes neuronales (RNN) y, desde 2017, el Transformer, base de los LLM.",
+    "fuentes": ["https://www.ibm.com/think/topics/natural-language-processing"]
+  },
+  {
+    "id": "llms-012",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un compañero dice: \"he subido la temperatura del modelo, así que he cambiado sus parámetros\". ¿Qué le corregirías?",
+    "opciones": [
+      "Nada, es correcto.",
+      "La temperatura es un parámetro de muestreo que se elige en cada petición; los parámetros del modelo son los pesos aprendidos y no cambian.",
+      "La temperatura solo existe durante el entrenamiento.",
+      "Subir la temperatura reentrena el modelo."
+    ],
+    "correctas": [1],
+    "explicacion": "Los parámetros del modelo son los miles de millones de pesos fijados en el entrenamiento. La temperatura, el top-p y similares solo controlan cómo se elige cada token al generar.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course/llm"]
+  },
+  {
+    "id": "llms-013",
+    "tipo": "multiple",
+    "nivel": 1,
+    "enunciado": "¿Cuáles de estas son tareas clásicas de NLP? Elige 3.",
+    "opciones": [
+      "Detectar el sentimiento de una reseña.",
+      "Reconocer nombres de personas y empresas en un texto.",
+      "Ordenar una lista de números.",
+      "Traducir un texto a otro idioma."
+    ],
+    "correctas": [0, 1, 3],
+    "explicacion": "Clasificar el sentimiento, reconocer entidades y traducir son tareas de lenguaje natural. Ordenar números es un algoritmo clásico sin lenguaje de por medio.",
+    "fuentes": ["https://www.ibm.com/think/topics/natural-language-processing"]
   }
 ]

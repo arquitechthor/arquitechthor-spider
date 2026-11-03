@@ -54,8 +54,15 @@
         <li><strong>Datos de entrenamiento:</strong> los ejemplos de los que aprende el modelo. Cada ejemplo tiene
           <em>características</em> (lo que se observa) y, en el aprendizaje supervisado, una <em>etiqueta</em> (la respuesta
           correcta).</li>
-        <li><strong>Modelo y parámetros:</strong> el <a class="concepto" data-concepto="modelo">modelo</a> es una función con parámetros (pesos) que el
-          entrenamiento ajusta para que sus salidas se parezcan a las etiquetas.</li>
+        <li><strong>Modelo y parámetros:</strong> el <a class="concepto" data-concepto="modelo">modelo</a> es una función con
+          <a class="concepto" data-concepto="parametros">parámetros</a> (pesos y sesgos) que el entrenamiento ajusta para que
+          sus salidas se parezcan a las etiquetas. Lo que decide la persona antes de entrenar (la estructura del modelo, la
+          tasa de aprendizaje, cuántas pasadas dar sobre los datos) son los <em>hiperparámetros</em>: el modelo no los
+          aprende.</li>
+        <li><strong>Datos estructurados y no estructurados:</strong> una tabla con columnas fijas (edad, importe, país) es
+          <a class="concepto" data-concepto="datos-estructurados">dato estructurado</a> y el ML clásico la aprovecha muy
+          bien; el texto libre, las imágenes o el audio no tienen esas columnas y piden <a href="deep-learning.html">deep
+          learning</a>.</li>
         <li><strong>Función de pérdida:</strong> mide cuánto se equivoca el modelo; entrenar es ir cambiando los parámetros para
           que baje.</li>
         <li><strong>Entrenamiento e inferencia:</strong> entrenar es ajustar el modelo con datos (caro, se hace pocas veces);
@@ -77,6 +84,53 @@
           </tbody>
         </table>
       </div>
+
+      <h2 id="regresion">Regresión y clasificación</h2>
+      <p>Los dos problemas supervisados más comunes se distinguen por <strong>qué predicen</strong>:</p>
+      <ul>
+        <li><strong><a class="concepto" data-concepto="regresion">Regresión</a>:</strong> un <strong>número</strong> dentro de
+          un rango continuo: el precio de una vivienda, los litros que consumirá un coche, los minutos que tardará un
+          pedido.</li>
+        <li><strong>Clasificación:</strong> una <strong>categoría</strong> de una lista cerrada: spam o no spam, el idioma de
+          un texto, qué producto aparece en una foto.</li>
+      </ul>
+      <p>El ejemplo más sencillo es la <strong>regresión lineal</strong>: predice con una recta,
+        <code>y' = b + w₁·x₁</code>. El peso <code>w₁</code> es la pendiente (cuánto cambia la predicción por cada unidad de
+        la característica) y <code>b</code> es el sesgo, el punto de partida de la recta. Con varias características hay un
+        peso por cada una. Entrenar es buscar los valores de <code>w</code> y <code>b</code> que hacen mínima la pérdida, y
+        esa misma idea, a una escala enorme, es la de una red neuronal.</p>
+      <p>Ojo con la palabra: en testing, una <em>prueba de regresión</em> comprueba que lo que funcionaba sigue funcionando
+        después de un cambio. No tiene nada que ver con la regresión del ML.</p>
+
+      <h2 id="sesgo-varianza">Sesgo y varianza</h2>
+      <p>Cuando un modelo falla con datos nuevos, el error suele venir de una de estas dos fuentes, que tiran en sentidos
+        opuestos:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>Sesgo alto</th><th>Varianza alta</th></tr></thead>
+          <tbody>
+            <tr><td>Qué pasa</td><td>El modelo es demasiado simple para el patrón real (una recta para datos que hacen
+              curva).</td><td>El modelo es tan flexible que se aprende también el ruido de sus ejemplos.</td></tr>
+            <tr><td>Nombre</td><td>Subajuste (<em>underfitting</em>)</td><td>Sobreajuste (<em>overfitting</em>)</td></tr>
+            <tr><td>Síntoma</td><td>Falla ya con los datos de entrenamiento.</td><td>Acierta mucho en entrenamiento y bastante
+              menos en validación.</td></tr>
+            <tr><td>Qué ayuda</td><td>Un modelo más capaz, mejores características, entrenar más.</td><td>Más datos, un
+              modelo más simple, regularización, parar antes.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>La <a class="concepto" data-concepto="varianza">varianza</a> mide cuánto cambiarían las predicciones si el modelo se
+        entrenara con otra muestra de datos. Reducir uno de los dos suele aumentar el otro: elegir la complejidad del modelo
+        es buscar el punto en el que la suma de ambos errores es menor (el <strong>equilibrio sesgo-varianza</strong>).</p>
+      <p>La palabra <a class="concepto" data-concepto="sesgo">sesgo</a> (<em>bias</em>) tiene en IA <strong>tres
+        sentidos</strong> que conviene no mezclar:</p>
+      <ol>
+        <li><strong>Sesgo del modelo:</strong> el error sistemático de la tabla anterior.</li>
+        <li><strong>Término de sesgo:</strong> el <code>b</code> de la regresión lineal o de cada neurona; es un parámetro
+          más que aprende el entrenamiento.</li>
+        <li><strong>Sesgo ético o social:</strong> que el sistema trate peor a un grupo de personas, casi siempre porque sus
+          datos de entrenamiento ya lo hacían (ver "Datos sesgados" más abajo).</li>
+      </ol>
 
       <h2 id="ciclo">El ciclo de un proyecto de ML</h2>
       <ol>
@@ -111,6 +165,13 @@
       <ul>
         <li><a href="https://www.ibm.com/think/topics/machine-learning" target="_blank" rel="noopener">What is machine learning?</a> (IBM, consultada el 03/11/2026).</li>
         <li><a href="https://developers.google.com/machine-learning/crash-course" target="_blank" rel="noopener">Machine Learning Crash Course</a> (Google for Developers, consultada el 03/11/2026).</li>
+        <li><a href="https://developers.google.com/machine-learning/crash-course/linear-regression" target="_blank" rel="noopener">Linear regression</a>,
+          <a href="https://developers.google.com/machine-learning/crash-course/linear-regression/hyperparameters" target="_blank" rel="noopener">Hyperparameters</a> y
+          <a href="https://developers.google.com/machine-learning/crash-course/overfitting/overfitting" target="_blank" rel="noopener">Overfitting</a>
+          (Google ML Crash Course, consultadas el 03/11/2026).</li>
+        <li><a href="https://www.ibm.com/think/topics/bias-variance-tradeoff" target="_blank" rel="noopener">What is bias-variance tradeoff?</a> (IBM, consultada el 03/11/2026).</li>
+        <li><a href="https://www.ibm.com/think/topics/structured-vs-unstructured-data" target="_blank" rel="noopener">Structured vs. unstructured data</a> (IBM, consultada el 03/11/2026).</li>
+        <li><a href="https://developers.google.com/machine-learning/glossary" target="_blank" rel="noopener">Machine Learning Glossary</a> (Google for Developers: entradas <em>bias</em>, consultada el 03/11/2026).</li>
       </ul>
     </article>
   </div>

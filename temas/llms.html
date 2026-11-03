@@ -37,17 +37,37 @@
     <article class="doc">
       <h2 id="que-es">Qué es</h2>
       <p>Un <strong>LLM</strong> (modelo de lenguaje grande) es un <a class="concepto" data-concepto="modelo">modelo</a> de
-        <a href="deep-learning.html">deep learning</a>, casi siempre con arquitectura Transformer, entrenado con enormes
+        <a href="deep-learning.html">deep learning</a>, casi siempre con arquitectura <a class="concepto" data-concepto="transformer">Transformer</a>, entrenado con enormes
         cantidades de texto para hacer una sola cosa: <strong>predecir el siguiente fragmento de texto</strong>. Repitiendo esa
         predicción una y otra vez escribe respuestas completas, y de esa tarea tan simple surgen capacidades amplias:
         resumir, traducir, programar, razonar sobre un problema o seguir instrucciones.</p>
-      <p>"Grande" se refiere al número de parámetros (miles de millones) y al volumen de texto de entrenamiento. Es el tipo más
+      <p>"Grande" se refiere al número de <a class="concepto" data-concepto="parametros">parámetros</a> (miles de millones) y al volumen de texto de entrenamiento. Es el tipo más
         extendido de modelo fundacional de la <a href="generative-ai.html">IA generativa</a>.</p>
 
       <h2 id="por-que">Por qué importa</h2>
       <p>Es la pieza que hay detrás de los chats, de los asistentes de código y de los <a href="ai-agents.html">agentes</a>.
         Para un ingeniero, un LLM es una dependencia más: se llama por API, cuesta dinero por uso, tiene latencia, falla a
         veces y su salida hay que validarla. Entender cómo funciona por dentro explica sus límites y cómo integrarlo bien.</p>
+
+      <h2 id="nlp">Del NLP a los LLM</h2>
+      <p>El <a class="concepto" data-concepto="pln">procesamiento del lenguaje natural</a> (NLP) es la rama de la IA que
+        trata de que las máquinas entiendan y produzcan lenguaje humano. Sus tareas clásicas eran problemas separados, cada
+        uno con su propio sistema: clasificar un texto (spam, tema, sentimiento), reconocer entidades (personas, empresas,
+        fechas), traducir, resumir, responder preguntas o transcribir voz.</p>
+      <p>Ha pasado por cuatro etapas:</p>
+      <ol>
+        <li><strong>Reglas</strong> escritas a mano (gramáticas, listas de palabras): precisas en casos concretos, imposibles de
+          escalar.</li>
+        <li><strong>Modelos estadísticos</strong> que aprenden probabilidades de los textos: correctores, el texto predictivo
+          del móvil.</li>
+        <li><strong>Redes neuronales</strong> (<a href="deep-learning.html">deep learning</a>), primero RNN, que mejoraron
+          mucho la traducción.</li>
+        <li><strong>Transformer y LLM:</strong> un solo modelo, preentrenado con muchísimo texto, resuelve casi todas esas
+          tareas a partir de una instrucción, sin entrenar un sistema para cada una.</li>
+      </ol>
+      <p>Por eso hoy, para muchas tareas de NLP, lo práctico es llamar a un LLM. Aun así, para clasificar millones de textos
+        cortos o generar embeddings, un modelo pequeño y especializado (de la familia BERT, por ejemplo) suele ser más
+        barato y rápido.</p>
 
       <h2 id="conceptos">Conceptos clave</h2>
       <ul>
@@ -64,7 +84,7 @@
           lo que "recuerda" es lo que le envías en cada petición.</li>
         <li><strong>Muestreo:</strong> en cada paso hay varios tokens posibles con distinta probabilidad; parámetros como la
           temperatura deciden cuánto se arriesga al elegir (<a href="../tema.html?id=sampling-parameters">Sampling
-          Parameters</a>).</li>
+          Parameters</a>). Pese al nombre, no son parámetros del modelo: no se aprenden, se eligen en cada petición.</li>
       </ul>
 
       <h2 id="en-la-practica">En la práctica</h2>
@@ -103,6 +123,7 @@
         <li><a href="https://www.ibm.com/think/topics/large-language-models" target="_blank" rel="noopener">What are large language models (LLMs)?</a> (IBM, consultada el 03/11/2026).</li>
         <li><a href="https://developers.google.com/machine-learning/crash-course/llm" target="_blank" rel="noopener">Introduction to Large Language Models</a> (Google for Developers, consultada el 03/11/2026).</li>
         <li><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Attention Is All You Need</a> (Vaswani et al., 2017, consultada el 03/11/2026).</li>
+        <li><a href="https://www.ibm.com/think/topics/natural-language-processing" target="_blank" rel="noopener">What is NLP (natural language processing)?</a> (IBM, consultada el 03/11/2026).</li>
       </ul>
     </article>
   </div>

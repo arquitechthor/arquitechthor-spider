@@ -10,7 +10,9 @@
     "MCP": { "en": "Model Context Protocol", "es": "protocolo abierto para conectar modelos con herramientas y datos", "enlace": "mcp" },
     "API": { "en": "Application Programming Interface", "es": "interfaz para que los programas se comuniquen" },
     "GPU": { "en": "Graphics Processing Unit", "es": "procesador gráfico; acelera el entrenamiento de redes neuronales" },
-    "NLP": { "en": "Natural Language Processing", "es": "procesamiento del lenguaje natural" },
+    "NLP": { "en": "Natural Language Processing", "es": "procesamiento del lenguaje natural: que las máquinas entiendan y produzcan lenguaje humano", "enlace": "pln" },
+    "PLN": { "en": "Natural Language Processing", "es": "procesamiento del lenguaje natural (sigla en español de NLP)", "enlace": "pln" },
+    "BERT": { "en": "Bidirectional Encoder Representations from Transformers", "es": "modelo de Google de 2018 que usa solo el codificador del Transformer; útil para clasificar y para embeddings" },
     "CNN": { "en": "Convolutional Neural Network", "es": "red neuronal convolucional, típica en visión por computador" },
     "RNN": { "en": "Recurrent Neural Network", "es": "red neuronal recurrente: procesa una secuencia paso a paso" },
     "RLHF": { "en": "Reinforcement Learning from Human Feedback", "es": "ajuste de un modelo con las preferencias de personas" },
@@ -61,6 +63,97 @@
       "relacionados": ["ai-agents"],
       "fuentes": [
         { "titulo": "Building effective agents (Anthropic)", "url": "https://www.anthropic.com/engineering/building-effective-agents" }
+      ]
+    },
+    {
+      "id": "parametros",
+      "termino": "Parámetros (e hiperparámetros)",
+      "en": "Parameters / hyperparameters",
+      "definicion": "Los parámetros son los números internos de un modelo (pesos y sesgos) que el entrenamiento ajusta solo; un LLM tiene miles de millones y su tamaño se mide por ellos. Los hiperparámetros son los valores que decide la persona antes de entrenar (tasa de aprendizaje, tamaño de lote, número de épocas, número de capas). Ojo: la temperatura o el top-p de un LLM se llaman «parámetros de muestreo», pero no son parámetros del modelo: se eligen en cada petición.",
+      "tema": "machine-learning",
+      "relacionados": ["deep-learning", "llms", "sampling-parameters"],
+      "fuentes": [
+        { "titulo": "Linear regression: Hyperparameters (Google ML Crash Course)", "url": "https://developers.google.com/machine-learning/crash-course/linear-regression/hyperparameters" }
+      ]
+    },
+    {
+      "id": "arquitectura-modelo",
+      "termino": "Arquitectura (estructura) de un modelo",
+      "en": "Model architecture",
+      "definicion": "La forma del modelo, que decide la persona antes de entrenar: qué tipo de red es (CNN, RNN, Transformer), cuántas capas tiene, de qué tamaño y cómo se conectan. La estructura fija dónde están los parámetros; el entrenamiento solo cambia sus valores. Dos modelos con la misma arquitectura y distintos parámetros se comportan distinto.",
+      "tema": "deep-learning",
+      "relacionados": ["machine-learning", "llms"],
+      "fuentes": [
+        { "titulo": "Dive into Deep Learning", "url": "https://d2l.ai/" }
+      ]
+    },
+    {
+      "id": "datos-estructurados",
+      "termino": "Datos estructurados y no estructurados",
+      "en": "Structured / unstructured data",
+      "definicion": "Los datos estructurados siguen un esquema fijo de filas y columnas (una tabla de clientes, un registro de pedidos) y se tratan bien con SQL y con ML clásico. Los no estructurados no tienen ese esquema (texto libre, correos, imágenes, audio, vídeo) y son el terreno del deep learning, del NLP y de la IA generativa.",
+      "tema": "machine-learning",
+      "relacionados": ["deep-learning", "generative-ai"],
+      "fuentes": [
+        { "titulo": "Structured vs. unstructured data (IBM)", "url": "https://www.ibm.com/think/topics/structured-vs-unstructured-data" }
+      ]
+    },
+    {
+      "id": "regresion",
+      "termino": "Regresión",
+      "en": "Regression",
+      "definicion": "Problema de aprendizaje supervisado en el que el modelo predice un número (un precio, una temperatura, los días hasta una baja), frente a la clasificación, que predice una categoría. La regresión lineal, la más simple, ajusta una recta: un peso por característica más un sesgo. No confundir con las «pruebas de regresión» del testing, que comprueban que lo que funcionaba sigue funcionando.",
+      "tema": "machine-learning",
+      "relacionados": ["deep-learning"],
+      "fuentes": [
+        { "titulo": "Linear regression (Google ML Crash Course)", "url": "https://developers.google.com/machine-learning/crash-course/linear-regression" }
+      ]
+    },
+    {
+      "id": "sesgo",
+      "termino": "Sesgo",
+      "en": "Bias",
+      "definicion": "Tiene tres sentidos en IA. (1) Sesgo del modelo: error sistemático por suposiciones demasiado simples; un modelo con sesgo alto falla incluso con sus datos de entrenamiento (subajuste). (2) Término de sesgo: el número que se suma en una neurona o en una regresión lineal, como la ordenada en el origen de una recta; es un parámetro más. (3) Sesgo ético o social: favorecer o perjudicar a grupos de personas, casi siempre porque los datos de entrenamiento ya lo hacían.",
+      "tema": "machine-learning",
+      "relacionados": ["deep-learning", "artificial-intelligence"],
+      "fuentes": [
+        { "titulo": "What is bias-variance tradeoff? (IBM)", "url": "https://www.ibm.com/think/topics/bias-variance-tradeoff" },
+        { "titulo": "Machine Learning Glossary (Google)", "url": "https://developers.google.com/machine-learning/glossary" }
+      ]
+    },
+    {
+      "id": "varianza",
+      "termino": "Varianza",
+      "en": "Variance",
+      "definicion": "Cuánto cambian las predicciones de un modelo si se entrena con otra muestra de datos. Un modelo con varianza alta se aprende el ruido de sus ejemplos: acierta mucho en entrenamiento y falla con datos nuevos (sobreajuste). Bajar el sesgo suele subir la varianza y al revés: es el equilibrio sesgo-varianza.",
+      "tema": "machine-learning",
+      "relacionados": ["deep-learning"],
+      "fuentes": [
+        { "titulo": "What is bias-variance tradeoff? (IBM)", "url": "https://www.ibm.com/think/topics/bias-variance-tradeoff" },
+        { "titulo": "Overfitting (Google ML Crash Course)", "url": "https://developers.google.com/machine-learning/crash-course/overfitting/overfitting" }
+      ]
+    },
+    {
+      "id": "pln",
+      "termino": "Procesamiento del lenguaje natural",
+      "en": "Natural Language Processing (NLP)",
+      "definicion": "Rama de la IA que trata de que las máquinas entiendan y produzcan lenguaje humano, escrito o hablado: clasificar textos, detectar nombres propios, analizar el sentimiento, traducir, resumir o responder preguntas. Pasó de reglas escritas a mano a modelos estadísticos, después a redes neuronales y hoy a los LLM basados en el Transformer, que resuelven casi todas esas tareas con un mismo modelo.",
+      "tema": "llms",
+      "relacionados": ["deep-learning", "artificial-intelligence"],
+      "fuentes": [
+        { "titulo": "What is natural language processing (NLP)? (IBM)", "url": "https://www.ibm.com/think/topics/natural-language-processing" }
+      ]
+    },
+    {
+      "id": "transformer",
+      "termino": "Transformer",
+      "en": "Transformer",
+      "definicion": "Arquitectura de red neuronal presentada en 2017 en la que cada token «mira» a todos los demás de la secuencia con el mecanismo de autoatención y decide cuáles le importan. Procesa toda la secuencia a la vez (en paralelo), lo que permitió entrenar modelos enormes. Es la base de casi todos los LLM: GPT usa la parte decodificadora (genera texto token a token) y BERT la codificadora (entiende y representa texto).",
+      "tema": "deep-learning",
+      "relacionados": ["llms", "generative-ai"],
+      "fuentes": [
+        { "titulo": "Attention Is All You Need (Vaswani et al., 2017)", "url": "https://arxiv.org/abs/1706.03762" },
+        { "titulo": "What is a transformer model? (IBM)", "url": "https://www.ibm.com/think/topics/transformer-model" }
       ]
     }
   ]

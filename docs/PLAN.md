@@ -33,8 +33,10 @@ línea al "Registro de sesiones".
 - **3.6 publicada (2026-11-03):** vista Cajas y conmutador "Telaraña | Cajas", pendiente de que el
   usuario la pruebe en producción.
 - **Piloto de IA (2026-11-03), pendiente de revisión del usuario:** regla "todo nodo tiene ficha",
-  fichas publicadas del área IA y de 6 temas (IA, ML, DL, IA generativa, LLMs, agentes) con 57
+  fichas publicadas del área IA y de 6 temas (IA, ML, DL, IA generativa, LLMs, agentes) con 71
   preguntas, glosario de siglas y conceptos con tooltip y enlace, evaluación por tema y por rama.
+  Ampliado a petición del usuario (para sus pruebas) con parámetros, arquitectura, datos
+  estructurados, regresión, sesgo, varianza, NLP y Transformer.
 - **Próximo paso:** revisión del piloto con el usuario; después 3.7 (responsive), 3.8 (radar) y
   3.9 (vista general), y la pasada de bloques candidatos a tema (4.5). **Tarea 2.6 casi cerrada (2026-11-03):**
   enlaces publicados en `kopi-web`, `aws-cert-study`, `arquitechthor.github.io` y
@@ -698,7 +700,7 @@ Completa el 2026-11-02.
       comprueba el glosario.
 - [ ] 4.3 `scripts/generar_sitemap.py`.
 - [x] 4.4 Piloto: en lugar de 3 guías de Java, el usuario pidió el de IA (2026-11-03): ficha de
-      presentación del área `ai` y 6 temas con 57 preguntas. **Pendiente de revisión del usuario.**
+      presentación del área `ai` y 6 temas con 71 preguntas. **Pendiente de revisión del usuario.**
 - [ ] 4.5 Pasada por los 63 bloques con el criterio bloque → tema (5.2): lista de candidatos para
       que decida el usuario.
 
@@ -780,6 +782,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-03 | **Ampliación del piloto de IA** (el usuario va a hacer pruebas con una lista de conceptos): los 10 primeros ya estaban cubiertos; se añaden 8 conceptos al glosario (parámetros e hiperparámetros, arquitectura/estructura del modelo, datos estructurados y no estructurados, regresión, sesgo con sus tres sentidos, varianza, NLP, Transformer) y las siglas PLN y BERT (NLP enlaza a su concepto). Nuevas secciones: "Regresión y clasificación" y "Sesgo y varianza" (ML), arquitectura y "El Transformer por dentro" (DL), "Del NLP a los LLM" (LLMs). 14 preguntas nuevas (71 en total). |
 | 2026-11-03 | **Piloto de IA:** todo nodo tiene ficha (temas: guía y evaluación; áreas y bloques: presentación y "Evaluar esta rama"), criterio bloque → tema y "no enterrar temas". `artificial-intelligence` pasa a tema; nuevos Machine Learning y Deep Learning. Fichas del área IA y de 6 temas, 57 preguntas, `glosario.json` con 17 siglas y 4 conceptos, `siglas.js` (tooltip y enlace), `tema.js`, `quiz.js`, `evaluacion.html`, `glosario.html`, `tema.html`. El ☁ de AWS pasa delante del nombre (petición del usuario). |
 | 2026-11-03 | Cajas con el aspecto de las tarjetas de áreas (icono, nombre en inglés, chips grises, sin recuentos) y **sección "Áreas" retirada** de la portada (decisión del usuario). |
 | 2026-11-03 | **Tarea 3.6 (publicada):** vista Cajas (`assets/cajas.js`) con conmutador, vista en la URL y en `spider.vista`, buscador/filtros/color compartidos, fundido CSS en vez de View Transitions. |
