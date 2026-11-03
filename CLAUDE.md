@@ -52,7 +52,11 @@ no third-party requests).
   Every node is a real `<a href>`; Tab goes clockwise, arrows move along the ring, Esc goes up.
   Areas carry `nombreCorto`, used for the 13 areas around the root. Below the map, the area cards
   (`pintarAreas`) link each area and block to the web. `assets/arbol.js` (`SpiderArbol`): tree helpers and
-  accent-insensitive search. The "Cajas" view (`cajas.js`) is still to come (task 3.6).
+  accent-insensitive search. `assets/cajas.js` (`SpiderCajas`) draws the alternative **Cajas** view
+  (focused node as header, children as boxes sized with `flex-grow` by their topic count,
+  grandchildren as chips); the "Telaraña | Cajas" switch keeps the context, goes in the URL as
+  `v=cajas` and is remembered with the color in `spider.vista` (the URL wins). Both views only
+  draw; `mapa.js` handles navigation and `decorar()` (via `[data-decora]` in Cajas).
 - `aviso-legal.html`: legal notice, trademarks, license and privacy. Keep it consistent with any
   new feature (anything stored in `localStorage` must be covered by its privacy section).
 

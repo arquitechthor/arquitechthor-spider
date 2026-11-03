@@ -9,7 +9,12 @@
   const D = window.SpiderDatos;
   const A = window.SpiderArbol;
   const T = window.SpiderTelarana;
+  const C = window.SpiderCajas;
   const svg = document.getElementById('telarana');
+  const cajasEl = document.getElementById('cajas');
+  const lienzo = document.querySelector('.mapa-lienzo');
+  const conmutador = document.querySelector('.conmutador');
+  const instrucciones = document.getElementById('mapa-instrucciones');
   const panel = document.getElementById('panel');
   const migas = document.getElementById('migas');
   if (!svg) return;
@@ -51,12 +56,20 @@
     return { n, s };
   }
 
-  /** Búsqueda, color y filtros: viajan en la URL con el nodo, para que un enlace compartido los conserve. */
+  /**
+   * Vista (telaraña o cajas), búsqueda, color y filtros: viajan en la URL con el nodo, para que un
+   * enlace compartido los conserve. Sin v ni color en la URL se usa la última elección del usuario
+   * (spider.vista); la Telaraña es la predeterminada.
+   */
   function vistaDesdeUrl() {
     const q = new URLSearchParams(location.search);
+    const pref = D.leer('vista');
+    const v = q.get('v') || pref.v;
+    const color = q.get('color') || pref.color;
     return {
+      v: v === 'cajas' ? 'cajas' : 'telarana',
       q: (q.get('q') || '').slice(0, 80),
-      color: q.get('color') === 'nivel' ? 'nivel' : 'area',
+      color: color === 'nivel' ? 'nivel' : 'area',
       estado: Object.hasOwn(ESTADOS, q.get('estado')) ? q.get('estado') : '',
       esencial: q.get('esencial') === '1',
     };
@@ -66,6 +79,7 @@
     const q = new URLSearchParams();
     if (n && n !== raizId) q.set('n', n);
     if (s) q.set('s', s);
+    if (vista.v === 'cajas') q.set('v', 'cajas');
     if (vista.q.trim()) q.set('q', vista.q.trim());
     if (vista.color !== 'area') q.set('color', vista.color);
     if (vista.estado) q.set('estado', vista.estado);
@@ -76,12 +90,18 @@
 
   /** Cambios de la vista (teclear, filtros): reemplazan la entrada del historial, no añaden otra. */
   function cambiarVista(cambios) {
+    const otraVista = cambios.v && cambios.v !== vista.v;
     vista = { ...vista, ...cambios };
+    if ('v' in cambios || 'color' in cambios) D.guardar('vista', { v: vista.v, color: vista.color });
     history.replaceState(estado, '', urlDe(estado));
     sincronizarControles();
-    decorar();
     pintarLeyendaColor();
-    actualizarHrefs();
+    if (otraVista) {
+      pintar(null);
+    } else {
+      decorar();
+      actualizarHrefs();
+    }
   }
 
   /** Adónde lleva pulsar un nodo: entrar si tiene hijos, seleccionarlo si no. */
@@ -111,10 +131,25 @@
         enfocar = A.ruta(datos, antes.n).map((x) => x.id).find((id) => datos.porId.get(id).padre === estado.n) || estado.n;
       } else enfocar = estado.n;
     }
-    T.dibujar(svg, datos, {
+    const cajas = vista.v === 'cajas';
+    svg.hidden = cajas;
+    svg.style.display = cajas ? 'none' : '';
+    cajasEl.hidden = !cajas;
+    lienzo.dataset.vista = vista.v;
+    instrucciones.textContent = cajas
+      ? 'Pulsa una caja o un chip para entrar en él; «Subir» vuelve un nivel.'
+      : 'Pulsa un nodo para entrar en él y el centro para subir.';
+    const op = {
       foco: estado.n, sel: estado.s, movil: movil.matches, animar: cambiaFoco,
       enfocar, destinoDe, navegar, urlDe,
-    });
+    };
+    if (cajas) {
+      C.dibujar(cajasEl, datos, op);
+      svg.replaceChildren();
+    } else {
+      T.dibujar(svg, datos, op);
+      cajasEl.replaceChildren();
+    }
     decorar();
     pintarMigas();
     pintarPanel();
@@ -191,24 +226,30 @@
     const auto = D.leer('autoevaluacion');
     const activos = hayFiltros();
     const f = activos ? calcularFiltro() : null;
-    for (const a of svg.querySelectorAll('a.nodo[data-id]')) {
+    // Pares [elemento que se pinta, enlace que se etiqueta]: en la telaraña son el mismo <a>; en
+    // Cajas, la caja entera (data-decora) y el enlace de su título, o el propio chip.
+    const pares = vista.v === 'cajas'
+      ? [...cajasEl.querySelectorAll('[data-decora]')].map((e) => [e, e.matches('a') ? e : e.querySelector('a[data-id]')])
+      : [...svg.querySelectorAll('a.nodo[data-id]')].map((a) => [a, a]);
+    for (const [e, a] of pares) {
       const n = datos.porId.get(a.dataset.id);
       let extra = '';
       if (vista.color === 'nivel') {
         const nv = nivelDe(n, auto);
-        a.style.setProperty('--c', nv.indice === null ? SIN_MARCAR : COLOR_NIVEL[nv.indice]);
+        e.style.setProperty('--c', nv.indice === null ? SIN_MARCAR : COLOR_NIVEL[nv.indice]);
         extra += `. ${nv.texto}`;
       } else {
-        a.style.setProperty('--c', colorArea(n));
+        e.style.setProperty('--c', colorArea(n));
       }
       const coincide = Boolean(f && f.q && f.coinciden.has(n.id));
-      const centro = a.classList.contains('nodo-centro');
-      a.classList.toggle('coincide', coincide);
-      a.classList.toggle('atenua', Boolean(f) && !centro && !f.pasa(n));
+      const centro = e.classList.contains('nodo-centro');
+      e.classList.toggle('coincide', coincide);
+      e.classList.toggle('atenua', Boolean(f) && !centro && !f.pasa(n));
       if (coincide) extra += '. Coincide con la búsqueda';
       a.setAttribute('aria-label', a.dataset.etiqueta + extra);
     }
     svg.classList.toggle('filtrando', activos);
+    cajasEl.classList.toggle('filtrando', activos);
   }
 
   function pintarLeyendaColor() {
@@ -224,7 +265,7 @@
 
   /** Tras cambiar la vista, los enlaces ya pintados (nodos, migas, tarjetas) pasan a llevarla. */
   function actualizarHrefs() {
-    for (const a of document.querySelectorAll('#telarana a[href], #migas a[href], #area-grid a[href]')) {
+    for (const a of document.querySelectorAll('#telarana a[href], #cajas a[href], #migas a[href], #area-grid a[href]')) {
       const u = new URL(a.getAttribute('href'), location.href);
       a.setAttribute('href', urlDe({ n: u.searchParams.get('n') || raizId, s: u.searchParams.get('s') }));
     }
@@ -260,7 +301,7 @@
     if (n.tipo === 'raiz') {
       const temas = D.temasDe(datos, raizId);
       partes.push(`<p class="panel-frase">${datos.areas.length} áreas y ${temas.length} temas. Pulsa un área para entrar en ella;
-        el centro de la telaraña sube un nivel.</p>`);
+        ${vista.v === 'cajas' ? '«Subir» vuelve' : 'el centro de la telaraña sube'} un nivel.</p>`);
     } else {
       partes.push(`<p class="panel-frase">${n.frase ? D.esc(n.frase) : '<span class="text-faint">Sin descripción todavía.</span>'}</p>`);
     }
@@ -303,7 +344,7 @@
     }
 
     if (estado.s && hijos.length) {
-      partes.push(`<div class="panel-acciones"><button class="btn btn-secondary btn-sm" type="button" data-ir="${D.esc(n.id)}">Abrir en la telaraña</button></div>`);
+      partes.push(`<div class="panel-acciones"><button class="btn btn-secondary btn-sm" type="button" data-ir="${D.esc(n.id)}">${vista.v === 'cajas' ? 'Abrir en las cajas' : 'Abrir en la telaraña'}</button></div>`);
     }
 
     if (hijos.length) {
@@ -365,6 +406,16 @@
       ev.preventDefault();
     }
   });
+  cajasEl.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Escape' && estado.n !== raizId) {
+      ev.preventDefault();
+      navegar(estado.s ? { n: estado.n } : destinoDe(datos.porId.get(estado.n), { centro: true }));
+    }
+  });
+  conmutador.addEventListener('click', (ev) => {
+    const b = ev.target.closest('[data-v]');
+    if (b) cambiarVista({ v: b.dataset.v });
+  });
 
   window.addEventListener('popstate', () => {
     const antes = estado;
@@ -380,6 +431,7 @@
   function sincronizarControles() {
     if (document.activeElement !== buscador) buscador.value = vista.q;
     selColor.value = vista.color;
+    for (const b of conmutador.querySelectorAll('[data-v]')) b.setAttribute('aria-pressed', String(b.dataset.v === vista.v));
     selEstado.value = vista.estado;
     btnEsencial.setAttribute('aria-pressed', String(vista.esencial));
     btnQuitar.hidden = !hayFiltros();
@@ -460,7 +512,7 @@
     cerrarLista();
     navegar({ n: n.padre || raizId, s: n.id });
     // El foco del teclado pasa al nodo elegido, y el lienzo se asoma si había quedado fuera.
-    svg.querySelector(`a[data-id="${CSS.escape(n.id)}"]`)?.focus({ preventScroll: true });
+    (vista.v === 'cajas' ? cajasEl : svg).querySelector(`a[data-id="${CSS.escape(n.id)}"]`)?.focus({ preventScroll: true });
     const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.querySelector('.mapa-lienzo').scrollIntoView({ block: 'nearest', behavior: reducido ? 'auto' : 'smooth' });
   }

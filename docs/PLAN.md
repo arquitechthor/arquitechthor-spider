@@ -30,12 +30,13 @@ línea al "Registro de sesiones".
   autoevaluación (tareas 3.1–3.4), revisada por el usuario. Portada: cabecera, telaraña y tarjetas
   de áreas.
 - **3.5 publicada (2026-11-03):** buscador, "Color por" área/mi nivel y filtros.
-- **Próximo paso:** 3.6 (vista Cajas), 3.7
-  (responsive), 3.8 (radar) y 3.9 (vista general). **Tarea 2.6 casi cerrada (2026-11-03):**
+- **3.6 publicada (2026-11-03):** vista Cajas y conmutador "Telaraña | Cajas", pendiente de que el
+  usuario la pruebe en producción.
+- **Próximo paso:** 3.7 (responsive), 3.8 (radar) y 3.9 (vista general). **Tarea 2.6 casi cerrada (2026-11-03):**
   enlaces publicados en `kopi-web`, `aws-cert-study`, `arquitechthor.github.io` y
   `kopi-chess`; falta `kopi-docs/politicas.md`, que no está versionado y vive en otro ordenador: se
   actualiza cuando se trabaje allí (política "Mismo menú y pie": añadir Tech Spider a la lista).
-- **Última actualización:** 2026-11-03 (enlaces a Tech Spider desde las demás webs)
+- **Última actualización:** 2026-11-03 (vista Cajas publicada)
 
 ---
 
@@ -614,7 +615,18 @@ Completa el 2026-11-02.
       Comprobado con una prueba automática en Chrome sin interfaz (18 comprobaciones) y a 375 px.
       **Aplazado:** "Color por progreso" a la Fase 5 (aún no hay evaluaciones) y el filtro de
       certificación a la Fase 6.
-- [ ] 3.6 Vista **Cajas** (alternativa) y conmutador "Telaraña | Cajas" que conserva el contexto.
+- [x] 3.6 Vista **Cajas** (`cajas.js`, 2026-11-03): el nodo enfocado como cabecera con "▲ Subir a…",
+      sus hijos como cajas (borde y fondo del color, frase) y los nietos como chips ("· N" si
+      contienen más; ↗ y borde discontinuo para accesos, ☁ para AWS). Ancho de cada caja con
+      `flex-grow` según los temas de su rama (treemap sencillo; cada fila se llena); una columna
+      por debajo de 560 px. Conmutador "Telaraña | Cajas" que conserva nodo, selección, búsqueda,
+      color y filtros; vista en la URL (`v=cajas`) y recordada en `spider.vista` junto con el
+      color (la URL manda). Buscador, filtros, "Color por" y panel funcionan igual en las dos
+      vistas (`decorar()` sobre `[data-decora]`); Esc sube; leyenda con lo propio de cada vista.
+      Entrada con fundido CSS (`.cajas-entra`, sin él con `prefers-reduced-motion`): la View
+      Transitions API se descartó porque su callback asíncrono dejaba el DOM sin actualizar en
+      Chrome sin interfaz. Prueba automática (16 comprobaciones) y 375 px sin scroll horizontal.
+      La telaraña no tiene un enlace aparte "Ver como lista": el conmutador cumple esa función.
 - [ ] 3.7 Responsive (375 px sin scroll horizontal, telaraña reducida + lista en móvil),
       `prefers-reduced-motion`, revisión con lector de pantalla y teclado.
 - [ ] 3.8 Radar "Mi telaraña" (`radar.js`).
@@ -704,6 +716,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-03 | **Tarea 3.6 (publicada):** vista Cajas (`assets/cajas.js`) con conmutador, vista en la URL y en `spider.vista`, buscador/filtros/color compartidos, fundido CSS en vez de View Transitions. |
 | 2026-11-03 | **Tarea 3.5 (publicada):** buscador con lista y salto, "Color por" área / mi nivel con leyenda, filtros Estado y Lo esencial, atenuado y halo en la telaraña, estado en la URL. `SpiderArbol.nivelMedio()`; `buscar()` sin límite por defecto. Progreso → Fase 5; certificación → Fase 6. |
 | 2026-11-03 | **Tarea 2.6:** Tech Spider enlazado en el pie común de `kopi-web`, `aws-cert-study`, `arquitechthor.github.io` y `kopi-chess` (`HomePageTest` en verde), y con sección propia en la web personal. El pie de Tech Spider se pone al día con Kopi Chess y Prompt Quest. Publicado en los cinco repos; pendiente `kopi-docs/politicas.md`. |
 | 2026-11-02 | Revisión del usuario: letra mayor, lienzo más alto, tarjetas de áreas debajo de la telaraña, cabecera de la Fase 2 recuperada. **Telaraña publicada** (`adf8322`). |

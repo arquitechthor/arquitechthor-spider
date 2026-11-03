@@ -58,11 +58,15 @@
   <div class="container container-ancho">
     <header class="mapa-cab">
       <h2>La telaraña</h2>
-      <p>Pulsa un nodo para entrar en él y el centro para subir.</p>
+      <p id="mapa-instrucciones">Pulsa un nodo para entrar en él y el centro para subir.</p>
       <p class="mapa-obras"><img src="assets/logo.svg" alt="" width="18" height="18"> En construcción: las guías y
         las evaluaciones llegarán por fases.</p>
     </header>
     <div class="mapa-herramientas">
+      <div class="conmutador" role="group" aria-label="Vista del mapa">
+        <button type="button" data-v="telarana" aria-pressed="true">Telaraña</button>
+        <button type="button" data-v="cajas" aria-pressed="false">Cajas</button>
+      </div>
       <div class="buscador" role="search">
         <label for="buscar" class="visually-hidden">Buscar en el mapa</label>
         <input id="buscar" type="search" placeholder="Buscar: Kafka, JPA, pruebas…" autocomplete="off" spellcheck="false"
@@ -91,14 +95,17 @@
     <div class="mapa-layout">
       <div class="mapa-lienzo">
         <svg id="telarana" role="group" aria-label="Telaraña de tecnologías" aria-describedby="mapa-ayuda"></svg>
+        <div class="cajas" id="cajas" aria-describedby="mapa-ayuda" hidden></div>
         <p class="leyenda leyenda-color" id="leyenda-color"></p>
         <p class="leyenda" id="mapa-ayuda">
-          <span><span class="ley ley-anillo" aria-hidden="true"></span>contiene más: pulsa para entrar</span>
-          <span><span class="ley" aria-hidden="true"></span>tema</span>
+          <span class="solo-telarana"><span class="ley ley-anillo" aria-hidden="true"></span>contiene más: pulsa para entrar</span>
+          <span class="solo-telarana"><span class="ley" aria-hidden="true"></span>tema</span>
+          <span class="solo-cajas"><span class="ley-chip" aria-hidden="true">· 4</span>contiene más: pulsa para entrar</span>
           <span><span class="ley ley-acceso" aria-hidden="true"></span>↗ acceso: vive en otra rama</span>
           <span>☁ guía en Apuntes AWS</span>
-          <span><span class="ley-relacion" aria-hidden="true"></span>relacionados</span>
-          <span class="ley-teclado">Teclado: Tab y flechas recorren los nodos; Esc sube.</span>
+          <span class="solo-telarana"><span class="ley-relacion" aria-hidden="true"></span>relacionados</span>
+          <span class="ley-teclado solo-telarana">Teclado: Tab y flechas recorren los nodos; Esc sube.</span>
+          <span class="ley-teclado solo-cajas">Teclado: Tab recorre las cajas; Esc sube.</span>
         </p>
       </div>
       <aside class="panel" id="panel" aria-live="polite" aria-label="Detalle del nodo"></aside>
@@ -153,6 +160,7 @@
 <script src="assets/datos.js" defer></script>
 <script src="assets/arbol.js" defer></script>
 <script src="assets/telarana.js" defer></script>
+<script src="assets/cajas.js" defer></script>
 <script src="assets/mapa.js" defer></script>
 </body>
 </html>
