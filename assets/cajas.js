@@ -66,7 +66,9 @@
 
       const conHijos = (datos.hijos.get(n.id) || []).length > 0;
       const destino = op.destinoDe(n, { acceso: it.acceso });
-      const marca = (it.acceso ? ' ↗' : '') + (n.externo ? ' ☁' : '');
+      // ☁ (guía en Apuntes AWS) va delante del nombre; ↗ (acceso) detrás, como un enlace a otro sitio.
+      const marca = it.acceso ? ' ↗' : '';
+      const nube = n.externo ? '☁ ' : '';
       let etiqueta = `${nombre(n)}. ${TIPO[n.tipo]}`;
       if (it.acceso) etiqueta += `, vive en ${nombre(datos.porId.get(n.padre))}`;
       if (n.externo) etiqueta += ', guía en Apuntes AWS';
@@ -80,7 +82,7 @@
       const h = document.createElement('h4');
       h.className = 'caja-titulo';
       const a = enlace(destino, op, 'caja-enlace', n.id, '', etiqueta);
-      a.innerHTML = D.nombreHtml(n).replace(/^([^<]*)/, `$1${D.esc(marca)}`);
+      a.innerHTML = D.esc(nube) + D.nombreHtml(n).replace(/^([^<]*)/, `$1${D.esc(marca)}`);
       h.appendChild(a);
       cabCaja.appendChild(h);
       caja.appendChild(cabCaja);
@@ -103,7 +105,7 @@
           if (nt.acceso) et += `, vive en ${nombre(datos.porId.get(m.padre))}`;
           if (m.externo) et += ', guía en Apuntes AWS';
           et += conNietos ? `. Contiene ${datos.hijos.get(m.id).length}: pulsa para entrar` : '. Pulsa para ver el detalle';
-          const texto = nombre(m) + (nt.acceso ? ' ↗' : '') + (m.externo ? ' ☁' : '');
+          const texto = (m.externo ? '☁ ' : '') + nombre(m) + (nt.acceso ? ' ↗' : '');
           const a = enlace(op.destinoDe(m, { acceso: nt.acceso }), op,
             `caja-chip${nt.acceso ? ' acceso' : ''}${op.sel === m.id ? ' es-sel' : ''}`, m.id, texto, et);
           a.dataset.decora = m.id;

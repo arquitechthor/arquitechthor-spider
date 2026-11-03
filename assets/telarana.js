@@ -232,7 +232,9 @@
     if (conHijos) el('circle', { cx: it.x, cy: it.y, r: o.r + 6, class: 'anillo' }, a);
     el('circle', { cx: it.x, cy: it.y, r: o.r, class: 'punto' }, a);
 
-    const marca = (it.acceso ? ' ↗' : '') + (n.externo ? ' ☁' : '');
+    // ☁ (guía en Apuntes AWS) delante del nombre; ↗ (acceso) detrás.
+    const marca = it.acceso ? ' ↗' : '';
+    const nube = n.externo ? '☁ ' : '';
     const cos = Math.cos(it.ang);
     const sin = Math.sin(it.ang);
     if (o.anillo === 1) {
@@ -240,6 +242,7 @@
       // El completo sigue en el tooltip, en el panel y en las tarjetas de áreas.
       const lineas = n.nombreCorto ? [n.nombreCorto] : partir(nombre, c.ancho1, 4);
       lineas[lineas.length - 1] += marca;
+      lineas[0] = nube + lineas[0];
       const lh = c.f1 * 1.15;
       const sep = o.r + (conHijos ? 14 : 8);
       const t = el('text', { 'font-size': c.f1, 'font-weight': 600 }, a);
@@ -266,7 +269,7 @@
         y: it.y,
         transform: `rotate(${(derecha ? grados : grados + 180).toFixed(2)} ${it.x.toFixed(1)} ${it.y.toFixed(1)})`,
       }, a);
-      t.textContent = recortar(nombre, c.max2) + marca;
+      t.textContent = nube + recortar(nombre, c.max2) + marca;
     }
   }
 

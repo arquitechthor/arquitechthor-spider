@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentes de IA (AI Agents) — Tech Spider</title>
+<meta name="description" content="Qué es un agente de IA: un LLM que usa herramientas en bucle para cumplir un objetivo; flujos de trabajo frente a agentes, orquestación y riesgos.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/ai-agents.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main data-ficha="ai-agents">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>Un <strong>agente de IA</strong> es un sistema en el que un <a href="llms.html">LLM</a> no se limita a contestar: recibe
+        un objetivo y <strong>decide por sí mismo qué pasos dar</strong> para cumplirlo, usando
+        <a class="concepto" data-concepto="herramienta">herramientas</a> (buscar, leer ficheros, consultar una API, ejecutar código), mirando el resultado de
+        cada una y decidiendo el siguiente paso, en bucle, hasta terminar o necesitar ayuda.</p>
+      <p>Es la pieza básica de la <a class="concepto" data-concepto="ia-agentica">IA agéntica</a>: el enfoque en el que la IA actúa con cierta autonomía
+        para conseguir un objetivo, en lugar de producir una única respuesta.</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Muchas tareas útiles no se resuelven en una respuesta: investigar un error en un repositorio, preparar un informe
+        cruzando varias fuentes o atender una incidencia de principio a fin. Un agente puede hacerlas porque puede actuar,
+        observar y corregir. Los asistentes de código que leen el proyecto, ejecutan las pruebas y proponen cambios son el
+        ejemplo más visible.</p>
+
+      <h2 id="componentes">Componentes</h2>
+      <ul>
+        <li><strong>El modelo:</strong> razona sobre el objetivo y decide la siguiente acción.</li>
+        <li><strong>Las <a class="concepto" data-concepto="herramienta">herramientas</a>:</strong> funciones descritas con un nombre, una explicación y un
+          esquema de parámetros. El modelo <strong>no las ejecuta</strong>: devuelve una petición estructurada y es la
+          aplicación quien la ejecuta y le devuelve el resultado (<a href="../tema.html?id=tool-calling">Tool Calling</a>).
+          El protocolo MCP estandariza cómo ofrecerlas.</li>
+        <li><strong>El bucle:</strong> pensar, actuar, observar y repetir, con una condición de parada (objetivo cumplido,
+          límite de pasos o petición de ayuda) (<a href="../tema.html?id=agent-loop">Agent Loop</a>).</li>
+        <li><strong>La memoria:</strong> lo que el agente conserva entre pasos o entre sesiones, porque la ventana de contexto
+          es limitada (<a href="../tema.html?id=agent-memory">Agent Memory</a>).</li>
+      </ul>
+
+      <h2 id="flujos-agentes">Flujos de trabajo frente a agentes</h2>
+      <p>No todo sistema con LLM y herramientas es un agente. Conviene distinguir dos formas de
+        <a class="concepto" data-concepto="orquestacion">orquestación</a>:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>Flujo de trabajo (<em>workflow</em>)</th><th>Agente</th></tr></thead>
+          <tbody>
+            <tr><td>Quién decide los pasos</td><td>El código: el camino está fijado de antemano.</td><td>El modelo, en cada vuelta del bucle.</td></tr>
+            <tr><td>Previsibilidad</td><td>Alta: fácil de probar y de acotar en coste.</td><td>Menor: el número de pasos y el coste varían.</td></tr>
+            <tr><td>Cuándo encaja</td><td>Tareas con pasos conocidos (encadenar prompts, enrutar según el tipo de petición, repartir en paralelo).</td><td>Tareas abiertas, donde no se sabe de antemano cuántos pasos harán falta.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>La recomendación habitual es empezar por lo más simple que funcione: una sola llamada bien preparada, después un
+        flujo de trabajo y solo si hace falta un agente. Cuando la tarea crece, un agente orquestador puede repartir partes
+        entre otros agentes y juntar sus resultados (<a href="../tema.html?id=multi-agent-orchestration">Multi-Agent
+        Orchestration</a>).</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Dar más permisos de los necesarios.</strong> Un agente que puede borrar o pagar acabará haciéndolo por error
+          o porque un texto malicioso se lo pida. Mínimo privilegio y confirmación humana en lo irreversible
+          (<a href="../tema.html?id=human-in-the-loop">Human-in-the-Loop</a>).</li>
+        <li><strong>Herramientas mal descritas.</strong> El modelo solo sabe de una herramienta lo que dice su descripción; si
+          es ambigua, la usará mal.</li>
+        <li><strong>Bucles sin límite.</strong> Hace falta un tope de pasos, de tiempo y de coste, y registrar cada paso para
+          poder entender qué hizo.</li>
+        <li><strong>Usar un agente donde basta un flujo fijo.</strong> Es más caro, más lento y más difícil de probar.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="ai-agents"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://www.ibm.com/think/topics/ai-agents" target="_blank" rel="noopener">What are AI agents?</a> (IBM, consultada el 03/11/2026).</li>
+        <li><a href="https://www.ibm.com/think/topics/agentic-ai" target="_blank" rel="noopener">What is agentic AI?</a> (IBM, consultada el 03/11/2026).</li>
+        <li><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building effective agents</a> (Anthropic, consultada el 03/11/2026).</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview" target="_blank" rel="noopener">Tool use with Claude</a> (documentación de Anthropic, consultada el 03/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js" defer></script>
+<script src="../assets/datos.js" defer></script>
+<script src="../assets/arbol.js" defer></script>
+<script src="../assets/siglas.js" defer></script>
+<script src="../assets/preguntas.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/tema.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+{
+  "siglas": {
+    "IA": { "en": "Artificial Intelligence", "es": "inteligencia artificial", "enlace": "artificial-intelligence" },
+    "AI": { "en": "Artificial Intelligence", "es": "inteligencia artificial", "enlace": "artificial-intelligence" },
+    "ML": { "en": "Machine Learning", "es": "aprendizaje automático: modelos que aprenden a partir de datos", "enlace": "machine-learning" },
+    "DL": { "en": "Deep Learning", "es": "aprendizaje profundo, con redes neuronales de muchas capas", "enlace": "deep-learning" },
+    "LLM": { "en": "Large Language Model", "es": "modelo de lenguaje grande, entrenado con enormes cantidades de texto", "enlace": "llms" },
+    "GenAI": { "en": "Generative AI", "es": "IA generativa: crea contenido nuevo", "enlace": "generative-ai" },
+    "RAG": { "en": "Retrieval-Augmented Generation", "es": "el modelo responde apoyándose en documentos que se recuperan antes", "enlace": "rag" },
+    "MCP": { "en": "Model Context Protocol", "es": "protocolo abierto para conectar modelos con herramientas y datos", "enlace": "mcp" },
+    "API": { "en": "Application Programming Interface", "es": "interfaz para que los programas se comuniquen" },
+    "GPU": { "en": "Graphics Processing Unit", "es": "procesador gráfico; acelera el entrenamiento de redes neuronales" },
+    "NLP": { "en": "Natural Language Processing", "es": "procesamiento del lenguaje natural" },
+    "CNN": { "en": "Convolutional Neural Network", "es": "red neuronal convolucional, típica en visión por computador" },
+    "RNN": { "en": "Recurrent Neural Network", "es": "red neuronal recurrente: procesa una secuencia paso a paso" },
+    "RLHF": { "en": "Reinforcement Learning from Human Feedback", "es": "ajuste de un modelo con las preferencias de personas" },
+    "GPT": { "en": "Generative Pre-trained Transformer", "es": "familia de modelos de OpenAI; el nombre describe su arquitectura" },
+    "JSON": { "en": "JavaScript Object Notation", "es": "formato de datos en texto" },
+    "OCDE": { "es": "Organización para la Cooperación y el Desarrollo Económicos" }
+  },
+  "conceptos": [
+    {
+      "id": "modelo",
+      "termino": "Modelo",
+      "en": "Model",
+      "definicion": "Programa cuyo comportamiento no se escribe regla a regla, sino que se ajusta con datos durante el entrenamiento. Ya entrenado, recibe una entrada y devuelve una salida: una predicción, una categoría o un texto. En IA generativa, «el modelo» suele ser el LLM que responde.",
+      "tema": "machine-learning",
+      "relacionados": ["llms"],
+      "fuentes": [
+        { "titulo": "Machine Learning Crash Course (Google for Developers)", "url": "https://developers.google.com/machine-learning/crash-course" }
+      ]
+    },
+    {
+      "id": "ia-agentica",
+      "termino": "IA agéntica",
+      "en": "Agentic AI",
+      "definicion": "Forma de usar la IA en la que el sistema no se limita a contestar: persigue un objetivo con cierta autonomía, planifica pasos, usa herramientas, mira el resultado y corrige el rumbo. Es el enfoque; los agentes son las piezas que lo llevan a cabo.",
+      "tema": "ai-agents",
+      "relacionados": ["generative-ai"],
+      "fuentes": [
+        { "titulo": "What is Agentic AI? (IBM)", "url": "https://www.ibm.com/think/topics/agentic-ai" }
+      ]
+    },
+    {
+      "id": "herramienta",
+      "termino": "Herramienta",
+      "en": "Tool",
+      "definicion": "Función externa que un modelo puede pedir que se ejecute (buscar en la web, consultar una base de datos, llamar a una API), descrita con un nombre, una explicación y un esquema de parámetros. El modelo no la ejecuta: devuelve la petición y la aplicación la ejecuta y le pasa el resultado.",
+      "tema": "tool-calling",
+      "relacionados": ["ai-agents", "mcp"],
+      "fuentes": [
+        { "titulo": "Tool use with Claude (documentación de Anthropic)", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview" }
+      ]
+    },
+    {
+      "id": "orquestacion",
+      "termino": "Orquestación",
+      "en": "Orchestration",
+      "definicion": "Coordinación de varios pasos, modelos o agentes para completar una tarea: qué se hace, en qué orden, qué va en paralelo y quién decide. Puede estar fijada en el código (un flujo de trabajo) o decidirla un modelo orquestador que reparte el trabajo y junta los resultados.",
+      "tema": "multi-agent-orchestration",
+      "relacionados": ["ai-agents"],
+      "fuentes": [
+        { "titulo": "Building effective agents (Anthropic)", "url": "https://www.anthropic.com/engineering/building-effective-agents" }
+      ]
+    }
+  ]
+}

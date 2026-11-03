@@ -1,0 +1,132 @@
+[
+  {
+    "id": "generative-ai-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué distingue a un modelo de IA generativa de un modelo de ML clásico?",
+    "opciones": [
+      "Que el generativo crea contenido nuevo (texto, imágenes, audio, código) en lugar de solo clasificar o predecir un valor.",
+      "Que el generativo no usa redes neuronales.",
+      "Que el generativo siempre da la respuesta correcta.",
+      "Que el generativo no necesita datos de entrenamiento."
+    ],
+    "correctas": [0],
+    "explicacion": "Un clasificador dice «esto es spam»; un modelo generativo escribe el correo. Ambos aprenden de datos, pero el generativo produce muestras nuevas.",
+    "fuentes": ["https://www.ibm.com/think/topics/generative-ai"]
+  },
+  {
+    "id": "generative-ai-002",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué es un modelo fundacional?",
+    "opciones": [
+      "Un modelo pequeño entrenado para una única tarea concreta.",
+      "Un modelo grande entrenado con datos muy amplios, sin una tarea concreta, que después se adapta a muchas.",
+      "El primer modelo de IA que se creó.",
+      "Un modelo que solo sirve para generar imágenes."
+    ],
+    "correctas": [1],
+    "explicacion": "Los modelos fundacionales sirven de base para muchas aplicaciones; se adaptan con instrucciones, ejemplos o ajuste fino. Los LLM son el tipo más extendido.",
+    "fuentes": ["https://www.ibm.com/think/topics/generative-ai"]
+  },
+  {
+    "id": "generative-ai-003",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Por qué la misma petición a un modelo generativo puede dar respuestas distintas?",
+    "opciones": [
+      "Porque el modelo se reentrena entre una petición y otra.",
+      "Porque en cada paso elige entre varias continuaciones probables, y esa elección tiene un componente aleatorio que se controla con parámetros como la temperatura.",
+      "Porque la red pierde datos entre peticiones.",
+      "Porque el proveedor cambia de modelo en cada llamada."
+    ],
+    "correctas": [1],
+    "explicacion": "La generación muestrea entre opciones probables. Bajar la temperatura la hace más predecible, pero no la convierte en exacta.",
+    "fuentes": ["https://www.ibm.com/think/topics/large-language-models"]
+  },
+  {
+    "id": "generative-ai-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué es una alucinación en IA generativa y qué la mitiga mejor?",
+    "opciones": [
+      "Un fallo de hardware; se evita con mejores GPU.",
+      "Contenido plausible pero falso; se mitiga dando al modelo las fuentes (por ejemplo con RAG) y comprobando lo importante.",
+      "Una respuesta demasiado larga; se evita limitando los tokens.",
+      "Un error de sintaxis en el prompt; se evita revisando la ortografía."
+    ],
+    "correctas": [1],
+    "explicacion": "El modelo genera lo verosímil, no lo verificado. Darle información fiable en el contexto y validar la salida reduce el problema; no lo elimina del todo.",
+    "fuentes": ["https://www.ibm.com/think/topics/generative-ai"]
+  },
+  {
+    "id": "generative-ai-005",
+    "tipo": "multiple",
+    "nivel": 1,
+    "enunciado": "¿Qué tipos de contenido puede producir la IA generativa? Elige 3.",
+    "opciones": ["Código fuente", "Imágenes", "Voz sintética", "Garantías legales de que la respuesta es correcta"],
+    "correctas": [0, 1, 2],
+    "explicacion": "Texto, código, imagen, audio, vídeo y datos sintéticos están a su alcance. Lo que no da es garantía de exactitud: la salida hay que validarla.",
+    "fuentes": ["https://www.ibm.com/think/topics/generative-ai"]
+  },
+  {
+    "id": "generative-ai-006",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "Un servicio necesita devolver el saldo exacto de una cuenta. Alguien propone pedírselo a un LLM con el historial de movimientos en el prompt. ¿Qué es lo correcto?",
+    "opciones": [
+      "Hacerlo así: el LLM sumará mejor que el código.",
+      "Calcular el saldo con código normal: es una tarea con respuesta exacta y barata; el LLM puede equivocarse y es más caro.",
+      "Usar el LLM pero con temperatura alta para que sea más creativo.",
+      "Usar un modelo de generación de imágenes."
+    ],
+    "correctas": [1],
+    "explicacion": "Las tareas deterministas con una respuesta exacta (sumar, buscar por id, validar un formato) se hacen mejor con código. El LLM aporta donde hay lenguaje o ambigüedad.",
+    "fuentes": ["https://www.ibm.com/think/topics/generative-ai"]
+  },
+  {
+    "id": "generative-ai-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué técnica se usa sobre todo para generar imágenes a partir de una descripción?",
+    "opciones": [
+      "Modelos de difusión, que parten de ruido y lo van limpiando hasta formar una imagen acorde a la descripción.",
+      "Árboles de decisión.",
+      "Expresiones regulares.",
+      "Bases de datos relacionales."
+    ],
+    "correctas": [0],
+    "explicacion": "Los modelos de difusión aprenden a eliminar ruido paso a paso, guiados por el texto. Los LLM, en cambio, se basan en el Transformer.",
+    "fuentes": ["https://www.ibm.com/think/topics/generative-ai"]
+  },
+  {
+    "id": "generative-ai-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿En qué se diferencia la IA agéntica de la IA generativa «a secas»?",
+    "opciones": [
+      "En nada: son sinónimos.",
+      "La IA agéntica usa lo que genera el modelo para perseguir un objetivo: decide acciones, usa herramientas, observa el resultado y sigue.",
+      "La IA agéntica no usa modelos de lenguaje.",
+      "La IA agéntica solo genera imágenes."
+    ],
+    "correctas": [1],
+    "explicacion": "La IA generativa produce contenido como respuesta a una petición. La IA agéntica da un paso más: aplica esas salidas a un objetivo, con autonomía y herramientas.",
+    "fuentes": ["https://www.ibm.com/think/topics/agentic-ai"]
+  },
+  {
+    "id": "generative-ai-009",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "Vas a integrar un modelo generativo de un proveedor externo en una aplicación con datos de clientes. ¿Qué precauciones son necesarias? Elige 2.",
+    "opciones": [
+      "Revisar qué datos se envían en el prompt y con qué condiciones los trata el proveedor.",
+      "Dar por buena la salida sin validarla, porque el modelo es de un proveedor conocido.",
+      "Validar la salida según lo que esté en juego (esquemas, pruebas, revisión humana).",
+      "Enviar siempre la base de datos completa para que el modelo tenga contexto."
+    ],
+    "correctas": [0, 2],
+    "explicacion": "Lo que va en el prompt sale de tu sistema, y la salida no es un dato verificado. Minimiza lo que envías y valida lo que recibes.",
+    "fuentes": ["https://www.ibm.com/think/topics/generative-ai"]
+  }
+]

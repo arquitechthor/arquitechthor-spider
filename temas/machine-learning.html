@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Machine Learning — Tech Spider</title>
+<meta name="description" content="Qué es el machine learning: modelos que aprenden de datos, tipos de aprendizaje, entrenamiento frente a inferencia y sobreajuste.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/machine-learning.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main data-ficha="machine-learning">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>El <strong>machine learning</strong> (ML, aprendizaje automático) es la parte de la IA en la que el comportamiento no
+        se programa regla a regla, sino que se <strong>aprende a partir de ejemplos</strong>. En vez de escribir
+        <code>if</code> para decidir si un correo es spam, se le dan miles de correos ya etiquetados y un algoritmo ajusta un
+        <a class="concepto" data-concepto="modelo">modelo</a> hasta que acierta con ellos; después ese modelo se aplica a correos que nunca ha visto.</p>
+      <p>Cambia el papel del programador: deja de escribir la lógica y pasa a preparar datos, elegir el tipo de modelo,
+        definir qué es "acertar" y comprobar que el resultado generaliza.</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Hay problemas en los que escribir las reglas es imposible o carísimo: reconocer una cara, entender una frase,
+        predecir la demanda de mañana o detectar un fraude que cambia de forma. El ML los resuelve encontrando el patrón en los
+        datos. Es la base de los recomendadores, la detección de fraude, la búsqueda, el reconocimiento de voz y, a través del
+        <a href="deep-learning.html">deep learning</a>, de los <a href="llms.html">LLMs</a>.</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>Datos de entrenamiento:</strong> los ejemplos de los que aprende el modelo. Cada ejemplo tiene
+          <em>características</em> (lo que se observa) y, en el aprendizaje supervisado, una <em>etiqueta</em> (la respuesta
+          correcta).</li>
+        <li><strong>Modelo y parámetros:</strong> el <a class="concepto" data-concepto="modelo">modelo</a> es una función con parámetros (pesos) que el
+          entrenamiento ajusta para que sus salidas se parezcan a las etiquetas.</li>
+        <li><strong>Función de pérdida:</strong> mide cuánto se equivoca el modelo; entrenar es ir cambiando los parámetros para
+          que baje.</li>
+        <li><strong>Entrenamiento e inferencia:</strong> entrenar es ajustar el modelo con datos (caro, se hace pocas veces);
+          inferir es usarlo para responder (barato, se hace en cada petición).</li>
+        <li><strong>Generalización y sobreajuste:</strong> lo que importa es acertar con datos nuevos. Un modelo que se aprende
+          de memoria los ejemplos (<em>sobreajuste</em>) falla fuera de ellos; por eso se reserva una parte de los datos para
+          validar y otra para la prueba final.</li>
+      </ul>
+
+      <h2 id="tipos">Tipos de aprendizaje</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tipo</th><th>Con qué aprende</th><th>Problemas típicos</th></tr></thead>
+          <tbody>
+            <tr><td>Supervisado</td><td>Ejemplos con la respuesta correcta (etiquetados).</td><td>Clasificación (¿spam o no?) y regresión (¿qué precio?).</td></tr>
+            <tr><td>No supervisado</td><td>Datos sin etiquetas: busca estructura por sí mismo.</td><td>Agrupar clientes parecidos, detectar anomalías.</td></tr>
+            <tr><td>Por refuerzo</td><td>Prueba y error: un agente recibe recompensas o castigos por sus acciones.</td><td>Juegos, robótica, ajustar un LLM con preferencias (RLHF).</td></tr>
+            <tr><td>Autosupervisado</td><td>Datos sin etiquetar de los que se fabrica la tarea: tapar una parte y predecirla.</td><td>El preentrenamiento de los LLM (predecir la siguiente palabra).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="ciclo">El ciclo de un proyecto de ML</h2>
+      <ol>
+        <li>Definir el problema y la métrica de éxito (¿qué error es aceptable?).</li>
+        <li>Reunir y limpiar datos, y separarlos en entrenamiento, validación y prueba.</li>
+        <li>Entrenar varios modelos y compararlos con los datos de validación.</li>
+        <li>Medir el elegido una sola vez con los datos de prueba.</li>
+        <li>Desplegarlo, vigilar su rendimiento con datos reales y reentrenar cuando los datos cambian.</li>
+      </ol>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Evaluar con los mismos datos con los que se entrenó.</strong> Da resultados engañosamente buenos.</li>
+        <li><strong>Fuga de datos:</strong> que entre en el entrenamiento información que no existirá al predecir (por ejemplo,
+          un campo que se rellena después del hecho que se quiere predecir).</li>
+        <li><strong>Datos sesgados:</strong> el modelo aprende los sesgos de sus ejemplos; si un grupo está mal representado,
+          fallará más con él.</li>
+        <li><strong>Usar ML cuando bastan reglas.</strong> Si la lógica cabe en unas pocas condiciones claras, un
+          <code>if</code> es más barato, explicable y fácil de probar.</li>
+      </ul>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="machine-learning"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://www.ibm.com/think/topics/machine-learning" target="_blank" rel="noopener">What is machine learning?</a> (IBM, consultada el 03/11/2026).</li>
+        <li><a href="https://developers.google.com/machine-learning/crash-course" target="_blank" rel="noopener">Machine Learning Crash Course</a> (Google for Developers, consultada el 03/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js" defer></script>
+<script src="../assets/datos.js" defer></script>
+<script src="../assets/arbol.js" defer></script>
+<script src="../assets/siglas.js" defer></script>
+<script src="../assets/preguntas.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/tema.js" defer></script>
+</body>
+</html>

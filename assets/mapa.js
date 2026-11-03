@@ -282,10 +282,11 @@
 
   function botonNodo(n, { acceso = false } = {}) {
     const area = A.area(datos, n);
-    const marca = (acceso ? ' ↗' : '') + (n.externo ? ' ☁' : '');
+    const marca = acceso ? ' ↗' : '';
+    const nube = n.externo ? '☁ ' : '';
     return `<button type="button" data-ir="${D.esc(n.id)}"${acceso ? ' data-acceso="1"' : ''}>`
       + `<span class="punto-color" style="--c:${D.esc(area ? area.color : 'var(--cyan)')}"></span>`
-      + `<span>${D.esc(D.nombreTexto(n))}${marca}</span></button>`;
+      + `<span>${nube}${D.esc(D.nombreTexto(n))}${marca}</span></button>`;
   }
 
   function pintarPanel() {
@@ -322,17 +323,26 @@
         <p class="nivel-texto">${nivel === undefined ? 'Sin marcar. Pulsa un número para indicarlo.' : `${NIVELES[nivel]} <button type="button" class="enlace-boton" data-nivel="borrar">Quitar</button>`}</p>
       </div>`);
 
+    }
+
+    // Todo nodo tiene ficha (la publicada o la genérica "Próximamente"); los temas publicados y
+    // evaluables enlazan a su evaluación, y las ramas con temas evaluables a "Evaluar esta rama".
+    if (n.tipo !== 'raiz') {
       const acciones = [];
-      if (n.externo) acciones.push(`<a class="btn btn-primary btn-sm" href="${D.esc(D.url(n.externo.url))}">Ver la guía en Apuntes AWS ↗</a>`);
-      else {
-        acciones.push(n.estado === 'publicado'
-          ? `<a class="btn btn-primary btn-sm" href="${D.esc(D.url(`temas/${n.id}.html`))}">Leer la guía</a>`
-          : '<button class="btn btn-secondary btn-sm" type="button" disabled>Guía próximamente</button>');
-        if (n.evaluable) acciones.push('<button class="btn btn-secondary btn-sm" type="button" disabled>Evaluación próximamente</button>');
+      if (n.externo) {
+        acciones.push(`<a class="btn btn-primary btn-sm" href="${D.esc(D.urlFicha(n))}">Ver la guía en Apuntes AWS ↗</a>`);
+      } else {
+        const publicada = n.estado === 'publicado';
+        acciones.push(`<a class="btn ${publicada ? 'btn-primary' : 'btn-secondary'} btn-sm" href="${D.esc(D.urlFicha(n))}">${publicada ? 'Leer la ficha' : 'Ficha (próximamente)'}</a>`);
+        if (n.tipo === 'tema' && n.evaluable) {
+          acciones.push(publicada
+            ? `<a class="btn btn-secondary btn-sm" href="${D.esc(D.urlFicha(n))}#evaluacion">Evaluarme</a>`
+            : '<button class="btn btn-secondary btn-sm" type="button" disabled>Evaluación próximamente</button>');
+        }
+        const rama = D.temasDe(datos, n.id).filter((x) => x.id !== n.id && x.estado === 'publicado' && x.evaluable && !x.externo);
+        if (rama.length) acciones.push(`<a class="btn btn-secondary btn-sm" href="${D.esc(D.url(`evaluacion.html?id=${n.id}`))}">Evaluar esta rama</a>`);
       }
       partes.push(`<div class="panel-acciones">${acciones.join('')}</div>`);
-    } else if (n.externo) {
-      partes.push(`<div class="panel-acciones"><a class="btn btn-primary btn-sm" href="${D.esc(D.url(n.externo.url))}">Abrir Apuntes AWS ↗</a></div>`);
     }
 
     if (n.tipo !== 'tema') {
@@ -482,7 +492,7 @@
         const area = A.area(datos, n);
         return `<li role="option" id="res-${i}" data-i="${i}" aria-selected="false">
           <span class="punto-color" style="--c:${D.esc(area ? area.color : 'var(--cyan)')}"></span>
-          <span><span class="res-nombre">${D.esc(D.nombreTexto(n))}${n.externo ? ' ☁' : ''}</span>
+          <span><span class="res-nombre">${n.externo ? '☁ ' : ''}${D.esc(D.nombreTexto(n))}</span>
           <span class="res-ruta">${D.esc(TIPO[n.tipo])}${rutaCorta(n) ? ` · ${D.esc(rutaCorta(n))}` : ''}</span></span></li>`;
       }).join('')
       : '<li class="res-vacio" role="option" aria-disabled="true">Sin resultados</li>';

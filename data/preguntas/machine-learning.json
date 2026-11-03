@@ -1,0 +1,154 @@
+[
+  {
+    "id": "machine-learning-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué cambia en el trabajo del programador cuando un problema se resuelve con ML en lugar de con reglas?",
+    "opciones": [
+      "Nada: sigue escribiendo cada condición a mano.",
+      "Deja de escribir la lógica y pasa a preparar datos, elegir el modelo, definir qué es acertar y comprobar que generaliza.",
+      "Ya no tiene que probar nada, porque el modelo se valida solo.",
+      "Solo tiene que elegir el lenguaje de programación."
+    ],
+    "correctas": [1],
+    "explicacion": "En ML la lógica se aprende de ejemplos. El trabajo se desplaza a los datos, a la métrica de éxito y a comprobar que el modelo acierta con casos que no ha visto.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course"]
+  },
+  {
+    "id": "machine-learning-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "En el contexto del ML, ¿qué es un modelo?",
+    "opciones": [
+      "La base de datos donde se guardan los ejemplos de entrenamiento.",
+      "Una función con parámetros que el entrenamiento ajusta a partir de datos y que, ya entrenada, convierte una entrada en una salida.",
+      "El diagrama de clases de la aplicación.",
+      "El conjunto de reglas que el programador escribe a mano."
+    ],
+    "correctas": [1],
+    "explicacion": "Un modelo es un programa cuyo comportamiento se ajusta con datos: sus parámetros (pesos) cambian durante el entrenamiento y después se usa para inferir sobre entradas nuevas.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course"]
+  },
+  {
+    "id": "machine-learning-003",
+    "tipo": "emparejar",
+    "nivel": 1,
+    "enunciado": "Empareja cada tipo de aprendizaje con un problema típico.",
+    "opciones": ["Supervisado", "No supervisado", "Por refuerzo", "Autosupervisado"],
+    "destinos": [
+      "Agrupar clientes parecidos sin saber de antemano qué grupos hay.",
+      "Predecir la siguiente palabra de un texto enorme sin etiquetar, como en el preentrenamiento de un LLM.",
+      "Decidir si un correo es spam a partir de miles de correos ya etiquetados.",
+      "Aprender a jugar a un juego recibiendo puntos al ganar y al perder."
+    ],
+    "correctas": [2, 0, 3, 1],
+    "explicacion": "Supervisado: ejemplos con la respuesta correcta. No supervisado: buscar estructura sin etiquetas. Por refuerzo: prueba y error con recompensas. Autosupervisado: la tarea se fabrica a partir de los propios datos (tapar una parte y predecirla).",
+    "fuentes": ["https://www.ibm.com/think/topics/machine-learning"]
+  },
+  {
+    "id": "machine-learning-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un modelo acierta el 99 % con los datos de entrenamiento pero solo el 60 % con datos nuevos. ¿Qué le pasa?",
+    "opciones": [
+      "Está bien entrenado: lo que importa es el resultado con los datos de entrenamiento.",
+      "Sufre sobreajuste: se ha aprendido de memoria los ejemplos en lugar del patrón general.",
+      "Le faltan parámetros para aprender.",
+      "Los datos nuevos están mal porque no coinciden con los de entrenamiento."
+    ],
+    "correctas": [1],
+    "explicacion": "Lo que cuenta es generalizar. Una gran diferencia entre el rendimiento con los datos de entrenamiento y con datos nuevos es la señal clásica de sobreajuste.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course"]
+  },
+  {
+    "id": "machine-learning-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Para qué se reserva una parte de los datos como conjunto de prueba y no se usa durante el entrenamiento ni para elegir modelo?",
+    "opciones": [
+      "Para tener una copia de seguridad por si se pierden los datos.",
+      "Para medir una sola vez, al final, cómo se comportará el modelo con datos que nunca ha visto.",
+      "Para entrenar más rápido.",
+      "Para que el modelo tenga más ejemplos con los que memorizar."
+    ],
+    "correctas": [1],
+    "explicacion": "El conjunto de validación sirve para comparar modelos; el de prueba da una estimación honesta del rendimiento real. Si se usa para tomar decisiones, deja de ser independiente.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course"]
+  },
+  {
+    "id": "machine-learning-006",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "Para predecir si un cliente se dará de baja, el equipo entrena con una columna «motivo de la baja» que solo se rellena cuando el cliente ya se ha ido. El modelo acierta casi siempre en las pruebas y falla en producción. ¿Qué ha ocurrido?",
+    "opciones": [
+      "Sobreajuste por tener pocos datos.",
+      "Fuga de datos: el modelo usó información que no existe en el momento de predecir.",
+      "El modelo es demasiado pequeño.",
+      "Los datos de producción están corruptos."
+    ],
+    "correctas": [1],
+    "explicacion": "Esa columna delata la respuesta y solo existe después del hecho que se quiere predecir. En pruebas parece magia y en producción no está disponible: es una fuga de datos.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course"]
+  },
+  {
+    "id": "machine-learning-007",
+    "tipo": "ordenar",
+    "nivel": 2,
+    "enunciado": "Ordena los pasos de un proyecto de ML.",
+    "opciones": [
+      "Medir el modelo elegido una sola vez con los datos de prueba.",
+      "Definir el problema y la métrica de éxito.",
+      "Desplegar, vigilar con datos reales y reentrenar cuando cambien.",
+      "Reunir y limpiar los datos, y separarlos en entrenamiento, validación y prueba.",
+      "Entrenar varios modelos y compararlos con los datos de validación."
+    ],
+    "correctas": [1, 3, 4, 0, 2],
+    "explicacion": "Primero el qué y cómo se mide; después los datos; luego entrenar y comparar con validación; la prueba final una sola vez; y por último producción, que no es el final: hay que vigilar y reentrenar.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course"]
+  },
+  {
+    "id": "machine-learning-008",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "¿Qué afirmaciones sobre entrenamiento e inferencia son correctas? Elige 2.",
+    "opciones": [
+      "Entrenar es caro y se hace pocas veces; inferir es barato y se hace en cada petición.",
+      "Inferir consiste en ajustar los parámetros del modelo.",
+      "Durante la inferencia el modelo usa los parámetros que aprendió para responder a entradas nuevas.",
+      "Entrenar y inferir son lo mismo con distinto nombre."
+    ],
+    "correctas": [0, 2],
+    "explicacion": "El entrenamiento ajusta los parámetros a partir de datos; la inferencia los usa, sin cambiarlos, para responder.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course"]
+  },
+  {
+    "id": "machine-learning-009",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Hay que validar que un código postal tenga cinco dígitos. ¿Tiene sentido usar ML?",
+    "opciones": [
+      "Sí: el ML siempre es más fiable que una regla.",
+      "No: es una regla clara y exacta; una expresión regular es más barata, explicable y fácil de probar.",
+      "Sí, pero solo con deep learning.",
+      "Solo si hay más de un millón de códigos postales."
+    ],
+    "correctas": [1],
+    "explicacion": "El ML brilla cuando las reglas son imposibles o carísimas de escribir. Si la lógica cabe en una condición clara, el código normal gana.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course"]
+  },
+  {
+    "id": "machine-learning-010",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "En un problema supervisado, ¿qué mide la función de pérdida?",
+    "opciones": [
+      "Cuántos datos se han perdido al limpiarlos.",
+      "Cuánto se equivoca el modelo respecto a las etiquetas; entrenar es cambiar los parámetros para que baje.",
+      "El tiempo que tarda el modelo en responder.",
+      "La memoria que ocupa el modelo."
+    ],
+    "correctas": [1],
+    "explicacion": "La pérdida cuantifica el error del modelo en los ejemplos. El entrenamiento busca los parámetros que la minimizan.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course"]
+  }
+]

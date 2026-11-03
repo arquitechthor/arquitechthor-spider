@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Large Language Models (LLMs) — Tech Spider</title>
+<meta name="description" content="Qué es un LLM: tokens, preentrenamiento, ajuste e inferencia, ventana de contexto, y qué limitaciones hay que tener en cuenta al integrarlo.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/llms.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main data-ficha="llms">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>Un <strong>LLM</strong> (modelo de lenguaje grande) es un <a class="concepto" data-concepto="modelo">modelo</a> de
+        <a href="deep-learning.html">deep learning</a>, casi siempre con arquitectura Transformer, entrenado con enormes
+        cantidades de texto para hacer una sola cosa: <strong>predecir el siguiente fragmento de texto</strong>. Repitiendo esa
+        predicción una y otra vez escribe respuestas completas, y de esa tarea tan simple surgen capacidades amplias:
+        resumir, traducir, programar, razonar sobre un problema o seguir instrucciones.</p>
+      <p>"Grande" se refiere al número de parámetros (miles de millones) y al volumen de texto de entrenamiento. Es el tipo más
+        extendido de modelo fundacional de la <a href="generative-ai.html">IA generativa</a>.</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Es la pieza que hay detrás de los chats, de los asistentes de código y de los <a href="ai-agents.html">agentes</a>.
+        Para un ingeniero, un LLM es una dependencia más: se llama por API, cuesta dinero por uso, tiene latencia, falla a
+        veces y su salida hay que validarla. Entender cómo funciona por dentro explica sus límites y cómo integrarlo bien.</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>Token:</strong> la unidad con la que trabaja el modelo: una palabra, un trozo de palabra o un signo. Se
+          cobra y se limita por tokens, no por palabras (ver <a href="../tema.html?id=tokens-context-window">Tokens y ventana de
+          contexto</a>).</li>
+        <li><strong>Ventana de contexto:</strong> cuántos tokens puede tener en cuenta a la vez (instrucciones, conversación,
+          documentos y respuesta). Lo que no cabe, no existe para el modelo.</li>
+        <li><strong>Preentrenamiento:</strong> la fase cara: predecir el siguiente token sobre una cantidad enorme de texto. De
+          ahí sale un modelo que sabe continuar texto, pero no necesariamente seguir instrucciones.</li>
+        <li><strong>Ajuste posterior:</strong> se le enseña a seguir instrucciones y a comportarse como asistente, con ejemplos
+          y con preferencias humanas (RLHF y técnicas parecidas).</li>
+        <li><strong>Inferencia:</strong> usar el modelo ya entrenado. El modelo no aprende de tus conversaciones al responder;
+          lo que "recuerda" es lo que le envías en cada petición.</li>
+        <li><strong>Muestreo:</strong> en cada paso hay varios tokens posibles con distinta probabilidad; parámetros como la
+          temperatura deciden cuánto se arriesga al elegir (<a href="../tema.html?id=sampling-parameters">Sampling
+          Parameters</a>).</li>
+      </ul>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>Una llamada típica envía a la API un mensaje de sistema (el papel y las reglas), la conversación y, a menudo,
+        documentos o datos de contexto; recibe texto o, si se pide, una salida estructurada (por ejemplo JSON que cumpla un
+        esquema). Elegir modelo es equilibrar calidad, coste y latencia: un modelo pequeño puede bastar para clasificar y uno
+        grande compensar en tareas complejas.</p>
+
+      <h2 id="limites">Limitaciones que hay que diseñar</h2>
+      <ul>
+        <li><strong>Alucinaciones:</strong> genera texto plausible aunque no sea cierto. Dale las fuentes
+          (<a href="../tema.html?id=rag">RAG</a>) y comprueba lo importante.</li>
+        <li><strong>Fecha de corte:</strong> su conocimiento acaba donde acabaron sus datos de entrenamiento.</li>
+        <li><strong>No determinismo:</strong> la misma petición puede dar respuestas distintas; las pruebas tienen que contar con
+          ello (<a href="../tema.html?id=evals">evaluaciones</a>).</li>
+        <li><strong>Inyección de prompts:</strong> texto malicioso dentro de los datos puede intentar darle órdenes; trata todo
+          lo que no escribiste tú como no confiable.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="llms"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://www.ibm.com/think/topics/large-language-models" target="_blank" rel="noopener">What are large language models (LLMs)?</a> (IBM, consultada el 03/11/2026).</li>
+        <li><a href="https://developers.google.com/machine-learning/crash-course/llm" target="_blank" rel="noopener">Introduction to Large Language Models</a> (Google for Developers, consultada el 03/11/2026).</li>
+        <li><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Attention Is All You Need</a> (Vaswani et al., 2017, consultada el 03/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js" defer></script>
+<script src="../assets/datos.js" defer></script>
+<script src="../assets/arbol.js" defer></script>
+<script src="../assets/siglas.js" defer></script>
+<script src="../assets/preguntas.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/tema.js" defer></script>
+</body>
+</html>

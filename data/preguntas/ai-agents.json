@@ -1,0 +1,153 @@
+[
+  {
+    "id": "ai-agents-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué distingue a un agente de IA de un chat que responde preguntas?",
+    "opciones": [
+      "Que el agente usa un modelo más grande.",
+      "Que el agente recibe un objetivo y decide por sí mismo qué pasos dar, usando herramientas en bucle hasta cumplirlo.",
+      "Que el agente nunca necesita a una persona.",
+      "Que el agente no usa LLM."
+    ],
+    "correctas": [1],
+    "explicacion": "El agente actúa: elige una acción, observa el resultado y decide la siguiente, en bucle, hasta terminar o pedir ayuda.",
+    "fuentes": ["https://www.ibm.com/think/topics/ai-agents", "https://www.anthropic.com/engineering/building-effective-agents"]
+  },
+  {
+    "id": "ai-agents-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué es la IA agéntica?",
+    "opciones": [
+      "Una marca comercial de un modelo concreto.",
+      "El enfoque en el que la IA persigue un objetivo con cierta autonomía (planifica, usa herramientas, observa y corrige); los agentes son las piezas que lo llevan a cabo.",
+      "Un tipo de red neuronal para imágenes.",
+      "Un sinónimo de IA generativa."
+    ],
+    "correctas": [1],
+    "explicacion": "La IA agéntica es el enfoque; los agentes, sus componentes. Va más allá de generar contenido: lo aplica a conseguir un objetivo.",
+    "fuentes": ["https://www.ibm.com/think/topics/agentic-ai"]
+  },
+  {
+    "id": "ai-agents-003",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un agente decide consultar el tiempo con la herramienta get_weather. ¿Quién ejecuta realmente esa consulta?",
+    "opciones": [
+      "El modelo, que tiene acceso directo a internet.",
+      "La aplicación: el modelo devuelve una petición estructurada con el nombre de la herramienta y sus parámetros, la aplicación la ejecuta y le devuelve el resultado.",
+      "El usuario, a mano.",
+      "Nadie: el modelo se inventa el resultado."
+    ],
+    "correctas": [1],
+    "explicacion": "En el uso de herramientas, el modelo solo pide; ejecuta tu código (o, en las herramientas de servidor, la plataforma del proveedor) y el resultado vuelve al modelo en la siguiente petición.",
+    "fuentes": ["https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"]
+  },
+  {
+    "id": "ai-agents-004",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "¿Qué necesita el modelo para saber cuándo y cómo usar una herramienta? Elige 3.",
+    "opciones": [
+      "Un nombre claro.",
+      "Una descripción de qué hace y cuándo usarla.",
+      "Un esquema de los parámetros que acepta.",
+      "El código fuente completo de la herramienta."
+    ],
+    "correctas": [0, 1, 2],
+    "explicacion": "El modelo solo sabe de la herramienta lo que dice su definición: nombre, descripción y esquema. Si la descripción es ambigua, la usará mal; el código fuente no lo ve.",
+    "fuentes": ["https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"]
+  },
+  {
+    "id": "ai-agents-005",
+    "tipo": "ordenar",
+    "nivel": 1,
+    "enunciado": "Ordena una vuelta del bucle de un agente.",
+    "opciones": [
+      "Observar el resultado de la acción.",
+      "Decidir la siguiente acción a partir del objetivo y de lo que sabe.",
+      "Comprobar si el objetivo está cumplido para parar o repetir.",
+      "Ejecutar la acción con una herramienta."
+    ],
+    "correctas": [1, 3, 0, 2],
+    "explicacion": "Pensar, actuar, observar y decidir si sigue. La condición de parada (objetivo cumplido, límite de pasos o petición de ayuda) es parte esencial del bucle.",
+    "fuentes": ["https://www.anthropic.com/engineering/building-effective-agents"]
+  },
+  {
+    "id": "ai-agents-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué diferencia un flujo de trabajo (workflow) de un agente?",
+    "opciones": [
+      "En el flujo de trabajo los pasos están fijados en el código; en el agente los decide el modelo en cada vuelta.",
+      "El flujo de trabajo no usa LLM.",
+      "El agente siempre es más barato.",
+      "No hay diferencia."
+    ],
+    "correctas": [0],
+    "explicacion": "Ambos son formas de orquestación. El flujo de trabajo sigue un camino predefinido y es más predecible; el agente dirige su propio proceso y encaja en tareas abiertas.",
+    "fuentes": ["https://www.anthropic.com/engineering/building-effective-agents"]
+  },
+  {
+    "id": "ai-agents-007",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "Hay que clasificar cada ticket de soporte en tres colas y redactar una respuesta con una plantilla distinta por cola. Los pasos son siempre los mismos. ¿Qué diseño es más adecuado?",
+    "opciones": [
+      "Un sistema multiagente con un orquestador y un agente por cola.",
+      "Un flujo de trabajo: una llamada que clasifica y, según la cola, otra que redacta (enrutamiento).",
+      "Un único agente con acceso a todo el sistema de soporte.",
+      "Ninguno: no se puede hacer con IA."
+    ],
+    "correctas": [1],
+    "explicacion": "Si los pasos se conocen de antemano, un flujo fijo es más barato, rápido y fácil de probar. La recomendación es empezar por lo más simple que funcione y añadir autonomía solo si hace falta.",
+    "fuentes": ["https://www.anthropic.com/engineering/building-effective-agents"]
+  },
+  {
+    "id": "ai-agents-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "En un sistema multiagente, ¿qué hace la orquestación?",
+    "opciones": [
+      "Ejecuta las herramientas en lugar de la aplicación.",
+      "Coordina el trabajo: reparte la tarea en partes, decide qué agente hace cada una y en qué orden, y junta los resultados.",
+      "Aumenta la ventana de contexto de cada modelo.",
+      "Entrena a los agentes mientras trabajan."
+    ],
+    "correctas": [1],
+    "explicacion": "La orquestación decide qué se hace, en qué orden y quién lo hace. Puede estar en el código (flujo fijo) o en un modelo orquestador que reparte el trabajo entre otros agentes.",
+    "fuentes": ["https://www.anthropic.com/engineering/building-effective-agents", "https://www.ibm.com/think/topics/agentic-ai"]
+  },
+  {
+    "id": "ai-agents-009",
+    "tipo": "multiple",
+    "nivel": 3,
+    "enunciado": "Vas a dar a un agente acceso a la API de pagos de tu empresa. ¿Qué medidas son imprescindibles? Elige 3.",
+    "opciones": [
+      "Darle solo los permisos que necesita para su tarea (mínimo privilegio).",
+      "Pedir confirmación humana antes de cualquier acción irreversible, como un pago.",
+      "Poner límites de pasos, tiempo y coste, y registrar cada acción.",
+      "Darle permisos de administrador para que no se quede bloqueado."
+    ],
+    "correctas": [0, 1, 2],
+    "explicacion": "Un agente puede equivocarse o ser manipulado por texto malicioso. Mínimo privilegio, una persona en el bucle para lo irreversible y límites con registro reducen el daño posible.",
+    "fuentes": ["https://www.ibm.com/think/topics/ai-agents", "https://www.anthropic.com/engineering/building-effective-agents"]
+  },
+  {
+    "id": "ai-agents-010",
+    "tipo": "emparejar",
+    "nivel": 2,
+    "enunciado": "Empareja cada componente de un agente con su función.",
+    "opciones": ["Modelo", "Herramientas", "Bucle", "Memoria"],
+    "destinos": [
+      "Lo que el agente conserva entre pasos o sesiones, porque la ventana de contexto es limitada.",
+      "Razona sobre el objetivo y decide la siguiente acción.",
+      "Pensar, actuar, observar y repetir hasta una condición de parada.",
+      "Funciones externas, descritas con nombre, explicación y esquema, que la aplicación ejecuta a petición del modelo."
+    ],
+    "correctas": [1, 3, 2, 0],
+    "explicacion": "El modelo decide, las herramientas actúan, el bucle encadena los pasos y la memoria guarda lo que no cabe en el contexto.",
+    "fuentes": ["https://www.ibm.com/think/topics/ai-agents"]
+  }
+]

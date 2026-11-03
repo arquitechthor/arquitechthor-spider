@@ -3150,27 +3150,79 @@
     "padre": "software-engineer",
     "area": "ai",
     "color": "#6a5eed",
-    "frase": "Modelos de lenguaje, agentes, integración en aplicaciones, producción y gobierno de la IA."
+    "frase": "Modelos de lenguaje, agentes, integración en aplicaciones, producción y gobierno de la IA.",
+    "estado": "publicado",
+    "volatil": true,
+    "revisado": "2026-11-03"
   },
   {
     "id": "artificial-intelligence",
     "nombre": "Artificial Intelligence",
     "nombreEs": "Inteligencia artificial",
-    "tipo": "bloque",
+    "tipo": "tema",
     "padre": "ai",
     "area": "ai",
-    "frase": "IA generativa, modelos de lenguaje, prompts, RAG, ajuste fino y agentes autónomos."
+    "frase": "Máquinas que aprenden, razonan y deciden: el paraguas de ML, deep learning y modelos.",
+    "estado": "publicado",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "revisado": "2026-11-03",
+    "alias": [
+      "IA",
+      "AI"
+    ]
+  },
+  {
+    "id": "machine-learning",
+    "nombre": "Machine Learning",
+    "nombreEs": "Aprendizaje automático",
+    "tipo": "tema",
+    "padre": "artificial-intelligence",
+    "area": "ai",
+    "frase": "Sistemas que descubren patrones en datos de ejemplo en vez de seguir reglas escritas.",
+    "estado": "publicado",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "revisado": "2026-11-03",
+    "alias": [
+      "ML"
+    ]
+  },
+  {
+    "id": "deep-learning",
+    "nombre": "Deep Learning",
+    "nombreEs": "Aprendizaje profundo",
+    "tipo": "tema",
+    "padre": "artificial-intelligence",
+    "area": "ai",
+    "frase": "Redes neuronales de muchas capas que extraen solas los rasgos de imagen, voz o texto.",
+    "estado": "publicado",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "revisado": "2026-11-03",
+    "alias": [
+      "DL"
+    ]
   },
   {
     "id": "generative-ai",
     "nombre": "Generative AI",
+    "nombreEs": "IA generativa",
     "tipo": "tema",
     "padre": "artificial-intelligence",
     "area": "ai",
-    "estado": "pendiente",
+    "frase": "Modelos que crean contenido nuevo (texto, imagen, audio o código) a partir de un prompt.",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
-    "volatil": true
+    "volatil": true,
+    "revisado": "2026-11-03",
+    "alias": [
+      "GenAI"
+    ]
   },
   {
     "id": "llms",
@@ -3178,10 +3230,12 @@
     "tipo": "tema",
     "padre": "artificial-intelligence",
     "area": "ai",
-    "estado": "pendiente",
+    "frase": "Redes Transformer que predicen el siguiente token tras leer enormes cantidades de texto.",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
     "volatil": true,
+    "revisado": "2026-11-03",
     "alias": [
       "LLM"
     ]
@@ -3352,13 +3406,16 @@
   {
     "id": "ai-agents",
     "nombre": "AI Agents",
+    "nombreEs": "Agentes de IA",
     "tipo": "tema",
     "padre": "artificial-intelligence",
     "area": "ai",
-    "estado": "pendiente",
+    "frase": "Un LLM que decide en bucle qué herramienta usar hasta cumplir el objetivo que le dan.",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
-    "volatil": true
+    "volatil": true,
+    "revisado": "2026-11-03"
   },
   {
     "id": "tool-calling",

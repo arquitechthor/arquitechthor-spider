@@ -32,11 +32,15 @@ línea al "Registro de sesiones".
 - **3.5 publicada (2026-11-03):** buscador, "Color por" área/mi nivel y filtros.
 - **3.6 publicada (2026-11-03):** vista Cajas y conmutador "Telaraña | Cajas", pendiente de que el
   usuario la pruebe en producción.
-- **Próximo paso:** 3.7 (responsive), 3.8 (radar) y 3.9 (vista general). **Tarea 2.6 casi cerrada (2026-11-03):**
+- **Piloto de IA (2026-11-03), pendiente de revisión del usuario:** regla "todo nodo tiene ficha",
+  fichas publicadas del área IA y de 6 temas (IA, ML, DL, IA generativa, LLMs, agentes) con 57
+  preguntas, glosario de siglas y conceptos con tooltip y enlace, evaluación por tema y por rama.
+- **Próximo paso:** revisión del piloto con el usuario; después 3.7 (responsive), 3.8 (radar) y
+  3.9 (vista general), y la pasada de bloques candidatos a tema (4.5). **Tarea 2.6 casi cerrada (2026-11-03):**
   enlaces publicados en `kopi-web`, `aws-cert-study`, `arquitechthor.github.io` y
   `kopi-chess`; falta `kopi-docs/politicas.md`, que no está versionado y vive en otro ordenador: se
   actualiza cuando se trabaje allí (política "Mismo menú y pie": añadir Tech Spider a la lista).
-- **Última actualización:** 2026-11-03 (vista Cajas publicada)
+- **Última actualización:** 2026-11-03 (piloto de fichas y evaluaciones de IA)
 
 ---
 
@@ -128,7 +132,7 @@ arquitechthor-spider/
 ├── data/
 │   ├── nodos.json            # árbol completo, lista plana: ÚNICA fuente de verdad
 │   ├── certificaciones.json  # certificaciones temáticas (Fase 6)
-│   ├── siglas.json           # glosario de siglas para los tooltips (JVM, ORM, CQRS, ACID…)
+│   ├── glosario.json         # siglas (tooltip y enlace a su ficha) y conceptos sin ficha propia
 │   └── preguntas/<id>.json   # preguntas por tema
 ├── assets/
 │   ├── datos.js              # cargador común (window.SpiderDatos): rutas, árbol, progreso
@@ -193,7 +197,7 @@ Los campos opcionales **se omiten** cuando están vacíos o tienen su valor por 
 | Campo | Uso |
 |---|---|
 | `id` | kebab-case, único, estable (es la URL y la clave del progreso; **nunca se renombra** tras publicar). En inglés, derivado del nombre; los de AWS coinciden con los de aws-cert-study. |
-| `tipo` | `raiz`, `area`, `bloque` o `tema`. **`bloque`** = nodo que solo agrupa, sin guía ni preguntas propias: los hijos directos de un área y algunos de nivel 3 (las 7 categorías de AWS, Java Ecosystem de IA y Domain Knowledge); se muestra con `tema.html?id=`. **`tema`** = nodo con guía propia, tenga hijos o no (Java, Spring Data, LLMs…); TypeScript es un tema colgado directamente del área. Solo los temas llevan `estado`, `evaluable`, `prioridad`, `volatil` y `revisado`. |
+| `tipo` | `raiz`, `area`, `bloque` o `tema`. **`bloque`** = nodo que agrupa, con **ficha de presentación** pero sin preguntas propias (se evalúa su rama, ver 5.2): los hijos directos de un área y algunos de nivel 3 (las 7 categorías de AWS, Java Ecosystem de IA y Domain Knowledge); se muestra con `tema.html?id=`. **`tema`** = nodo con guía propia, tenga hijos o no (Java, Spring Data, LLMs…); TypeScript es un tema colgado directamente del área. Solo los temas llevan `evaluable` y `prioridad`; `estado`, `revisado` y `volatil` los llevan los temas y, cuando se publica su ficha, también áreas y bloques. |
 | `padre` | ubicación principal en el mapa. |
 | `accesos` | otros padres donde el nodo aparece como **acceso** (borde discontinuo y ↗, lleva al nodo real). Resuelve los duplicados sin copiar progreso ni preguntas: `solid` vive en "Principios de diseño" y tiene acceso en "Principios de arquitectura". En el padre del acceso se pinta **después de sus hijos propios**. |
 | `area` | área de nivel 1; redundante con `padre` pero ahorra recorridos y el validador la comprueba. |
@@ -266,6 +270,17 @@ directamente en `data/nodos.json` (el importador ya no se usa; con `--forzar` se
   Least Privilege for Agents ↔ Authorization; Prompt Caching ↔ Caching.
 - Resultado: 364 nodos (antes 322), 276 hojas. Ningún nodo pasa de 9 hijos ni ningún área de 6
   bloques, así que la telaraña de dos anillos no cambia.
+
+**2026-11-03: piloto de IA** (pedido por el usuario, con la regla "todo nodo tiene ficha"):
+- `artificial-intelligence` pasa de **bloque a tema** (tiene conocimiento propio: qué es la IA y
+  cómo encajan IA, ML, DL e IA generativa), con alias IA y AI.
+- Nuevos temas **Machine Learning** (`machine-learning`, "Aprendizaje automático") y **Deep
+  Learning** (`deep-learning`, "Aprendizaje profundo") como **hermanos** de Generative AI bajo
+  Inteligencia artificial, no anidados (IA › ML › DL › IA generativa › LLMs enterraría LLMs cinco
+  niveles abajo; la jerarquía la explica la ficha de IA). Criterio aprobado por el usuario.
+- `nombreEs` nuevos: Generative AI → "IA generativa", AI Agents → "Agentes de IA".
+- Publicadas las fichas del área `ai` (presentación) y de 6 temas (IA, ML, DL, IA generativa, LLMs,
+  Agentes de IA), con 57 preguntas. Resultado: 357 nodos (63 bloques, 280 temas).
 
 ### 4.3 Preguntas: `data/preguntas/<id>.json`
 
@@ -449,9 +464,28 @@ gráfico de radar de 13 ejes (uno por área) con dos capas, **resultado en tests
 **autoevaluación**. Es el resumen de "cómo es mi perfil". Clic en un eje = enfocar esa área en el
 mapa. SVG propio en `assets/radar.js`, sin librería.
 
-### 5.2 Página de tema (`temas/<id>.html`)
+### 5.2 Fichas (`temas/<id>.html`)
 
-Copiada de `plantillas/tema.html`. Estructura fija:
+**Todo nodo tiene ficha** (decisión del usuario, 2026-11-03), también los que solo agrupan, para
+que se entienda qué son y por qué importan:
+
+| Tipo | Ficha | Evaluación |
+|---|---|---|
+| **Tema** (con o sin subtemas con ficha) | Guía completa (estructura de abajo) | Propia (mínimo 5, objetivo 8–15) y, si tiene subtemas publicados, "Evaluar esta rama" |
+| **Bloque o área** | **Presentación**: qué es, qué significan sus siglas, por qué importa (uso real, peso en el mercado), qué contiene y por dónde empezar | Sin preguntas propias: "Evaluar esta rama" junta las de sus temas |
+
+**Criterio bloque → tema:** un bloque pasa a ser tema cuando tiene **conocimiento propio que no
+cubren sus hijos** (ejemplo: "Bases de datos relacionales (SQL)": el modelo relacional, el lenguaje
+SQL y su peso en el mercado no caben en las fichas de PostgreSQL o MySQL). Si solo reúne cosas que
+se explican por separado (Maven y Gradle), se queda como bloque con su presentación. Pendiente: una
+pasada por los 63 bloques con la lista de candidatos para que decida el usuario (tarea 4.5).
+**No enterrar temas:** se prefiere la ubicación más plana que siga siendo correcta; la jerarquía
+conceptual se explica en la ficha del padre.
+
+Copiada de `plantillas/tema.html`. La cabecera (migas, icono, nombre y original, "En una frase",
+fecha de revisión, botones "Evaluarme", "Ver en el mapa" y "Evaluar esta rama"), "Qué contiene"
+(hijos como cajas) y "Relacionados" los pinta `assets/tema.js` desde `nodos.json`. Estructura de
+un tema:
 1. Cabecera: migas de pan (ruta en el árbol, enlazadas al mapa), nombre, "En una frase:",
    certificaciones, prioridad, autoevaluación.
 2. **Qué es y para qué sirve.**
@@ -463,8 +497,18 @@ Copiada de `plantillas/tema.html`. Estructura fija:
 8. **Fuentes y documentación oficial.**
 9. **Evaluación** (`<div class="quiz" data-quiz="<id>">`) con 5–15 preguntas.
 
-Mismas reglas de contenido que aws-cert-study: siglas con tooltip (`revisar_texto.py` +
-`siglas.json`), enlazar la primera mención de otro tema por sección, nada copiado.
+Mismas reglas de contenido que aws-cert-study (enlazar la primera mención de otro tema por
+sección, nada copiado), con siglas y conceptos así:
+- **Siglas:** se escriben tal cual ("IA", "LLM"). `assets/siglas.js` las marca **al cargar** desde
+  `data/glosario.json` (no hay `revisar_texto.py`): tooltip con el inglés y una explicación, y si la
+  sigla tiene ficha o concepto (`enlace`), su primera aparición en cada sección enlaza a ella
+  (salvo en su propia ficha). Una sigla nueva solo necesita su entrada en el glosario. En las
+  preguntas se marcan sin enlace.
+- **Conceptos** (términos que no merecen nodo: modelo, IA agéntica, herramienta, orquestación):
+  viven en `glosario.json` con definición propia, el tema que los trata a fondo, relacionados y
+  fuentes; se ven en `glosario.html` (con ancla por concepto) y en las fichas se enlazan a mano con
+  `<a class="concepto" data-concepto="<id>">`, que recibe el mismo tooltip. Sus preguntas van en la
+  evaluación del tema que los trata.
 
 `tema.html?id=` genérica: para un **bloque o área** muestra su descripción, sus hijos como
 tarjetas y "Evaluar esta rama"; para un **tema pendiente** muestra "Próximamente" con su frase,
@@ -473,6 +517,11 @@ uno `externo` enlaza a aws-cert-study.
 
 ### 5.3 Evaluación por tema y por rama (`evaluacion.html`)
 
+- **Hecho (2026-11-03):** el test al final de cada ficha (`data-quiz`) y
+  `evaluacion.html?id=<nodo>` con **todas** las preguntas de los temas publicados y evaluables de
+  la rama, agrupadas por tema (`data-rama`). Cada respuesta cuenta en el progreso de su tema
+  (`spider.progreso`), se responda donde se responda. Lo de abajo (muestra al azar, desglose,
+  repaso, diagnóstico) sigue pendiente.
 - **Tema:** el test al final de cada guía (como aws-cert-study) y también en
   `evaluacion.html?id=<tema>`.
 - **Rama:** `evaluacion.html?id=<bloque|area>&n=10|20|40&nivel=1-3` saca preguntas al azar de
@@ -641,19 +690,26 @@ Completa el 2026-11-02.
 - [ ] 3.9 "Vista general" radial completa (pantallas anchas); puede ir después de la Fase 5.
 
 ### Fase 4: guías
-- [ ] 4.1 `plantillas/tema.html` y `tema.html?id=` genérica (bloques, pendientes, externos).
-- [ ] 4.2 `scripts/revisar_texto.py` adaptado (glosario de siglas propio, enlaces entre temas,
-      "En una frase:").
+- [x] 4.1 (2026-11-03) `plantillas/tema.html`, `assets/tema.js` y `tema.html?id=` genérica
+      ("Ficha próximamente" con lo que contiene y sus relacionados; redirige si ya está publicada
+      o es de AWS). El panel del mapa enlaza siempre a la ficha.
+- [x] 4.2 (2026-11-03) Siglas y conceptos **sin** `revisar_texto.py`: `data/glosario.json` +
+      `assets/siglas.js` (marcado al cargar, enlace a la ficha) y `glosario.html`. El validador
+      comprueba el glosario.
 - [ ] 4.3 `scripts/generar_sitemap.py`.
-- [ ] 4.4 Publicar las 3 primeras guías de la ruta D5 como piloto y revisar el formato con el
-      usuario antes de seguir.
+- [x] 4.4 Piloto: en lugar de 3 guías de Java, el usuario pidió el de IA (2026-11-03): ficha de
+      presentación del área `ai` y 6 temas con 57 preguntas. **Pendiente de revisión del usuario.**
+- [ ] 4.5 Pasada por los 63 bloques con el criterio bloque → tema (5.2): lista de candidatos para
+      que decida el usuario.
 
 ### Fase 5: evaluación
-- [ ] 5.1 Copiar `preguntas.js` y `quiz.js`; añadir `codigo` y `nivel`.
-- [ ] 5.2 `scripts/revisar_preguntas.py` (ids, tipos, índices de `correctas` válidos, reparto de
-      la correcta entre posiciones, mínimo por tema, `temas` existentes).
+- [x] 5.1 (2026-11-03) `preguntas.js` y `quiz.js` copiados y adaptados (`codigo`, `nivel`,
+      progreso por tema, evaluación de rama); sin la exportación a Noria (es de Kopi Tools).
+- [x] 5.2 (2026-11-03) Dentro de `scripts/revisar_arbol.py` (no un script aparte): ids
+      `<tema>-NNN`, tipos, campos, `correctas` en rango, permutación en "ordenar", mínimo por tema
+      y `temas` existentes. Falta el aviso de reparto de la correcta entre posiciones.
 - [ ] 5.3 `evaluacion.html`: test por rama, desglose por tema, repaso de falladas, diagnóstico.
-- [ ] 5.4 Excluir los temas `externo` (AWS) de los tests por rama y de los agregados (5.6).
+- [x] 5.4 Excluir los temas `externo` (AWS) de los tests por rama (hecho en `quiz.js`); los agregados llegarán con 5.6.
 - [ ] 5.5 `progreso.html`: radar, lista por área, falladas, historial, exportar/importar.
 
 ### Fase 6: certificaciones temáticas
@@ -724,6 +780,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-03 | **Piloto de IA:** todo nodo tiene ficha (temas: guía y evaluación; áreas y bloques: presentación y "Evaluar esta rama"), criterio bloque → tema y "no enterrar temas". `artificial-intelligence` pasa a tema; nuevos Machine Learning y Deep Learning. Fichas del área IA y de 6 temas, 57 preguntas, `glosario.json` con 17 siglas y 4 conceptos, `siglas.js` (tooltip y enlace), `tema.js`, `quiz.js`, `evaluacion.html`, `glosario.html`, `tema.html`. El ☁ de AWS pasa delante del nombre (petición del usuario). |
 | 2026-11-03 | Cajas con el aspecto de las tarjetas de áreas (icono, nombre en inglés, chips grises, sin recuentos) y **sección "Áreas" retirada** de la portada (decisión del usuario). |
 | 2026-11-03 | **Tarea 3.6 (publicada):** vista Cajas (`assets/cajas.js`) con conmutador, vista en la URL y en `spider.vista`, buscador/filtros/color compartidos, fundido CSS en vez de View Transitions. |
 | 2026-11-03 | **Tarea 3.5 (publicada):** buscador con lista y salto, "Color por" área / mi nivel con leyenda, filtros Estado y Lo esencial, atenuado y halo en la telaraña, estado en la URL. `SpiderArbol.nivelMedio()`; `buscar()` sin límite por defecto. Progreso → Fase 5; certificación → Fase 6. |

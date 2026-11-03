@@ -1,0 +1,138 @@
+[
+  {
+    "id": "artificial-intelligence-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué relación hay entre IA, ML, deep learning e IA generativa?",
+    "opciones": [
+      "Son cuatro nombres para la misma tecnología.",
+      "Son conjuntos anidados: la IA generativa está dentro del deep learning, que está dentro del ML, que está dentro de la IA.",
+      "Son cuatro técnicas independientes que compiten entre sí.",
+      "El ML contiene a la IA, y la IA contiene al deep learning."
+    ],
+    "correctas": [1],
+    "explicacion": "Cada término es un subconjunto del anterior: todo LLM es IA generativa, toda IA generativa es deep learning, todo deep learning es ML y todo ML es IA. Al revés no se cumple: un motor de reglas es IA pero no ML.",
+    "fuentes": ["https://www.ibm.com/think/topics/artificial-intelligence"]
+  },
+  {
+    "id": "artificial-intelligence-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Un motor de ajedrez que juega bien gracias a reglas escritas a mano y a una búsqueda entre jugadas posibles, sin haber aprendido de datos, ¿es IA?",
+    "opciones": [
+      "No: solo es IA si aprende de datos.",
+      "No: solo es IA si genera contenido nuevo.",
+      "Sí: es IA simbólica, aunque no sea machine learning.",
+      "Sí, y además es deep learning."
+    ],
+    "correctas": [2],
+    "explicacion": "La IA es el paraguas que cubre cualquier sistema que imita una capacidad inteligente. Las reglas escritas a mano son el enfoque simbólico; el ML es solo la parte que aprende de datos.",
+    "fuentes": ["https://www.ibm.com/think/topics/artificial-intelligence"]
+  },
+  {
+    "id": "artificial-intelligence-003",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "La definición de sistema de IA de la OCDE gira en torno a un verbo. ¿Cuál describe mejor lo que hace el sistema con lo que recibe?",
+    "opciones": [
+      "Almacena la entrada para consultarla después.",
+      "Infiere cómo producir salidas (predicciones, contenido, recomendaciones o decisiones) que influyen en su entorno.",
+      "Ejecuta siempre la misma secuencia fija de pasos.",
+      "Copia la respuesta de una base de datos de ejemplos."
+    ],
+    "correctas": [1],
+    "explicacion": "La clave de la definición es la inferencia: el sistema deduce a partir de la entrada cómo generar la salida, con distintos grados de autonomía, en lugar de limitarse a ejecutar pasos fijos.",
+    "fuentes": ["https://oecd.ai/en/wonk/ai-system-definition-update"]
+  },
+  {
+    "id": "artificial-intelligence-004",
+    "tipo": "multiple",
+    "nivel": 1,
+    "enunciado": "¿Cuáles de estos sistemas son ejemplos de IA? Elige 3.",
+    "opciones": [
+      "Un detector de fraude en pagos con tarjeta entrenado con transacciones históricas.",
+      "Un recomendador de series según lo que has visto.",
+      "Una función que suma dos números enteros.",
+      "Un asistente que resume documentos largos."
+    ],
+    "correctas": [0, 1, 3],
+    "explicacion": "Detectar fraude, recomendar y resumir imitan capacidades inteligentes (reconocer patrones, predecir gustos, comprender texto). Sumar dos números es cálculo determinista con una única respuesta exacta: no hay nada que inferir.",
+    "fuentes": ["https://www.ibm.com/think/topics/artificial-intelligence"]
+  },
+  {
+    "id": "artificial-intelligence-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué describe mejor a los sistemas de IA que existen hoy, incluidos los LLM más capaces?",
+    "opciones": [
+      "Son IA general: razonan en cualquier dominio como una persona.",
+      "Son IA estrecha: rinden bien en las tareas para las que se diseñaron o entrenaron, aunque algunas cubran un abanico amplio.",
+      "Son sistemas que aprenden solos de cada conversación sin que nadie los vuelva a entrenar.",
+      "Son sistemas simbólicos sin componente estadístico."
+    ],
+    "correctas": [1],
+    "explicacion": "La IA general sigue siendo un objetivo de investigación y un tema de debate. Los sistemas actuales son IA estrecha, por amplias que sean las tareas que cubren los LLM.",
+    "fuentes": ["https://www.ibm.com/think/topics/artificial-intelligence"]
+  },
+  {
+    "id": "artificial-intelligence-006",
+    "tipo": "emparejar",
+    "nivel": 2,
+    "enunciado": "Empareja cada término con lo que añade respecto al anterior.",
+    "opciones": ["IA", "ML", "Deep learning", "IA generativa"],
+    "destinos": [
+      "Crea contenido nuevo en lugar de solo clasificar o predecir.",
+      "Aprende con redes neuronales de muchas capas que descubren solas qué rasgos importan.",
+      "Cualquier sistema que imita una capacidad inteligente, aprenda o no.",
+      "Aprende de datos en lugar de seguir reglas escritas a mano."
+    ],
+    "correctas": [2, 3, 1, 0],
+    "explicacion": "La IA es el paraguas; el ML añade el aprendizaje a partir de datos; el deep learning, las redes de muchas capas; y la IA generativa, la capacidad de crear contenido nuevo.",
+    "fuentes": ["https://www.ibm.com/think/topics/artificial-intelligence"]
+  },
+  {
+    "id": "artificial-intelligence-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Tu equipo tiene que marcar transacciones sospechosas a partir de unas pocas columnas numéricas y debe poder explicar cada decisión al auditor. Alguien propone un LLM porque «es IA». ¿Qué responderías?",
+    "opciones": [
+      "Que es la mejor opción: los LLM son siempre más precisos que cualquier otro modelo.",
+      "Que un modelo de ML clásico sobre esas columnas probablemente sea más barato, más rápido y más fácil de explicar; IA no significa LLM.",
+      "Que la IA no sirve para detectar fraude.",
+      "Que hay que entrenar un LLM propio desde cero."
+    ],
+    "correctas": [1],
+    "explicacion": "Elegir bien el término ayuda a elegir bien la solución. Para datos tabulares y decisiones que hay que justificar, un modelo de ML clásico suele ser suficiente, más económico y más explicable que un LLM.",
+    "fuentes": ["https://www.ibm.com/think/topics/machine-learning"]
+  },
+  {
+    "id": "artificial-intelligence-008",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "Un compañero afirma: «nuestro clasificador de incidencias aprende solo con el uso, así que mejorará cada semana». El modelo se entrenó una vez y se desplegó. ¿Qué es lo más probable?",
+    "opciones": [
+      "Que tenga razón: todos los modelos de IA se actualizan solos al usarse.",
+      "Que no mejore: un modelo desplegado normalmente solo infiere; para mejorar hay que volver a entrenarlo con datos nuevos.",
+      "Que empeore cada vez que alguien lo use.",
+      "Que mejore solo si se le da más memoria RAM."
+    ],
+    "correctas": [1],
+    "explicacion": "Entrenar e inferir son fases distintas. Salvo que el sistema tenga un proceso de reentrenamiento, el modelo desplegado responde con lo que aprendió y no cambia con el uso. Lo que sí puede pasar es que pierda calidad si los datos reales cambian.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course"]
+  },
+  {
+    "id": "artificial-intelligence-009",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "¿Qué ventajas tiene la IA simbólica (reglas escritas a mano) frente a la basada en datos? Elige 2.",
+    "opciones": [
+      "Sus decisiones son fáciles de explicar: se puede señalar la regla que se aplicó.",
+      "Se adapta sola a casos que nadie previó.",
+      "Su comportamiento es predecible y fácil de probar.",
+      "No necesita que nadie la mantenga."
+    ],
+    "correctas": [0, 2],
+    "explicacion": "Las reglas son explicables y predecibles. A cambio, son frágiles ante casos no previstos y caras de mantener: alguien tiene que escribir y actualizar cada regla.",
+    "fuentes": ["https://www.ibm.com/think/topics/artificial-intelligence"]
+  }
+]

@@ -27,7 +27,11 @@ no third-party requests).
 
 - `data/nodos.json`: **the single source of truth** for the tree (flat list, presentation order,
   `padre` links; schema in `docs/PLAN.md` 4.2). Node types: `raiz`, `area` (13, with `color`),
-  `bloque` (grouping only, no guide), `tema` (has its own guide). Each topic exists **once**;
+  `bloque` (groups topics), `tema` (has knowledge of its own). **Every node has a ficha**
+  (`docs/PLAN.md` 5.2): a topic gets a full guide plus its own evaluation; an area or block gets a
+  presentation page (what it is, its acronyms, why it matters, where to start) and is evaluated as
+  a branch. A block becomes a topic when it has knowledge its children don't cover; avoid burying
+  topics deep in the tree (siblings + the parent's ficha explains the hierarchy). Each topic exists **once**;
   appearances elsewhere are `accesos`. AWS topics are `externo` links to `aws-cert-study` and are
   never evaluated here. Optional fields are omitted when empty.
 - `docs/tecnologias.md`: the original tree, kept as history. `scripts/importar_arbol.py` built
@@ -58,6 +62,20 @@ no third-party requests).
   grandchildren as chips); the "Telaraña | Cajas" switch keeps the context, goes in the URL as
   `v=cajas` and is remembered with the color in `spider.vista` (the URL wins). Both views only
   draw; `mapa.js` handles navigation and `decorar()` (via `[data-decora]` in Cajas).
+- Fichas: `temas/<id>.html` (published, copied from `plantillas/tema.html`, `<main
+  data-ficha="<id>">`) and `tema.html?id=<id>` (generic "Ficha próximamente"). `assets/tema.js`
+  paints from `nodos.json` the header (breadcrumbs, icon, name, frase, revisado, buttons),
+  "Qué contiene" (children as Cajas-style boxes) and "Relacionados"; never write those by hand.
+  `SpiderDatos.urlFicha(nodo)` gives the right link for any node.
+- Evaluation: `data/preguntas/<tema>.json` (format in `docs/PLAN.md` 4.3), `assets/preguntas.js`
+  (`SpiderPreguntas`, copied from aws-cert-study) and `assets/quiz.js`: `<div class="quiz"
+  data-quiz="<id>">` at the end of a topic, or `data-rama="<id>"` in `evaluacion.html?id=` (all
+  published evaluable topics of the branch, grouped). Progress per topic in `spider.progreso`.
+- `data/glosario.json`: **acronyms** (`en`, `es`, optional `enlace` to a node or concept) and
+  **concepts** without a node of their own (definition, `tema`, `relacionados`, `fuentes`), shown in
+  `glosario.html` (`assets/glosario.js`). `assets/siglas.js` (`SpiderSiglas`) marks acronyms at load
+  time in `.doc` (tooltip; first mention per `<h2>` section links to its ficha, except on its own
+  page) and in quiz questions (tooltip only).
 - `aviso-legal.html`: legal notice, trademarks, license and privacy. Keep it consistent with any
   new feature (anything stored in `localStorage` must be covered by its privacy section).
 
@@ -71,7 +89,7 @@ ends with `.footer-sitios` (Kopi Tools · Apuntes AWS · Tech Spider · Kopi Che
 
 ```bash
 python -m http.server 8765        # fetch() of the JSON files fails on file://
-python scripts/revisar_arbol.py   # tree validator: run after ANY change to nodos.json, temas/ or data/preguntas/
+python scripts/revisar_arbol.py   # validator: run after ANY change to nodos.json, temas/, data/preguntas/ or data/glosario.json
 ```
 
 No build, lint or test tooling. Verify changes in a browser, including at ~375px width (no
@@ -85,6 +103,10 @@ the page inside a 375px-wide `<iframe>` and compare `scrollWidth` with `clientWi
   Management*)".
 - `frase`: 60–90 characters, no word (4+ letters) from the node's `nombre` nor its id; required for
   areas and their direct children, and for every topic when it is published.
+- **Acronyms** are written bare ("IA", "LLM"), never expanded inline: `siglas.js` adds the tooltip
+  from `data/glosario.json`. A new acronym only needs its glossary entry (add `enlace` when it has
+  a ficha). **Concepts** are linked by hand in fichas with `<a class="concepto"
+  data-concepto="<id>">`; their questions go in the evaluation of the topic that covers them.
 - **No copying documentation.** Summarize in your own words and link the source. Anything literal
   must be short, in `<blockquote>` with `<cite>` and a link.
 - **Never real exam questions** (Oracle, Broadcom, Scrum.org, CNCF, HashiCorp… are under NDA); only

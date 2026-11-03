@@ -1,0 +1,139 @@
+<!doctype html>
+<!--
+  PLANTILLA DE FICHA (docs/PLAN.md 5.2). Todo nodo tiene ficha:
+    - Tema: guía completa + evaluación propia (data/preguntas/<id>.json, mínimo 5 preguntas).
+    - Bloque o área: ficha de presentación (qué es, qué significan sus siglas, por qué importa,
+      dónde se usa, por dónde empezar). Sin evaluación propia: se evalúa su rama
+      (el botón "Evaluar esta rama" lo pone tema.js). Borra la sección "Evaluación".
+  Uso:
+    1. Copiar a temas/<id>.html y sustituir todo lo marcado con [[…]]; borrar este comentario.
+    2. En data/nodos.json: "estado": "publicado", "frase" y "revisado" (AAAA-MM-DD).
+    3. python scripts/revisar_arbol.py
+  La cabecera (migas, nombre, frase, revisión, botones), "Qué contiene" y "Relacionados" los pinta
+  assets/tema.js desde data/nodos.json: no se escriben a mano. Si el nodo no tiene hijos o
+  relacionados, tema.js quita esas secciones.
+  Reglas: palabras propias; lo literal, breve, en <blockquote> con <cite> y enlace. Siglas tal cual
+  ("IA", "LLM"): las marca assets/siglas.js desde data/glosario.json (añade allí las nuevas).
+  Conceptos del glosario: <a class="concepto" data-concepto="<id>">texto</a>.
+  Otras fichas: enlazar la primera mención por sección (<a href="<id>.html"> si está publicada,
+  ../tema.html?id=<id> si no).
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[[Nombre]] — Tech Spider</title>
+<meta name="description" content="[[Qué es, en una o dos frases.]]">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/[[id]].html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main data-ficha="[[id]]">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>[[2–4 frases con palabras propias.]]</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>[[Uso real, peso en el mercado, qué problema resuelve.]]</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>[[Concepto]]:</strong> [[explicación]].</li>
+      </ul>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>[[Cómo se usa, con un ejemplo mínimo si aplica.]]</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li>[[Error]]: [[por qué y qué hacer]].</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="[[id]]"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="[[URL]]" target="_blank" rel="noopener">[[Título]]</a> ([[quién]], consultada el [[dd/mm/aaaa]]).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js" defer></script>
+<script src="../assets/datos.js" defer></script>
+<script src="../assets/arbol.js" defer></script>
+<script src="../assets/siglas.js" defer></script>
+<script src="../assets/preguntas.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/tema.js" defer></script>
+</body>
+</html>

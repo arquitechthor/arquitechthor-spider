@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IA generativa (Generative AI) — Tech Spider</title>
+<meta name="description" content="Qué es la IA generativa: modelos que crean texto, imágenes, audio o código, los modelos fundacionales, sus usos y sus límites.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/generative-ai.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main data-ficha="generative-ai">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>La <strong>IA generativa</strong> (GenAI) es la parte del <a href="deep-learning.html">deep learning</a> cuyos modelos
+        <strong>crean contenido nuevo</strong> (texto, imágenes, audio, vídeo o código) a partir de una petición, el
+        <em>prompt</em>. Un modelo de ML clásico responde "esto es spam" o "el precio será 120"; uno generativo escribe el
+        correo, dibuja la imagen o propone el código.</p>
+      <p>No copia sus datos de entrenamiento: aprende cómo es su distribución (qué palabras suelen seguir a otras, qué píxeles
+        forman una cara) y genera muestras nuevas que se le parecen. Por eso el resultado es verosímil, pero no
+        necesariamente cierto.</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Ha convertido tareas que exigían a una persona (redactar, resumir, traducir, programar, describir una imagen) en
+        llamadas a una API. Para un ingeniero de software supone dos cambios: nuevas funciones dentro de los productos y una
+        forma distinta de trabajar, con asistentes y agentes que escriben y revisan código. También trae riesgos nuevos:
+        respuestas inventadas, fugas de datos y contenido difícil de verificar.</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>Modelo fundacional:</strong> un <a class="concepto" data-concepto="modelo">modelo</a> grande entrenado con datos muy amplios y sin una
+          tarea concreta, que luego se adapta a muchas (con instrucciones, con ejemplos o con un ajuste fino). Los
+          <a href="llms.html">LLMs</a> son el tipo más extendido.</li>
+        <li><strong>Prompt:</strong> la entrada que guía la generación: instrucciones, contexto, ejemplos y la propia pregunta.
+          Cómo se escribe cambia mucho el resultado (<a href="../tema.html?id=prompt-engineering">Prompt Engineering</a>).</li>
+        <li><strong>Multimodal:</strong> un modelo que entiende o genera más de un tipo de contenido, por ejemplo texto e
+          imágenes en la misma conversación.</li>
+        <li><strong>Generación no determinista:</strong> la misma petición puede dar respuestas distintas, porque el modelo
+          elige entre varias continuaciones probables. Se controla con parámetros como la temperatura.</li>
+        <li><strong>Alucinación:</strong> contenido plausible pero falso. Es una consecuencia de cómo funcionan estos modelos,
+          no un fallo raro; se mitiga dándoles las fuentes (<a href="../tema.html?id=rag">RAG</a>) y comprobando.</li>
+      </ul>
+
+      <h2 id="tipos">Qué puede generar</h2>
+      <ul>
+        <li><strong>Texto y código:</strong> LLMs, con la arquitectura Transformer.</li>
+        <li><strong>Imágenes y vídeo:</strong> sobre todo modelos de difusión, que parten de ruido y lo van limpiando hasta
+          formar una imagen que encaje con la descripción.</li>
+        <li><strong>Audio y voz:</strong> síntesis de voz, música y transcripción.</li>
+        <li><strong>Datos sintéticos:</strong> ejemplos artificiales para pruebas o para entrenar otros modelos.</li>
+      </ul>
+
+      <h2 id="agentica">De generar a actuar</h2>
+      <p>El siguiente paso es usar lo que el modelo genera para <strong>hacer cosas</strong>: decidir qué
+        <a class="concepto" data-concepto="herramienta">herramienta</a> llamar, ejecutarla y seguir. Es lo que se conoce como
+        <a class="concepto" data-concepto="ia-agentica">IA agéntica</a> y se estudia en <a href="ai-agents.html">Agentes de IA</a>.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Tratar la salida como un dato verificado.</strong> Hay que validarla: con esquemas, con pruebas, con fuentes
+          o con una persona, según lo que esté en juego.</li>
+        <li><strong>Usarla para tareas que tienen una respuesta exacta y barata.</strong> Sumar, buscar un registro por id o
+          validar un formato se hacen mejor con código normal.</li>
+        <li><strong>Enviar datos sensibles sin pensarlo.</strong> Lo que va en el prompt sale de tu sistema; revisa qué datos
+          envías y con qué condiciones los trata el proveedor.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="generative-ai"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://www.ibm.com/think/topics/generative-ai" target="_blank" rel="noopener">What is generative AI?</a> (IBM, consultada el 03/11/2026).</li>
+        <li><a href="https://www.ibm.com/think/topics/artificial-intelligence" target="_blank" rel="noopener">What is artificial intelligence (AI)?</a> (IBM, consultada el 03/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js" defer></script>
+<script src="../assets/datos.js" defer></script>
+<script src="../assets/arbol.js" defer></script>
+<script src="../assets/siglas.js" defer></script>
+<script src="../assets/preguntas.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/tema.js" defer></script>
+</body>
+</html>

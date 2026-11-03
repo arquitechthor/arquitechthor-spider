@@ -1,0 +1,132 @@
+[
+  {
+    "id": "deep-learning-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿A qué se refiere «profundo» en deep learning?",
+    "opciones": [
+      "A que el modelo entiende el significado profundo de las cosas.",
+      "Al número de capas de la red neuronal.",
+      "A que se entrena durante mucho tiempo.",
+      "A que los datos se guardan en un almacenamiento profundo."
+    ],
+    "correctas": [1],
+    "explicacion": "El deep learning usa redes neuronales con muchas capas; cada una transforma lo que recibe de la anterior en una representación más abstracta.",
+    "fuentes": ["https://www.ibm.com/think/topics/deep-learning"]
+  },
+  {
+    "id": "deep-learning-002",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Cuál es la gran diferencia práctica entre el deep learning y el ML clásico?",
+    "opciones": [
+      "El deep learning no necesita datos.",
+      "Con deep learning no hay que diseñar a mano qué rasgos mirar: la red los descubre a partir de los datos en bruto.",
+      "El ML clásico no puede hacer clasificación.",
+      "El deep learning siempre es más barato de entrenar."
+    ],
+    "correctas": [1],
+    "explicacion": "En el ML clásico alguien diseñaba las características. Una red profunda aprende sola las representaciones, a cambio de necesitar más datos y cómputo.",
+    "fuentes": ["https://www.ibm.com/think/topics/deep-learning"]
+  },
+  {
+    "id": "deep-learning-003",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "¿Qué factores explican el despegue del deep learning en la década de 2010? Elige 3.",
+    "opciones": [
+      "Grandes cantidades de datos disponibles.",
+      "GPU capaces de hacer muchísimas operaciones en paralelo.",
+      "Mejoras en cómo entrenar redes de muchas capas.",
+      "La desaparición del ML clásico."
+    ],
+    "correctas": [0, 1, 2],
+    "explicacion": "Datos, cómputo en paralelo y mejores técnicas de entrenamiento llegaron a la vez. El ML clásico no desapareció: sigue siendo la mejor opción en muchos problemas.",
+    "fuentes": ["https://www.ibm.com/think/topics/deep-learning"]
+  },
+  {
+    "id": "deep-learning-004",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "¿Por qué cada neurona aplica una función de activación no lineal después de sumar sus entradas?",
+    "opciones": [
+      "Para que la red funcione más rápido.",
+      "Porque sin no linealidad, apilar capas equivaldría a una sola transformación lineal y la profundidad no aportaría nada.",
+      "Para que los pesos no cambien durante el entrenamiento.",
+      "Para reducir el tamaño del modelo."
+    ],
+    "correctas": [1],
+    "explicacion": "Una composición de funciones lineales sigue siendo lineal. La activación no lineal es lo que permite que cada capa añada capacidad de representar patrones complejos.",
+    "fuentes": ["https://d2l.ai/"]
+  },
+  {
+    "id": "deep-learning-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué hacen la retropropagación y el descenso de gradiente durante el entrenamiento?",
+    "opciones": [
+      "Calculan cuánto contribuye cada peso al error y lo corrigen un poco en la dirección que lo reduce.",
+      "Eliminan las capas que no se usan.",
+      "Ordenan los datos de entrenamiento por importancia.",
+      "Convierten el texto en imágenes."
+    ],
+    "correctas": [0],
+    "explicacion": "La retropropagación obtiene el gradiente del error respecto a cada peso; el descenso de gradiente usa ese gradiente para ajustar los pesos, ejemplo tras ejemplo.",
+    "fuentes": ["https://d2l.ai/"]
+  },
+  {
+    "id": "deep-learning-006",
+    "tipo": "emparejar",
+    "nivel": 2,
+    "enunciado": "Empareja cada arquitectura con su idea principal.",
+    "opciones": ["CNN", "RNN", "Transformer"],
+    "destinos": [
+      "Procesa una secuencia elemento a elemento, con memoria de lo anterior.",
+      "Cada elemento atiende directamente a todos los demás y decide cuáles le importan; se entrena en paralelo.",
+      "Filtros que recorren la imagen buscando el mismo patrón en cualquier posición."
+    ],
+    "correctas": [2, 0, 1],
+    "explicacion": "Las CNN dominan la visión; las RNN procesaban texto y voz paso a paso; el Transformer, con su mecanismo de atención, es la base de los LLM.",
+    "fuentes": ["https://d2l.ai/", "https://arxiv.org/abs/1706.03762"]
+  },
+  {
+    "id": "deep-learning-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué ventaja del Transformer frente a las RNN permitió entrenar modelos de lenguaje mucho más grandes?",
+    "opciones": [
+      "Que no necesita datos de entrenamiento.",
+      "Que procesa la secuencia en paralelo gracias a la atención, en lugar de paso a paso, y relaciona directamente elementos lejanos.",
+      "Que tiene menos parámetros que cualquier RNN.",
+      "Que solo funciona con imágenes."
+    ],
+    "correctas": [1],
+    "explicacion": "La atención conecta cada elemento con todos los demás sin recorrer la secuencia paso a paso, lo que aprovecha bien las GPU y capta dependencias largas.",
+    "fuentes": ["https://arxiv.org/abs/1706.03762"]
+  },
+  {
+    "id": "deep-learning-008",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "Tienes una tabla de 3.000 filas con 12 columnas numéricas para predecir el consumo eléctrico. ¿Qué es más razonable probar primero?",
+    "opciones": [
+      "Una red neuronal profunda de cientos de capas.",
+      "Un modelo de ML clásico: con pocos datos tabulares suele igualar o superar al deep learning con menos coste.",
+      "Un LLM al que se le pegue la tabla en el prompt.",
+      "Nada: con 3.000 filas no se puede aprender."
+    ],
+    "correctas": [1],
+    "explicacion": "El deep learning destaca con muchos datos en bruto (imagen, texto, audio). Con pocos datos tabulares, los modelos clásicos suelen rendir igual o mejor y se explican mejor.",
+    "fuentes": ["https://www.ibm.com/think/topics/deep-learning"]
+  },
+  {
+    "id": "deep-learning-009",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Una red aprende a representar textos como vectores, de forma que textos parecidos quedan cerca. ¿Cómo se llaman esos vectores?",
+    "opciones": ["Embeddings", "Tokens", "Prompts", "Etiquetas"],
+    "correctas": [0],
+    "explicacion": "Los embeddings son representaciones vectoriales aprendidas que capturan el significado; son la base de la búsqueda semántica y de RAG.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course"]
+  }
+]

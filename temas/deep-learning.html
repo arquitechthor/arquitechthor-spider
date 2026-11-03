@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Learning — Tech Spider</title>
+<meta name="description" content="Qué es el deep learning: redes neuronales de muchas capas, por qué necesitan tantos datos y GPU, y las arquitecturas principales hasta el Transformer.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/deep-learning.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main data-ficha="deep-learning">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>El <strong>deep learning</strong> (DL, aprendizaje profundo) es la parte del <a href="machine-learning.html">ML</a> que
+        usa <strong>redes neuronales con muchas capas</strong>. Cada capa transforma lo que recibe de la anterior; las primeras
+        captan rasgos simples (bordes en una imagen, letras en un texto) y las siguientes los combinan en rasgos cada vez más
+        abstractos (formas, caras, frases, intenciones). "Profundo" se refiere a ese número de capas.</p>
+      <p>La gran diferencia con el ML clásico es que <strong>no hace falta decirle qué rasgos mirar</strong>: con un modelo
+        clásico, alguien diseñaba a mano las características (el número de enlaces de un correo, la longitud de una frase); una
+        red profunda las descubre sola a partir de los datos en bruto.</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>El deep learning es lo que hizo funcionar de verdad el reconocimiento de imágenes, la traducción automática, la voz y,
+        después, la <a href="generative-ai.html">IA generativa</a>. Su despegue en la década de 2010 se debe a tres cosas que
+        llegaron a la vez: muchísimos datos disponibles, GPU capaces de hacer millones de operaciones en paralelo y mejoras en
+        cómo entrenar redes de muchas capas.</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>Neurona artificial:</strong> suma ponderada de sus entradas seguida de una función no lineal (la
+          <em>activación</em>). Sin esa no linealidad, apilar capas no aportaría nada: equivaldrían a una sola.</li>
+        <li><strong>Capas:</strong> de entrada, ocultas (donde se aprende la representación) y de salida.</li>
+        <li><strong>Pesos:</strong> los parámetros que se aprenden. Una red grande tiene miles de millones.</li>
+        <li><strong>Retropropagación y descenso de gradiente:</strong> el método para entrenar: se calcula cuánto contribuye
+          cada peso al error y se corrige un poco en la dirección que lo reduce, ejemplo tras ejemplo.</li>
+        <li><strong>Representaciones y embeddings:</strong> lo que la red aprende son vectores que capturan el significado de
+          lo que procesa; textos parecidos quedan cerca. Es la base de la <a href="../tema.html?id=embeddings">búsqueda
+          semántica</a>.</li>
+      </ul>
+
+      <h2 id="arquitecturas">Arquitecturas principales</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Arquitectura</th><th>Idea</th><th>Uso típico</th></tr></thead>
+          <tbody>
+            <tr><td>CNN (convolucional)</td><td>Filtros que recorren la imagen buscando el mismo patrón en cualquier posición.</td><td>Visión por computador.</td></tr>
+            <tr><td>RNN (recurrente)</td><td>Procesa una secuencia elemento a elemento, con memoria de lo anterior.</td><td>Texto y voz antes de 2017; costaba recordar contextos largos.</td></tr>
+            <tr><td>Transformer</td><td>Mecanismo de <em>atención</em>: cada elemento mira directamente a todos los demás y decide cuáles le importan; se entrena en paralelo.</td><td>Los LLM y gran parte de la IA generativa actual.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>El Transformer, presentado en 2017 en el artículo "Attention Is All You Need", es la pieza que conecta esta ficha con
+        la de <a href="llms.html">LLMs</a>: permitió entrenar modelos enormes con cantidades de texto antes impensables.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Usar deep learning con pocos datos o con datos tabulares sencillos.</strong> Ahí un modelo clásico de ML
+          suele igualarlo o superarlo, con menos coste y más explicabilidad.</li>
+        <li><strong>Pensar que la red "entiende" como una persona.</strong> Aprende correlaciones estadísticas muy ricas, pero
+          puede fallar de forma sorprendente con entradas un poco distintas a las de entrenamiento.</li>
+        <li><strong>Olvidar el coste:</strong> entrenar una red grande exige mucho cómputo y energía; por eso casi siempre se
+          parte de un modelo ya entrenado y, como mucho, se ajusta.</li>
+      </ul>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="deep-learning"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://www.ibm.com/think/topics/deep-learning" target="_blank" rel="noopener">What is deep learning?</a> (IBM, consultada el 03/11/2026).</li>
+        <li><a href="https://d2l.ai/" target="_blank" rel="noopener">Dive into Deep Learning</a> (A. Zhang, Z. C. Lipton, M. Li y A. J. Smola, consultada el 03/11/2026).</li>
+        <li><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Attention Is All You Need</a> (Vaswani et al., 2017, consultada el 03/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js" defer></script>
+<script src="../assets/datos.js" defer></script>
+<script src="../assets/arbol.js" defer></script>
+<script src="../assets/siglas.js" defer></script>
+<script src="../assets/preguntas.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/tema.js" defer></script>
+</body>
+</html>

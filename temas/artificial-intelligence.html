@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inteligencia artificial — Tech Spider</title>
+<meta name="description" content="Qué es la inteligencia artificial, cómo se relacionan IA, machine learning, deep learning e IA generativa, y qué no es la IA.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/artificial-intelligence.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main data-ficha="artificial-intelligence">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>La <strong>inteligencia artificial</strong> (IA) es el campo que construye sistemas capaces de hacer tareas que
+        asociamos con la inteligencia humana: reconocer imágenes o voz, entender y escribir texto, decidir, planificar o
+        predecir. No hay una única técnica detrás: es un paraguas que cubre desde reglas escritas a mano hasta los modelos
+        que hoy generan texto.</p>
+      <p>La OCDE, cuya definición siguen
+        muchas leyes, la describe en esencia como un sistema basado en máquinas que, a partir de lo que recibe,
+        <strong>infiere</strong> cómo producir salidas (predicciones, contenido, recomendaciones o decisiones) que influyen en
+        su entorno, con distintos grados de autonomía. La palabra clave es <em>infiere</em>: el sistema no se limita a
+        ejecutar pasos fijos.</p>
+
+      <h2 id="jerarquia">IA, ML, deep learning e IA generativa</h2>
+      <p>Los cuatro términos se usan a menudo como sinónimos, pero son <strong>conjuntos anidados</strong>, cada uno dentro
+        del anterior:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Término</th><th>Qué añade</th><th>Ejemplo</th></tr></thead>
+          <tbody>
+            <tr><td>IA</td><td>Cualquier sistema que imita una capacidad inteligente, aprenda o no.</td><td>Un motor de ajedrez con reglas y búsqueda.</td></tr>
+            <tr><td><a href="machine-learning.html">ML</a></td><td>El sistema <strong>aprende de datos</strong> en lugar de seguir reglas escritas.</td><td>Un filtro de spam entrenado con correos etiquetados.</td></tr>
+            <tr><td><a href="deep-learning.html">Deep learning</a></td><td>Aprende con <strong>redes neuronales de muchas capas</strong>, que descubren solas qué rasgos importan.</td><td>Reconocimiento de caras o de voz.</td></tr>
+            <tr><td><a href="generative-ai.html">IA generativa</a></td><td>Modelos de deep learning que <strong>crean contenido nuevo</strong> en vez de solo clasificar o predecir.</td><td>Un LLM que redacta un correo.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Por eso todo LLM es IA generativa, toda IA generativa es deep learning y todo deep learning es ML, pero no al revés.
+        En el mapa estos temas aparecen como hermanos, para no esconderlos cinco niveles abajo; la relación real es la de esta
+        tabla.</p>
+
+      <h2 id="enfoques">Dos grandes enfoques</h2>
+      <ul>
+        <li><strong>IA simbólica:</strong> el conocimiento se escribe a mano como reglas y hechos (sistemas expertos, motores de
+          reglas). Es explicable y predecible, pero frágil ante casos que nadie previó y cara de mantener.</li>
+        <li><strong>IA basada en datos:</strong> el sistema aprende patrones a partir de ejemplos (el ML y todo lo que cuelga de
+          él). Se adapta a casos nuevos, pero necesita datos, puede equivocarse con seguridad y explica peor sus decisiones.</li>
+      </ul>
+      <p>Casi todo lo que hoy se llama IA pertenece al segundo grupo, aunque en sistemas reales conviven: un agente que usa un
+        LLM suele estar rodeado de reglas escritas a mano que limitan lo que puede hacer.</p>
+
+      <h2 id="estrecha-general">IA estrecha e IA general</h2>
+      <p>Todos los sistemas que existen hoy son <strong>IA estrecha</strong> (o débil): rinden bien en las tareas para las que
+        se diseñaron o entrenaron, aunque los LLM cubran un abanico sorprendentemente amplio. La <strong>IA general</strong>
+        (capaz de aprender y razonar en cualquier dominio como una persona) es un objetivo de investigación y un tema de
+        debate, no un producto.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Llamar IA solo a los chatbots.</strong> Un sistema de recomendaciones, un detector de fraude o un corrector
+          ortográfico también lo son.</li>
+        <li><strong>Usar IA, ML e IA generativa como sinónimos.</strong> Elegir bien el término ayuda a elegir bien la solución:
+          para clasificar transacciones quizá baste un modelo de ML clásico, más barato y explicable que un LLM.</li>
+        <li><strong>Pensar que "aprende sola" en producción.</strong> La mayoría de modelos se entrenan una vez y luego solo
+          infieren; no mejoran con el uso salvo que alguien los vuelva a entrenar.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="artificial-intelligence"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://www.ibm.com/think/topics/artificial-intelligence" target="_blank" rel="noopener">What is artificial intelligence (AI)?</a> (IBM, consultada el 03/11/2026).</li>
+        <li><a href="https://oecd.ai/en/wonk/ai-system-definition-update" target="_blank" rel="noopener">Updates to the OECD’s definition of an AI system explained</a> (OCDE, consultada el 03/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js" defer></script>
+<script src="../assets/datos.js" defer></script>
+<script src="../assets/arbol.js" defer></script>
+<script src="../assets/siglas.js" defer></script>
+<script src="../assets/preguntas.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/tema.js" defer></script>
+</body>
+</html>

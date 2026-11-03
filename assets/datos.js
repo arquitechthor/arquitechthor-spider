@@ -126,7 +126,38 @@
     return `${d}/${m}/${a}`;
   }
 
+  /** Progreso de las preguntas: { "<tema>": { aciertos, fallos?, total, finalizado } } (spider.progreso). */
+  function leerProgreso() {
+    return leer('progreso');
+  }
+
+  function guardarProgreso(idTema, entrada) {
+    const todo = leerProgreso();
+    if (entrada) todo[idTema] = entrada;
+    else delete todo[idTema];
+    return guardar('progreso', Object.keys(todo).length ? todo : null);
+  }
+
+  /**
+   * Ficha de un nodo: temas/<id>.html si está publicada; si no, la ficha genérica
+   * tema.html?id=<id> ("Próximamente", con su frase, lo que contiene y sus relacionados).
+   * Los externos (AWS) van a su guía en Apuntes AWS.
+   */
+  function urlFicha(nodo) {
+    if (nodo.externo) return url(nodo.externo.url);
+    if (nodo.tipo === 'raiz') return url('index.html');
+    return nodo.estado === 'publicado' ? url(`temas/${nodo.id}.html`) : url(`tema.html?id=${encodeURIComponent(nodo.id)}`);
+  }
+
+  /** Glosario de siglas y conceptos (data/glosario.json), compartido por siglas.js y glosario.js. */
+  let glosario = null;
+  function cargarGlosario() {
+    if (!glosario) glosario = json('data/glosario.json');
+    return glosario;
+  }
+
   window.SpiderDatos = {
     url, json, cargar, temasDe, esc, nombreHtml, nombreTexto, iconoArea, leer, guardar, formatoFecha,
+    leerProgreso, guardarProgreso, urlFicha, cargarGlosario,
   };
 })();

@@ -1,4 +1,5 @@
-"""Valida data/nodos.json (sección 4.4 de docs/PLAN.md).
+"""Valida data/nodos.json, las fichas (temas/), las preguntas (data/preguntas/) y el glosario
+(data/glosario.json). Sección 4.4 de docs/PLAN.md.
 
 Uso:
     python scripts/revisar_arbol.py
@@ -15,6 +16,7 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 NODOS = RAIZ / 'data' / 'nodos.json'
 PREGUNTAS = RAIZ / 'data' / 'preguntas'
+GLOSARIO = RAIZ / 'data' / 'glosario.json'
 TEMAS = RAIZ / 'temas'
 ICONOS = RAIZ / 'assets' / 'iconos' / 'areas'
 AWS_SERVICIOS = RAIZ.parent / 'aws-cert-study' / 'data' / 'servicios.json'
@@ -41,6 +43,123 @@ def error(msg):
 
 def palabras(texto):
     return {p for p in PALABRA.findall(texto.lower()) if len(p) >= 4}
+
+
+def revisar_ficha(n, paginas, frase, hoy):
+    """Ficha de cualquier nodo (tema, bloque o área): estado, página, frase y fecha de revisión."""
+    nid = n['id']
+    estado = n.get('estado')
+    if n.get('tipo') != 'tema' and estado is None:
+        if nid in paginas:
+            error(f'{nid}: existe temas/{nid}.html pero no tiene estado "publicado"')
+        return
+    if estado not in ('pendiente', 'publicado'):
+        error(f'{nid}: estado no válido {estado!r}')
+    revisado = n.get('revisado')
+    if revisado is not None and not FECHA.match(str(revisado)):
+        error(f'{nid}: revisado tiene que ser AAAA-MM-DD')
+    if estado == 'publicado':
+        if nid not in paginas:
+            error(f'{nid}: publicado pero falta temas/{nid}.html')
+        if not frase:
+            error(f'{nid}: publicado sin frase')
+        if not revisado:
+            error(f'{nid}: publicado sin fecha revisado')
+    elif nid in paginas:
+        error(f'{nid}: existe temas/{nid}.html pero el estado es {estado!r}')
+    if n.get('volatil') and revisado and FECHA.match(str(revisado)):
+        fecha = datetime.date.fromisoformat(revisado)
+        meses = (hoy.year - fecha.year) * 12 + hoy.month - fecha.month
+        if meses > MESES_VOLATIL:
+            avisos.append(f'{nid}: ficha volátil revisada hace {meses} meses ({revisado})')
+
+
+TIPOS_PREGUNTA = {'unica', 'multiple', 'ordenar', 'emparejar'}
+CAMPOS_PREGUNTA = {'id', 'tipo', 'nivel', 'dificil', 'certificaciones', 'dominio', 'enunciado', 'opciones',
+                   'destinos', 'correctas', 'explicacion', 'codigo', 'fuentes', 'temas'}
+
+
+def revisar_preguntas(tema, preguntas, por_id):
+    """Formato de data/preguntas/<tema>.json (docs/PLAN.md 4.3)."""
+    if not isinstance(preguntas, list):
+        error(f'preguntas/{tema}.json: tiene que ser una lista')
+        return
+    vistos = set()
+    for i, p in enumerate(preguntas, 1):
+        pid = p.get('id', f'#{i}')
+        donde = f'preguntas/{tema}.json {pid}'
+        if not re.fullmatch(rf'{re.escape(tema)}-\d{{3}}', str(pid)):
+            error(f'{donde}: el id tiene que ser {tema}-NNN')
+        if pid in vistos:
+            error(f'{donde}: id repetido')
+        vistos.add(pid)
+        extra = set(p) - CAMPOS_PREGUNTA
+        if extra:
+            error(f'{donde}: campos desconocidos {sorted(extra)}')
+        tipo = p.get('tipo')
+        if tipo not in TIPOS_PREGUNTA:
+            error(f'{donde}: tipo no válido {tipo!r}')
+            continue
+        if p.get('nivel') not in (1, 2, 3):
+            error(f'{donde}: nivel tiene que ser 1, 2 o 3')
+        for campo in ('enunciado', 'explicacion'):
+            if not str(p.get(campo, '')).strip():
+                error(f'{donde}: falta {campo}')
+        opciones, correctas = p.get('opciones', []), p.get('correctas', [])
+        if len(opciones) < 2 or len(set(opciones)) != len(opciones):
+            error(f'{donde}: hacen falta al menos 2 opciones distintas')
+        if not correctas or any(not isinstance(c, int) for c in correctas):
+            error(f'{donde}: correctas tiene que ser una lista de índices')
+            continue
+        limite = len(p.get('destinos', [])) if tipo == 'emparejar' else len(opciones)
+        if any(c < 0 or c >= limite for c in correctas):
+            error(f'{donde}: correctas fuera de rango')
+        if tipo == 'unica' and len(correctas) != 1:
+            error(f'{donde}: una pregunta "unica" tiene una sola correcta')
+        if tipo == 'multiple' and len(correctas) < 2:
+            error(f'{donde}: una pregunta "multiple" tiene al menos 2 correctas')
+        if tipo in ('ordenar', 'emparejar') and len(correctas) != len(opciones):
+            error(f'{donde}: correctas tiene que tener un elemento por opción')
+        if tipo == 'ordenar' and sorted(correctas) != list(range(len(opciones))):
+            error(f'{donde}: correctas tiene que ser una permutación de las opciones')
+        for t in p.get('temas', []):
+            if t not in por_id:
+                error(f'{donde}: tema inexistente {t!r}')
+        for u in p.get('fuentes', []):
+            if not str(u).startswith('https://'):
+                error(f'{donde}: fuente sin https: {u!r}')
+
+
+def revisar_glosario(por_id):
+    """data/glosario.json: siglas (tooltip y, si hay ficha, enlace) y conceptos (con su tema)."""
+    if not GLOSARIO.exists():
+        return
+    try:
+        g = json.loads(GLOSARIO.read_text(encoding='utf-8'))
+    except json.JSONDecodeError as e:
+        error(f'data/glosario.json: JSON no válido ({e})')
+        return
+    conceptos = {c.get('id') for c in g.get('conceptos', [])}
+    for sigla, d in g.get('siglas', {}).items():
+        if not (d.get('en') or d.get('es')):
+            error(f'glosario: la sigla {sigla} necesita en o es')
+        destino = d.get('enlace')
+        if destino and destino not in por_id and destino not in conceptos:
+            error(f'glosario: la sigla {sigla} enlaza a {destino!r}, que no es un nodo ni un concepto')
+    for c in g.get('conceptos', []):
+        cid = c.get('id', '')
+        if not ID.match(cid):
+            error(f'glosario: id de concepto no válido {cid!r}')
+        if cid in por_id:
+            error(f'glosario: el concepto {cid} coincide con un nodo; usa otro id')
+        for campo in ('termino', 'definicion'):
+            if not c.get(campo):
+                error(f'glosario: al concepto {cid} le falta {campo}')
+        if c.get('tema') and c['tema'] not in por_id:
+            error(f'glosario: el concepto {cid} apunta a un tema inexistente {c["tema"]!r}')
+        for u in c.get('fuentes', []):
+            if not str(u.get('url', '')).startswith('https://'):
+                error(f'glosario: fuente sin https en {cid}')
 
 
 def revisar():
@@ -101,9 +220,13 @@ def revisar():
     if PREGUNTAS.exists():
         for f in PREGUNTAS.glob('*.json'):
             try:
-                preguntas_por_tema[f.stem] = len(json.loads(f.read_text(encoding='utf-8')))
+                lista = json.loads(f.read_text(encoding='utf-8'))
             except json.JSONDecodeError as e:
                 error(f'{f.relative_to(RAIZ)}: JSON no válido ({e})')
+                continue
+            preguntas_por_tema[f.stem] = len(lista)
+            revisar_preguntas(f.stem, lista, por_id)
+    revisar_glosario(por_id)
     paginas = {f.stem for f in TEMAS.glob('*.html')} if TEMAS.exists() else set()
     hoy = datetime.date.today()
 
@@ -167,14 +290,22 @@ def revisar():
                 error(f'{nid}: el servicio {externo["id"]!r} no existe en aws-cert-study')
 
         if tipo != 'tema':
-            for campo in ('estado', 'evaluable', 'prioridad', 'volatil', 'revisado'):
+            # Áreas y bloques también tienen ficha (de presentación) desde el 2026-11-03: pueden
+            # llevar estado, revisado y volatil. No tienen preguntas propias (se evalúa su rama).
+            for campo in ('evaluable', 'prioridad'):
                 if campo in n:
                     error(f'{nid}: {campo} solo aplica a temas')
+            if tipo == 'raiz':
+                for campo in ('estado', 'volatil', 'revisado'):
+                    if campo in n:
+                        error(f'{nid}: la raíz no tiene {campo}')
+                continue
+            if nid in preguntas_por_tema:
+                error(f'{nid}: un {tipo} no tiene preguntas propias (se evalúa su rama)')
+            revisar_ficha(n, paginas, frase, hoy)
             continue
 
         estado = n.get('estado')
-        if estado not in ('pendiente', 'publicado'):
-            error(f'{nid}: estado no válido {estado!r}')
         if not isinstance(n.get('evaluable'), bool):
             error(f'{nid}: evaluable tiene que ser true o false')
         if n.get('prioridad') not in (1, 2, 3):
@@ -186,25 +317,11 @@ def revisar():
                 error(f'{nid}: un tema externo no tiene guía ni preguntas en esta web')
             continue
 
-        revisado = n.get('revisado')
-        if revisado is not None and not FECHA.match(str(revisado)):
-            error(f'{nid}: revisado tiene que ser AAAA-MM-DD')
-        if estado == 'publicado':
-            if nid not in paginas:
-                error(f'{nid}: publicado pero falta temas/{nid}.html')
-            if not frase:
-                error(f'{nid}: publicado sin frase')
-            if not revisado:
-                error(f'{nid}: publicado sin fecha revisado')
-            if n.get('evaluable') and preguntas_por_tema.get(nid, 0) < MIN_PREGUNTAS:
-                error(f'{nid}: publicado y evaluable con {preguntas_por_tema.get(nid, 0)} preguntas (mínimo {MIN_PREGUNTAS})')
-        elif nid in paginas:
-            error(f'{nid}: existe temas/{nid}.html pero el estado es {estado!r}')
-        if n.get('volatil') and revisado and FECHA.match(str(revisado)):
-            fecha = datetime.date.fromisoformat(revisado)
-            meses = (hoy.year - fecha.year) * 12 + hoy.month - fecha.month
-            if meses > MESES_VOLATIL:
-                avisos.append(f'{nid}: tema volátil revisado hace {meses} meses ({revisado})')
+        revisar_ficha(n, paginas, frase, hoy)
+        if estado == 'publicado' and n.get('evaluable') and preguntas_por_tema.get(nid, 0) < MIN_PREGUNTAS:
+            error(f'{nid}: publicado y evaluable con {preguntas_por_tema.get(nid, 0)} preguntas (mínimo {MIN_PREGUNTAS})')
+        if nid in preguntas_por_tema and not n.get('evaluable'):
+            error(f'{nid}: tiene preguntas pero evaluable es false')
 
     for pagina in sorted(paginas - set(por_id)):
         error(f'temas/{pagina}.html no corresponde a ningún nodo')
