@@ -771,7 +771,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
   navegador: gratis, sin librerías ni peticiones propias. Lee nombre, frase y el texto de `.doc` por bloques
   (títulos, párrafos, listas, citas, filas de tabla) frase a frase, resaltando el bloque; se salta `<pre>`,
   evaluación, "Qué contiene", "Relacionados", "Fuentes" y `[data-sin-lectura]`. Barra fija con anterior/pausar/
-  siguiente/parar, velocidad y voz (en español; locales primero, las no locales marcadas "(en línea)" y cubiertas
+  siguiente/parar, velocidad y voz (en español; Google primero por decisión del usuario el 2026-11-04, aunque es en línea; las no locales marcadas "(en línea)" y cubiertas
   en el aviso legal). Siglas: campo opcional `leer` en `glosario.json`; sin él, las de solo mayúsculas se
   deletrean. Alternativa descartada por ahora: MP3 pregenerados (Piper/edge-tts), mejor voz pero hay que
   regenerarlos con cada cambio.
@@ -802,6 +802,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-04 | Voz de Google como predeterminada de "Escuchar" (petición del usuario: suena mejor); la elegida en el selector sigue mandando. Aviso legal: se dice que por defecto el texto va a Google y cómo evitarlo. |
 | 2026-11-04 | **Fichas leídas** (petición del usuario, cinco puntos): `spider.leidas` con helpers en `datos.js` (`tieneFicha`, `lecturaDe`, `marcarLeida`, `hoy`); botón y sugerencia en `tema.js` (`alTerminar` en `lectura.js`); ✓/↻ en el mapa vía `decorar()`, filtro "Mi lectura", recuento por rama en el panel; aviso de ficha actualizada si `revisado` es posterior; aviso legal. Probado en Chrome y a 375 px. |
 | 2026-11-04 | **"Escuchar" en las fichas** (petición del usuario): `assets/lectura.js` con la Web Speech API, barra de control, `spider.lectura`, `leer` en el glosario (AI, GenAI, RAG, BERT, JSON), aviso legal (voces en línea). Probado en Chrome con Microsoft Helena y a 375 px. |
 | 2026-11-03 | **Ampliación del piloto de IA** (el usuario va a hacer pruebas con una lista de conceptos): los 10 primeros ya estaban cubiertos; se añaden 8 conceptos al glosario (parámetros e hiperparámetros, arquitectura/estructura del modelo, datos estructurados y no estructurados, regresión, sesgo con sus tres sentidos, varianza, NLP, Transformer) y las siglas PLN y BERT (NLP enlaza a su concepto). Nuevas secciones: "Regresión y clasificación" y "Sesgo y varianza" (ML), arquitectura y "El Transformer por dentro" (DL), "Del NLP a los LLM" (LLMs). 14 preguntas nuevas (71 en total). |
