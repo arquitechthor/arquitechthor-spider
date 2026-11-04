@@ -180,6 +180,7 @@ p { color: var(--text-muted); margin: 0 0 16px; }
 }
 .btn-secondary:hover { border-color: var(--cyan); }
 .btn-sm { padding: 8px 14px; font-size: 13px; }
+.btn[hidden] { display: none; }
 .btn[disabled] { opacity: 0.5; cursor: default; transform: none; }
 
 /* ── Hero ────────────────────────────────────────────────── */
@@ -597,6 +598,25 @@ a.concepto { color: inherit; text-decoration: underline dotted; text-decoration-
 a.concepto:hover { color: var(--text); }
 a.sigla-enlace { color: inherit; }
 a.sigla-enlace abbr.sigla { text-decoration-color: var(--cyan); }
+
+/* ── Lectura en voz alta (assets/lectura.js) ────────────── */
+.leyendo { background: rgba(34, 211, 238, 0.10); box-shadow: 0 0 0 6px rgba(34, 211, 238, 0.10); border-radius: 4px; }
+.lectura-barra {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 20px;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  background: var(--surface); border-top: 1px solid var(--border-strong);
+  box-shadow: 0 -10px 30px -10px rgba(0, 0, 0, 0.6);
+}
+.lectura-botones, .lectura-ajustes { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.lectura-botones .btn { padding: 8px 12px; }
+.lectura-pos { font-size: 13px; min-width: 4.5em; }
+.lectura-ajustes label { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-muted); }
+.lectura-ajustes select {
+  max-width: 220px; padding: 6px 8px; border-radius: 8px; font: inherit; font-size: 13px;
+  background: var(--surface-2); color: var(--text); border: 1px solid var(--border-strong);
+}
+body.con-lectura footer { padding-bottom: 190px; }
 
 /* ── Glosario (glosario.html, assets/glosario.js) ─────────── */
 .glosario-lista { display: grid; gap: 14px; margin: 0; }

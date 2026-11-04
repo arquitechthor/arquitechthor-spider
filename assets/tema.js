@@ -98,12 +98,19 @@
     rel.closest('[data-seccion-relacionados]')?.remove();
   }
 
+  let siglas = {};
   if (window.SpiderSiglas) {
     try {
       const g = await window.SpiderSiglas.cargar();
+      siglas = g.siglas;
       document.querySelectorAll('.doc').forEach((doc) => window.SpiderSiglas.marcarDoc(doc, g, n.id));
     } catch (e) {
       console.error(e);
     }
+  }
+
+  // "Escuchar" (assets/lectura.js), solo en fichas escritas: la genérica no tiene texto propio.
+  if (window.SpiderLectura && !generica) {
+    window.SpiderLectura.montar(cab.querySelector('.ficha-acciones'), { cab, docs: [...document.querySelectorAll('.doc')], siglas });
   }
 })();

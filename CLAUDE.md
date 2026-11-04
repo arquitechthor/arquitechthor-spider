@@ -76,6 +76,11 @@ no third-party requests).
   `glosario.html` (`assets/glosario.js`). `assets/siglas.js` (`SpiderSiglas`) marks acronyms at load
   time in `.doc` (tooltip; first mention per `<h2>` section links to its ficha, except on its own
   page) and in quiz questions (tooltip only).
+- `assets/lectura.js` (`SpiderLectura`, mounted by `tema.js` on written fichas): "Escuchar" reads the
+  ficha aloud with the browser's Web Speech API (no library, no requests of our own). It skips `<pre>`,
+  the evaluation, "Qué contiene", "Relacionados", "Fuentes" and `[data-sin-lectura]`. Acronyms are
+  spelled out unless their glossary entry has `leer` (how to pronounce it: `"RAG": { "leer": "rag" }`).
+  Speed and voice in `spider.lectura`. New fichas must load it before `tema.js` (see the template).
 - `aviso-legal.html`: legal notice, trademarks, license and privacy. Keep it consistent with any
   new feature (anything stored in `localStorage` must be covered by its privacy section).
 

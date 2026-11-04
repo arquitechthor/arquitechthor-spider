@@ -1,23 +1,23 @@
 {
   "siglas": {
     "IA": { "en": "Artificial Intelligence", "es": "inteligencia artificial", "enlace": "artificial-intelligence" },
-    "AI": { "en": "Artificial Intelligence", "es": "inteligencia artificial", "enlace": "artificial-intelligence" },
+    "AI": { "leer": "ei ai", "en": "Artificial Intelligence", "es": "inteligencia artificial", "enlace": "artificial-intelligence" },
     "ML": { "en": "Machine Learning", "es": "aprendizaje automático: modelos que aprenden a partir de datos", "enlace": "machine-learning" },
     "DL": { "en": "Deep Learning", "es": "aprendizaje profundo, con redes neuronales de muchas capas", "enlace": "deep-learning" },
     "LLM": { "en": "Large Language Model", "es": "modelo de lenguaje grande, entrenado con enormes cantidades de texto", "enlace": "llms" },
-    "GenAI": { "en": "Generative AI", "es": "IA generativa: crea contenido nuevo", "enlace": "generative-ai" },
-    "RAG": { "en": "Retrieval-Augmented Generation", "es": "el modelo responde apoyándose en documentos que se recuperan antes", "enlace": "rag" },
+    "GenAI": { "leer": "yen ei ai", "en": "Generative AI", "es": "IA generativa: crea contenido nuevo", "enlace": "generative-ai" },
+    "RAG": { "leer": "rag", "en": "Retrieval-Augmented Generation", "es": "el modelo responde apoyándose en documentos que se recuperan antes", "enlace": "rag" },
     "MCP": { "en": "Model Context Protocol", "es": "protocolo abierto para conectar modelos con herramientas y datos", "enlace": "mcp" },
     "API": { "en": "Application Programming Interface", "es": "interfaz para que los programas se comuniquen" },
     "GPU": { "en": "Graphics Processing Unit", "es": "procesador gráfico; acelera el entrenamiento de redes neuronales" },
     "NLP": { "en": "Natural Language Processing", "es": "procesamiento del lenguaje natural: que las máquinas entiendan y produzcan lenguaje humano", "enlace": "pln" },
     "PLN": { "en": "Natural Language Processing", "es": "procesamiento del lenguaje natural (sigla en español de NLP)", "enlace": "pln" },
-    "BERT": { "en": "Bidirectional Encoder Representations from Transformers", "es": "modelo de Google de 2018 que usa solo el codificador del Transformer; útil para clasificar y para embeddings" },
+    "BERT": { "leer": "bert", "en": "Bidirectional Encoder Representations from Transformers", "es": "modelo de Google de 2018 que usa solo el codificador del Transformer; útil para clasificar y para embeddings" },
     "CNN": { "en": "Convolutional Neural Network", "es": "red neuronal convolucional, típica en visión por computador" },
     "RNN": { "en": "Recurrent Neural Network", "es": "red neuronal recurrente: procesa una secuencia paso a paso" },
     "RLHF": { "en": "Reinforcement Learning from Human Feedback", "es": "ajuste de un modelo con las preferencias de personas" },
     "GPT": { "en": "Generative Pre-trained Transformer", "es": "familia de modelos de OpenAI; el nombre describe su arquitectura" },
-    "JSON": { "en": "JavaScript Object Notation", "es": "formato de datos en texto" },
+    "JSON": { "leer": "yéison", "en": "JavaScript Object Notation", "es": "formato de datos en texto" },
     "OCDE": { "es": "Organización para la Cooperación y el Desarrollo Económicos" }
   },
   "conceptos": [

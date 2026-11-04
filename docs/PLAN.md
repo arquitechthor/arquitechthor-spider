@@ -45,7 +45,9 @@ línea al "Registro de sesiones".
   enlaces publicados en `kopi-web`, `aws-cert-study`, `arquitechthor.github.io` y
   `kopi-chess`; falta `kopi-docs/politicas.md`, que no está versionado y vive en otro ordenador: se
   actualiza cuando se trabaje allí (política "Mismo menú y pie": añadir Tech Spider a la lista).
-- **Última actualización:** 2026-11-03 (piloto de fichas y evaluaciones de IA)
+- **Lectura en voz alta (2026-11-04):** botón "Escuchar" en las fichas (Fase 8), pendiente de que el usuario
+  lo pruebe en producción.
+- **Última actualización:** 2026-11-04 (lectura en voz alta)
 
 ---
 
@@ -152,6 +154,7 @@ arquitechthor-spider/
 │   ├── simulacro.js          # Fase 6
 │   ├── progreso.js
 │   ├── siglas.js             # tooltips de siglas (se copia en la Fase 4, con siglas.json)
+│   ├── lectura.js            # "Escuchar": lectura en voz alta de una ficha (Web Speech API)
 │   ├── nav.js                # menú móvil y aria-current (mismo bloque que en las otras webs)
 │   ├── logo.svg              # logo propio (+ favicon-32.png y apple-touch-icon.png, generados de él)
 │   └── iconos/areas/<id>.svg # iconos propios de las 13 áreas
@@ -344,6 +347,7 @@ Imprime un resumen por área: bloques, temas, evaluables, publicados y preguntas
 | `spider.evaluaciones` | historial de tests por rama (id, fecha, nota, nº preguntas) |
 | `spider.simulacros` | historial de simulacros (Fase 6) |
 | `spider.vista` | preferencias: vista (cajas/telaraña), color por (área/progreso/autoevaluación), filtros |
+| `spider.lectura` | lectura en voz alta: `{ velocidad, voz }` (voiceURI elegido) |
 
 **Estado derivado de un tema** (nunca guardado en JSON): *Sin empezar* → *En curso* (alguna
 respondida) → *Superado* (≥ 80 % de sus preguntas acertadas en el último intento de cada una) →
@@ -758,6 +762,14 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 - **Rutas de aprendizaje** guiadas (secuencias de temas con orden recomendado sobre el mapa).
 - Exportar preguntas a Noria (formato de `kopi-docs/importar_temas.md`), como en aws-cert-study.
 - Exportar "Mi telaraña" como imagen (SVG → PNG) para compartir.
+- **Hecho (2026-11-04): "Escuchar" en las fichas** (`assets/lectura.js`, petición del usuario). Web Speech API del
+  navegador: gratis, sin librerías ni peticiones propias. Lee nombre, frase y el texto de `.doc` por bloques
+  (títulos, párrafos, listas, citas, filas de tabla) frase a frase, resaltando el bloque; se salta `<pre>`,
+  evaluación, "Qué contiene", "Relacionados", "Fuentes" y `[data-sin-lectura]`. Barra fija con anterior/pausar/
+  siguiente/parar, velocidad y voz (en español; locales primero, las no locales marcadas "(en línea)" y cubiertas
+  en el aviso legal). Siglas: campo opcional `leer` en `glosario.json`; sin él, las de solo mayúsculas se
+  deletrean. Alternativa descartada por ahora: MP3 pregenerados (Piper/edge-tts), mejor voz pero hay que
+  regenerarlos con cada cambio.
 
 ---
 
@@ -785,6 +797,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-04 | **"Escuchar" en las fichas** (petición del usuario): `assets/lectura.js` con la Web Speech API, barra de control, `spider.lectura`, `leer` en el glosario (AI, GenAI, RAG, BERT, JSON), aviso legal (voces en línea). Probado en Chrome con Microsoft Helena y a 375 px. |
 | 2026-11-03 | **Ampliación del piloto de IA** (el usuario va a hacer pruebas con una lista de conceptos): los 10 primeros ya estaban cubiertos; se añaden 8 conceptos al glosario (parámetros e hiperparámetros, arquitectura/estructura del modelo, datos estructurados y no estructurados, regresión, sesgo con sus tres sentidos, varianza, NLP, Transformer) y las siglas PLN y BERT (NLP enlaza a su concepto). Nuevas secciones: "Regresión y clasificación" y "Sesgo y varianza" (ML), arquitectura y "El Transformer por dentro" (DL), "Del NLP a los LLM" (LLMs). 14 preguntas nuevas (71 en total). |
 | 2026-11-03 | **Piloto de IA:** todo nodo tiene ficha (temas: guía y evaluación; áreas y bloques: presentación y "Evaluar esta rama"), criterio bloque → tema y "no enterrar temas". `artificial-intelligence` pasa a tema; nuevos Machine Learning y Deep Learning. Fichas del área IA y de 6 temas, 57 preguntas, `glosario.json` con 17 siglas y 4 conceptos, `siglas.js` (tooltip y enlace), `tema.js`, `quiz.js`, `evaluacion.html`, `glosario.html`, `tema.html`. El ☁ de AWS pasa delante del nombre (petición del usuario). |
 | 2026-11-03 | Cajas con el aspecto de las tarjetas de áreas (icono, nombre en inglés, chips grises, sin recuentos) y **sección "Áreas" retirada** de la portada (decisión del usuario). |

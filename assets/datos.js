@@ -100,6 +100,7 @@
     evaluaciones: 'spider.evaluaciones',
     simulacros: 'spider.simulacros',
     vista: 'spider.vista',
+    lectura: 'spider.lectura',
   };
 
   function leer(nombre, porDefecto = {}) {
