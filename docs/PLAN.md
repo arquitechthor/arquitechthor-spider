@@ -45,9 +45,13 @@ línea al "Registro de sesiones".
   enlaces publicados en `kopi-web`, `aws-cert-study`, `arquitechthor.github.io` y
   `kopi-chess`; falta `kopi-docs/politicas.md`, que no está versionado y vive en otro ordenador: se
   actualiza cuando se trabaje allí (política "Mismo menú y pie": añadir Tech Spider a la lista).
+- **Fichas leídas (2026-11-04):** "Marcar como leída" en cada ficha escrita, sugerencia al llegar al
+  final del texto o al terminar "Escuchar", ✓/↻ en la Telaraña, las Cajas, "Qué contiene" y
+  "Relacionados", filtro Estado → "Mi lectura" (leídas, sin leer, actualizadas) y "Fichas leídas
+  X de Y" por rama en el panel. Pendiente de que el usuario lo pruebe en producción.
 - **Lectura en voz alta (2026-11-04):** botón "Escuchar" en las fichas (Fase 8), pendiente de que el usuario
   lo pruebe en producción.
-- **Última actualización:** 2026-11-04 (lectura en voz alta)
+- **Última actualización:** 2026-11-04 (lectura en voz alta y fichas leídas)
 
 ---
 
@@ -348,6 +352,7 @@ Imprime un resumen por área: bloques, temas, evaluables, publicados y preguntas
 | `spider.simulacros` | historial de simulacros (Fase 6) |
 | `spider.vista` | preferencias: vista (cajas/telaraña), color por (área/progreso/autoevaluación), filtros |
 | `spider.lectura` | lectura en voz alta: `{ velocidad, voz }` (voiceURI elegido) |
+| `spider.leidas` | fichas marcadas como leídas: `{ "<id>": "AAAA-MM-DD" }` (solo fichas escritas; si `revisado` es posterior, "actualizada desde que la leíste") |
 
 **Estado derivado de un tema** (nunca guardado en JSON): *Sin empezar* → *En curso* (alguna
 respondida) → *Superado* (≥ 80 % de sus preguntas acertadas en el último intento de cada una) →
@@ -797,6 +802,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-04 | **Fichas leídas** (petición del usuario, cinco puntos): `spider.leidas` con helpers en `datos.js` (`tieneFicha`, `lecturaDe`, `marcarLeida`, `hoy`); botón y sugerencia en `tema.js` (`alTerminar` en `lectura.js`); ✓/↻ en el mapa vía `decorar()`, filtro "Mi lectura", recuento por rama en el panel; aviso de ficha actualizada si `revisado` es posterior; aviso legal. Probado en Chrome y a 375 px. |
 | 2026-11-04 | **"Escuchar" en las fichas** (petición del usuario): `assets/lectura.js` con la Web Speech API, barra de control, `spider.lectura`, `leer` en el glosario (AI, GenAI, RAG, BERT, JSON), aviso legal (voces en línea). Probado en Chrome con Microsoft Helena y a 375 px. |
 | 2026-11-03 | **Ampliación del piloto de IA** (el usuario va a hacer pruebas con una lista de conceptos): los 10 primeros ya estaban cubiertos; se añaden 8 conceptos al glosario (parámetros e hiperparámetros, arquitectura/estructura del modelo, datos estructurados y no estructurados, regresión, sesgo con sus tres sentidos, varianza, NLP, Transformer) y las siglas PLN y BERT (NLP enlaza a su concepto). Nuevas secciones: "Regresión y clasificación" y "Sesgo y varianza" (ML), arquitectura y "El Transformer por dentro" (DL), "Del NLP a los LLM" (LLMs). 14 preguntas nuevas (71 en total). |
 | 2026-11-03 | **Piloto de IA:** todo nodo tiene ficha (temas: guía y evaluación; áreas y bloques: presentación y "Evaluar esta rama"), criterio bloque → tema y "no enterrar temas". `artificial-intelligence` pasa a tema; nuevos Machine Learning y Deep Learning. Fichas del área IA y de 6 temas, 57 preguntas, `glosario.json` con 17 siglas y 4 conceptos, `siglas.js` (tooltip y enlace), `tema.js`, `quiz.js`, `evaluacion.html`, `glosario.html`, `tema.html`. El ☁ de AWS pasa delante del nombre (petición del usuario). |

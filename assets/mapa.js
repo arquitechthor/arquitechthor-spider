@@ -3,7 +3,8 @@
  * vista: q=<búsqueda>&color=nivel&estado=<filtro>&esencial=1), de modo que el botón atrás y los
  * enlaces compartidos funcionan; pinta la telaraña (assets/telarana.js) y la decora con el color, los
  * filtros y la búsqueda; pinta las migas de pan y el panel de detalle con la autoevaluación
- * (localStorage spider.autoevaluacion).
+ * (localStorage spider.autoevaluacion). Las fichas leídas (spider.leidas) llevan ✓ (o ↻ si se
+ * actualizaron después), se filtran con Estado y se cuentan por rama en el panel.
  */
 (async function () {
   const D = window.SpiderDatos;
@@ -23,7 +24,10 @@
   // Del rojo al verde; "sin marcar" en gris. El nivel va también en texto (aria-label y panel).
   const COLOR_NIVEL = ['#f87171', '#fb923c', '#facc15', '#a3e635', '#4ade80'];
   const SIN_MARCAR = '#6b7490';
-  const ESTADOS = { publicado: 'con guía publicada', pendiente: 'próximamente', aws: 'con guía en Apuntes AWS' };
+  const ESTADOS = {
+    publicado: 'con guía publicada', pendiente: 'próximamente', aws: 'con guía en Apuntes AWS',
+    leida: 'con ficha leída', sinleer: 'con ficha sin leer', actualizada: 'actualizados desde que los leíste',
+  };
   const TIPO = { raiz: 'Mapa completo', area: 'Área', bloque: 'Bloque', tema: 'Tema' };
   const movil = window.matchMedia('(max-width: 760px)');
   const buscador = document.getElementById('buscar');
@@ -181,6 +185,40 @@
     return tema.estado === 'publicado' ? 'publicado' : 'pendiente';
   }
 
+  /** ¿Cumple el tema el filtro Estado? Los de lectura solo cuentan fichas escritas. */
+  function cumpleEstado(tema, filtro, leidas) {
+    if (filtro === 'leida' || filtro === 'sinleer' || filtro === 'actualizada') {
+      if (!D.tieneFicha(tema)) return false;
+      const l = D.lecturaDe(tema, leidas);
+      if (filtro === 'leida') return Boolean(l);
+      if (filtro === 'sinleer') return !l;
+      return Boolean(l && l.actualizada);
+    }
+    return estadoDe(tema) === filtro;
+  }
+
+  /** Fichas escritas de una rama (el propio nodo incluido, sin accesos) y cuántas están leídas. */
+  function lecturaRama(id, leidas) {
+    const vistos = new Set();
+    const pila = [id];
+    let total = 0;
+    let leidasN = 0;
+    let actualizadas = 0;
+    while (pila.length) {
+      const actual = pila.pop();
+      if (vistos.has(actual)) continue;
+      vistos.add(actual);
+      const nodo = datos.porId.get(actual);
+      if (D.tieneFicha(nodo)) {
+        total++;
+        const l = D.lecturaDe(nodo, leidas);
+        if (l) { leidasN++; if (l.actualizada) actualizadas++; }
+      }
+      for (const h of datos.hijos.get(actual) || []) if (!h.acceso) pila.push(h.nodo.id);
+    }
+    return { total, leidas: leidasN, actualizadas };
+  }
+
   function hayFiltros() {
     return Boolean(textoBusqueda() || vista.estado || vista.esencial);
   }
@@ -197,7 +235,8 @@
    * y cualquier rama que contenga una coincidencia (para poder llegar a ella).
    */
   function calcularFiltro() {
-    const cumple = (t) => (!vista.esencial || t.prioridad === 1) && (!vista.estado || estadoDe(t) === vista.estado);
+    const leidas = D.leer('leidas');
+    const cumple = (t) => (!vista.esencial || t.prioridad === 1) && (!vista.estado || cumpleEstado(t, vista.estado, leidas));
     const filtrando = vista.esencial || Boolean(vista.estado);
     const cache = new Map();
     const pasaFiltros = (n) => {
@@ -224,6 +263,7 @@
   /** Aplica a los nodos ya dibujados el color (área o nivel) y el atenuado de búsqueda y filtros. */
   function decorar() {
     const auto = D.leer('autoevaluacion');
+    const leidas = D.leer('leidas');
     const activos = hayFiltros();
     const f = activos ? calcularFiltro() : null;
     // Pares [elemento que se pinta, enlace que se etiqueta]: en la telaraña son el mismo <a>; en
@@ -246,11 +286,43 @@
       e.classList.toggle('coincide', coincide);
       e.classList.toggle('atenua', Boolean(f) && !centro && !f.pasa(n));
       if (coincide) extra += '. Coincide con la búsqueda';
+      const l = D.lecturaDe(n, leidas);
+      if (l) extra += l.actualizada ? '. Ficha actualizada desde que la leíste' : '. Ficha leída';
+      marcarLeida(a, l);
       a.setAttribute('aria-label', a.dataset.etiqueta + extra);
     }
     svg.classList.toggle('filtrando', activos);
     cajasEl.classList.toggle('filtrando', activos);
     cajasEl.dataset.color = vista.color; // con "Mi nivel", los chips grises toman el color en el borde
+  }
+
+  /**
+   * ✓ (leída) o ↻ (actualizada desde que la leíste) detrás del nombre. En la telaraña es un <tspan>
+   * al final de la última línea de la etiqueta (sin etiqueta, como los nietos en móvil, no se marca);
+   * en Cajas, un <span> dentro del enlace. aria-hidden: el estado ya va en el aria-label.
+   */
+  function marcarLeida(a, l) {
+    a.querySelectorAll('.marca-leida').forEach((x) => x.remove());
+    if (!l) return;
+    const simbolo = l.actualizada ? '↻' : '✓';
+    const clase = `marca-leida${l.actualizada ? ' actualizada' : ''}`;
+    if (a instanceof SVGElement) {
+      const texto = [...a.querySelectorAll('text')].find((t) => !t.classList.contains('subir'));
+      if (!texto) return;
+      const tspans = texto.querySelectorAll('tspan:not(.marca-leida)');
+      const destino = tspans.length ? tspans[tspans.length - 1] : texto;
+      const ts = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+      ts.setAttribute('class', clase);
+      ts.setAttribute('aria-hidden', 'true');
+      ts.textContent = ` ${simbolo}`;
+      destino.appendChild(ts); // dentro del último tspan, para que siga en su línea
+    } else {
+      const sp = document.createElement('span');
+      sp.className = clase;
+      sp.setAttribute('aria-hidden', 'true');
+      sp.textContent = ` ${simbolo}`;
+      a.appendChild(sp);
+    }
   }
 
   function pintarLeyendaColor() {
@@ -314,6 +386,12 @@
       else chips.push(n.estado === 'publicado' ? '<span class="badge badge-publicado">Publicado</span>' : '<span class="badge badge-pendiente">Próximamente</span>');
       if (!n.evaluable && !n.externo) chips.push('<span class="badge badge-pendiente">Solo autoevaluación</span>');
       if (n.prioridad === 1) chips.push('<span class="badge badge-esencial">Lo esencial</span>');
+      const l = D.lecturaDe(n);
+      if (l) {
+        chips.push(l.actualizada
+          ? `<span class="badge badge-actualizada" title="Revisada el ${D.esc(D.formatoFecha(n.revisado))}">↻ Actualizada desde que la leíste</span>`
+          : `<span class="badge badge-leida">✓ Leída el ${D.esc(D.formatoFecha(l.fecha))}</span>`);
+      }
       partes.push(`<div class="panel-badges">${chips.join('')}</div>`);
 
       const nivel = auto[n.id];
@@ -346,6 +424,16 @@
     }
 
     if (n.tipo !== 'tema') {
+      const lr = lecturaRama(n.id, D.leer('leidas'));
+      if (lr.total) {
+        const pct = Math.round((lr.leidas / lr.total) * 100);
+        const propia = D.lecturaDe(n);
+        partes.push(`<h3>Fichas leídas</h3>
+          <p class="lectura-rama"><span class="barra-lectura" aria-hidden="true"><span style="width:${pct}%"></span></span>
+          ${lr.leidas} de ${lr.total}</p>
+          ${lr.actualizadas ? `<p class="text-faint lectura-propia">↻ ${lr.actualizadas} ${lr.actualizadas === 1 ? 'actualizada' : 'actualizadas'} desde que las leíste</p>` : ''}
+          ${propia ? `<p class="text-faint lectura-propia">${propia.actualizada ? '↻ Su ficha se actualizó desde que la leíste' : `✓ Su ficha: leída el ${D.esc(D.formatoFecha(propia.fecha))}`}</p>` : ''}`);
+      }
       const m = A.nivelMedio(datos, n.id, auto);
       if (m.media !== null) {
         const i = Math.round(m.media);
@@ -426,6 +514,11 @@
   conmutador.addEventListener('click', (ev) => {
     const b = ev.target.closest('[data-v]');
     if (b) cambiarVista({ v: b.dataset.v });
+  });
+
+  // Al volver de una ficha con el botón atrás (caché del navegador), las marcas pueden haber cambiado.
+  window.addEventListener('pageshow', (ev) => {
+    if (ev.persisted) { decorar(); pintarPanel(); avisarResultados(); }
   });
 
   window.addEventListener('popstate', () => {

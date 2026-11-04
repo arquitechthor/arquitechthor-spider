@@ -104,8 +104,9 @@
   /**
    * Añade "Escuchar" a `acciones` (la fila de botones de la ficha). `cab` es la cabecera, `docs`
    * los .doc de la página y `siglas` el objeto siglas de data/glosario.json (puede ir vacío).
+   * `alTerminar` se llama cuando la lectura llega al final (no al pulsar "Parar").
    */
-  function montar(acciones, { cab, docs, siglas = {} }) {
+  function montar(acciones, { cab, docs, siglas = {}, alTerminar = null }) {
     const pref = D.leer('lectura', {});
     let velocidad = VELOCIDADES.includes(pref.velocidad) ? pref.velocidad : 1;
     let bloques = null;
@@ -154,7 +155,7 @@
       u.onend = () => {
         if (mio !== turno || estado !== 'leyendo') return;
         if (++trozo >= b.trozos.length) { trozo = 0; indice++; resaltar(); pintar(); }
-        if (indice >= bloques.length) parar(); else hablar();
+        if (indice >= bloques.length) { parar(); if (alTerminar) alTerminar(); } else hablar();
       };
       u.onerror = (e) => {
         if (mio !== turno || e.error === 'interrupted' || e.error === 'canceled') return;

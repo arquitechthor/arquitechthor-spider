@@ -81,6 +81,11 @@ no third-party requests).
   the evaluation, "Qué contiene", "Relacionados", "Fuentes" and `[data-sin-lectura]`. Acronyms are
   spelled out unless their glossary entry has `leer` (how to pronounce it: `"RAG": { "leer": "rag" }`).
   Speed and voice in `spider.lectura`. New fichas must load it before `tema.js` (see the template).
+- Read fichas: `spider.leidas` (`{ id: "AAAA-MM-DD" }`), helpers `SpiderDatos.tieneFicha/lecturaDe/
+  marcarLeida`. `tema.js` adds "Marcar como leída" and offers it at the end of the text (scroll or
+  end of "Escuchar"); `mapa.js` shows ✓ (↻ when `revisado` is later than the read date: "actualizada
+  desde que la leíste") in both views via `decorar()`, filters them in Estado ("Mi lectura") and
+  counts read fichas per branch in the panel. Bumping `revisado` is what flags a ficha as updated.
 - `aviso-legal.html`: legal notice, trademarks, license and privacy. Keep it consistent with any
   new feature (anything stored in `localStorage` must be covered by its privacy section).
 

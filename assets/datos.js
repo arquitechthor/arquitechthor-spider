@@ -101,6 +101,7 @@
     simulacros: 'spider.simulacros',
     vista: 'spider.vista',
     lectura: 'spider.lectura',
+    leidas: 'spider.leidas',
   };
 
   function leer(nombre, porDefecto = {}) {
@@ -150,6 +151,35 @@
     return nodo.estado === 'publicado' ? url(`temas/${nodo.id}.html`) : url(`tema.html?id=${encodeURIComponent(nodo.id)}`);
   }
 
+  /**
+   * Fichas leídas (spider.leidas): { "<id>": "AAAA-MM-DD" }, la fecha en que se marcó. Solo cuentan
+   * las fichas escritas (publicadas y no externas). Si la ficha se revisó después ("revisado"
+   * posterior a esa fecha), queda "actualizada desde que la leíste".
+   */
+  function tieneFicha(nodo) {
+    return Boolean(nodo) && nodo.tipo !== 'raiz' && !nodo.externo && nodo.estado === 'publicado';
+  }
+
+  /** null si no está leída; si lo está, { fecha, actualizada }. */
+  function lecturaDe(nodo, leidas = leer('leidas')) {
+    const fecha = tieneFicha(nodo) ? leidas[nodo.id] : null;
+    if (!fecha) return null;
+    return { fecha, actualizada: Boolean(nodo.revisado && nodo.revisado > fecha) };
+  }
+
+  /** Marca (fecha de hoy) o desmarca una ficha como leída. */
+  function marcarLeida(id, leida) {
+    const leidas = leer('leidas');
+    if (leida) leidas[id] = hoy(); else delete leidas[id];
+    return guardar('leidas', Object.keys(leidas).length ? leidas : null);
+  }
+
+  /** Fecha local de hoy en AAAA-MM-DD. */
+  function hoy() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+
   /** Glosario de siglas y conceptos (data/glosario.json), compartido por siglas.js y glosario.js. */
   let glosario = null;
   function cargarGlosario() {
@@ -159,6 +189,6 @@
 
   window.SpiderDatos = {
     url, json, cargar, temasDe, esc, nombreHtml, nombreTexto, iconoArea, leer, guardar, formatoFecha,
-    leerProgreso, guardarProgreso, urlFicha, cargarGlosario,
+    leerProgreso, guardarProgreso, urlFicha, cargarGlosario, tieneFicha, lecturaDe, marcarLeida, hoy,
   };
 })();
