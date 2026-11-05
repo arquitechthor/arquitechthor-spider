@@ -1,5 +1,6 @@
-"""Valida data/nodos.json, las fichas (temas/), las preguntas (data/preguntas/) y el glosario
-(data/glosario.json). Sección 4.4 de docs/PLAN.md.
+"""Valida data/nodos.json, las fichas (temas/), las preguntas (data/preguntas/), el glosario
+(data/glosario.json) y que las páginas enlacen la versión actual de sus .js y su .css
+(scripts/versionar.py). Sección 4.4 de docs/PLAN.md.
 
 Uso:
     python scripts/revisar_arbol.py
@@ -352,9 +353,18 @@ def resumen(nodos, preguntas_por_tema):
     print(f'{len(nodos)} nodos, {accesos} accesos, {sum(1 for n in nodos if n.get("externo"))} externos')
 
 
+def revisar_versiones():
+    """Cada página enlaza sus .js y su .css con la huella actual (scripts/versionar.py)."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import versionar
+    for pagina, refs in versionar.revisar().items():
+        error(f'{pagina}: versión desfasada de {", ".join(refs)} (ejecuta python scripts/versionar.py)')
+
+
 def main():
     sys.stdout.reconfigure(encoding='utf-8')
     nodos, preguntas = revisar()
+    revisar_versiones()
     for a in avisos:
         print(f'AVISO  {a}')
     for e in errores:

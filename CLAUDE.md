@@ -112,8 +112,14 @@ ends with `.footer-sitios` (Kopi Tools · Apuntes AWS · Tech Spider · Kopi Che
 
 ```bash
 python -m http.server 8765        # fetch() of the JSON files fails on file://
+python scripts/versionar.py       # after changing any assets/*.js or styles.css: stamps ?v=<hash> in every page
 python scripts/revisar_arbol.py   # validator: run after ANY change to nodos.json, temas/, data/preguntas/ or data/glosario.json
 ```
+
+Every page links its scripts and stylesheet as `assets/x.js?v=<first 8 chars of SHA-256>` so a deploy
+never mixes new HTML with an old JS from the browser cache (GitHub Pages sends `max-age=600`). Never
+write those `?v=` by hand: run `versionar.py`; the validator fails if a page has an outdated one. New
+pages copied from the template get them right after running it.
 
 No build, lint or test tooling. Verify changes in a browser, including at ~375px width (no
 horizontal scroll). Headless Chrome won't render a window narrower than ~500px: to check 375px, load

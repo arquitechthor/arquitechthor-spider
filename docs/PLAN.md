@@ -337,6 +337,8 @@ Diferencias con `aws-cert-study`:
 
 ### 4.4 Validador `scripts/revisar_arbol.py`
 
+Desde el 2026-11-05 también comprueba que cada página enlace sus .js y su .css con la huella
+actual (`python scripts/versionar.py` la pone; ver `CLAUDE.md`).
 Hecho en la Fase 1. Se ejecuta con `python scripts/revisar_arbol.py` tras **cualquier** cambio en
 `data/nodos.json`, en `temas/` o en `data/preguntas/`.
 
@@ -831,6 +833,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-05 | Verificado "Mi telaraña" en producción con Chrome: tras publicar, el navegador mezclaba el HTML nuevo con el `mapa.js` viejo de su caché y el radar no salía. Solución (aceptada por el usuario): `scripts/versionar.py` pone `?v=<huella SHA-256>` en los .js y el .css de todas las páginas y `revisar_arbol.py` falla si alguna queda desfasada. Quitar el último nivel marcado borra la clave en vez de dejar `{}`. |
 | 2026-11-05 | **Fase 3 completa** (orden pedido por el usuario: 3.8, 3.7, 3.9): radar "Mi telaraña" (`radar.js`), responsive y accesibilidad (panel visible al tocar un tema en móvil, movimiento reducido global, "Saltar al contenido", anuncio corto en vez de panel vivo) y "Vista general" (`general.js`). Probado en Chrome headless a 1400 y 375 px. Concepto **temperatura** en el glosario, enlazado desde IA generativa y LLMs (el usuario vio que se nombraba sin explicar) y regla nueva en `CLAUDE.md`: cada ficha se entiende sola. |
 | 2026-11-05 | ✓/↻ de fichas leídas también en las listas del panel del mapa ("Contiene", "Vive en", "También aparece en", "Relacionados") (petición del usuario). Regla nueva para preguntas futuras: la longitud de las opciones no delata la correcta (4.3). |
 | 2026-11-04 | Voz de Google como predeterminada de "Escuchar" (petición del usuario: suena mejor); la elegida en el selector sigue mandando. Aviso legal: se dice que por defecto el texto va a Google y cómo evitarlo. |

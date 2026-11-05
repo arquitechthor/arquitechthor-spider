@@ -630,7 +630,7 @@
       const valor = nivel.dataset.nivel === 'borrar' ? null : Number(nivel.dataset.nivel);
       if (valor === null || auto[id] === valor) delete auto[id];
       else auto[id] = valor;
-      D.guardar('autoevaluacion', auto);
+      D.guardar('autoevaluacion', Object.keys(auto).length ? auto : null); // sin marcas, se borra la clave
       pintarPanel();
       decorar();
       pintarRadar();
