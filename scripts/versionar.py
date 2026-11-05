@@ -25,7 +25,9 @@ def paginas():
 
 
 def huella(fichero):
-    return hashlib.sha256(fichero.read_bytes()).hexdigest()[:8]
+    # Saltos de línea normalizados: Git puede dejar CRLF en Windows y LF en el repositorio, y la huella
+    # tiene que ser la misma en los dos sitios (solo debe cambiar cuando cambia el contenido).
+    return hashlib.sha256(fichero.read_bytes().replace(b'\r\n', b'\n')).hexdigest()[:8]
 
 
 def versionar(texto, carpeta, cache):
