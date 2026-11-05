@@ -4,7 +4,7 @@
  * enlaces compartidos funcionan; pinta la telaraña (assets/telarana.js) y la decora con el color, los
  * filtros y la búsqueda; pinta las migas de pan y el panel de detalle con la autoevaluación
  * (localStorage spider.autoevaluacion). Las fichas leídas (spider.leidas) llevan ✓ (o ↻ si se
- * actualizaron después), se filtran con Estado y se cuentan por rama en el panel.
+ * actualizaron después) en el mapa y en las listas del panel, se filtran con Estado y se cuentan por rama en el panel.
  */
 (async function () {
   const D = window.SpiderDatos;
@@ -356,9 +356,15 @@
     const area = A.area(datos, n);
     const marca = acceso ? ' ↗' : '';
     const nube = n.externo ? '☁ ' : '';
+    // ✓ (o ↻ si se actualizó después) igual que en los nodos del mapa y en las fichas.
+    const l = D.lecturaDe(n);
+    const leida = !l ? ''
+      : l.actualizada
+        ? ' <span class="marca-leida actualizada" title="Actualizada desde que la leíste">↻<span class="visually-hidden"> (actualizada desde que la leíste)</span></span>'
+        : ' <span class="marca-leida" title="Leída">✓<span class="visually-hidden"> (leída)</span></span>';
     return `<button type="button" data-ir="${D.esc(n.id)}"${acceso ? ' data-acceso="1"' : ''}>`
       + `<span class="punto-color" style="--c:${D.esc(area ? area.color : 'var(--cyan)')}"></span>`
-      + `<span>${nube}${D.esc(D.nombreTexto(n))}${marca}</span></button>`;
+      + `<span>${nube}${D.esc(D.nombreTexto(n))}${marca}${leida}</span></button>`;
   }
 
   function pintarPanel() {

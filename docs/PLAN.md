@@ -807,6 +807,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-05 | ✓/↻ de fichas leídas también en las listas del panel del mapa ("Contiene", "Vive en", "También aparece en", "Relacionados") (petición del usuario). Regla nueva para preguntas futuras: la longitud de las opciones no delata la correcta (4.3). |
 | 2026-11-04 | Voz de Google como predeterminada de "Escuchar" (petición del usuario: suena mejor); la elegida en el selector sigue mandando. Aviso legal: se dice que por defecto el texto va a Google y cómo evitarlo. |
 | 2026-11-04 | **Fichas leídas** (petición del usuario, cinco puntos): `spider.leidas` con helpers en `datos.js` (`tieneFicha`, `lecturaDe`, `marcarLeida`, `hoy`); botón y sugerencia en `tema.js` (`alTerminar` en `lectura.js`); ✓/↻ en el mapa vía `decorar()`, filtro "Mi lectura", recuento por rama en el panel; aviso de ficha actualizada si `revisado` es posterior; aviso legal. Probado en Chrome y a 375 px. |
 | 2026-11-04 | **"Escuchar" en las fichas** (petición del usuario): `assets/lectura.js` con la Web Speech API, barra de control, `spider.lectura`, `leer` en el glosario (AI, GenAI, RAG, BERT, JSON), aviso legal (voces en línea). Probado en Chrome con Microsoft Helena y a 375 px. |
