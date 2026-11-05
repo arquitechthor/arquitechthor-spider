@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
 
 <nav class="nav">
   <div class="nav-inner">
@@ -29,7 +30,7 @@
   </div>
 </nav>
 
-<main data-ficha="llms">
+<main id="contenido" tabindex="-1" data-ficha="llms">
 <section class="page-section" style="padding-top:32px">
   <div class="container">
     <header class="ficha-cab" id="ficha-cab"></header>
@@ -83,7 +84,7 @@
         <li><strong>Inferencia:</strong> usar el modelo ya entrenado. El modelo no aprende de tus conversaciones al responder;
           lo que "recuerda" es lo que le envías en cada petición.</li>
         <li><strong>Muestreo:</strong> en cada paso hay varios tokens posibles con distinta probabilidad; parámetros como la
-          temperatura deciden cuánto se arriesga al elegir (<a href="../tema.html?id=sampling-parameters">Sampling
+          <a class="concepto" data-concepto="temperatura">temperatura</a> deciden cuánto se arriesga al elegir (<a href="../tema.html?id=sampling-parameters">Sampling
           Parameters</a>). Pese al nombre, no son parámetros del modelo: no se aprenden, se eligen en cada petición.</li>
       </ul>
 

@@ -54,6 +54,20 @@ a:hover { text-decoration: underline; }
 
 img { max-width: 100%; display: block; }
 
+/* "Saltar al contenido": primer elemento enfocable de cada página, visible solo con el foco. */
+.saltar {
+  position: absolute; left: 12px; top: -60px; z-index: 100; padding: 10px 16px; border-radius: 10px;
+  background: var(--surface-2); color: var(--text); border: 1px solid var(--cyan); font-weight: 700;
+}
+.saltar:focus { top: 12px; text-decoration: none; }
+main:focus { outline: none; }
+
+/* Movimiento reducido: sin desplazamiento suave, transiciones ni animaciones en toda la web. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
 .container {
   max-width: 1120px;
   margin: 0 auto;
@@ -349,6 +363,7 @@ section.mapa { padding: 28px 0 48px; scroll-margin-top: 60px; }
 .mapa-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; }
 @media (max-width: 960px) { .mapa-layout { grid-template-columns: minmax(0, 1fr); } }
 .mapa-lienzo {
+  scroll-margin-top: 72px;
   background: radial-gradient(circle at 50% 50%, rgba(34, 211, 238, 0.06), transparent 62%), var(--bg-alt);
   border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
 }
@@ -368,7 +383,7 @@ section.mapa { padding: 28px 0 48px; scroll-margin-top: 60px; }
 .nivel-medio { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 14px; }
 
 /* SVG de la telaraña (assets/telarana.js). Cada nodo fija su color en --c. */
-.tela-hilos line, .tela-hilos path { stroke: rgba(148, 163, 184, 0.13); stroke-width: 1.5; fill: none; }
+.tela-hilos line, .tela-hilos path, .tela-hilos circle { stroke: rgba(148, 163, 184, 0.13); stroke-width: 1.5; fill: none; }
 .enlace { stroke-width: 2.2; stroke-opacity: 0.5; transition: opacity .15s; }
 .enlace-2 { stroke-width: 1.4; stroke-opacity: 0.35; }
 .relacion { fill: none; stroke: var(--text-faint); stroke-width: 1.6; stroke-dasharray: 7 6; opacity: 0.7; }
@@ -409,7 +424,26 @@ svg.filtrando .nodo.atenua:hover, svg.filtrando .nodo.atenua:focus-visible { opa
 
 /* Leyenda: cada vista enseña solo lo suyo */
 .mapa-lienzo[data-vista="cajas"] .solo-telarana,
-.mapa-lienzo:not([data-vista="cajas"]) .solo-cajas { display: none !important; }
+.mapa-lienzo[data-vista="general"] .solo-telarana,
+.mapa-lienzo:not([data-vista="cajas"]) .solo-cajas,
+.mapa-lienzo:not([data-vista="general"]) .solo-general,
+.mapa-lienzo[data-vista="general"] .no-general { display: none !important; }
+/* La vista general solo se ofrece cuando el mapa tiene sitio (el panel va al lado). */
+@media (max-width: 960px) { .solo-ancho { display: none !important; } }
+
+/* Vista general (assets/general.js): mismo <svg> y mismas clases .nodo que la telaraña. */
+.nodo-general circle.zona { fill: transparent; stroke: none; }
+.nodo-general circle.punto { stroke-width: 2; fill-opacity: 0.35; }
+.nodo-general.nodo-prof-3 circle.punto { stroke-width: 1.5; fill-opacity: 0.6; }
+.nodo-general.nodo-centro circle.punto { stroke-width: 3; }
+.nodo-general .general-area { fill: var(--c); }
+.enlace-general { fill: none; }
+svg.con-ruta .enlace-general:not(.en-ruta) { opacity: 0.35; }
+.enlace-general.en-ruta { stroke-opacity: 1; stroke-width: 3; }
+.nodo-general.en-ruta circle.punto { fill-opacity: 0.9; stroke: #fff; }
+.nodo-general.es-sel circle.punto { stroke: #fff; stroke-width: 3; fill-opacity: 0.9; filter: drop-shadow(0 0 6px var(--c)); }
+.general-info { margin: 0; padding: 10px 14px; min-height: 2.9em; border-top: 1px solid var(--border); font-size: 14px; color: var(--text-muted); }
+.general-info strong { color: var(--text); }
 
 /* Vista Cajas (assets/cajas.js). Cada caja y cada chip fijan su color en --c. Aspecto heredado de
    las antiguas tarjetas de áreas: superficie neutra, borde superior del color, icono del área,
@@ -460,6 +494,7 @@ svg.filtrando .nodo.atenua:hover, svg.filtrando .nodo.atenua:focus-visible { opa
 
 /* Panel de detalle */
 .panel {
+  scroll-margin-top: 72px; /* al bajar hasta él en móvil, que no quede bajo el menú fijo */
   position: sticky; top: 76px; max-height: calc(100vh - 96px); overflow: auto;
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px;
 }
@@ -579,6 +614,41 @@ svg.filtrando .nodo.atenua:hover, svg.filtrando .nodo.atenua:focus-visible { opa
 .quiz-codigo { margin: 10px 0 0; padding: 12px 14px; background: var(--bg-alt); border: 1px solid var(--border);
   border-radius: var(--radius-sm); overflow-x: auto; white-space: pre; font-family: var(--font-mono); font-size: 13px; color: var(--text); }
 .quiz-grupo { margin: 18px 0 0; font-size: 17px; }
+
+/* ── Radar "Mi telaraña" (assets/radar.js, pintado desde mapa.js) ── */
+section.radar-seccion { padding: 36px 0 56px; scroll-margin-top: 60px; }
+.radar-layout { display: grid; grid-template-columns: minmax(0, 560px) minmax(0, 1fr); gap: 24px; align-items: start; margin-top: 16px; }
+@media (max-width: 960px) { .radar-layout { grid-template-columns: minmax(0, 1fr); } }
+.radar-lienzo {
+  background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.06), transparent 62%), var(--bg-alt);
+  border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;
+}
+#radar { display: block; width: 100%; height: auto; max-height: 560px; }
+.radar-tela polygon, .radar-tela line { fill: none; stroke: rgba(148, 163, 184, 0.16); stroke-width: 1.2; }
+.radar-tela .radar-borde { stroke: rgba(148, 163, 184, 0.32); }
+.radar-capa polygon { stroke-width: 2.5; stroke-linejoin: round; }
+.radar-capa-nivel polygon { fill: rgba(34, 211, 238, 0.16); stroke: var(--cyan); stroke-dasharray: 7 5; }
+.radar-capa-nivel circle { fill: var(--cyan); }
+.radar-capa-tests polygon { fill: rgba(168, 85, 247, 0.20); stroke: var(--violet-strong); }
+.radar-capa-tests circle { fill: var(--violet-strong); }
+.radar-eje { outline: none; cursor: pointer; }
+.radar-eje text { fill: var(--c); font-size: 15px; font-weight: 700; paint-order: stroke; stroke: var(--bg-alt); stroke-width: 5px; }
+.radar-eje:hover text, .radar-eje:focus-visible text { fill: #fff; text-decoration: underline; }
+@media (max-width: 560px) {
+  .radar-lienzo { padding: 4px; }
+  .radar-eje text { font-size: 21px; }
+}
+.radar-info { display: grid; gap: 12px; min-width: 0; }
+.radar-vacio { margin: 0; }
+.radar-leyenda { padding: 0; border: 0; }
+.ley-capa { display: inline-block; flex: none; width: 18px; height: 0; border-top: 2.5px solid var(--cyan); vertical-align: middle; }
+.ley-capa-nivel { border-top-style: dashed; }
+.ley-capa-tests { border-top-color: var(--violet-strong); }
+.radar-lista { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr)); gap: 4px 16px; }
+.radar-lista li { padding: 8px 10px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); min-width: 0; }
+.radar-lista a { display: flex; align-items: center; gap: 8px; color: var(--text); font-weight: 600; font-size: 14px; }
+.radar-valores { display: flex; flex-wrap: wrap; gap: 2px 14px; margin-top: 2px; font-size: 12.5px; color: var(--text-muted); }
+.radar-valores > span { display: inline-flex; align-items: center; gap: 6px; }
 
 /* ── Fichas (temas/<id>.html y tema.html?id=, assets/tema.js) ── */
 .ficha-cab { display: grid; gap: 10px; margin-bottom: 8px; }

@@ -40,8 +40,12 @@ línea al "Registro de sesiones".
   cubrió en dos sentidos (arquitectura del modelo y datos estructurados); confirmar con el usuario si
   se refería a otra cosa (p. ej. salidas estructuradas de un LLM). El usuario está haciendo pruebas
   con esos conceptos: recoger su feedback antes de seguir.
-- **Próximo paso:** revisión del piloto con el usuario; después 3.7 (responsive), 3.8 (radar) y
-  3.9 (vista general), y la pasada de bloques candidatos a tema (4.5). **Tarea 2.6 casi cerrada (2026-11-03):**
+- **Piloto de IA revisado por el usuario (2026-11-05):** lo da por bueno.
+- **Fase 3 completa (2026-11-05):** 3.8 radar "Mi telaraña", 3.7 responsive y accesibilidad y 3.9
+  vista general, en ese orden (decisión del usuario). Pendiente de que el usuario lo revise en
+  producción.
+- **Próximo paso:** revisión en producción de la Fase 3; después la pasada de bloques candidatos a
+  tema (4.5) y la Fase 5 (5.3 evaluación por rama, 5.5 página de progreso, que reutilizará `radar.js`). **Tarea 2.6 casi cerrada (2026-11-03):**
   enlaces publicados en `kopi-web`, `aws-cert-study`, `arquitechthor.github.io` y
   `kopi-chess`; falta `kopi-docs/politicas.md`, que no está versionado y vive en otro ordenador: se
   actualiza cuando se trabaje allí (política "Mismo menú y pie": añadir Tech Spider a la lista).
@@ -151,7 +155,8 @@ arquitechthor-spider/
 │   ├── mapa.js               # controlador de la portada: estado en la URL, migas, panel, autoevaluación
 │   ├── telarana.js           # vista "Telaraña" (predeterminada): solo dibuja el SVG
 │   ├── cajas.js              # vista "Cajas" (alternativa, tarea 3.6)
-│   ├── radar.js              # gráfico de radar (progreso por área) en SVG propio
+│   ├── general.js            # "Vista general": árbol radial completo (pantallas anchas, tarea 3.9)
+│   ├── radar.js              # radar "Mi telaraña" (nivel y tests por área) en SVG propio (tarea 3.8)
 │   ├── preguntas.js          # copiado de aws-cert-study (window.SpiderPreguntas)
 │   ├── quiz.js               # test al final de cada guía
 │   ├── evaluacion.js         # test por rama y repaso
@@ -703,10 +708,29 @@ Completa el 2026-11-02.
       nombre original debajo del título) y chips grises sin el recuento "· N"; con "Color por:
       Mi nivel" el borde del chip toma el color de su nivel. Ni recuento de temas ni de
       evaluaciones en las cajas.
-- [ ] 3.7 Responsive (375 px sin scroll horizontal, telaraña reducida + lista en móvil),
-      `prefers-reduced-motion`, revisión con lector de pantalla y teclado.
-- [ ] 3.8 Radar "Mi telaraña" (`radar.js`).
-- [ ] 3.9 "Vista general" radial completa (pantallas anchas); puede ir después de la Fase 5.
+- [x] 3.7 (2026-11-05) Responsive y accesibilidad: todas las páginas medidas a 375 px sin
+      desbordes (la telaraña ya era reducida en móvil y el panel con "Contiene" va debajo). Al tocar
+      un tema en móvil o tableta la página baja al panel, y "← Volver" sube al mapa.
+      `prefers-reduced-motion` global en CSS (sin scroll suave, transiciones ni animaciones; el JS ya
+      lo respetaba). Enlace "Saltar al contenido" en todas las páginas (`<main id="contenido">`). El
+      panel deja de ser región viva (se leía entero en cada paso): una frase corta en
+      `#mapa-anuncio` dice qué se ha seleccionado o qué se ve.
+- [x] 3.8 (2026-11-05) Radar "Mi telaraña" (`radar.js`), sección bajo el mapa (`#mi-telarana`):
+      13 ejes, capa "Mi nivel" (media de la autoevaluación de los temas marcados, /4, línea
+      discontinua cian) y capa "Mis tests" (media, entre los temas publicados y evaluables del área,
+      de la parte acertada de sus preguntas; los no empezados cuentan 0; violeta). Pulsar un área la
+      enfoca en el mapa. Al lado, una lista con los valores en texto, que es la versión accesible (el
+      SVG va `aria-hidden`). **Cambio sobre 5.1-C:** se enseña siempre, también sin datos, con un aviso
+      que explica cómo llenarlo (si no, nadie descubriría que existe). Se repinta al cambiar el nivel,
+      al volver de una ficha y con cambios desde otra pestaña (evento `storage`).
+- [x] 3.9 (2026-11-05) "Vista general" (`general.js`), tercer botón del conmutador ("General",
+      `v=general`), solo a partir de 961 px (por debajo se dibuja la telaraña y se conserva la
+      elección). Árbol radial completo en el mismo `<svg>`: cada nivel en su anillo, los 268 nodos sin
+      hijos en el borde, huecos entre áreas, nombres cortos de las áreas fijos y el resto en una línea
+      de información al pasar el ratón (o con el foco), con el camino resaltado. Pulsar un punto abre
+      la telaraña enfocada en él. Color por nivel, búsqueda y filtros funcionan igual (`decorar()`).
+      Con teclado se recorren la raíz, las áreas y los bloques (70 paradas); los temas, desde la
+      telaraña. Sin librería: no hizo falta `d3-hierarchy`.
 
 ### Fase 4: guías
 - [x] 4.1 (2026-11-03) `plantillas/tema.html`, `assets/tema.js` y `tema.html?id=` genérica
@@ -807,6 +831,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-05 | **Fase 3 completa** (orden pedido por el usuario: 3.8, 3.7, 3.9): radar "Mi telaraña" (`radar.js`), responsive y accesibilidad (panel visible al tocar un tema en móvil, movimiento reducido global, "Saltar al contenido", anuncio corto en vez de panel vivo) y "Vista general" (`general.js`). Probado en Chrome headless a 1400 y 375 px. Concepto **temperatura** en el glosario, enlazado desde IA generativa y LLMs (el usuario vio que se nombraba sin explicar) y regla nueva en `CLAUDE.md`: cada ficha se entiende sola. |
 | 2026-11-05 | ✓/↻ de fichas leídas también en las listas del panel del mapa ("Contiene", "Vive en", "También aparece en", "Relacionados") (petición del usuario). Regla nueva para preguntas futuras: la longitud de las opciones no delata la correcta (4.3). |
 | 2026-11-04 | Voz de Google como predeterminada de "Escuchar" (petición del usuario: suena mejor); la elegida en el selector sigue mandando. Aviso legal: se dice que por defecto el texto va a Google y cómo evitarlo. |
 | 2026-11-04 | **Fichas leídas** (petición del usuario, cinco puntos): `spider.leidas` con helpers en `datos.js` (`tieneFicha`, `lecturaDe`, `marcarLeida`, `hoy`); botón y sugerencia en `tema.js` (`alTerminar` en `lectura.js`); ✓/↻ en el mapa vía `decorar()`, filtro "Mi lectura", recuento por rama en el panel; aviso de ficha actualizada si `revisado` es posterior; aviso legal. Probado en Chrome y a 375 px. |

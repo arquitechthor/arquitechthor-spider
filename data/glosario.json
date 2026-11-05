@@ -77,6 +77,17 @@
       ]
     },
     {
+      "id": "temperatura",
+      "termino": "Temperatura",
+      "en": "Temperature",
+      "definicion": "Ajuste que se elige en cada petición a un modelo generativo y decide cuánto se arriesga al escoger la siguiente palabra (token). Con temperatura baja casi siempre elige la opción más probable: respuestas más previsibles y repetibles, útiles para extraer datos o clasificar. Con temperatura alta da más oportunidades a opciones menos probables: respuestas más variadas, útiles para ideas o textos creativos, pero también más propensas a errores. No es un parámetro del modelo: no se aprende ni cambia el modelo, solo cómo se elige lo que genera.",
+      "tema": "sampling-parameters",
+      "relacionados": ["llms", "generative-ai"],
+      "fuentes": [
+        { "titulo": "Machine Learning Glossary: temperature (Google)", "url": "https://developers.google.com/machine-learning/glossary#temperature" }
+      ]
+    },
+    {
       "id": "arquitectura-modelo",
       "termino": "Arquitectura (estructura) de un modelo",
       "en": "Model architecture",

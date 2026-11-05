@@ -19,6 +19,7 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
 
 <nav class="nav">
   <div class="nav-inner">
@@ -36,7 +37,7 @@
   </div>
 </nav>
 
-<main>
+<main id="contenido" tabindex="-1">
 <header class="hero hero-compacto" id="top">
   <div class="container container-ancho">
     <span class="eyebrow">Proyecto personal · Educativo · Sin fines comerciales</span>
@@ -66,6 +67,7 @@
       <div class="conmutador" role="group" aria-label="Vista del mapa">
         <button type="button" data-v="telarana" aria-pressed="true">Telaraña</button>
         <button type="button" data-v="cajas" aria-pressed="false">Cajas</button>
+        <button type="button" data-v="general" aria-pressed="false" class="solo-ancho" title="Todo el mapa de un vistazo (pantallas anchas)">General</button>
       </div>
       <div class="buscador" role="search">
         <label for="buscar" class="visually-hidden">Buscar en el mapa</label>
@@ -101,18 +103,48 @@
       <div class="mapa-lienzo">
         <svg id="telarana" role="group" aria-label="Telaraña de tecnologías" aria-describedby="mapa-ayuda"></svg>
         <div class="cajas" id="cajas" aria-describedby="mapa-ayuda" hidden></div>
+        <p class="general-info solo-general" id="general-info" aria-hidden="true"></p>
         <p class="leyenda leyenda-color" id="leyenda-color"></p>
         <p class="leyenda" id="mapa-ayuda">
           <span class="solo-telarana"><span class="ley ley-anillo" aria-hidden="true"></span>contiene más: pulsa para entrar</span>
           <span class="solo-telarana"><span class="ley" aria-hidden="true"></span>tema</span>
-          <span><span class="ley ley-acceso" aria-hidden="true"></span>↗ acceso: vive en otra rama</span>
+          <span class="no-general"><span class="ley ley-acceso" aria-hidden="true"></span>↗ acceso: vive en otra rama</span>
           <span>☁ guía en Apuntes AWS</span>
           <span class="solo-telarana"><span class="ley-relacion" aria-hidden="true"></span>relacionados</span>
           <span class="ley-teclado solo-telarana">Teclado: Tab y flechas recorren los nodos; Esc sube.</span>
           <span class="ley-teclado solo-cajas">Teclado: Tab recorre las cajas; Esc sube.</span>
+          <span class="solo-general">Centro: el mapa completo; cada anillo, un nivel más; en el borde, los temas sin subtemas</span>
+          <span class="ley-teclado solo-general">Teclado: Tab recorre las áreas y sus bloques; Enter abre la telaraña.</span>
         </p>
       </div>
-      <aside class="panel" id="panel" aria-live="polite" aria-label="Detalle del nodo"></aside>
+      <aside class="panel" id="panel" aria-label="Detalle del nodo"></aside>
+      <p class="visually-hidden" id="mapa-anuncio" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<section class="radar-seccion" id="mi-telarana" aria-labelledby="radar-titulo">
+  <div class="container container-ancho">
+    <header class="mapa-cab">
+      <h2 id="radar-titulo">Mi telaraña</h2>
+      <p>Tu perfil por áreas. Pulsa un área para verla en el mapa.</p>
+    </header>
+    <div class="radar-layout">
+      <div class="radar-lienzo">
+        <!-- Para teclado y lectores de pantalla, la lista de al lado dice lo mismo con más detalle. -->
+        <svg id="radar" aria-hidden="true" focusable="false"></svg>
+      </div>
+      <div class="radar-info">
+        <p class="radar-vacio callout" id="radar-vacio" hidden>Todavía no hay nada que enseñar. Marca
+          tu nivel en el panel de un tema (de 0, «no lo conozco», a 4, «podría enseñarlo») o haz la
+          evaluación de una ficha, y aquí irá tomando forma tu telaraña.</p>
+        <p class="leyenda radar-leyenda">
+          <span><span class="ley-capa ley-capa-nivel" aria-hidden="true"></span>Mi nivel: media de los temas que has marcado</span>
+          <span><span class="ley-capa ley-capa-tests" aria-hidden="true"></span>Mis tests: preguntas acertadas en los temas con evaluación</span>
+          <span class="ley-nota">El borde es el máximo: nivel 4 o todas las preguntas acertadas.</span>
+        </p>
+        <ul class="radar-lista" id="radar-lista"></ul>
+      </div>
     </div>
   </div>
 </section>
@@ -156,6 +188,8 @@
 <script src="assets/arbol.js" defer></script>
 <script src="assets/telarana.js" defer></script>
 <script src="assets/cajas.js" defer></script>
+<script src="assets/general.js" defer></script>
+<script src="assets/radar.js" defer></script>
 <script src="assets/mapa.js" defer></script>
 </body>
 </html>
