@@ -44,8 +44,12 @@ línea al "Registro de sesiones".
 - **Fase 3 completa (2026-11-05):** 3.8 radar "Mi telaraña", 3.7 responsive y accesibilidad y 3.9
   vista general, en ese orden (decisión del usuario). Pendiente de que el usuario lo revise en
   producción.
-- **Próximo paso:** revisión en producción de la Fase 3; después la pasada de bloques candidatos a
-  tema (4.5) y la Fase 5 (5.3 evaluación por rama, 5.5 página de progreso, que reutilizará `radar.js`). **Tarea 2.6 casi cerrada (2026-11-03):**
+- **Próximo paso (al cierre del 2026-11-05):** 1) el usuario revisa la Fase 3 en producción (radar,
+  vista General en escritorio, tocar un tema en móvil); 2) repasar las 7 fichas publicadas buscando
+  términos sin explicar (regla "cada ficha se entiende sola", como pasó con «temperatura»); después,
+  según prefiera el usuario, más contenido (Java o Spring, prioridad 1), la pasada de bloques
+  candidatos a tema (4.5) o la Fase 5 (5.3 evaluación por rama, 5.5 página de progreso, que
+  reutilizará `radar.js`). **Tarea 2.6 casi cerrada (2026-11-03):**
   enlaces publicados en `kopi-web`, `aws-cert-study`, `arquitechthor.github.io` y
   `kopi-chess`; falta `kopi-docs/politicas.md`, que no está versionado y vive en otro ordenador: se
   actualiza cuando se trabaje allí (política "Mismo menú y pie": añadir Tech Spider a la lista).
