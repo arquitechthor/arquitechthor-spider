@@ -324,6 +324,11 @@ Diferencias con `aws-cert-study`:
 - Mínimo **5 preguntas** por tema publicado y evaluable; objetivo 8–15 en los temas con prioridad 1.
 - Si una pregunta toca dos temas, va en el fichero del tema principal con `"temas": ["jpa",
   "transaction-management"]` para que cuente en los dos al evaluar ramas.
+- **La longitud no delata la respuesta** (decidido por el usuario, 2026-11-05; solo para preguntas
+  nuevas, las existentes no se tocan): las opciones de una pregunta tienen longitud y nivel de
+  detalle parecidos. La correcta no es sistemáticamente la más larga ni la más matizada; los
+  distractores son igual de concretos y plausibles, y en el conjunto de un tema la opción más larga
+  es la correcta solo en una parte de las preguntas, no en casi todas.
 
 ### 4.4 Validador `scripts/revisar_arbol.py`
 

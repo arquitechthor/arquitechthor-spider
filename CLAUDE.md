@@ -121,5 +121,8 @@ the page inside a 375px-wide `<iframe>` and compare `scrollWidth` with `clientWi
   must be short, in `<blockquote>` with `<cite>` and a link.
 - **Never real exam questions** (Oracle, Broadcom, Scrum.org, CNCF, HashiCorp… are under NDA); only
   original ones.
+- **Option length must not give away the answer** (new questions only; existing ones stay as they
+  are): options of similar length and detail, distractors as concrete and plausible as the correct
+  one, and the longest option is not the correct one in most questions of a topic.
 - Published topics carry `revisado` (date of the last review against sources); `volatil` topics
   (all of AI Engineering, GDPR, Modern Java, Spring Boot) get a validator warning after 6 months.
