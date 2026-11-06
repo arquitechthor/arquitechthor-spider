@@ -1,0 +1,140 @@
+[
+  {
+    "id": "reasoning-models-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué distingue a un modelo de razonamiento de un LLM que contesta al momento?",
+    "opciones": [
+      "Consulta una base de datos de hechos verificados antes de responder.",
+      "Escribe pasos intermedios y contesta apoyándose en ellos.",
+      "Usa una arquitectura distinta del Transformer, diseñada para la lógica.",
+      "Aprende de cada conversación y mejora mientras habla con el usuario."
+    ],
+    "correctas": [1],
+    "explicacion": "Sigue siendo un LLM que predice tokens, pero entrenado para escribir primero un razonamiento (plantear, probar, comprobar) y contestar apoyándose en él. No consulta hechos por sí mismo, no cambia de arquitectura ni aprende durante la conversación.",
+    "fuentes": ["https://developers.openai.com/api/docs/guides/reasoning"]
+  },
+  {
+    "id": "reasoning-models-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "En la analogía de Kahneman aplicada a la IA, ¿qué representa el «Sistema 2»?",
+    "opciones": [
+      "Un segundo modelo que revisa la respuesta del primero antes de enviarla.",
+      "El modo rápido e intuitivo con el que un LLM clásico responde de un tirón.",
+      "El modo lento y deliberado, al que se parecen los modelos que razonan.",
+      "La memoria a largo plazo que conserva lo aprendido entre conversaciones."
+    ],
+    "correctas": [2],
+    "explicacion": "El Sistema 1 es rápido e intuitivo (el LLM que contesta token a token sin pararse); el Sistema 2 es lento y deliberado, y a él se parece un modelo que razona antes de responder. Es una analogía, no una arquitectura de dos modelos.",
+    "fuentes": ["https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow"]
+  },
+  {
+    "id": "reasoning-models-003",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Tu proveedor no te muestra el razonamiento del modelo, solo la respuesta. ¿Qué pasa con esos tokens de razonamiento?",
+    "opciones": [
+      "Se facturan como tokens de salida aunque no los veas.",
+      "No se cobran, porque el proveedor no los devuelve.",
+      "Se cobran como tokens de entrada de la siguiente petición.",
+      "Solo se cobran si pides después que te los muestre."
+    ],
+    "correctas": [0],
+    "explicacion": "Los tokens de razonamiento los genera el modelo, así que se facturan como salida y ocupan sitio en la ventana de contexto, se muestren, se resuman o se oculten.",
+    "fuentes": [
+      "https://developers.openai.com/api/docs/guides/reasoning",
+      "https://platform.claude.com/docs/en/build-with-claude/extended-thinking"
+    ]
+  },
+  {
+    "id": "reasoning-models-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Activas el razonamiento con un esfuerzo alto y algunas respuestas llegan cortadas o vacías. ¿Cuál es la causa más probable?",
+    "opciones": [
+      "La temperatura es demasiado baja y el modelo se bloquea al elegir tokens.",
+      "El prompt pide pensar paso a paso y el modelo entra en un bucle sin salida.",
+      "La ventana de contexto se vacía al empezar a razonar y pierde el prompt.",
+      "El razonamiento agota casi todo el límite de tokens de salida."
+    ],
+    "correctas": [3],
+    "explicacion": "El razonamiento cuenta dentro del límite de salida (max_tokens o similar). Si el límite es bajo, el modelo lo gasta pensando y no le queda sitio para la respuesta: hay que subirlo o bajar el esfuerzo.",
+    "fuentes": ["https://platform.claude.com/docs/en/build-with-claude/extended-thinking"]
+  },
+  {
+    "id": "reasoning-models-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿En cuál de estas tareas compensa menos usar un modelo con razonamiento alto?",
+    "opciones": [
+      "Depurar un fallo que aparece al combinar tres servicios distintos.",
+      "Clasificar millones de correos cortos como spam o no spam.",
+      "Planificar los pasos de un agente que migra una base de datos.",
+      "Resolver un problema de optimización con muchas restricciones."
+    ],
+    "correctas": [1],
+    "explicacion": "Clasificar textos cortos es una tarea simple y de gran volumen: el razonamiento añade coste y latencia por petición sin mejorar apenas el resultado. Las otras tres tienen varios pasos o muchas condiciones, justo donde razonar ayuda.",
+    "fuentes": ["https://developers.openai.com/api/docs/guides/reasoning"]
+  },
+  {
+    "id": "reasoning-models-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué idea resume el término «cómputo en inferencia» (test-time compute)?",
+    "opciones": [
+      "Entrenar el modelo de nuevo cada vez que recibe una pregunta difícil.",
+      "Repartir la inferencia entre varias GPU para que conteste más rápido.",
+      "Dejar que el modelo trabaje más en cada pregunta, no hacerlo mayor.",
+      "Calcular el coste de cada petición antes de enviarla al proveedor."
+    ],
+    "correctas": [2],
+    "explicacion": "En lugar de mejorar solo con modelos más grandes, se gasta más cálculo al responder, por ejemplo generando un razonamiento más largo. En algunos problemas un modelo pequeño que piensa más supera a uno mucho mayor que contesta directamente.",
+    "fuentes": ["https://arxiv.org/abs/2408.03314"]
+  },
+  {
+    "id": "reasoning-models-007",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "Un equipo quiere usar el razonamiento que devuelve el modelo como explicación oficial de cada decisión ante auditoría. ¿Qué problema tiene?",
+    "opciones": [
+      "El razonamiento solo se genera en inglés y no sirve como documento.",
+      "Las leyes prohíben guardar el razonamiento de un modelo de IA.",
+      "El razonamiento cambia de formato en cada versión y no se puede leer.",
+      "El razonamiento escrito puede no reflejar la causa real."
+    ],
+    "correctas": [3],
+    "explicacion": "Investigaciones de Anthropic encontraron que los modelos a menudo no mencionan en su razonamiento pistas que sí usaron. Es útil para depurar, pero no es una explicación fiel garantizada.",
+    "fuentes": ["https://www.anthropic.com/research/reasoning-models-dont-say-think"]
+  },
+  {
+    "id": "reasoning-models-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Pasas un prompt antiguo a un modelo de razonamiento. ¿Qué parte conviene revisar primero?",
+    "opciones": [
+      "Las instrucciones detalladas sobre cómo debe razonar paso a paso.",
+      "La descripción de la tarea y del formato de salida que esperas recibir.",
+      "Los datos de contexto que el modelo necesita para contestar.",
+      "Las restricciones sobre lo que el modelo no debe hacer nunca."
+    ],
+    "correctas": [0],
+    "explicacion": "Un modelo de razonamiento ya piensa antes de contestar, así que las instrucciones de cadena de pensamiento pensadas para modelos sin razonamiento suelen sobrar o estorbar. La tarea, el contexto, las restricciones y el formato siguen siendo necesarios.",
+    "fuentes": ["https://developers.openai.com/api/docs/guides/reasoning"]
+  },
+  {
+    "id": "reasoning-models-009",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué es el razonamiento adaptativo?",
+    "opciones": [
+      "Que el usuario elige en cada mensaje si el modelo debe razonar o no.",
+      "Que el modelo decide cuánto pensar según lo difícil que sea.",
+      "Que el modelo ajusta su razonamiento al idioma en el que se le escribe.",
+      "Que el proveedor cambia de modelo según la carga de sus servidores."
+    ],
+    "correctas": [1],
+    "explicacion": "En lugar de fijar a mano un presupuesto de tokens, el modelo piensa poco en una pregunta trivial y mucho en una difícil. Se puede seguir orientando con un nivel de esfuerzo.",
+    "fuentes": ["https://platform.claude.com/docs/en/build-with-claude/extended-thinking"]
+  }
+]

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reasoning Models — Tech Spider</title>
+<meta name="description" content="Qué es un modelo de razonamiento: la analogía Sistema 1 / Sistema 2, los tokens de razonamiento, el presupuesto o esfuerzo, y cuándo compensa su coste y su latencia.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/reasoning-models.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=5649c0ed">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="reasoning-models">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>Un <strong>modelo de razonamiento</strong> es un <a href="llms.html">LLM</a> entrenado para pensar antes de
+        contestar. Antes de dar la respuesta final escribe una serie de pasos intermedios: plantea el problema, prueba un
+        camino, comprueba el resultado y corrige si algo no cuadra. Esos pasos consumen tokens y tiempo, pero en problemas
+        difíciles la respuesta mejora mucho.</p>
+      <p>Hoy muchos modelos son <strong>híbridos</strong>: el mismo modelo puede contestar al momento o razonar, según lo
+        que pida la aplicación o según lo que el propio modelo juzgue necesario.</p>
+
+      <h2 id="sistemas">Sistema 1 y Sistema 2</h2>
+      <p>La forma habitual de explicarlo es la analogía de
+        <a class="concepto" data-concepto="sistema-1-sistema-2">Sistema 1 y Sistema 2</a>, los dos modos de pensar que
+        describió el psicólogo Daniel Kahneman. El Sistema 1 es rápido e intuitivo, como cuando sabes cuánto son 2 + 2. El
+        Sistema 2 es lento y deliberado, como cuando multiplicas 37 × 48 de cabeza.</p>
+      <p>Un LLM clásico trabaja «en modo Sistema 1»: genera la respuesta token a token, del tirón, sin volver atrás. Un modelo
+        de razonamiento se acerca al Sistema 2, porque se detiene a elaborar la respuesta antes de darla. Es una analogía, no
+        una descripción literal: por dentro el modelo sigue prediciendo el siguiente token; la diferencia es que primero
+        escribe un borrador de razonamiento y luego contesta apoyándose en él.</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Para matemáticas, programación con muchas piezas, planificación o análisis con muchas condiciones a la vez, un
+        modelo que razona acierta bastante más que uno que contesta al momento. También son la base de muchos
+        <a href="ai-agents.html">agentes</a>, que tienen que decidir qué paso dar a continuación.</p>
+      <p>A cambio, cada respuesta tarda más y cuesta más: el razonamiento se cobra como texto generado. Para un ingeniero
+        es una decisión más de <a href="../tema.html?id=model-selection">elección de modelo</a>: cuánta calidad necesita la
+        tarea y cuánto tiempo y dinero se puede gastar en ella.</p>
+
+      <h2 id="como-funcionan">Cómo funcionan</h2>
+      <ol>
+        <li><strong>Primero fue una técnica de prompt.</strong> En 2022 se vio que pedir a un LLM que escribiera los pasos
+          intermedios antes de la respuesta (la llamada cadena de pensamiento, <em>chain of thought</em>) mejoraba mucho sus
+          resultados en problemas de varios pasos.</li>
+        <li><strong>Después se entrenó.</strong> En vez de depender del prompt, los modelos de razonamiento se entrenan con
+          aprendizaje por refuerzo: se les plantean problemas con solución comprobable (un cálculo, un programa con tests) y
+          se premian los razonamientos que llegan a la respuesta correcta. Así aprenden a descomponer el problema, revisar y
+          rectificar.</li>
+        <li><strong>Más cálculo al responder.</strong> La idea de fondo es el cómputo en inferencia (<em>test-time
+          compute</em>): en lugar de hacer el modelo más grande, se le deja trabajar más en cada pregunta. Hay estudios que
+          muestran que, en ciertos problemas, un modelo pequeño que piensa más supera a otro mucho mayor que contesta
+          directamente.</li>
+      </ol>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>Tokens de razonamiento:</strong> los que el modelo genera al pensar, antes de la respuesta. Ocupan sitio
+          en la <a href="../tema.html?id=tokens-context-window">ventana de contexto</a> (cuánto texto puede tener en cuenta a
+          la vez) y se facturan como tokens de salida, aunque no los muestres al usuario.</li>
+        <li><strong>Presupuesto o esfuerzo:</strong> el control que da la API sobre cuánto puede pensar el modelo. Según el
+          proveedor es un número máximo de tokens de razonamiento o un nivel de esfuerzo (bajo, medio, alto…). Más esfuerzo
+          suele dar mejores respuestas en problemas difíciles, con más coste y espera.</li>
+        <li><strong>Razonamiento adaptativo:</strong> el modelo decide por sí mismo cuánto pensar en cada petición: casi nada
+          en una pregunta trivial, mucho en una difícil. Es la tendencia actual frente a fijar un presupuesto a mano.</li>
+        <li><strong>Razonamiento visible, resumido u oculto:</strong> no todos los proveedores enseñan lo que el modelo
+          pensó. Unos devuelven un resumen, otros solo el recuento de tokens. Se paga igualmente.</li>
+        <li><strong>Razonamiento intercalado:</strong> en un agente, el modelo puede volver a pensar entre una llamada a una
+          <a class="concepto" data-concepto="herramienta">herramienta</a> y la siguiente, a la vista del resultado.</li>
+        <li><strong>Fidelidad:</strong> el razonamiento escrito no siempre refleja lo que de verdad llevó al modelo a su
+          respuesta. Investigaciones de Anthropic encontraron que los modelos a menudo omiten en él pistas que sí usaron.
+          Sirve para depurar, pero no es una explicación garantizada.</li>
+      </ul>
+
+      <h2 id="cuando">Cuándo compensa</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Mejor con razonamiento</th><th>Mejor sin razonamiento (o con muy poco)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Matemáticas, lógica y problemas con varios pasos.</td><td>Clasificar textos o extraer datos de un documento.</td></tr>
+            <tr><td>Programar o depurar cambios que tocan varias piezas.</td><td>Respuestas cortas de chat donde importa contestar al instante.</td></tr>
+            <tr><td>Planificar los pasos de un agente.</td><td>Reescribir, traducir o resumir un texto.</td></tr>
+            <tr><td>Analizar documentos con muchas condiciones que cruzar.</td><td>Tareas de gran volumen en las que el coste por petición manda.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>La regla práctica: empieza con poco esfuerzo y súbelo solo si las <a href="../tema.html?id=evals">evaluaciones</a>
+        (pruebas con casos y respuestas esperadas) muestran que mejora el resultado.</p>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>En la llamada a la API se activa el razonamiento y se elige el esfuerzo o el presupuesto; el nombre exacto de los
+        parámetros cambia de un proveedor a otro y entre versiones, así que hay que mirar su documentación. Tres cosas que
+        conviene revisar siempre:</p>
+      <ul>
+        <li><strong>El límite de tokens de salida</strong> (<code>max_tokens</code> o similar) tiene que dejar sitio al
+          razonamiento y a la respuesta: el razonamiento cuenta dentro de ese límite.</li>
+        <li><strong>El coste y la latencia reales</strong>, midiendo los tokens de razonamiento que devuelve la API en cada
+          respuesta (ver <a href="../tema.html?id=llm-cost-latency">Cost &amp; Latency</a>).</li>
+        <li><strong>El prompt:</strong> describe bien la tarea, las restricciones y el formato de salida. No hace falta
+          pedirle que «piense paso a paso»: ya lo hace.</li>
+      </ul>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Usarlo para todo:</strong> en tareas simples paga más y espera más sin ganar calidad. Reserva el
+          razonamiento para lo que lo necesita.</li>
+        <li><strong>Quedarse sin respuesta:</strong> con un límite de salida bajo, el modelo puede gastarlo pensando y la
+          respuesta llega cortada o vacía.</li>
+        <li><strong>Olvidar que el razonamiento se cobra:</strong> aunque no se vea, se factura como salida y puede
+          multiplicar el coste de cada petición.</li>
+        <li><strong>Tomar el razonamiento como la verdad:</strong> no garantiza que la respuesta sea correcta ni que explique
+          por qué la dio; el modelo también puede <a href="../tema.html?id=hallucinations">alucinar</a> razonando.</li>
+        <li><strong>Prompts de cadena de pensamiento heredados:</strong> instrucciones largas sobre cómo razonar, pensadas
+          para modelos sin razonamiento, a menudo sobran o estorban.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="reasoning-models"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://developers.openai.com/api/docs/guides/reasoning" target="_blank" rel="noopener">Reasoning models</a> (documentación de OpenAI, consultada el 06/11/2026).</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/extended-thinking" target="_blank" rel="noopener">Extended thinking</a> (documentación de Anthropic, consultada el 06/11/2026).</li>
+        <li><a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener">Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</a> (Wei et al., 2022, consultada el 06/11/2026).</li>
+        <li><a href="https://arxiv.org/abs/2408.03314" target="_blank" rel="noopener">Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters</a> (Snell et al., 2024, consultada el 06/11/2026).</li>
+        <li><a href="https://www.anthropic.com/research/reasoning-models-dont-say-think" target="_blank" rel="noopener">Reasoning models don't always say what they think</a> (Anthropic, 2025, consultada el 06/11/2026).</li>
+        <li><a href="https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow" target="_blank" rel="noopener">Thinking, Fast and Slow</a> (Wikipedia, sobre el libro de Daniel Kahneman, 2011, consultada el 06/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=0a6b98f9" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=4c7d75ba" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=81d3fcf3" defer></script>
+<script src="../assets/tema.js?v=395ab4fd" defer></script>
+</body>
+</html>

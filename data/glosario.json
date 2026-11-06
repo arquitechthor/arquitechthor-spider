@@ -176,7 +176,7 @@
       "relacionados": ["llms", "model-selection"],
       "fuentes": [
         { "titulo": "Thinking, Fast and Slow (Daniel Kahneman, 2011)", "url": "https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow" },
-        { "titulo": "Learning to reason with LLMs (OpenAI)", "url": "https://openai.com/index/learning-to-reason-with-llms/" },
+        { "titulo": "Reasoning models (documentación de OpenAI)", "url": "https://developers.openai.com/api/docs/guides/reasoning" },
         { "titulo": "Building with extended thinking (documentación de Anthropic)", "url": "https://platform.claude.com/docs/en/build-with-claude/extended-thinking" }
       ]
     }
