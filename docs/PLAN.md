@@ -62,9 +62,48 @@ línea al "Registro de sesiones".
 - **Tema nuevo (2026-11-06):** Reasoning Models bajo LLMs, con ficha publicada y 9 preguntas, y
   concepto "Sistema 1 y Sistema 2" en el glosario. Pendiente de revisión del usuario.
 - **Cuenta Kopi (2026-11-06), decisión del usuario:** el progreso se puede guardar también en la
-  cuenta Kopi (4.5.1, tarea 5.7); si funciona, se lleva a aws-cert-study (5.8). Exportar/Importar,
-  descartado. **Siguiente paso:** el usuario ejecuta `bootstrap-study-progress.ps1` en
-  `kopi-media-admin` y pasa el dominio y el Client ID para `assets/cuenta.js`.
+  cuenta Kopi (4.5.1, tareas 5.7 y 5.8), en Tech Spider **y en aws-cert-study** (hecho el mismo día a
+  petición del usuario). Exportar/Importar, descartado. Código terminado y subido en los tres repos;
+  **falta la parte de AWS y la prueba real**, que se hacen desde otro ordenador (en el de trabajo no
+  hay AWS CLI). Pasos exactos en "Cuenta Kopi: cómo terminarlo" justo debajo.
+
+#### Cuenta Kopi: cómo terminarlo (lista para retomar en otro ordenador)
+
+Repos (en el otro ordenador las rutas pueden cambiar): `arquitechthor-spider`, `aws-cert-study` y
+`kopi/kopi-media-admin`. Estado al subirlo (2026-11-06): commits con el código en los tres; en
+`kopi-media-admin` el push hizo fallar el job de Lambdas del CI para `kopi-getStudyProgress`,
+`kopi-saveStudyProgress` y `kopi-deleteStudyProgress`, porque aún no existen (el CI solo actualiza
+funciones existentes): **es lo esperado** y lo arregla el paso 2 (que sube su código al crearlas).
+
+1. `git pull` en los tres repos.
+2. Con AWS CLI v2 reciente y credenciales de admin de la cuenta de Kopi (`aws sts get-caller-identity`
+   debe dar la cuenta 050022126439), desde `kopi-media-admin`:
+   `powershell -ExecutionPolicy Bypass -File documentation\scriptsootstrap-study-progress.ps1`.
+   Es idempotente. Si el prefijo `kopi-login` del dominio de Cognito está cogido por otra cuenta,
+   cambia `$domainPrefix` en el script y repite. Si el User Pool está en el plan Lite, el script usa la
+   interfaz clásica de login (en inglés) en vez de la gestionada v2; vale igual.
+3. Al final imprime **Dominio de login** y **Client ID**. Ponlos en `CONFIG.dominio` y
+   `CONFIG.clientId` de `assets/cuenta.js` en **los dos** repos de webs (Tech Spider y aws-cert-study) y
+   en `kopi-media-admin/config/cognito-values.txt`. En Tech Spider ejecuta después
+   `python scripts/versionar.py` y `python scripts/revisar_arbol.py`.
+4. Prueba en local: `python -m http.server 8765` en cada repo (de uno en uno; el puerto 8765 está
+   registrado como URL de vuelta y en el CORS) y abre `http://localhost:8765/cuenta.html`:
+   - «Entrar con Kopi» → página de login de Kopi → vuelve y queda «al día».
+   - Responde una pregunta (o marca un nivel) y comprueba en DynamoDB (`kopi_study_progress`) que
+     aparece el ítem `ownerId` + `site`.
+   - En otro navegador, entra con la misma cuenta: se une lo local con lo remoto.
+   - Una cuenta sin aprobar (sin grupo) ve «pendiente de aprobación» (403).
+   - Salir y «Borrar mi progreso de Kopi».
+   - **Seguridad (obligatorio):** con el access token de la sesión (`kopi.estudio.sesion` en
+     `localStorage`), `GET https://api.kopitools.link/notes` debe dar **401**: el token de las webs de
+     estudio no puede leer nada más de Kopi. Y la app Angular (`app.kopitools.link`) debe seguir
+     funcionando como siempre.
+5. Commit y push de los tres repos. Repite la prueba en producción
+   (`https://arquitechthor.github.io/arquitechthor-spider/cuenta.html` y
+   `https://arquitechthor.github.io/aws-cert-study/cuenta.html`); entrar en una debe valer en la otra.
+6. Pendiente aparte: mencionar el progreso de Tech Spider y Apuntes AWS en la política de privacidad de
+   Kopi Tools (`kopi-web/legal/privacidad.html`).
+7. Marca 5.7 y 5.8 aquí y actualiza "Estado actual" de este PLAN y del de aws-cert-study.
 - **Última actualización:** 2026-11-06 (cuenta Kopi)
 
 ---
@@ -808,8 +847,10 @@ Completa el 2026-11-02.
       `bootstrap-study-progress.ps1`, se rellena `CONFIG` en `cuenta.js`, push de los dos repos,
       prueba real (login, dos dispositivos, cuenta pendiente, salir, borrar) y mencionar Tech Spider
       en la política de privacidad de Kopi Tools (`kopi-web/legal/privacidad.html`).
-- [ ] 5.8 Si 5.7 funciona: llevarlo a aws-cert-study (opción A, mismo App Client y sesión
-      compartida; añadir su URL de vuelta al bootstrap y `aws-cert-study` ya está en `STUDY_SITES`).
+- [ ] 5.8 Llevarlo a aws-cert-study (opción A, mismo App Client y sesión compartida). Hecho
+      (2026-11-06, a petición del usuario, sin esperar a probar 5.7): `cuenta.js` común con bloque
+      `SITIO`, `cuenta.html`, progreso y simulacros, URL de vuelta en el bootstrap. Falta lo mismo que
+      en 5.7 (pasos en "Estado actual").
 
 ### Fase 6: certificaciones temáticas
 - [ ] 6.1 Verificar temario oficial de la primera certificación (D7) y escribir su entrada.
@@ -887,6 +928,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-06 | **Cuenta Kopi también en aws-cert-study** (petición del usuario). `cuenta.js` reorganizado con un bloque `SITIO` (lo único que cambia entre webs; con unión propia por clave, p. ej. los intentos de simulacro); URL de vuelta de aws-cert-study y alternativa a la interfaz clásica de login en el bootstrap. Push de los tres repos; pasos para terminarlo desde otro ordenador en "Estado actual". |
 | 2026-11-06 | **Progreso en la cuenta Kopi** (decisión del usuario: backend sí mientras no se filtren datos privados de Kopi; opción A, login gestionado de Cognito con PKCE; fuera Exportar/Importar). Backend en `kopi-media-admin` (tabla, 3 Lambdas, authorizer y App Client propios, bootstrap, cascada en `rejectUser`, docs) y front (`cuenta.js`, `cuenta.html`, aviso en "Mi telaraña", aviso legal). Sincronización probada en Chrome headless con `fetch` simulado (unión la primera vez, subida a los 2 s, gana lo más reciente); sin configurar, la cuenta no se ofrece. Pendiente: bootstrap en AWS y prueba real. |
 | 2026-11-06 | **Ficha de Reasoning Models** publicada (petición del usuario): `temas/reasoning-models.html` y 9 preguntas (`data/preguntas/reasoning-models.json`, opciones equilibradas en longitud), contrastada con las guías de OpenAI y Anthropic, Wei et al. 2022, Snell et al. 2024 y el estudio de fidelidad de Anthropic. El blog de OpenAI da 403: el concepto Sistema 1 / Sistema 2 cita su guía de *reasoning* en su lugar. Probada a 375 px. |
 | 2026-11-06 | El usuario pregunta si el área de IA trata los *System One Models*: no estaban. Nuevo tema `reasoning-models` (pendiente de ficha) bajo LLMs y concepto "Sistema 1 y Sistema 2" en el glosario (4.2.1). |

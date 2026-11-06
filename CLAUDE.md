@@ -110,7 +110,8 @@ no third-party requests).
   key, union on the first sync. `datos.js` `guardar()` fires `spider:guardado`; applied remote changes
   fire `spider:sincronizado` (the map repaints). Session in `kopi.estudio.sesion` (shared with the
   other study sites on purpose). Every page that loads `datos.js` must load `cuenta.js` right after it.
-  While `CONFIG.dominio`/`clientId` are empty the account is not offered.
+  While `CONFIG.dominio`/`clientId` are empty the account is not offered. `aws-cert-study` has a copy
+  of `cuenta.js` where only the `SITIO` block differs: change both when touching the shared part.
 - `aviso-legal.html`: legal notice, trademarks, license and privacy. Keep it consistent with any
   new feature (anything stored in `localStorage` must be covered by its privacy section).
 

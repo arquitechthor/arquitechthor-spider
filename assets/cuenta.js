@@ -11,11 +11,28 @@
  *
  * Sincronización: se sincronizan las claves de SINCRONIZADAS (no las preferencias del
  * dispositivo, como la vista o la voz). Cada clave lleva la hora de su último cambio
- * (spider.sincronizacion); el servidor guarda por clave la más reciente. La primera vez que se
+ * (SITIO.claveSync); el servidor guarda por clave la más reciente. La primera vez que se
  * entra con una cuenta en este navegador, lo local y lo remoto se unen (nada se pierde).
  */
 (function () {
-  const D = window.SpiderDatos;
+  // Lo único que cambia entre webs de estudio (este fichero se copia tal cual en aws-cert-study).
+  const SITIO = {
+    datos: window.SpiderDatos,          // necesita url() y esc()
+    site: 'tech-spider',                // {site} de la API (STUDY_SITES en kopi-media-admin)
+    claves: {                           // claves sincronizadas -> clave de localStorage
+      progreso: 'spider.progreso',
+      autoevaluacion: 'spider.autoevaluacion',
+      leidas: 'spider.leidas',
+      evaluaciones: 'spider.evaluaciones',
+      simulacros: 'spider.simulacros',
+    },
+    unir: {},                           // clave -> fn(remoto, local) para la primera sincronización
+    claveSync: 'spider.sincronizacion',
+    eventoGuardado: 'spider:guardado',  // lo lanza la web al guardar (detail: clave sincronizada)
+    eventoSincronizado: 'spider:sincronizado',
+    nombre: 'Tech Spider',
+  };
+  const D = SITIO.datos;
 
   // Valores que imprime documentation/scripts/bootstrap-study-progress.ps1 (kopi-media-admin).
   // Mientras estén vacíos, la cuenta Kopi no se ofrece en la web.
@@ -23,7 +40,6 @@
     dominio: '',            // p. ej. https://kopi-login.auth.eu-south-2.amazoncognito.com
     clientId: '',
     api: 'https://api.kopitools.link',
-    site: 'tech-spider',
   };
   const ACTIVA = Boolean(CONFIG.dominio && CONFIG.clientId);
 
@@ -31,8 +47,8 @@
   // mismo App Client): entrar en una vale para las demás.
   const CLAVE_SESION = 'kopi.estudio.sesion';
   const CLAVE_PKCE = 'kopi.estudio.pkce';
-  const CLAVE_SYNC = 'spider.sincronizacion';
-  const SINCRONIZADAS = ['progreso', 'autoevaluacion', 'leidas', 'evaluaciones', 'simulacros'];
+  const CLAVE_SYNC = SITIO.claveSync;
+  const SINCRONIZADAS = Object.keys(SITIO.claves);
 
   const VUELTA = D.url('cuenta.html');
   let estado = 'fuera';    // fuera | sincronizando | al-dia | pendiente | error
@@ -185,7 +201,7 @@
       if (!token) return { ok: false, status: 401 };
       let res;
       try {
-        res = await fetch(`${CONFIG.api}/study/${CONFIG.site}/progress`, {
+        res = await fetch(`${CONFIG.api}/study/${SITIO.site}/progress`, {
           method: metodo,
           headers: { Authorization: `Bearer ${token}`, ...(cuerpo ? { 'Content-Type': 'application/json' } : {}) },
           body: cuerpo ? JSON.stringify(cuerpo) : undefined,
@@ -209,7 +225,7 @@
 
   /* ── Sincronización ────────────────────────────────────────────── */
 
-  const leerLocal = (clave) => leerJson(localStorage, D.claves[clave]);
+  const leerLocal = (clave) => leerJson(localStorage, SITIO.claves[clave]);
   const esObjeto = (v) => v && typeof v === 'object' && !Array.isArray(v);
 
   async function sincronizar() {
@@ -233,13 +249,14 @@
       const tl = sync.t[clave] || 0;
       if (primera && R && R.v != null && L != null) {
         // Unión: lo remoto de base y lo local encima (si no son objetos, gana lo local).
-        const union = esObjeto(R.v) && esObjeto(L) ? { ...R.v, ...L } : L;
-        escribirJson(localStorage, D.claves[clave], union);
+        const union = SITIO.unir[clave] ? SITIO.unir[clave](R.v, L)
+          : esObjeto(R.v) && esObjeto(L) ? { ...R.v, ...L } : L;
+        escribirJson(localStorage, SITIO.claves[clave], union);
         cambios = true;
         sync.t[clave] = ahora;
         enviar[clave] = { v: union, t: ahora };
       } else if (R && R.t > tl) {
-        escribirJson(localStorage, D.claves[clave], R.v);
+        escribirJson(localStorage, SITIO.claves[clave], R.v);
         cambios = true;
         sync.t[clave] = R.t;
       } else if (L != null || tl) {
@@ -250,7 +267,7 @@
     }
     sync.cuenta = s.sub;
     guardarSync(sync);
-    if (cambios) document.dispatchEvent(new CustomEvent('spider:sincronizado'));
+    if (cambios) document.dispatchEvent(new CustomEvent(SITIO.eventoSincronizado));
 
     if (Object.keys(enviar).length) {
       const p = await llamarApi('PUT', { datos: enviar });
@@ -277,7 +294,7 @@
     cambiarEstado('al-dia');
   }
 
-  document.addEventListener('spider:guardado', (ev) => {
+  document.addEventListener(SITIO.eventoGuardado, (ev) => {
     if (!SINCRONIZADAS.includes(ev.detail)) return;
     const sync = leerSync();
     sync.t[ev.detail] = Date.now();
