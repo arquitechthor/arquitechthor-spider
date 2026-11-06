@@ -9,7 +9,7 @@
 <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="stylesheet" href="styles.css?v=5649c0ed">
+<link rel="stylesheet" href="styles.css?v=ead9f188">
 </head>
 <body>
 <a class="saltar" href="#contenido">Saltar al contenido</a>
@@ -34,7 +34,7 @@
 <section class="page-section" style="padding-top:40px">
   <div class="container doc">
     <h1>Aviso legal, condiciones de uso y privacidad</h1>
-    <p class="text-faint">Última actualización: 04/11/2026</p>
+    <p class="text-faint">Última actualización: 06/11/2026</p>
 
     <p>Al usar este sitio aceptas estas condiciones. Si no estás de acuerdo con ellas, no lo uses.</p>
 
@@ -134,16 +134,32 @@
     <h2 id="privacidad">10. Privacidad</h2>
     <ul>
       <li><strong>No se usan cookies</strong>, analítica, píxeles de seguimiento, formularios ni
-        servicios de terceros que recojan datos. El sitio no carga recursos de otros dominios.</li>
+        servicios de terceros que recojan datos. El sitio no carga recursos de otros dominios; solo
+        si entras con tu cuenta Kopi (ver más abajo) se comunica con Kopi para guardar tu progreso.</li>
       <li>Algunas funciones guardan datos en el <strong>almacenamiento local de tu navegador</strong>
         (<code>localStorage</code>, claves que empiezan por <code>spider.</code>): tus preferencias del
         mapa (vista, filtros y color) y de la lectura en voz alta (velocidad y voz), tu autoevaluación de cada tema, qué fichas has marcado como leídas (con la fecha), tu progreso en las preguntas de
         práctica (cuáles has acertado y cuáles fallaste para repasarlas) y el resultado de tus
         evaluaciones y simulacros (fecha, tema o certificación y aciertos). Se irán activando a medida
-        que se publiquen esas funciones. No hay cuentas: esos datos solo existen en ese navegador,
-        <strong>no salen de tu dispositivo</strong>, no se envían a ningún servidor, se pierden si borras
-        los datos del navegador o cambias de dispositivo y puedes borrarlos cuando quieras desde la
-        configuración de tu navegador.</li>
+        que se publiquen esas funciones. Si no entras con una cuenta Kopi, esos datos solo existen en
+        ese navegador, <strong>no salen de tu dispositivo</strong>, no se envían a ningún servidor, se
+        pierden si borras los datos del navegador o cambias de dispositivo y puedes borrarlos cuando
+        quieras desde la configuración de tu navegador.</li>
+      <li><strong>Cuenta Kopi (opcional)</strong>, en <a href="cuenta.html">Tu cuenta Kopi</a>: si
+        tienes cuenta en Kopi Tools, el proyecto personal del mismo autor, puedes entrar con ella para
+        guardar también en Kopi tu progreso de estudio (resultados de las evaluaciones, nivel de cada
+        tema y fichas leídas, cada dato con la hora de su último cambio) y tenerlo en cualquier
+        dispositivo. Las preferencias del mapa y de la lectura no se suben. El inicio de sesión se
+        hace en la página de Kopi (servicio Amazon Cognito de AWS, en la Unión Europea), que usa sus
+        propias cookies de sesión; tu contraseña nunca pasa por esta web. Esta web guarda en el
+        almacenamiento local de tu navegador (clave <code>kopi.estudio.sesion</code>, compartida con
+        otras webs de estudio del autor en <code>arquitechthor.github.io</code>) tu correo y los
+        permisos de acceso, que solo sirven para leer y guardar tu progreso de estudio, y en
+        <code>spider.sincronizacion</code> la hora del último cambio de cada dato. El progreso se
+        guarda en la infraestructura de Kopi en AWS (región de España) asociado a tu cuenta, no se
+        comparte con nadie y lo puedes borrar desde <a href="cuenta.html">Tu cuenta Kopi</a>; si se
+        elimina tu cuenta Kopi, se borra con ella. El resto del tratamiento de tu cuenta se rige por la
+        <a href="https://kopitools.link/legal/privacidad" target="_blank" rel="noopener">política de privacidad de Kopi Tools</a>.</li>
       <li><strong>Lectura en voz alta</strong> ("Escuchar" en las fichas): usa las voces de tu
         navegador o de tu sistema operativo. Con una voz local el texto no sale de tu dispositivo.
         Algunos navegadores ofrecen además voces en línea (en el selector aparecen con "(en línea)",

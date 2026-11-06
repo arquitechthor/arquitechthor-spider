@@ -117,6 +117,8 @@
     try {
       if (valor === undefined || valor === null) localStorage.removeItem(CLAVES[nombre]);
       else localStorage.setItem(CLAVES[nombre], JSON.stringify(valor));
+      // Aviso para assets/cuenta.js, que sube a la cuenta Kopi lo que haya que sincronizar.
+      document.dispatchEvent(new CustomEvent('spider:guardado', { detail: nombre }));
       return true;
     } catch {
       return false;
@@ -190,5 +192,6 @@
   window.SpiderDatos = {
     url, json, cargar, temasDe, esc, nombreHtml, nombreTexto, iconoArea, leer, guardar, formatoFecha,
     leerProgreso, guardarProgreso, urlFicha, cargarGlosario, tieneFicha, lecturaDe, marcarLeida, hoy,
+    claves: CLAVES,
   };
 })();

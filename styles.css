@@ -675,6 +675,9 @@ a.sigla-enlace abbr.sigla { text-decoration-color: var(--cyan); }
 .nodo text .marca-leida { fill: var(--green); }
 .nodo text .marca-leida.actualizada { fill: var(--amber); }
 .btn-leida { white-space: normal; text-align: left; }
+
+/* Cuenta Kopi (assets/cuenta.js): aviso bajo "Mi telaraña" */
+.cuenta-resumen { margin: 16px 0 0; font-size: 14px; color: var(--text-muted); }
 .btn-leida.leida { border-color: color-mix(in srgb, var(--green) 60%, transparent); color: var(--green); }
 .btn-leida.actualizada { border-color: color-mix(in srgb, var(--amber) 60%, transparent); color: var(--amber); }
 .badge-leida { background: rgba(74, 222, 128, 0.12); color: var(--green); }

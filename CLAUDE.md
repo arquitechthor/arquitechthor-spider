@@ -7,8 +7,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 `arquitechthor-spider` is one of the independent git repos in the `kopi/` workspace (see
 `../CLAUDE.md`). Its public name is **Tech Spider**: a static study site that shows the
 technologies of a software engineer as an interactive "spider web" map, with notes and quizzes per
-topic and, later, topic certifications (Java OCP, Spring, Scrum…). It has **no runtime dependency**
-on the shared Kopi AWS backend. It is published with **GitHub Pages** from `main` / root at
+topic and, later, topic certifications (Java OCP, Spring, Scrum…). Its only (optional) runtime dependency on the
+shared Kopi AWS backend is saving study progress in the user's Kopi account (`assets/cuenta.js`);
+without an account the site works fully offline from `localStorage`. It is published with **GitHub Pages** from `main` / root at
 `https://arquitechthor.github.io/arquitechthor-spider/`; every push to `main` redeploys it (no
 workflow file; `.nojekyll` makes Pages serve files as-is). Work directly on `main`, no PRs
 (policy "Desarrollo directo a main" in `../kopi-docs/politicas.md`).
@@ -99,6 +100,17 @@ no third-party requests).
   end of "Escuchar"); `mapa.js` shows ✓ (↻ when `revisado` is later than the read date: "actualizada
   desde que la leíste") in both views via `decorar()`, filters them in Estado ("Mi lectura") and
   counts read fichas per branch in the panel. Bumping `revisado` is what flags a ficha as updated.
+- `assets/cuenta.js` (`SpiderCuenta`) + `cuenta.html` (+ `assets/pagina-cuenta.js`): optional **Kopi
+  account** (`docs/PLAN.md` 4.5.1). Login with Cognito's managed login page, Authorization Code + PKCE,
+  no library; `cuenta.html` is the redirect URI. Backend in `../../kopi/kopi-media-admin`
+  (`/study/{site}/progress`, own App Client `kopi-study-client` and **own authorizer**, so these tokens
+  are useless for the rest of the Kopi API: keep it that way, every arquitechthor.github.io site shares
+  this origin's `localStorage`). Synced keys: `progreso`, `autoevaluacion`, `leidas`, `evaluaciones`,
+  `simulacros` (never device prefs); per-key change time in `spider.sincronizacion`, newest wins per
+  key, union on the first sync. `datos.js` `guardar()` fires `spider:guardado`; applied remote changes
+  fire `spider:sincronizado` (the map repaints). Session in `kopi.estudio.sesion` (shared with the
+  other study sites on purpose). Every page that loads `datos.js` must load `cuenta.js` right after it.
+  While `CONFIG.dominio`/`clientId` are empty the account is not offered.
 - `aviso-legal.html`: legal notice, trademarks, license and privacy. Keep it consistent with any
   new feature (anything stored in `localStorage` must be covered by its privacy section).
 

@@ -674,6 +674,10 @@
     if (ev.key && !ev.key.startsWith('spider.')) return;
     decorar(); pintarPanel(); avisarResultados(); pintarRadar();
   });
+  // Progreso traído de la cuenta Kopi (assets/cuenta.js).
+  document.addEventListener('spider:sincronizado', () => {
+    decorar(); pintarPanel(); avisarResultados(); pintarRadar();
+  });
 
   window.addEventListener('popstate', () => {
     const antes = estado;

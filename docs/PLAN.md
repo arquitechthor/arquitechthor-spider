@@ -61,7 +61,11 @@ línea al "Registro de sesiones".
   lo pruebe en producción.
 - **Tema nuevo (2026-11-06):** Reasoning Models bajo LLMs, con ficha publicada y 9 preguntas, y
   concepto "Sistema 1 y Sistema 2" en el glosario. Pendiente de revisión del usuario.
-- **Última actualización:** 2026-11-06 (ficha de modelos de razonamiento)
+- **Cuenta Kopi (2026-11-06), decisión del usuario:** el progreso se puede guardar también en la
+  cuenta Kopi (4.5.1, tarea 5.7); si funciona, se lleva a aws-cert-study (5.8). Exportar/Importar,
+  descartado. **Siguiente paso:** el usuario ejecuta `bootstrap-study-progress.ps1` en
+  `kopi-media-admin` y pasa el dominio y el Client ID para `assets/cuenta.js`.
+- **Última actualización:** 2026-11-06 (cuenta Kopi)
 
 ---
 
@@ -111,7 +115,7 @@ Consecuencias para el diseño:
 | Estilo | Paleta y componentes de `aws-cert-study/styles.css` (que a su vez vienen de `kopi-web`), **copiados**: los repos son independientes. Tema oscuro como el resto de webs. |
 | Idioma | Interfaz y apuntes en **español**. Los nombres de tecnologías se quedan como los usa su proyecto (Spring Boot, Kubernetes); los nombres de áreas y bloques llevan traducción con el original como referencia: "Diseño de software (*Software Design Principles*)". |
 | Fuente de verdad | `data/nodos.json` (lista plana). `docs/tecnologias.md` queda como origen histórico; tras la importación inicial se edita el JSON, no el `.md`. |
-| Progreso | Solo en el navegador (`localStorage`, prefijo `spider.`), sin cuentas ni backend, cubierto en el aviso legal. |
+| Progreso | En el navegador (`localStorage`, prefijo `spider.`) y, **opcionalmente, en la cuenta Kopi** del usuario (decisión del usuario, 2026-11-06, ver 4.5.1): el código público no es un problema mientras no se filtren datos privados de Kopi. Sin cuenta la web funciona igual. Si funciona, la misma estrategia (opción A, login gestionado de Cognito con PKCE) se lleva a aws-cert-study. Descartado "Exportar / Importar" (JSON). |
 | Preguntas | **Mismo formato y mismo componente** que `aws-cert-study` (`preguntas.js`: `unica`, `multiple`, `ordenar`, `emparejar`, `dificil`), con campos añadidos (ver 4.3). Siempre **originales**: nunca preguntas reales de exámenes (NDA de Oracle, Broadcom, CNCF, HashiCorp…). |
 | Contenido | Sin copiar documentación: se resume con palabras propias y se enlaza la fuente. Lo literal, corto y en `<blockquote>` con `<cite>`. |
 | Logos | **Sin logos de terceros** (Java, Spring, Docker… son marcas con normas propias). Cada área tiene un color y un icono propio sencillo en SVG; los temas se identifican por nombre. |
@@ -379,14 +383,41 @@ Imprime un resumen por área: bloques, temas, evaluables, publicados y preguntas
 | `spider.simulacros` | historial de simulacros (Fase 6) |
 | `spider.vista` | preferencias: vista (cajas/telaraña), color por (área/progreso/autoevaluación), filtros |
 | `spider.lectura` | lectura en voz alta: `{ velocidad, voz }` (voiceURI elegido) |
+| `spider.sincronizacion` | cuenta Kopi: `{ cuenta: sub, t: { clave: epoch ms del último cambio } }` (4.5.1) |
+| `kopi.estudio.sesion` | sesión de la cuenta Kopi, compartida con las webs de estudio del mismo origen: `{ access, refresh, expira, email, sub }` |
 | `spider.leidas` | fichas marcadas como leídas: `{ "<id>": "AAAA-MM-DD" }` (solo fichas escritas; si `revisado` es posterior, "actualizada desde que la leíste") |
 
 **Estado derivado de un tema** (nunca guardado en JSON): *Sin empezar* → *En curso* (alguna
 respondida) → *Superado* (≥ 80 % de sus preguntas acertadas en el último intento de cada una) →
 *Dominado* (todas acertadas). En nodos no evaluables cuenta la autoevaluación.
 **Agregado de una rama** = media ponderada por número de temas evaluables de sus descendientes
-(cada nodo cuenta una vez aunque tenga accesos). Botones "Exportar / Importar mi progreso"
-(JSON) en `progreso.html` para no perderlo al cambiar de navegador.
+(cada nodo cuenta una vez aunque tenga accesos). Para no perderlo al cambiar de navegador, la
+cuenta Kopi (4.5.1); "Exportar / Importar" (JSON) quedó descartado el 2026-11-06.
+
+### 4.5.1 Progreso en la cuenta Kopi (opcional)
+
+**Decisión del usuario (2026-11-06):** backend sí, con la cuenta Kopi, siempre que no haya
+filtración de datos privados de Kopi; login con la **opción A** (página de login gestionada de
+Cognito, Authorization Code + PKCE); si funciona, se propaga a aws-cert-study.
+
+- **Backend en `kopi-media-admin`:** tabla `kopi_study_progress` (PK `ownerId`, SK `site`), Lambdas
+  `kopi-study/{get,save,delete}StudyProgress.mjs` en `GET/PUT/DELETE /study/{site}/progress`,
+  borrado en cascada en `rejectUser`, bootstrap `documentation/scripts/bootstrap-study-progress.ps1`
+  (lo ejecuta el usuario con AWS CLI; imprime dominio y Client ID).
+- **Aislamiento:** App Client propio `kopi-study-client` y **authorizer propio** con audiencia solo
+  ese cliente. Todas las webs de `arquitechthor.github.io` comparten origen y `localStorage`: un token
+  de aquí no sirve para el resto de la API de Kopi (notas, contraseñas…), ni uno de Angular para
+  `/study/*`. El código público no expone nada: Client ID y dominio no son secretos (cliente público
+  con PKCE).
+- **Front:** `assets/cuenta.js` (`SpiderCuenta`, sin librerías) y `cuenta.html` (vuelta del login y
+  gestión: estado, sincronizar, salir, borrar el progreso remoto). Mientras `CONFIG.dominio` y
+  `CONFIG.clientId` estén vacíos, la cuenta no se ofrece.
+- **Qué se sincroniza:** `progreso`, `autoevaluacion`, `leidas`, `evaluaciones`, `simulacros` (no
+  `vista` ni `lectura`, que son del dispositivo). Cada clave lleva la hora de su último cambio en
+  `spider.sincronizacion` (`{ cuenta, t: { clave: ms } }`); el servidor se queda, clave a clave, con
+  la más reciente. La primera vez con una cuenta en un navegador, lo local y lo remoto se unen.
+- **Sesión:** `kopi.estudio.sesion` (fuera del prefijo `spider.` a propósito: la comparten las webs
+  de estudio del mismo origen, así que entrar en una vale para las demás).
 
 ---
 
@@ -770,7 +801,15 @@ Completa el 2026-11-02.
       y `temas` existentes. Falta el aviso de reparto de la correcta entre posiciones.
 - [ ] 5.3 `evaluacion.html`: test por rama, desglose por tema, repaso de falladas, diagnóstico.
 - [x] 5.4 Excluir los temas `externo` (AWS) de los tests por rama (hecho en `quiz.js`); los agregados llegarán con 5.6.
-- [ ] 5.5 `progreso.html`: radar, lista por área, falladas, historial, exportar/importar.
+- [ ] 5.5 `progreso.html`: radar, lista por área, falladas, historial (exportar/importar descartado
+      el 2026-11-06: lo sustituye la cuenta Kopi).
+- [ ] 5.7 Progreso en la cuenta Kopi (4.5.1). Hecho (2026-11-06): backend y bootstrap en
+      `kopi-media-admin`, `cuenta.js`, `cuenta.html`, aviso legal. Falta: el usuario ejecuta
+      `bootstrap-study-progress.ps1`, se rellena `CONFIG` en `cuenta.js`, push de los dos repos,
+      prueba real (login, dos dispositivos, cuenta pendiente, salir, borrar) y mencionar Tech Spider
+      en la política de privacidad de Kopi Tools (`kopi-web/legal/privacidad.html`).
+- [ ] 5.8 Si 5.7 funciona: llevarlo a aws-cert-study (opción A, mismo App Client y sesión
+      compartida; añadir su URL de vuelta al bootstrap y `aws-cert-study` ya está en `STUDY_SITES`).
 
 ### Fase 6: certificaciones temáticas
 - [ ] 6.1 Verificar temario oficial de la primera certificación (D7) y escribir su entrada.
@@ -848,6 +887,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-06 | **Progreso en la cuenta Kopi** (decisión del usuario: backend sí mientras no se filtren datos privados de Kopi; opción A, login gestionado de Cognito con PKCE; fuera Exportar/Importar). Backend en `kopi-media-admin` (tabla, 3 Lambdas, authorizer y App Client propios, bootstrap, cascada en `rejectUser`, docs) y front (`cuenta.js`, `cuenta.html`, aviso en "Mi telaraña", aviso legal). Sincronización probada en Chrome headless con `fetch` simulado (unión la primera vez, subida a los 2 s, gana lo más reciente); sin configurar, la cuenta no se ofrece. Pendiente: bootstrap en AWS y prueba real. |
 | 2026-11-06 | **Ficha de Reasoning Models** publicada (petición del usuario): `temas/reasoning-models.html` y 9 preguntas (`data/preguntas/reasoning-models.json`, opciones equilibradas en longitud), contrastada con las guías de OpenAI y Anthropic, Wei et al. 2022, Snell et al. 2024 y el estudio de fidelidad de Anthropic. El blog de OpenAI da 403: el concepto Sistema 1 / Sistema 2 cita su guía de *reasoning* en su lugar. Probada a 375 px. |
 | 2026-11-06 | El usuario pregunta si el área de IA trata los *System One Models*: no estaban. Nuevo tema `reasoning-models` (pendiente de ficha) bajo LLMs y concepto "Sistema 1 y Sistema 2" en el glosario (4.2.1). |
 | 2026-11-05 | Verificado "Mi telaraña" en producción con Chrome: tras publicar, el navegador mezclaba el HTML nuevo con el `mapa.js` viejo de su caché y el radar no salía. Solución (aceptada por el usuario): `scripts/versionar.py` pone `?v=<huella SHA-256>` en los .js y el .css de todas las páginas y `revisar_arbol.py` falla si alguna queda desfasada. Quitar el último nivel marcado borra la clave en vez de dejar `{}`. |
