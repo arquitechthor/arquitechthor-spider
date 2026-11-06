@@ -3296,6 +3296,19 @@
     "volatil": true
   },
   {
+    "id": "reasoning-models",
+    "nombre": "Reasoning Models",
+    "nombreEs": "Modelos de razonamiento",
+    "tipo": "tema",
+    "padre": "llms",
+    "area": "ai",
+    "frase": "Piensan paso a paso antes de contestar: más acierto a cambio de tiempo y coste.",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true
+  },
+  {
     "id": "prompt-engineering",
     "nombre": "Prompt Engineering",
     "tipo": "tema",

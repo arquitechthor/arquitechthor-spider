@@ -166,6 +166,19 @@
         { "titulo": "Attention Is All You Need (Vaswani et al., 2017)", "url": "https://arxiv.org/abs/1706.03762" },
         { "titulo": "What is a transformer model? (IBM)", "url": "https://www.ibm.com/think/topics/transformer-model" }
       ]
+    },
+    {
+      "id": "sistema-1-sistema-2",
+      "termino": "Sistema 1 y Sistema 2",
+      "en": "System 1 / System 2 thinking",
+      "definicion": "Dos modos de pensar descritos por el psicólogo Daniel Kahneman: el Sistema 1 es rápido, automático e intuitivo; el Sistema 2, lento, deliberado y costoso. En IA se usa como analogía: un LLM clásico responde «en modo Sistema 1», token a token y sin pararse a pensar, mientras que un modelo de razonamiento se acerca al Sistema 2, porque genera primero una cadena de pasos intermedios y gasta más cómputo antes de dar la respuesta.",
+      "tema": "reasoning-models",
+      "relacionados": ["llms", "model-selection"],
+      "fuentes": [
+        { "titulo": "Thinking, Fast and Slow (Daniel Kahneman, 2011)", "url": "https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow" },
+        { "titulo": "Learning to reason with LLMs (OpenAI)", "url": "https://openai.com/index/learning-to-reason-with-llms/" },
+        { "titulo": "Building with extended thinking (documentación de Anthropic)", "url": "https://platform.claude.com/docs/en/build-with-claude/extended-thinking" }
+      ]
     }
   ]
 }

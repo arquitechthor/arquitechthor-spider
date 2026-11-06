@@ -59,7 +59,9 @@ línea al "Registro de sesiones".
   X de Y" por rama en el panel. Pendiente de que el usuario lo pruebe en producción.
 - **Lectura en voz alta (2026-11-04):** botón "Escuchar" en las fichas (Fase 8), pendiente de que el usuario
   lo pruebe en producción.
-- **Última actualización:** 2026-11-04 (lectura en voz alta y fichas leídas)
+- **Tema nuevo (2026-11-06):** Reasoning Models bajo LLMs y concepto "Sistema 1 y Sistema 2" en el
+  glosario; la ficha del tema queda pendiente.
+- **Última actualización:** 2026-11-06 (modelos de razonamiento)
 
 ---
 
@@ -302,6 +304,13 @@ directamente en `data/nodos.json` (el importador ya no se usa; con `--forzar` se
 - `nombreEs` nuevos: Generative AI → "IA generativa", AI Agents → "Agentes de IA".
 - Publicadas las fichas del área `ai` (presentación) y de 6 temas (IA, ML, DL, IA generativa, LLMs,
   Agentes de IA), con 57 preguntas. Resultado: 357 nodos (63 bloques, 280 temas).
+
+**2026-11-06: modelos de razonamiento** (pregunta del usuario por los *System One Models*):
+- Nuevo tema **Reasoning Models** (`reasoning-models`, "Modelos de razonamiento"), hermano de Model
+  Selection bajo Large Language Models (LLMs), pendiente de ficha: analogía Sistema 1 / Sistema 2,
+  cómputo en inferencia (*test-time compute*), presupuesto de razonamiento y cuándo compensan.
+- Concepto **Sistema 1 y Sistema 2** (`sistema-1-sistema-2`) en el glosario, con tema
+  `reasoning-models`. Resultado: 358 nodos (63 bloques, 281 temas).
 
 ### 4.3 Preguntas: `data/preguntas/<id>.json`
 
@@ -837,6 +846,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-06 | El usuario pregunta si el área de IA trata los *System One Models*: no estaban. Nuevo tema `reasoning-models` (pendiente de ficha) bajo LLMs y concepto "Sistema 1 y Sistema 2" en el glosario (4.2.1). |
 | 2026-11-05 | Verificado "Mi telaraña" en producción con Chrome: tras publicar, el navegador mezclaba el HTML nuevo con el `mapa.js` viejo de su caché y el radar no salía. Solución (aceptada por el usuario): `scripts/versionar.py` pone `?v=<huella SHA-256>` en los .js y el .css de todas las páginas y `revisar_arbol.py` falla si alguna queda desfasada. Quitar el último nivel marcado borra la clave en vez de dejar `{}`. |
 | 2026-11-05 | **Fase 3 completa** (orden pedido por el usuario: 3.8, 3.7, 3.9): radar "Mi telaraña" (`radar.js`), responsive y accesibilidad (panel visible al tocar un tema en móvil, movimiento reducido global, "Saltar al contenido", anuncio corto en vez de panel vivo) y "Vista general" (`general.js`). Probado en Chrome headless a 1400 y 375 px. Concepto **temperatura** en el glosario, enlazado desde IA generativa y LLMs (el usuario vio que se nombraba sin explicar) y regla nueva en `CLAUDE.md`: cada ficha se entiende sola. |
 | 2026-11-05 | ✓/↻ de fichas leídas también en las listas del panel del mapa ("Contiene", "Vive en", "También aparece en", "Relacionados") (petición del usuario). Regla nueva para preguntas futuras: la longitud de las opciones no delata la correcta (4.3). |
