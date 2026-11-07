@@ -66,6 +66,14 @@ línea al "Registro de sesiones".
   petición del usuario). Exportar/Importar, descartado. Código terminado y subido en los tres repos;
   **falta la parte de AWS y la prueba real**, que se hacen desde otro ordenador (en el de trabajo no
   hay AWS CLI). Pasos exactos en "Cuenta Kopi: cómo terminarlo" justo debajo.
+- **Cuenta Kopi (2026-11-07):** pasos 1, 2, 3 y 6 hechos. Bootstrap ejecutado: el User Pool ya tenía
+  dominio (`https://eu-south-2yunp5zgur.auth.eu-south-2.amazoncognito.com`, gestionado v2), que se
+  reutiliza; Client ID `4fmvo9933fn16s18d0snjqm22q`; authorizer `ecbe7l`. Comprobado sin login: el
+  authorize redirige al login (y rechaza URLs de vuelta ajenas), `/study/*` sin token da 401, el
+  preflight CORS desde `arquitechthor.github.io` pasa, las tres rutas `/study/*` usan solo el
+  authorizer nuevo y ninguna otra ruta lo usa (aislamiento por audiencia). Privacidad y eliminación
+  de cuenta de `kopi-web` actualizadas. **Falta:** pasos 4–5 con login real (local y producción) y
+  la comprobación de seguridad con token real (`GET /notes` → 401); después marcar 5.7 y 5.8.
 
 #### Cuenta Kopi: cómo terminarlo (lista para retomar en otro ordenador)
 
@@ -104,7 +112,7 @@ funciones existentes): **es lo esperado** y lo arregla el paso 2 (que sube su c�
 6. Pendiente aparte: mencionar el progreso de Tech Spider y Apuntes AWS en la política de privacidad de
    Kopi Tools (`kopi-web/legal/privacidad.html`).
 7. Marca 5.7 y 5.8 aquí y actualiza "Estado actual" de este PLAN y del de aws-cert-study.
-- **Última actualización:** 2026-11-06 (cuenta Kopi)
+- **Última actualización:** 2026-11-07 (cuenta Kopi activada)
 
 ---
 

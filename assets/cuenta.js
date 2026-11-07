@@ -37,8 +37,8 @@
   // Valores que imprime documentation/scripts/bootstrap-study-progress.ps1 (kopi-media-admin).
   // Mientras estén vacíos, la cuenta Kopi no se ofrece en la web.
   const CONFIG = {
-    dominio: '',            // p. ej. https://kopi-login.auth.eu-south-2.amazoncognito.com
-    clientId: '',
+    dominio: 'https://eu-south-2yunp5zgur.auth.eu-south-2.amazoncognito.com',
+    clientId: '4fmvo9933fn16s18d0snjqm22q',   // App Client público kopi-study-client (PKCE, sin secreto)
     api: 'https://api.kopitools.link',
   };
   const ACTIVA = Boolean(CONFIG.dominio && CONFIG.clientId);
