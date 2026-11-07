@@ -355,7 +355,7 @@
       : `Tu progreso se guarda en este navegador. Si tienes cuenta Kopi, puedes guardarlo también allí y tenerlo en cualquier dispositivo. ${enlace}`;
   }
 
-  /* ── Enlace en el menú (antes de "Sobre mí") ───────────────────── */
+  /* ── Enlace en el menú (antes de "Arquitechthor") ───────────────────── */
 
   function pintarMenu() {
     const links = document.querySelector('.nav-links');

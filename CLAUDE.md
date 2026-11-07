@@ -109,7 +109,7 @@ no third-party requests).
   `simulacros` (never device prefs); per-key change time in `spider.sincronizacion`, newest wins per
   key, union on the first sync. `datos.js` `guardar()` fires `spider:guardado`; applied remote changes
   fire `spider:sincronizado` (the map repaints). Session in `kopi.estudio.sesion` (shared with the
-  other study sites on purpose). Every page that loads `datos.js` must load `cuenta.js` right after it (also `aviso-legal.html`): `cuenta.js` adds the nav link to `cuenta.html` right before "Sobre mí" ("Guardar progreso" signed out, "Mi cuenta" signed in; `aria-current="page"` on `cuenta.html`).
+  other study sites on purpose). Every page that loads `datos.js` must load `cuenta.js` right after it (also `aviso-legal.html`): `cuenta.js` adds the nav link to `cuenta.html` right before "Arquitechthor" ("Guardar progreso" signed out, "Mi cuenta" signed in; `aria-current="page"` on `cuenta.html`).
   While `CONFIG.dominio`/`clientId` are empty the account is not offered. `aws-cert-study` has a copy
   of `cuenta.js` where only the `SITIO` block differs: change both when touching the shared part.
 - `aviso-legal.html`: legal notice, trademarks, license and privacy. Keep it consistent with any
@@ -117,8 +117,8 @@ no third-party requests).
 
 Every page shares the same `<nav>` and footer as `kopi-web`, `aws-cert-study` and
 `arquitechthor.github.io` (policy "Mismo menú y pie" in `../kopi-docs/politicas.md`): "Inicio"
-first, "Sobre mí" last, no call-to-action button, active link via `aria-current`, and the footer
-ends with `.footer-sitios` (Kopi Tools · Apuntes AWS · Tech Spider · Kopi Chess · Prompt Quest · Sobre mí). Copy the `<nav>` and
+first, "Arquitechthor" last, no call-to-action button, active link via `aria-current`, and the footer
+ends with `.footer-sitios` (Kopi Tools · Apuntes AWS · Tech Spider · Kopi Chess · Prompt Quest · Arquitechthor). Copy the `<nav>` and
 `<footer>` from an existing page when creating a new one.
 
 ## Commands
