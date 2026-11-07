@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecosistema Java de IA — Tech Spider</title>
+<meta name="description" content="Spring AI, LangChain4j y el MCP Java SDK: qué es cada uno, cuál elegir y por dónde empezar a integrar IA desde Java.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/ai-java-ecosystem.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=04c39275">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="ai-java-ecosystem">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>Este bloque reúne las bibliotecas con las que una aplicación Java (o de cualquier lenguaje de la JVM, como Kotlin)
+        llama a modelos de IA sin salir de su lenguaje. Son tres:</p>
+      <ul>
+        <li><a href="spring-ai.html">Spring AI</a>: el proyecto oficial de Spring, para aplicaciones Spring Boot.</li>
+        <li><a href="../tema.html?id=langchain4j">LangChain4j</a>: una biblioteca independiente de cualquier marco, con
+          integraciones para Spring Boot, Quarkus y otros.</li>
+        <li><a href="../tema.html?id=mcp-java-sdk">MCP Java SDK</a>: la implementación oficial en Java del protocolo MCP, para
+          crear clientes y servidores MCP. Spring AI la usa por debajo para su soporte de MCP.</li>
+      </ul>
+      <p>Las dos primeras cubren casi lo mismo (llamar a modelos de muchos proveedores, salida estructurada,
+        <a class="concepto" data-concepto="herramienta">herramientas</a>, memoria, RAG, agentes) con estilos distintos. El SDK
+        de MCP es de más bajo nivel: hace falta cuando quieres publicar tus propias herramientas como servidor MCP o controlar
+        el protocolo directamente.</p>
+
+      <h2 id="siglas">Siglas</h2>
+      <ul>
+        <li><strong>JVM</strong> (<em>Java Virtual Machine</em>): la máquina virtual que ejecuta el código compilado de Java,
+          Kotlin o Scala.</li>
+        <li><strong>SDK</strong> (<em>Software Development Kit</em>): bibliotecas y herramientas para programar contra una
+          plataforma o un protocolo.</li>
+        <li><strong>MCP</strong> (<em>Model Context Protocol</em>): protocolo abierto para conectar modelos con herramientas y
+          fuentes de datos.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Python domina el entrenamiento de modelos, pero usarlos es otra cosa: los modelos se consumen como API por HTTP, así
+        que cualquier lenguaje puede integrarlos. Para un equipo Java, hacerlo en Java evita un servicio aparte en Python y
+        permite reutilizar lo que ya tiene: transacciones, seguridad, configuración, pruebas y monitorización.</p>
+      <p>Por eso estas bibliotecas han madurado deprisa y aparecen cada vez más en ofertas de backend Java. Como todo en esta
+        área, cambian rápido: versiones, proveedores y nombres de clases se renuevan cada pocos meses.</p>
+
+      <h2 id="cual-elegir">Cuál elegir</h2>
+      <ul>
+        <li><strong>Tu aplicación ya es Spring Boot:</strong> Spring AI, que sigue sus convenciones (starters, propiedades,
+          beans, métricas).</li>
+        <li><strong>No usas Spring, usas Quarkus o prefieres declarar el servicio como una interfaz:</strong> LangChain4j.</li>
+        <li><strong>Quieres ofrecer tus herramientas a cualquier agente compatible:</strong> un servidor MCP, con el SDK
+          directamente o con el soporte de MCP de Spring AI.</li>
+      </ul>
+
+      <h2 id="por-donde-empezar">Por dónde empezar</h2>
+      <ol>
+        <li><a href="../tema.html?id=model-apis">Model APIs</a> y <a href="../tema.html?id=tool-calling">Tool Calling</a>: qué
+          hay debajo de cualquier biblioteca (una petición HTTP con mensajes y la respuesta del modelo).</li>
+        <li><a href="spring-ai.html">Spring AI</a> si trabajas con Spring Boot, o
+          <a href="../tema.html?id=langchain4j">LangChain4j</a> si no.</li>
+        <li><a href="../tema.html?id=mcp">MCP</a> y después el <a href="../tema.html?id=mcp-java-sdk">MCP Java SDK</a>, cuando
+          necesites conectar herramientas de forma estándar.</li>
+      </ol>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://docs.spring.io/spring-ai/reference/" target="_blank" rel="noopener">Spring AI Reference</a> (documentación oficial, consultada el 07/11/2026).</li>
+        <li><a href="https://docs.langchain4j.dev/" target="_blank" rel="noopener">LangChain4j</a> (documentación oficial, consultada el 07/11/2026).</li>
+        <li><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">Model Context Protocol</a> (sitio oficial, con los SDK de cada lenguaje; consultada el 07/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=2188f0f2" defer></script>
+<script src="../assets/cuenta.js?v=97fff95d" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=4c7d75ba" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=81d3fcf3" defer></script>
+<script src="../assets/tema.js?v=395ab4fd" defer></script>
+</body>
+</html>

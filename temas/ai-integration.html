@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Integración de IA — Tech Spider</title>
+<meta name="description" content="Cómo una aplicación usa modelos de IA: API de modelos, embeddings, bases vectoriales, MCP y el ecosistema Java.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/ai-integration.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=04c39275">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="ai-integration">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>La <strong>integración de IA</strong> es la parte práctica de la <a href="ai.html">ingeniería de IA</a>: cómo una
+        aplicación normal llama a un modelo, le da los datos que necesita y le deja usar
+        <a class="concepto" data-concepto="herramienta">herramientas</a>. Es donde pasa la mayor parte del trabajo de un
+        desarrollador backend con IA, y donde un <a href="llms.html">LLM</a> deja de ser un chat para convertirse en una pieza
+        más del sistema.</p>
+      <p>El bloque tiene cinco partes que se apoyan unas en otras:</p>
+      <ul>
+        <li><a href="../tema.html?id=model-apis">Model APIs</a>: la base. Un modelo se usa enviando una petición HTTP con los
+          mensajes y unos ajustes, y leyendo la respuesta (de una vez o por partes, a medida que se genera).</li>
+        <li><a href="../tema.html?id=embeddings">Embeddings</a>: convertir un texto en una lista de números que representa su
+          significado, de modo que textos parecidos quedan cerca. Permiten buscar por sentido y no por palabras exactas.</li>
+        <li><a href="../tema.html?id=vector-databases">Vector Databases</a>: bases de datos que guardan esos vectores y
+          encuentran los más parecidos. Con los embeddings son el corazón del RAG.</li>
+        <li><a href="../tema.html?id=mcp">Model Context Protocol (MCP)</a>: un estándar para conectar modelos con herramientas
+          y datos, de modo que una misma herramienta sirva a cualquier aplicación o agente compatible.</li>
+        <li><a href="ai-java-ecosystem.html">Ecosistema Java</a>: las bibliotecas para hacer todo lo anterior desde Java
+          (Spring AI, LangChain4j, MCP Java SDK).</li>
+      </ul>
+
+      <h2 id="siglas">Siglas</h2>
+      <ul>
+        <li><strong>API</strong> (<em>Application Programming Interface</em>): la interfaz con la que un programa usa a otro;
+          aquí, el servicio del proveedor que recibe tus peticiones al modelo.</li>
+        <li><strong>RAG</strong> (<em>Retrieval-Augmented Generation</em>): antes de preguntar al modelo se buscan los
+          documentos relevantes y se le pasan junto a la pregunta.</li>
+        <li><strong>MCP</strong> (<em>Model Context Protocol</em>): el protocolo abierto para conectar modelos con
+          herramientas y fuentes de datos.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Un modelo por sí solo solo sabe lo que aprendió al entrenarse y no puede hacer nada fuera de la conversación. La
+        integración resuelve las dos cosas: le da conocimiento propio (los documentos de la empresa, datos al día) y capacidad
+        de actuar (consultar un pedido, abrir una incidencia). Es lo que convierte una demo en una funcionalidad real, y lo que
+        más piden hoy las ofertas que combinan backend e IA.</p>
+
+      <h2 id="por-donde-empezar">Por dónde empezar</h2>
+      <ol>
+        <li><a href="../tema.html?id=model-apis">Model APIs</a>: hacer una llamada a mano y entender qué se envía y qué se paga.</li>
+        <li><a href="../tema.html?id=embeddings">Embeddings</a> y <a href="../tema.html?id=vector-databases">Vector Databases</a>,
+          que se entienden mejor juntos, y con ellos <a href="../tema.html?id=rag">RAG</a>.</li>
+        <li><a href="../tema.html?id=mcp">MCP</a>, después de entender <a href="../tema.html?id=tool-calling">Tool Calling</a>.</li>
+        <li>Si trabajas en Java, el <a href="ai-java-ecosystem.html">Ecosistema Java</a>, empezando por
+          <a href="spring-ai.html">Spring AI</a> si usas Spring Boot.</li>
+      </ol>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/embeddings" target="_blank" rel="noopener">Embeddings</a> (documentación de Anthropic, consultada el 07/11/2026).</li>
+        <li><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">Model Context Protocol</a> (sitio oficial, consultada el 07/11/2026).</li>
+        <li><a href="https://www.ibm.com/think/topics/retrieval-augmented-generation" target="_blank" rel="noopener">What is retrieval-augmented generation (RAG)?</a> (IBM, consultada el 07/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=2188f0f2" defer></script>
+<script src="../assets/cuenta.js?v=97fff95d" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=4c7d75ba" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=81d3fcf3" defer></script>
+<script src="../assets/tema.js?v=395ab4fd" defer></script>
+</body>
+</html>

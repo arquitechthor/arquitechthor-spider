@@ -1,0 +1,194 @@
+[
+  {
+    "id": "spring-ai-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué papel tiene ChatClient en Spring AI?",
+    "opciones": [
+      "Una API fluida para montar el prompt y leer la respuesta de cualquier modelo.",
+      "Un servidor de chat que Spring AI arranca para conversar con los usuarios.",
+      "Un modelo de lenguaje propio que Spring entrena y distribuye junto a Spring Boot.",
+      "Una consola web para probar prompts desde el navegador sin escribir código."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "ChatClient es la API de alto nivel de Spring AI, con un estilo parecido a WebClient o RestClient: se construye el prompt (sistema, usuario, herramientas, advisors), se llama y se lee la respuesta. Por debajo usa el ChatModel del proveedor configurado. No es un servidor, ni un modelo propio, ni una consola.",
+    "fuentes": [
+      "https://docs.spring.io/spring-ai/reference/api/chatclient.html"
+    ]
+  },
+  {
+    "id": "spring-ai-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Una aplicación usa ChatClient con OpenAI y queréis pasar a Anthropic. ¿Qué cambia sobre todo?",
+    "opciones": [
+      "Todas las llamadas, porque cada proveedor obliga a usar su propia API Java.",
+      "El starter y las propiedades; el código que usa ChatClient apenas cambia.",
+      "Nada: Spring AI elige solo el proveedor más barato en cada petición enviada.",
+      "Solo la clave API, porque todos los proveedores sirven los mismos modelos."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "La API de Spring AI es portable: se cambia la dependencia del starter del proveedor y sus propiedades (clave, modelo), y el código escrito contra ChatClient sigue valiendo. Spring AI no elige proveedor por su cuenta, y cada proveedor tiene sus propios modelos.",
+    "fuentes": [
+      "https://docs.spring.io/spring-ai/reference/"
+    ]
+  },
+  {
+    "id": "spring-ai-003",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué hace entity(Ticket.class) en este código?",
+    "opciones": [
+      "Guarda la respuesta del modelo en la base de datos como una entidad JPA.",
+      "Comprueba que el correo cumple el esquema de Ticket antes de enviarlo.",
+      "Pide la respuesta en un formato estructurado y la convierte en un Ticket.",
+      "Manda al modelo un Ticket vacío para que lo copie como ejemplo literal."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "entity() es la salida estructurada de Spring AI: indica al modelo el formato esperado (o usa la salida estructurada nativa del proveedor) y convierte su respuesta en un objeto Java, aquí el record Ticket. No toca la base de datos ni valida la entrada.",
+    "codigo": "record Ticket(String categoria, int urgencia, String resumen) {}\n\nTicket t = chat.prompt()\n    .user(correo)\n    .call()\n    .entity(Ticket.class);",
+    "fuentes": [
+      "https://docs.spring.io/spring-ai/reference/api/chatclient.html"
+    ]
+  },
+  {
+    "id": "spring-ai-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un método anotado con @Tool se pasa al modelo con .tools(...). ¿Quién ejecuta ese método?",
+    "opciones": [
+      "El proveedor del modelo, que recibe el código fuente del método dentro del prompt.",
+      "Un servidor MCP externo que Spring AI arranca aparte en otro proceso.",
+      "Nadie, hasta que el usuario confirma la llamada desde la interfaz de chat.",
+      "Tu aplicación: el modelo solo pide la llamada y Spring AI ejecuta el método."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "El modelo nunca ejecuta código: recibe el nombre, la descripción y el esquema de parámetros de la herramienta y, si la necesita, devuelve una petición de llamada. Spring AI ejecuta el método en tu aplicación y le devuelve el resultado al modelo. MCP es otra vía, y la confirmación humana solo existe si la programas tú.",
+    "fuentes": [
+      "https://docs.spring.io/spring-ai/reference/api/tools.html"
+    ]
+  },
+  {
+    "id": "spring-ai-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un usuario escribe «me llamo Ana» y en la petición siguiente pregunta «¿cómo me llamo?». El modelo no lo sabe. ¿Por qué y qué se hace?",
+    "opciones": [
+      "El modelo no recuerda nada entre llamadas; se añade memoria con un advisor.",
+      "La temperatura es demasiado alta; si se baja, el modelo recordará el nombre.",
+      "Falta activar el streaming, que es lo que mantiene abierta la conversación.",
+      "El prompt de sistema borra el historial; hay que quitar el defaultSystem()."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "Las API de los modelos no tienen estado: cada petición solo ve lo que se le envía. Spring AI lo resuelve con ChatMemory (guarda los mensajes por conversación) y un advisor como MessageChatMemoryAdvisor, que los añade a cada petición. La temperatura, el streaming o el prompt de sistema no tienen que ver.",
+    "fuentes": [
+      "https://docs.spring.io/spring-ai/reference/api/advisors.html"
+    ]
+  },
+  {
+    "id": "spring-ai-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "En Spring AI, ¿qué es un advisor?",
+    "opciones": [
+      "Un segundo modelo que revisa y corrige las respuestas del modelo principal.",
+      "Un asistente del IDE que sugiere código de Spring AI mientras programas.",
+      "Un interceptor que actúa antes y después de cada llamada al modelo.",
+      "Un servicio de Spring que recomienda qué modelo usar para cada tarea."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "Los advisors interceptan cada llamada de ChatClient, como los filtros de una aplicación web: pueden cambiar la petición (añadir historial o documentos) o la respuesta. Se encadenan por orden y con ellos se montan la memoria, el RAG o las protecciones.",
+    "fuentes": [
+      "https://docs.spring.io/spring-ai/reference/api/advisors.html"
+    ]
+  },
+  {
+    "id": "spring-ai-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Montas RAG con Spring AI. ¿Qué pieza guarda los fragmentos de tus documentos y busca los más parecidos a la pregunta?",
+    "opciones": [
+      "ChatMemory, que guarda los documentos junto a los mensajes del usuario.",
+      "VectorStore, que guarda sus embeddings y busca los más parecidos.",
+      "EmbeddingModel, que guarda los vectores dentro de la memoria del modelo.",
+      "ToolCallingAdvisor, que busca en los documentos con consultas SQL."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "VectorStore es la API común de Spring AI sobre bases vectoriales (PGVector, Qdrant, Redis…): guarda los embeddings de los fragmentos y hace la búsqueda por similitud. EmbeddingModel solo calcula los vectores, ChatMemory guarda la conversación y ToolCallingAdvisor gestiona las herramientas.",
+    "fuentes": [
+      "https://docs.spring.io/spring-ai/reference/"
+    ]
+  },
+  {
+    "id": "spring-ai-008",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "Vas a exponer al modelo una herramienta cancelarPedido. ¿Qué es lo más prudente?",
+    "opciones": [
+      "Confiar en la descripción de la herramienta para que el modelo no abuse.",
+      "Darle una descripción vaga para que el modelo la use lo menos posible.",
+      "Subir la temperatura para que el modelo dude más antes de llamarla.",
+      "Comprobar en el método los permisos del usuario y pedirle confirmación."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "El modelo decide cuándo llamar a una herramienta y un texto malicioso (inyección de prompt) puede empujarle a hacerlo. Una acción irreversible se protege en el código: comprobar que el usuario puede hacerla y pedir confirmación. Una descripción vaga solo hace que el modelo la use mal, y la temperatura no es un control de seguridad.",
+    "fuentes": [
+      "https://docs.spring.io/spring-ai/reference/api/tools.html"
+    ]
+  },
+  {
+    "id": "spring-ai-009",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un proyecto sigue en Spring Boot 3.5. ¿Qué línea de Spring AI encaja?",
+    "opciones": [
+      "La 2.x, porque funciona con cualquier Spring Boot a partir de la 3.0.",
+      "La 1.x; la 2.x está pensada para Spring Boot 4 y Spring Framework 7.",
+      "Ninguna, porque Spring AI siempre ha exigido Spring Boot 4 o superior.",
+      "Cualquiera, porque Spring AI no depende de Spring Boot sino de Jakarta EE."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "Spring AI 2.x (junio de 2026) se diseñó para Spring Boot 4.0 y 4.1 con Spring Framework 7; las versiones 1.x son las de Spring Boot 3. Para usar la 2.x hay que migrar antes a Spring Boot 4.",
+    "fuentes": [
+      "https://docs.spring.io/spring-ai/reference/getting-started.html"
+    ]
+  },
+  {
+    "id": "spring-ai-010",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Cuál es una diferencia real entre Spring AI y LangChain4j?",
+    "opciones": [
+      "LangChain4j solo trabaja con modelos de OpenAI y Spring AI con todos ellos.",
+      "Spring AI no admite herramientas y LangChain4j sí, gracias a sus AI Services anotados.",
+      "LangChain4j no depende de Spring y declara servicios con interfaces anotadas.",
+      "Spring AI está escrito en Kotlin y LangChain4j en Java, con API distintas."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "LangChain4j es un proyecto independiente, sin dependencia de Spring (tiene integraciones con Spring Boot, Quarkus y otros), y su estilo más conocido son los AI Services: escribes una interfaz Java y la biblioteca la implementa. Los dos admiten muchos proveedores y herramientas, y los dos están escritos en Java.",
+    "fuentes": [
+      "https://docs.langchain4j.dev/",
+      "https://docs.spring.io/spring-ai/reference/"
+    ]
+  }
+]

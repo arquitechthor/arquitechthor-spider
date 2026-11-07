@@ -651,7 +651,9 @@
     "padre": "software-engineer",
     "area": "backend",
     "color": "#8eed5e",
-    "frase": "Servidores en Java: inyección de dependencias, persistencia y construcción del proyecto."
+    "frase": "Servidores en Java: inyección de dependencias, persistencia y construcción del proyecto.",
+    "estado": "publicado",
+    "revisado": "2026-11-07"
   },
   {
     "id": "java-backend",
@@ -701,7 +703,9 @@
     "tipo": "bloque",
     "padre": "backend",
     "area": "backend",
-    "frase": "El marco más usado en servidores: núcleo, Boot, MVC, datos, seguridad, nube y lotes."
+    "frase": "El marco más usado en servidores: núcleo, Boot, MVC, datos, seguridad, nube y lotes.",
+    "estado": "publicado",
+    "revisado": "2026-11-07"
   },
   {
     "id": "spring-core",
@@ -3364,7 +3368,8 @@
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
-      "fine-tuning"
+      "fine-tuning",
+      "spring-ai"
     ]
   },
   {
@@ -3442,7 +3447,8 @@
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
-      "mcp"
+      "mcp",
+      "spring-ai"
     ]
   },
   {
@@ -3582,7 +3588,10 @@
     "tipo": "bloque",
     "padre": "ai",
     "area": "ai",
-    "frase": "Llamar a modelos desde una aplicación: APIs, embeddings, vectores, MCP y Java."
+    "frase": "Llamar a modelos desde una aplicación: APIs, embeddings, vectores, MCP y Java.",
+    "estado": "publicado",
+    "volatil": true,
+    "revisado": "2026-11-07"
   },
   {
     "id": "model-apis",
@@ -3604,7 +3613,10 @@
     "estado": "pendiente",
     "evaluable": true,
     "prioridad": 2,
-    "volatil": true
+    "volatil": true,
+    "relacionados": [
+      "spring-ai"
+    ]
   },
   {
     "id": "streaming",
@@ -3709,7 +3721,11 @@
     "nombreEs": "Ecosistema Java",
     "tipo": "bloque",
     "padre": "ai-integration",
-    "area": "ai"
+    "area": "ai",
+    "frase": "Bibliotecas para que una aplicación de la JVM hable con modelos y servidores MCP.",
+    "estado": "publicado",
+    "volatil": true,
+    "revisado": "2026-11-07"
   },
   {
     "id": "spring-ai",
@@ -3720,13 +3736,19 @@
     "accesos": [
       "spring-framework"
     ],
-    "estado": "pendiente",
+    "frase": "Modelos de lenguaje en aplicaciones Java con las piezas y convenciones de siempre.",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
-      "langchain4j"
-    ]
+      "langchain4j",
+      "mcp-java-sdk",
+      "tool-calling",
+      "rag",
+      "structured-outputs"
+    ],
+    "revisado": "2026-11-07"
   },
   {
     "id": "langchain4j",
@@ -3753,7 +3775,8 @@
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
-      "mcp"
+      "mcp",
+      "spring-ai"
     ]
   },
   {

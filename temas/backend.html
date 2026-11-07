@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desarrollo backend y ecosistema Spring — Tech Spider</title>
+<meta name="description" content="Qué es el backend en Java: fundamentos, Spring, persistencia con JPA y construcción con Maven o Gradle, y por dónde empezar.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/backend.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=04c39275">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="backend">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>El <strong>backend</strong> es la parte de una aplicación que se ejecuta en el servidor: recibe las peticiones de la
+        web, de la app móvil o de otros sistemas, aplica las reglas del negocio, lee y guarda datos y responde. El usuario no
+        lo ve, pero es donde vive casi toda la lógica.</p>
+      <p>Esta área trata el backend en Java y en su marco más usado, Spring. Tiene cuatro partes:</p>
+      <ul>
+        <li><a href="../tema.html?id=java-backend">Backend en Java</a>: los cimientos, como HTTP, la API de Servlets (la forma
+          estándar de atender peticiones web en Java), la inyección de dependencias y la configuración.</li>
+        <li><a href="spring-framework.html">Spring Framework</a>: el marco y su familia de proyectos (Boot, MVC, Data,
+          Security, Cloud…).</li>
+        <li><a href="../tema.html?id=orm-persistence">ORM y persistencia</a>: guardar objetos Java en bases de datos
+          relacionales con JPA, Hibernate, JDBC y transacciones.</li>
+        <li><a href="../tema.html?id=build-dependency-management">Construcción y dependencias</a>: compilar, empaquetar y
+          gestionar librerías con Maven o Gradle.</li>
+      </ul>
+      <p>El lenguaje Java en sí está en el área de <a href="../tema.html?id=fundamentals">Fundamentos de ingeniería de
+        software</a>; aquí se trata lo necesario para construir servidores con él.</p>
+
+      <h2 id="siglas">Siglas</h2>
+      <ul>
+        <li><strong>HTTP</strong> (<em>Hypertext Transfer Protocol</em>): el protocolo de petición y respuesta de la web y de
+          casi todas las API.</li>
+        <li><strong>API</strong> (<em>Application Programming Interface</em>): la interfaz con la que otros programas usan tu
+          backend; en la web suele ser una API REST sobre HTTP.</li>
+        <li><strong>ORM</strong> (<em>Object-Relational Mapping</em>): el puente entre los objetos del programa y las tablas
+          de una base de datos.</li>
+        <li><strong>JPA</strong> (<em>Jakarta Persistence API</em>): el estándar de ORM en Java; Hibernate es su implementación
+          más usada.</li>
+        <li><strong>JDBC</strong> (<em>Java Database Connectivity</em>): la API básica de Java para lanzar SQL a una base de
+          datos; todo lo demás se apoya en ella.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Java con Spring es una de las combinaciones más usadas para el backend de empresa: banca, seguros, telecomunicaciones,
+        comercio y administración pública tienen sistemas críticos escritos así, muchos de ellos con años de vida por delante.
+        Por eso hay una demanda estable de perfiles que lo dominen. Y es la base sobre la que se montan el resto de piezas del
+        mapa: API, mensajería, pruebas, despliegue o integración de IA.</p>
+
+      <h2 id="por-donde-empezar">Por dónde empezar</h2>
+      <ol>
+        <li><a href="../tema.html?id=java">Java</a>, si aún no lo dominas.</li>
+        <li><a href="../tema.html?id=http">HTTP</a>, la <a href="../tema.html?id=servlet-api">API de Servlets</a> y la
+          <a href="../tema.html?id=dependency-injection">inyección de dependencias</a>: lo que Spring automatiza.</li>
+        <li><a href="../tema.html?id=maven">Maven</a>, para crear y construir proyectos.</li>
+        <li><a href="spring-framework.html">Spring Framework</a>, empezando por Spring Core y Spring Boot.</li>
+        <li><a href="../tema.html?id=jpa">JPA</a>, <a href="../tema.html?id=hibernate">Hibernate</a> y las
+          <a href="../tema.html?id=transaction-management">transacciones</a>, junto con Spring Data.</li>
+      </ol>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://spring.io/projects" target="_blank" rel="noopener">Spring projects</a> (página oficial, consultada el 07/11/2026).</li>
+        <li><a href="https://jakarta.ee/specifications/persistence/" target="_blank" rel="noopener">Jakarta Persistence</a> (especificación oficial, consultada el 07/11/2026).</li>
+        <li><a href="https://developer.mozilla.org/es/docs/Web/HTTP" target="_blank" rel="noopener">HTTP</a> (MDN Web Docs, consultada el 07/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=2188f0f2" defer></script>
+<script src="../assets/cuenta.js?v=97fff95d" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=4c7d75ba" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=81d3fcf3" defer></script>
+<script src="../assets/tema.js?v=395ab4fd" defer></script>
+</body>
+</html>

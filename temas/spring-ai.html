@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spring AI — Tech Spider</title>
+<meta name="description" content="Guía de Spring AI: ChatClient, salida estructurada, herramientas, advisors, memoria, RAG y MCP en aplicaciones Spring Boot, con test.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/spring-ai.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=04c39275">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="spring-ai">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p><strong>Spring AI</strong> es el proyecto del ecosistema <a href="spring-framework.html">Spring</a> para usar
+        modelos de IA desde aplicaciones Java. Da una API común para hablar con muchos proveedores (Anthropic, OpenAI, Google,
+        Amazon, Microsoft, Ollama para modelos locales…) y trae hechas las piezas que casi toda aplicación con un
+        <a href="llms.html">LLM</a> acaba necesitando: prompts con plantillas, respuestas convertidas en objetos Java,
+        <a class="concepto" data-concepto="herramienta">herramientas</a>, memoria de la conversación, embeddings, bases
+        vectoriales, RAG, MCP, métricas y evaluación.</p>
+      <p>La idea es la de siempre en Spring: igual que Spring Data esconde los detalles de cada base de datos, Spring AI
+        esconde los de cada proveedor de modelos. Añades un <em>starter</em> (una dependencia que trae todo lo necesario),
+        configuras unas propiedades y <a href="../tema.html?id=spring-boot">Spring Boot</a> crea los <em>beans</em> (los
+        objetos que gestiona Spring) listos para inyectar en tus clases.</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Buena parte del backend de empresa está escrito en Java con Spring. Spring AI permite añadirle capacidades de lenguaje
+        (resumir, clasificar, extraer datos, responder sobre documentos, automatizar tareas con agentes) sin montar un
+        servicio aparte en Python, y con lo que ya usa el resto de la aplicación: inyección de dependencias, configuración por
+        propiedades, pruebas, seguridad y métricas.</p>
+      <p>Al ser portable, cambiar de proveedor o de modelo es sobre todo cambiar una dependencia y unas propiedades, no
+        reescribir el código. La versión 1.0 salió en mayo de 2025 y la 2.0 en junio de 2026; esta ficha describe la
+        <strong>2.x</strong>, pensada para Spring Boot 4 y Spring Framework 7. Los proyectos que siguen en Spring Boot 3 usan
+        la 1.x.</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong><code>ChatModel</code>:</strong> la interfaz de bajo nivel para hablar con un modelo de chat. Cada
+          proveedor tiene su implementación: recibe un <code>Prompt</code> (la lista de mensajes) y devuelve la respuesta.</li>
+        <li><strong><code>ChatClient</code>:</strong> la API de alto nivel que se usa a diario, encadenando métodos al estilo de
+          <code>RestClient</code>: <code>prompt()</code>, <code>system()</code>, <code>user()</code>, <code>call()</code> o
+          <code>stream()</code> y <code>content()</code>. Se crea con un <code>ChatClient.Builder</code> en el que se fijan los
+          valores por defecto: <a href="../tema.html?id=system-prompt">prompt de sistema</a> (las instrucciones generales del
+          modelo), herramientas y advisors.</li>
+        <li><strong>Salida estructurada:</strong> <code>entity(Clase.class)</code> convierte la respuesta en un objeto Java (por
+          ejemplo un <code>record</code>). Spring AI indica al modelo el formato JSON esperado, o usa la
+          <a href="../tema.html?id=structured-outputs">salida estructurada</a> nativa del proveedor, y convierte el resultado.</li>
+        <li><strong>Herramientas:</strong> métodos anotados con <code>@Tool</code> (con una descripción) y sus parámetros con
+          <code>@ToolParam</code>, que se pasan con <code>tools(...)</code>. El modelo no ejecuta nada: pide la llamada,
+          Spring AI ejecuta el método y le devuelve el resultado, en bucle hasta que el modelo responde (ver
+          <a href="../tema.html?id=tool-calling">Tool Calling</a>).</li>
+        <li><strong>Advisors:</strong> interceptores que actúan antes y después de cada llamada, como los filtros de una
+          aplicación web. Pueden añadir el historial a la petición, buscar documentos o filtrar contenido. Vienen hechos, entre
+          otros, <code>MessageChatMemoryAdvisor</code> (memoria), <code>QuestionAnswerAdvisor</code> y
+          <code>RetrievalAugmentationAdvisor</code> (RAG) y <code>SafeGuardAdvisor</code> (bloquea palabras sensibles).</li>
+        <li><strong>Memoria de chat:</strong> las API de los modelos no recuerdan nada entre peticiones. <code>ChatMemory</code>
+          guarda los mensajes de cada conversación (en memoria o en una base de datos) y un advisor los añade a cada llamada.</li>
+        <li><strong>Embeddings y <code>VectorStore</code>:</strong> un <a href="../tema.html?id=embeddings">embedding</a> es una
+          lista de números que representa el significado de un texto; textos parecidos dan vectores cercanos.
+          <code>EmbeddingModel</code> los calcula y <code>VectorStore</code> es una API común sobre
+          <a href="../tema.html?id=vector-databases">bases vectoriales</a> (PGVector, Qdrant, Redis, Milvus, Elasticsearch…)
+          para guardarlos y buscar los más parecidos, con filtros por metadatos.</li>
+        <li><strong>ETL de documentos:</strong> lectores (PDF, texto, JSON…), troceado y carga en el <code>VectorStore</code>:
+          el paso previo de cualquier <a href="../tema.html?id=rag">RAG</a>.</li>
+        <li><strong>MCP:</strong> cliente para usar herramientas de servidores MCP y servidor para ofrecer las de tu aplicación
+          a otros agentes. En la 2.x forma parte del núcleo y se apoya en el
+          <a href="../tema.html?id=mcp-java-sdk">SDK oficial de MCP para Java</a>. Las herramientas de un servidor MCP no se
+          añaden solas al <code>ChatClient</code>: se le pasan con <code>tools(...)</code> o <code>defaultTools(...)</code>.</li>
+        <li><strong>Observabilidad y evaluación:</strong> métricas y trazas con Micrometer (la biblioteca de métricas de
+          Spring: tokens gastados, tiempos) y utilidades para comprobar en pruebas si las respuestas son relevantes y se apoyan
+          en el contexto dado.</li>
+      </ul>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p><strong>1. Dependencias.</strong> Se importa el BOM <code>spring-ai-bom</code> (fija versiones compatibles de todos
+        los módulos) y se añade el starter del proveedor, que sigue el patrón <code>spring-ai-starter-model-&lt;proveedor&gt;</code>:</p>
+      <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.ai&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-ai-starter-model-openai&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+      <p><strong>2. Propiedades.</strong> Cada proveedor tiene su prefijo. La clave, siempre desde una variable de entorno o un
+        gestor de secretos, nunca en el repositorio:</p>
+      <pre><code>spring.ai.openai.api-key=${OPENAI_API_KEY}</code></pre>
+      <p><strong>3. Código.</strong> Un controlador de soporte con prompt de sistema y una herramienta que consulta pedidos:</p>
+      <pre><code>@RestController
+class SoporteController {
+
+  private final ChatClient chat;
+
+  SoporteController(ChatClient.Builder builder, Pedidos pedidos) {
+    this.chat = builder
+        .defaultSystem("Eres el asistente de una tienda. Responde en español y con brevedad.")
+        .defaultTools(pedidos)
+        .build();
+  }
+
+  @GetMapping("/soporte")
+  String preguntar(@RequestParam String pregunta) {
+    return chat.prompt().user(pregunta).call().content();
+  }
+}
+
+@Component
+class Pedidos {
+
+  @Tool(description = "Devuelve el estado de un pedido a partir de su número")
+  String estado(@ToolParam(description = "Número de pedido") String numero) {
+    return repositorio.estadoDe(numero);   // tu código de siempre
+  }
+}</code></pre>
+      <p>Para recibir datos en vez de texto, basta con cambiar el final de la cadena:</p>
+      <pre><code>record Ticket(String categoria, int urgencia, String resumen) {}
+
+Ticket t = chat.prompt().user(correo).call().entity(Ticket.class);</code></pre>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Creer que el modelo recuerda la conversación:</strong> sin <code>ChatMemory</code> cada petición empieza de
+          cero. Y con ella, limita cuántos mensajes se envían: cada uno se paga en tokens y ocupa
+          <a href="../tema.html?id=tokens-context-window">ventana de contexto</a> (el texto máximo que el modelo atiende a la
+          vez).</li>
+        <li><strong>Fiarse a ciegas de <code>entity()</code>:</strong> el objeto puede llegar con campos vacíos o valores
+          absurdos. Valídalo como cualquier entrada externa y decide qué hacer si falla.</li>
+        <li><strong>Herramientas peligrosas sin control:</strong> el modelo decide cuándo llamarlas, y un texto malicioso puede
+          empujarle a hacerlo (<a href="../tema.html?id=prompt-injection">inyección de prompt</a>). Comprueba permisos dentro
+          del método y pide confirmación antes de acciones irreversibles.</li>
+        <li><strong>Descripciones vagas:</strong> el modelo elige herramienta por su nombre y descripción; si no dicen qué hace y
+          cuándo usarla, la usará mal o no la usará.</li>
+        <li><strong>Mezclar versiones:</strong> gestiona todos los módulos con el BOM. La 2.x necesita Spring Boot 4, y muchos
+          tutoriales antiguos usan nombres de artefactos anteriores a la 1.0 (como
+          <code>spring-ai-openai-spring-boot-starter</code>) que ya no existen.</li>
+        <li><strong>No medir:</strong> sin las métricas de tokens y tiempos el coste llega por sorpresa en la factura. Actívalas
+          desde el principio (ver <a href="../tema.html?id=llm-cost-latency">Cost &amp; Latency</a>).</li>
+      </ul>
+
+      <h2 id="comparativa">Spring AI o LangChain4j</h2>
+      <p>Las dos son bibliotecas Java maduras, con muchos proveedores, herramientas, RAG y MCP. La diferencia está en el
+        encaje y en el estilo:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>Spring AI</th><th><a href="../tema.html?id=langchain4j">LangChain4j</a></th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Origen</td><td>Proyecto oficial de Spring.</td><td>Proyecto independiente, inspirado al principio en LangChain (Python).</td></tr>
+            <tr><td>Estilo</td><td><code>ChatClient</code> encadenado y advisors.</td><td><em>AI Services</em>: escribes una interfaz Java anotada y la biblioteca la implementa.</td></tr>
+            <tr><td>Marco</td><td>Pensado para Spring Boot (autoconfiguración, propiedades, Micrometer).</td><td>Sin dependencia de un marco, con integraciones para Spring Boot, Quarkus y otros.</td></tr>
+            <tr><td>Cuándo</td><td>Tu aplicación ya es Spring Boot y quieres sus convenciones.</td><td>No usas Spring, usas Quarkus o prefieres el estilo declarativo.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="spring-ai"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://docs.spring.io/spring-ai/reference/" target="_blank" rel="noopener">Spring AI Reference</a> (documentación oficial, versión 2.0.2, consultada el 07/11/2026).</li>
+        <li><a href="https://docs.spring.io/spring-ai/reference/getting-started.html" target="_blank" rel="noopener">Getting Started</a> (compatibilidad con Spring Boot, BOM y starters; consultada el 07/11/2026).</li>
+        <li><a href="https://docs.spring.io/spring-ai/reference/api/chatclient.html" target="_blank" rel="noopener">Chat Client API</a> (consultada el 07/11/2026).</li>
+        <li><a href="https://docs.spring.io/spring-ai/reference/api/tools.html" target="_blank" rel="noopener">Tool Calling</a> (consultada el 07/11/2026).</li>
+        <li><a href="https://docs.spring.io/spring-ai/reference/api/advisors.html" target="_blank" rel="noopener">Advisors API</a> (consultada el 07/11/2026).</li>
+        <li><a href="https://docs.langchain4j.dev/" target="_blank" rel="noopener">LangChain4j</a> (documentación oficial, consultada el 07/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=2188f0f2" defer></script>
+<script src="../assets/cuenta.js?v=97fff95d" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=4c7d75ba" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=81d3fcf3" defer></script>
+<script src="../assets/tema.js?v=395ab4fd" defer></script>
+</body>
+</html>

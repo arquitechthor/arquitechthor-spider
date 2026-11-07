@@ -18,7 +18,20 @@
     "RLHF": { "en": "Reinforcement Learning from Human Feedback", "es": "ajuste de un modelo con las preferencias de personas" },
     "GPT": { "en": "Generative Pre-trained Transformer", "es": "familia de modelos de OpenAI; el nombre describe su arquitectura" },
     "JSON": { "leer": "yéison", "en": "JavaScript Object Notation", "es": "formato de datos en texto" },
-    "OCDE": { "es": "Organización para la Cooperación y el Desarrollo Económicos" }
+    "OCDE": { "es": "Organización para la Cooperación y el Desarrollo Económicos" },
+    "JVM": { "en": "Java Virtual Machine", "es": "máquina virtual de Java: ejecuta el código compilado de Java, Kotlin o Scala", "enlace": "java" },
+    "SDK": { "en": "Software Development Kit", "es": "kit de desarrollo: bibliotecas y herramientas para programar contra una plataforma o protocolo" },
+    "ETL": { "en": "Extract, Transform, Load", "es": "extraer datos de una fuente, transformarlos y cargarlos en otro sitio" },
+    "HTTP": { "en": "Hypertext Transfer Protocol", "es": "protocolo de petición y respuesta de la web y de la mayoría de API", "enlace": "http" },
+    "REST": { "leer": "rest", "en": "Representational State Transfer", "es": "estilo de API sobre HTTP: recursos con URL y operaciones con los métodos GET, POST, PUT o DELETE", "enlace": "rest" },
+    "IoC": { "en": "Inversion of Control", "es": "inversión de control: el marco crea y conecta tus objetos en vez de hacerlo tu código" },
+    "DI": { "en": "Dependency Injection", "es": "inyección de dependencias: cada objeto recibe ya hechas las piezas que necesita", "enlace": "dependency-injection" },
+    "AOP": { "en": "Aspect-Oriented Programming", "es": "programación orientada a aspectos: añadir lógica común (transacciones, seguridad, trazas) alrededor de métodos sin tocarlos" },
+    "MVC": { "en": "Model-View-Controller", "es": "patrón que separa datos (modelo), presentación (vista) y gestión de peticiones (controlador)" },
+    "ORM": { "en": "Object-Relational Mapping", "es": "mapeo entre objetos del programa y tablas de una base de datos relacional", "enlace": "orm-persistence" },
+    "JPA": { "en": "Jakarta Persistence API", "es": "estándar de Java para guardar objetos en bases relacionales (ORM)", "enlace": "jpa" },
+    "JDBC": { "en": "Java Database Connectivity", "es": "API básica de Java para lanzar consultas SQL a una base de datos", "enlace": "jdbc" },
+    "SQL": { "en": "Structured Query Language", "es": "lenguaje estándar para consultar y modificar bases de datos relacionales" }
   },
   "conceptos": [
     {

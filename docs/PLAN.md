@@ -75,6 +75,11 @@ línea al "Registro de sesiones".
   de cuenta de `kopi-web` actualizadas. **Falta:** pasos 4–5 con login real (local y producción) y
   la comprobación de seguridad con token real (`GET /notes` → 401); después marcar 5.7 y 5.8.
 
+- **Spring AI (2026-11-07), petición del usuario:** ficha de Spring AI (versión 2.x, con 10 preguntas)
+  y presentaciones de Ecosistema Java, Integración de IA, Spring Framework y Backend. Primer bloque de
+  código en una ficha: `styles.css` gana `.doc pre` (scroll dentro del bloque). Pendiente de revisión
+  del usuario.
+
 #### Cuenta Kopi: cómo terminarlo (lista para retomar en otro ordenador)
 
 Repos (en el otro ordenador las rutas pueden cambiar): `arquitechthor-spider`, `aws-cert-study` y
@@ -112,7 +117,7 @@ funciones existentes): **es lo esperado** y lo arregla el paso 2 (que sube su c�
 6. Pendiente aparte: mencionar el progreso de Tech Spider y Apuntes AWS en la política de privacidad de
    Kopi Tools (`kopi-web/legal/privacidad.html`).
 7. Marca 5.7 y 5.8 aquí y actualiza "Estado actual" de este PLAN y del de aws-cert-study.
-- **Última actualización:** 2026-11-07 (cuenta Kopi activada)
+- **Última actualización:** 2026-11-07 (ficha de Spring AI y sus ancestros)
 
 ---
 
@@ -364,6 +369,15 @@ directamente en `data/nodos.json` (el importador ya no se usa; con `--forzar` se
   `reasoning-models`. Resultado: 358 nodos (63 bloques, 281 temas).
 - Ficha de **Reasoning Models** publicada el mismo día (Sistema 1 / Sistema 2, cómo funcionan,
   conceptos clave, cuándo compensa, errores frecuentes) con 9 preguntas.
+
+**2026-11-07: Spring AI y sus ancestros** (petición del usuario):
+- Publicadas la ficha de **Spring AI** (10 preguntas) y las presentaciones de sus ancestros por las dos
+  ramas: Ecosistema Java (`ai-java-ecosystem`, con frase nueva), Integración de IA, Spring Framework y
+  el área Backend (la raíz es el mapa y el área IA ya estaba). Los dos bloques de IA llevan `volatil`.
+- `relacionados` de Spring AI: LangChain4j, MCP Java SDK, Tool Calling, RAG y Structured Outputs (se
+  añadió `spring-ai` en cada uno para que sean recíprocos). Sin nodos nuevos: 358 nodos.
+- Glosario: siglas JVM, SDK, ETL, HTTP, REST, IoC, DI, AOP, MVC, ORM, JPA, JDBC y SQL (con `enlace`
+  donde hay nodo).
 
 ### 4.3 Preguntas: `data/preguntas/<id>.json`
 
@@ -936,6 +950,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-07 | **Ficha de Spring AI y sus ancestros** (petición del usuario): `temas/spring-ai.html` con 10 preguntas (opciones equilibradas; la más larga es la correcta solo en 1) y presentaciones de `ai-java-ecosystem`, `ai-integration`, `spring-framework` y `backend`. Contrastada con la referencia oficial de Spring AI 2.0.2 (ChatClient, Tool Calling, Advisors, Getting Started) y la documentación de LangChain4j. 13 siglas nuevas en el glosario y estilo `.doc pre` para bloques de código. Probadas a 375 px sin scroll horizontal y sin errores de consola. |
 | 2026-11-06 | **Cuenta Kopi también en aws-cert-study** (petición del usuario). `cuenta.js` reorganizado con un bloque `SITIO` (lo único que cambia entre webs; con unión propia por clave, p. ej. los intentos de simulacro); URL de vuelta de aws-cert-study y alternativa a la interfaz clásica de login en el bootstrap. Push de los tres repos; pasos para terminarlo desde otro ordenador en "Estado actual". |
 | 2026-11-06 | **Progreso en la cuenta Kopi** (decisión del usuario: backend sí mientras no se filtren datos privados de Kopi; opción A, login gestionado de Cognito con PKCE; fuera Exportar/Importar). Backend en `kopi-media-admin` (tabla, 3 Lambdas, authorizer y App Client propios, bootstrap, cascada en `rejectUser`, docs) y front (`cuenta.js`, `cuenta.html`, aviso en "Mi telaraña", aviso legal). Sincronización probada en Chrome headless con `fetch` simulado (unión la primera vez, subida a los 2 s, gana lo más reciente); sin configurar, la cuenta no se ofrece. Pendiente: bootstrap en AWS y prueba real. |
 | 2026-11-06 | **Ficha de Reasoning Models** publicada (petición del usuario): `temas/reasoning-models.html` y 9 preguntas (`data/preguntas/reasoning-models.json`, opciones equilibradas en longitud), contrastada con las guías de OpenAI y Anthropic, Wei et al. 2022, Snell et al. 2024 y el estudio de fidelidad de Anthropic. El blog de OpenAI da 403: el concepto Sistema 1 / Sistema 2 cita su guía de *reasoning* en su lugar. Probada a 375 px. |

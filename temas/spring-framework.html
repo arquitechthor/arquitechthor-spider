@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spring Framework — Tech Spider</title>
+<meta name="description" content="Qué es Spring Framework, sus siglas (IoC, DI, AOP), cómo encajan Boot, MVC, Data, Security y el resto, y por dónde empezar.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/spring-framework.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=04c39275">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="spring-framework">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p><strong>Spring Framework</strong> es un marco de código abierto para Java, nacido a principios de los 2000 como
+        alternativa más sencilla al Java empresarial de la época. Su núcleo es un <strong>contenedor</strong>: tú escribes
+        clases normales y el contenedor las crea, las configura y las conecta entre sí. A ese principio se le llama inversión de
+        control (IoC), y la forma de aplicarlo, <a href="../tema.html?id=dependency-injection">inyección de dependencias</a>
+        (DI): cada objeto recibe ya hechas las piezas que necesita en lugar de crearlas él. Los objetos que gestiona el
+        contenedor se llaman <em>beans</em>.</p>
+      <p>Sobre ese núcleo se apoya todo lo demás: la web, el acceso a datos, las transacciones, la seguridad… Cuando se habla
+        de «Spring» se suele hablar de toda esa familia de proyectos, no solo del marco:
+        <a href="../tema.html?id=spring-boot">Spring Boot</a> (2014) lo hace práctico con configuración automática y
+        servidor incluido, y proyectos como Spring Data, Spring Security, Spring Cloud o <a href="spring-ai.html">Spring
+        AI</a> cubren cada necesidad. Las versiones actuales son Spring Framework 7 y Spring Boot 4, de finales de 2025.</p>
+
+      <h2 id="siglas">Siglas</h2>
+      <ul>
+        <li><strong>IoC</strong> (<em>Inversion of Control</em>): el marco crea y conecta tus objetos, en vez de hacerlo tu
+          código.</li>
+        <li><strong>DI</strong> (<em>Dependency Injection</em>): la forma concreta de IoC en Spring; las dependencias llegan por
+          el constructor (lo recomendado) o por métodos.</li>
+        <li><strong>AOP</strong> (<em>Aspect-Oriented Programming</em>): añadir lógica común alrededor de métodos sin tocarlos.
+          Así funcionan en Spring <code>@Transactional</code> o la seguridad por métodos.</li>
+        <li><strong>MVC</strong> (<em>Model-View-Controller</em>): el patrón que da nombre a Spring MVC, el módulo web
+          clásico.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Es el marco más extendido en el backend Java: bancos, aseguradoras, administraciones y empresas de todos los tamaños
+        lo usan, y aparece en la mayoría de ofertas de empleo de Java. Saber cómo funciona por dentro (el contenedor, los
+        beans, la configuración automática, los proxies que aplican transacciones y seguridad) es lo que separa usarlo de
+        entenderlo, y lo que más se pregunta en entrevistas. También tiene certificación propia, que este sitio cubrirá más
+        adelante.</p>
+
+      <h2 id="piezas">Cómo encajan las piezas</h2>
+      <ul>
+        <li><strong>Base:</strong> <a href="../tema.html?id=spring-core">Spring Core</a> (el contenedor y los beans) y
+          <a href="../tema.html?id=spring-context">Spring Context</a> (el contexto de la aplicación: perfiles, propiedades,
+          eventos).</li>
+        <li><strong>Arranque:</strong> <a href="../tema.html?id=spring-boot">Spring Boot</a>, que configura casi todo solo a
+          partir de las dependencias.</li>
+        <li><strong>Web:</strong> <a href="../tema.html?id=spring-mvc">Spring MVC</a> (un hilo por petición, el modelo clásico)
+          y <a href="../tema.html?id=spring-webflux">Spring WebFlux</a> (reactivo, para muchas conexiones con pocos hilos).</li>
+        <li><strong>Datos y seguridad:</strong> <a href="../tema.html?id=spring-data">Spring Data</a> (repositorios sin
+          escribir consultas a mano) y <a href="../tema.html?id=spring-security">Spring Security</a> (autenticación y
+          permisos).</li>
+        <li><strong>Sistemas grandes:</strong> <a href="../tema.html?id=spring-cloud">Spring Cloud</a> (microservicios:
+          configuración centralizada, descubrimiento de servicios) y <a href="../tema.html?id=spring-batch">Spring Batch</a>
+          (procesos por lotes).</li>
+        <li><strong>IA:</strong> <a href="spring-ai.html">Spring AI</a>, que vive en el área de IA y aparece aquí como acceso.</li>
+      </ul>
+
+      <h2 id="por-donde-empezar">Por dónde empezar</h2>
+      <ol>
+        <li>Antes, <a href="../tema.html?id=java">Java</a> y la idea de <a href="../tema.html?id=dependency-injection">inyección
+          de dependencias</a>.</li>
+        <li><a href="../tema.html?id=spring-core">Spring Core</a> y <a href="../tema.html?id=spring-context">Spring Context</a>:
+          qué es un bean, cómo se crea y cómo se conecta.</li>
+        <li><a href="../tema.html?id=spring-boot">Spring Boot</a> y <a href="../tema.html?id=spring-mvc">Spring MVC</a>: tu
+          primera API.</li>
+        <li><a href="../tema.html?id=spring-data">Spring Data</a> (con <a href="../tema.html?id=jpa">JPA</a>) y
+          <a href="../tema.html?id=spring-security">Spring Security</a>.</li>
+        <li>Después, según el proyecto: Spring Cloud, Spring Batch, Spring WebFlux o Spring AI.</li>
+      </ol>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://spring.io/projects/spring-framework" target="_blank" rel="noopener">Spring Framework</a> (página oficial del proyecto, consultada el 07/11/2026).</li>
+        <li><a href="https://docs.spring.io/spring-framework/reference/core/beans/introduction.html" target="_blank" rel="noopener">Introduction to the Spring IoC Container and Beans</a> (documentación oficial, consultada el 07/11/2026).</li>
+        <li><a href="https://spring.io/projects/spring-boot" target="_blank" rel="noopener">Spring Boot</a> (página oficial del proyecto, consultada el 07/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Sobre mí</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=2188f0f2" defer></script>
+<script src="../assets/cuenta.js?v=97fff95d" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=4c7d75ba" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=81d3fcf3" defer></script>
+<script src="../assets/tema.js?v=395ab4fd" defer></script>
+</body>
+</html>
