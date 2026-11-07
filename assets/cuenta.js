@@ -355,14 +355,37 @@
       : `Tu progreso se guarda en este navegador. Si tienes cuenta Kopi, puedes guardarlo también allí y tenerlo en cualquier dispositivo. ${enlace}`;
   }
 
+  /* ── Enlace en el menú (antes de "Sobre mí") ───────────────────── */
+
+  function pintarMenu() {
+    const links = document.querySelector('.nav-links');
+    if (!links || !ACTIVA) return;
+    let a = links.querySelector('a[data-cuenta-menu]');
+    if (!a) {
+      a = document.createElement('a');
+      a.href = VUELTA;
+      a.dataset.cuentaMenu = '';
+      if (document.querySelector('[data-cuenta]')) a.setAttribute('aria-current', 'page');
+      const ultimo = links.lastElementChild;
+      if (ultimo && ultimo.tagName === 'A' && /sobre m/i.test(ultimo.textContent)) links.insertBefore(a, ultimo);
+      else links.appendChild(a);
+    }
+    const i = info();
+    a.textContent = i.conectado ? 'Mi cuenta' : 'Guardar progreso';
+    a.title = i.conectado
+      ? `Progreso guardado en tu cuenta Kopi${i.email ? ` (${i.email})` : ''}`
+      : 'Guarda tu progreso en tu cuenta Kopi para tenerlo en cualquier dispositivo';
+  }
+
   window.SpiderCuenta = {
     activa: ACTIVA, info, entrar, completarEntrada, sincronizar, salir, borrarRemoto,
     alCambiar(fn) { oyentes.add(fn); return () => oyentes.delete(fn); },
   };
 
-  oyentes.add(pintarResumen);
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pintarResumen);
-  else pintarResumen();
+  const pintar = () => { pintarResumen(); pintarMenu(); };
+  oyentes.add(pintar);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pintar);
+  else pintar();
   // En cuenta.html la sincronización la lanza la propia página (tras completar el login).
   if (ACTIVA && sesion() && !document.querySelector('[data-cuenta]')) sincronizar();
 })();

@@ -109,7 +109,7 @@ no third-party requests).
   `simulacros` (never device prefs); per-key change time in `spider.sincronizacion`, newest wins per
   key, union on the first sync. `datos.js` `guardar()` fires `spider:guardado`; applied remote changes
   fire `spider:sincronizado` (the map repaints). Session in `kopi.estudio.sesion` (shared with the
-  other study sites on purpose). Every page that loads `datos.js` must load `cuenta.js` right after it.
+  other study sites on purpose). Every page that loads `datos.js` must load `cuenta.js` right after it (also `aviso-legal.html`): `cuenta.js` adds the nav link to `cuenta.html` right before "Sobre mí" ("Guardar progreso" signed out, "Mi cuenta" signed in; `aria-current="page"` on `cuenta.html`).
   While `CONFIG.dominio`/`clientId` are empty the account is not offered. `aws-cert-study` has a copy
   of `cuenta.js` where only the `SITIO` block differs: change both when touching the shared part.
 - `aviso-legal.html`: legal notice, trademarks, license and privacy. Keep it consistent with any
