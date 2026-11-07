@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infraestructura como código (IaC) — Tech Spider</title>
+<meta name="description" content="Qué es la infraestructura como código, sus siglas, por qué importa, qué herramientas hay (Terraform, CloudFormation, CDK) y por dónde empezar.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/iac.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=04c39275">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="iac">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>La <strong>infraestructura como código</strong> es describir los servidores, redes, bases de datos y permisos de un
+        sistema en ficheros de texto, en lugar de crearlos a mano en la consola web de la nube. Una herramienta lee esos
+        ficheros y crea o ajusta los recursos reales para que coincidan con ellos.</p>
+      <p>Casi todas las herramientas actuales son <strong>declarativas</strong>: describes el resultado («quiero tres
+        instancias detrás de un balanceador»), no los pasos. Si lo ejecutas dos veces sin cambiar nada, la segunda no hace
+        nada; si cambias un número, solo se toca lo necesario. Y como son ficheros, viven en <a href="../tema.html?id=git">Git</a>:
+        tienen historial, se revisan antes de aplicarse y se pueden reutilizar para montar otro entorno idéntico.</p>
+
+      <h2 id="siglas">Siglas</h2>
+      <ul>
+        <li><strong>IaC</strong> (<em>Infrastructure as Code</em>): infraestructura como código, el nombre del bloque.</li>
+        <li><strong>HCL</strong> (<em>HashiCorp Configuration Language</em>): el lenguaje de configuración de Terraform y
+          OpenTofu.</li>
+        <li><strong>CDK</strong> (<em>Cloud Development Kit</em>): el kit de AWS para escribir la infraestructura en TypeScript,
+          Python, Java u otros lenguajes; genera plantillas de CloudFormation.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Lo que se crea a mano no se puede repetir con exactitud, nadie recuerda por qué se configuró así y los entornos de
+        pruebas y producción acaban siendo distintos sin que nadie lo sepa. Con infraestructura como código, montar un entorno
+        nuevo o recuperar uno perdido es ejecutar un comando, y cada cambio deja rastro de quién lo hizo y por qué.</p>
+      <p>Hoy es práctica estándar en cualquier equipo que trabaje en la nube, y requisito habitual en ofertas de DevOps,
+        plataforma y SRE. También es la base de los despliegues automáticos: el mismo pipeline que despliega la aplicación
+        puede preparar la infraestructura que necesita.</p>
+
+      <h2 id="herramientas">Las herramientas</h2>
+      <ul>
+        <li><a href="terraform.html">Terraform</a> (y su bifurcación abierta, OpenTofu): la más extendida y la que vale para
+          cualquier nube o servicio con API. Ficha completa en este sitio.</li>
+        <li><a href="../tema.html?id=cloudformation">CloudFormation</a>: la herramienta nativa de AWS, con plantillas en YAML o
+          JSON y el estado guardado por la propia nube. Su equivalente en Azure es Bicep.</li>
+        <li><a href="../tema.html?id=cdk">AWS CDK</a>: infraestructura escrita en un lenguaje de programación, con bucles,
+          clases y pruebas, que se traduce a CloudFormation. Pulumi aplica la misma idea a varias nubes.</li>
+      </ul>
+      <p>CloudFormation y CDK se explican en <a href="https://arquitechthor.github.io/aws-cert-study/" target="_blank"
+        rel="noopener">Apuntes AWS</a>. Otras herramientas, como Ansible, se centran en configurar lo que hay
+        <em>dentro</em> de las máquinas (paquetes, ficheros, servicios) más que en crearlas; se tratan en
+        <a href="../tema.html?id=configuration-management">gestión de la configuración</a>.</p>
+
+      <h2 id="por-donde-empezar">Por dónde empezar</h2>
+      <ol>
+        <li>Lo básico de una nube: cuentas, regiones, redes y permisos (en AWS, la sección de
+          <a href="../tema.html?id=aws">AWS</a>).</li>
+        <li><a href="terraform.html">Terraform</a>: un primer recurso, el ciclo <code>init</code> → <code>plan</code> →
+          <code>apply</code> y el estado remoto.</li>
+        <li>Módulos y entornos separados, y después ejecutarlo desde un pipeline de <a href="../tema.html?id=ci-cd">CI/CD</a>.</li>
+        <li>Si trabajas solo en AWS, compara con CloudFormation y CDK para elegir con criterio.</li>
+      </ol>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://developer.hashicorp.com/terraform/intro" target="_blank" rel="noopener">What is Terraform?</a> (documentación oficial, consultada el 07/11/2026).</li>
+        <li><a href="https://docs.aws.amazon.com/whitepapers/latest/introduction-devops-aws/infrastructure-as-code.html" target="_blank" rel="noopener">Infrastructure as code</a> (AWS Whitepaper «Introduction to DevOps on AWS», consultada el 07/11/2026).</li>
+        <li><a href="https://learn.microsoft.com/es-es/devops/deliver/what-is-infrastructure-as-code" target="_blank" rel="noopener">¿Qué es la infraestructura como código?</a> (Microsoft Learn, consultada el 07/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=c8872441" defer></script>
+<script src="../assets/cuenta.js?v=6c5f7ab0" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=81d3fcf3" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

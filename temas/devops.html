@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevOps e infraestructura — Tech Spider</title>
+<meta name="description" content="Qué es DevOps: contenedores, orquestación, infraestructura como código, CI/CD y despliegue, sus siglas y por dónde empezar.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/devops.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=04c39275">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="devops">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p><strong>DevOps</strong> une <em>development</em> (desarrollo) y <em>operations</em> (operaciones). Nació hacia 2009
+        como reacción a una separación clásica: un equipo escribía el código y otro, distinto, lo instalaba y lo mantenía
+        funcionando, con entregas lentas y culpas cruzadas cuando algo fallaba. DevOps propone que el mismo equipo sea
+        responsable del software de principio a fin y que todo lo repetible se automatice.</p>
+      <p>Es ante todo una forma de trabajar, pero se apoya en un conjunto de técnicas y herramientas, que son lo que agrupa
+        esta área:</p>
+      <ul>
+        <li><a href="../tema.html?id=containers">Contenedores</a>: empaquetar la aplicación con todo lo que necesita, con
+          Docker, para que funcione igual en cualquier máquina.</li>
+        <li><a href="../tema.html?id=container-orchestration">Orquestación de contenedores</a>: ejecutar y escalar muchos
+          contenedores en un clúster con Kubernetes, Helm y Kustomize.</li>
+        <li><a href="iac.html">Infraestructura como código</a>: crear servidores, redes y permisos desde ficheros versionados,
+          con Terraform, CloudFormation o CDK.</li>
+        <li><a href="../tema.html?id=ci-cd">Integración y entrega continuas</a>: compilar, probar y desplegar automáticamente
+          en cada cambio.</li>
+        <li><a href="../tema.html?id=configuration-deployment">Configuración y despliegue</a>: entornos, ajustes y formas de
+          publicar versiones sin cortar el servicio.</li>
+      </ul>
+      <p>La vigilancia del sistema en marcha (métricas, registros, alertas) es la otra mitad de las operaciones y tiene su
+        propia área: <a href="../tema.html?id=observability">Observabilidad</a>.</p>
+
+      <h2 id="siglas">Siglas</h2>
+      <ul>
+        <li><strong>CI/CD</strong> (<em>Continuous Integration / Continuous Delivery</em>): integrar los cambios en la rama
+          principal varias veces al día, comprobados por pruebas automáticas, y tener siempre una versión lista para desplegar
+          (o desplegarla sola, <em>continuous deployment</em>).</li>
+        <li><strong>IaC</strong> (<em>Infrastructure as Code</em>): infraestructura descrita en ficheros en lugar de creada a
+          mano.</li>
+        <li><strong>SRE</strong> (<em>Site Reliability Engineering</em>): la forma de Google de aplicar ingeniería de software a
+          las operaciones, muy cercana a DevOps.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Hoy casi ningún equipo despliega a mano: el código pasa por un pipeline que lo prueba, lo empaqueta en un contenedor
+        y lo publica en la nube, a menudo varias veces al día. Los estudios DORA llevan años mostrando que los equipos que
+        despliegan con frecuencia y de forma automatizada fallan menos y se recuperan antes. Por eso estas herramientas no son
+        solo cosa de perfiles de DevOps o plataforma: cualquier desarrollador backend se las encuentra a diario y se valoran en
+        casi todas las ofertas.</p>
+
+      <h2 id="por-donde-empezar">Por dónde empezar</h2>
+      <ol>
+        <li><a href="../tema.html?id=git">Git</a> y la <a href="../tema.html?id=linux">línea de comandos de Linux</a>, si aún
+          no te manejas con ellos.</li>
+        <li><a href="../tema.html?id=docker">Docker</a>: empaquetar tu propia aplicación en una imagen.</li>
+        <li>Un pipeline con <a href="../tema.html?id=github-actions">GitHub Actions</a> que compile, pruebe y construya esa
+          imagen.</li>
+        <li><a href="terraform.html">Terraform</a>, para crear en la nube lo que la aplicación necesita.</li>
+        <li><a href="../tema.html?id=kubernetes">Kubernetes</a> y las
+          <a href="../tema.html?id=release-strategies">estrategias de despliegue</a>, cuando el sistema crece.</li>
+      </ol>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://aws.amazon.com/es/devops/what-is-devops/" target="_blank" rel="noopener">¿Qué es DevOps?</a> (AWS, consultada el 07/11/2026).</li>
+        <li><a href="https://dora.dev/research/" target="_blank" rel="noopener">DORA Research</a> (investigación sobre entrega de software, consultada el 07/11/2026).</li>
+        <li><a href="https://sre.google/sre-book/introduction/" target="_blank" rel="noopener">Site Reliability Engineering: Introduction</a> (Google, consultada el 07/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=c8872441" defer></script>
+<script src="../assets/cuenta.js?v=6c5f7ab0" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=81d3fcf3" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

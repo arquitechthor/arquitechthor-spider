@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terraform — Tech Spider</title>
+<meta name="description" content="Qué es Terraform: providers, recursos, estado, plan y apply, módulos, errores frecuentes, comparativa con OpenTofu y CloudFormation, y 10 preguntas.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/terraform.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=04c39275">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="terraform">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p><strong>Terraform</strong> es una herramienta de <a href="iac.html">infraestructura como código</a> creada por
+        HashiCorp en 2014. Describes en ficheros de texto lo que quieres tener en la nube (redes, máquinas virtuales, bases de
+        datos, buckets de almacenamiento, permisos, registros DNS…) y Terraform se encarga de crearlo, cambiarlo o borrarlo
+        hasta que la realidad coincida con lo escrito.</p>
+      <p>Los ficheros se escriben en HCL, un lenguaje <strong>declarativo</strong>: dices <em>qué</em> debe existir, no los
+        pasos para conseguirlo. Terraform compara eso con lo que ya existe, calcula un <strong>plan</strong> con las diferencias
+        y, cuando lo apruebas, lo aplica llamando a la API de cada proveedor. Funciona con AWS, Azure, Google Cloud y cientos de
+        servicios más (GitHub, Cloudflare, Datadog, Kubernetes…) gracias a sus <em>providers</em>. Esta ficha describe
+        Terraform 1.x (la 1.17 es de octubre de 2026).</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Es la herramienta de infraestructura como código más extendida y la única gran opción que no está atada a una nube:
+        el mismo flujo de trabajo sirve para AWS, Azure o un proveedor de DNS. Aparece en buena parte de las ofertas de DevOps,
+        plataforma y cloud, y tiene certificación propia (HashiCorp Terraform Associate), que este sitio cubrirá más
+        adelante.</p>
+      <p>Sobre todo, cambia cómo se trabaja: la infraestructura pasa por <a href="../tema.html?id=git">Git</a>, se revisa en
+        una petición de cambios como el código, se puede reproducir en otro entorno o región y el plan te dice antes de tocar
+        nada qué se va a crear, modificar o destruir.</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>Provider:</strong> el complemento que sabe hablar con una plataforma (<code>hashicorp/aws</code>,
+          <code>hashicorp/azurerm</code>…). Se descargan del Terraform Registry y se fija su versión en
+          <code>required_providers</code>.</li>
+        <li><strong>Resource:</strong> un bloque <code>resource "tipo" "nombre"</code> por cada cosa que Terraform gestiona: un
+          bucket, una instancia, una regla de firewall. Su dirección (<code>aws_s3_bucket.fotos</code>) es como Terraform lo
+          identifica.</li>
+        <li><strong>Data source:</strong> un bloque <code>data</code> que <em>lee</em> algo que ya existe y no gestiona
+          Terraform (la imagen de sistema más reciente, una red creada por otro equipo) para usarlo en tus recursos.</li>
+        <li><strong>Variables, locals y outputs:</strong> las variables son los parámetros de entrada (región, tamaño), los
+          <code>locals</code> son valores calculados para no repetirse y los <code>outputs</code> exponen resultados (una URL,
+          un identificador) a quien use la configuración.</li>
+        <li><strong>Estado (<em>state</em>):</strong> el fichero <code>terraform.tfstate</code> donde Terraform apunta qué
+          recurso real corresponde a cada bloque y sus atributos. Sin él no sabría qué creó. En equipo se guarda en un
+          <strong>backend remoto</strong> (un bucket de S3, Azure Storage, Google Cloud Storage o HCP Terraform) con
+          <strong>bloqueo</strong>, para que dos personas no lo modifiquen a la vez.</li>
+        <li><strong>Plan y apply:</strong> <code>plan</code> compara configuración, estado y realidad y muestra los cambios
+          (<code>+</code> crear, <code>~</code> modificar en el sitio, <code>-/+</code> destruir y volver a crear,
+          <code>-</code> destruir). <code>apply</code> los ejecuta.</li>
+        <li><strong>Grafo de dependencias:</strong> si un recurso usa un atributo de otro
+          (<code>aws_s3_bucket.fotos.id</code>), Terraform deduce el orden y crea en paralelo lo que no depende entre sí.
+          <code>depends_on</code> solo hace falta para dependencias que no se ven en el código.</li>
+        <li><strong>Módulos:</strong> una carpeta de ficheros <code>.tf</code> que se reutiliza con un bloque
+          <code>module</code> y sus variables, como una función. Hay módulos públicos en el Registry para redes, clústeres de
+          Kubernetes, etc.</li>
+        <li><strong><code>count</code> y <code>for_each</code>:</strong> crean varias copias de un recurso. <code>for_each</code>
+          las identifica por clave (<code>["fotos"]</code>, <code>["videos"]</code>) y <code>count</code> por posición
+          (<code>[0]</code>, <code>[1]</code>).</li>
+        <li><strong>Deriva (<em>drift</em>):</strong> diferencias entre el estado y la realidad porque alguien cambió algo a
+          mano en la consola. El siguiente <code>plan</code> intentará deshacerlas.</li>
+      </ul>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p><strong>1. Configuración.</strong> Un bucket de S3 con versionado. El bloque <code>terraform</code> fija la versión
+        del provider y guarda el estado en otro bucket, con bloqueo nativo (<code>use_lockfile</code>):</p>
+      <pre><code>terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~&gt; 6.0"
+    }
+  }
+  backend "s3" {
+    bucket       = "mi-empresa-tfstate"
+    key          = "fotos/prod.tfstate"
+    region       = "eu-west-1"
+    use_lockfile = true
+  }
+}
+
+provider "aws" {
+  region = var.region
+}
+
+variable "region" {
+  type    = string
+  default = "eu-west-1"
+}
+
+resource "aws_s3_bucket" "fotos" {
+  bucket = "mi-empresa-fotos-prod"
+}
+
+resource "aws_s3_bucket_versioning" "fotos" {
+  bucket = aws_s3_bucket.fotos.id   # referencia: crea antes el bucket
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+output "bucket_arn" {
+  value = aws_s3_bucket.fotos.arn
+}</code></pre>
+      <p><strong>2. Flujo de trabajo.</strong> Los mismos comandos en local y en un pipeline de
+        <a href="../tema.html?id=ci-cd">CI/CD</a>:</p>
+      <pre><code>terraform init                   # descarga providers y conecta con el backend
+terraform fmt                    # formato estándar
+terraform validate               # sintaxis y tipos, sin llamar a la nube
+terraform plan -out=cambios.tfplan
+terraform apply cambios.tfplan   # aplica exactamente el plan revisado</code></pre>
+      <p><code>init</code> crea también <code>.terraform.lock.hcl</code>, que anota la versión exacta de cada provider: se
+        sube al repositorio para que todo el equipo y el pipeline usen las mismas. La carpeta <code>.terraform/</code> y los
+        ficheros de estado, en cambio, no se suben nunca.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Estado local o en Git:</strong> en un portátil se pierde y en el repositorio se pisa entre compañeros. Usa
+          un backend remoto con bloqueo desde el primer día (en S3, <code>use_lockfile</code>; el bloqueo con una tabla de
+          DynamoDB está obsoleto).</li>
+        <li><strong>Creer que <code>sensitive</code> protege los secretos:</strong> solo los oculta en la salida de la consola.
+          Las contraseñas y claves que pasan por Terraform quedan en texto plano en el estado y en el plan, así que el backend
+          debe estar cifrado y con acceso restringido. Mejor aún: valores <code>ephemeral</code> y argumentos de solo escritura
+          (<code>*_wo</code>), que no se guardan, o que el secreto lo genere y guarde un
+          <a href="../tema.html?id=secrets-management">gestor de secretos</a>.</li>
+        <li><strong>Cambios a mano en la consola:</strong> crean deriva y el siguiente <code>apply</code> los revierte. Si hubo
+          que tocar algo con urgencia, llévalo después al código o revísalo con <code>terraform plan -refresh-only</code>.</li>
+        <li><strong>Renombrar un recurso sin más:</strong> para Terraform es borrar uno y crear otro (con sus datos dentro). Usa
+          un bloque <code>moved</code> para cambiar la dirección sin destruir nada, e <code>import</code> para adoptar recursos
+          que ya existían.</li>
+        <li><strong><code>count</code> sobre una lista que cambia:</strong> si quitas el primer elemento, todos los demás se
+          desplazan de índice y se recrean. Con <code>for_each</code> y claves estables solo se toca el que quitaste.</li>
+        <li><strong>Un único estado gigante:</strong> cada plan tarda más y un error puede afectar a todo. Divide por sistema y
+          entorno, con un estado y unas credenciales propios para producción. Los <em>workspaces</em> de la CLI comparten
+          backend: HashiCorp no los recomienda para aislar entornos, sino para copias temporales.</li>
+        <li><strong>No leer el plan:</strong> un <code>-/+</code> en una base de datos significa destruirla. Revisa el plan en
+          la petición de cambios y protege lo crítico con <code>lifecycle { prevent_destroy = true }</code>.</li>
+      </ul>
+
+      <h2 id="comparativa">Terraform, OpenTofu y las herramientas de cada nube</h2>
+      <p>En 2023 HashiCorp cambió la licencia de Terraform de MPL 2.0 (código abierto) a BSL, que limita usarlo para crear
+        productos competidores. Como respuesta nació <strong>OpenTofu</strong>, una bifurcación de la última versión abierta
+        gestionada bajo la Linux Foundation. HashiCorp pasó a formar parte de IBM en 2025.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>Terraform</th><th>OpenTofu</th><th><a href="../tema.html?id=cloudformation">CloudFormation</a> / Bicep</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Quién</td><td>HashiCorp (IBM).</td><td>Comunidad, bajo la Linux Foundation.</td><td>AWS / Microsoft.</td></tr>
+            <tr><td>Nubes</td><td>Cualquiera con provider.</td><td>Igual: usa los mismos providers.</td><td>Solo la suya.</td></tr>
+            <tr><td>Estado</td><td>Lo gestionas tú (backend).</td><td>Igual, y puede cifrarlo de serie.</td><td>Lo guarda la propia nube.</td></tr>
+            <tr><td>Cuándo</td><td>Varias nubes o servicios, o el estándar de tu empresa.</td><td>Quieres una licencia abierta con la misma forma de trabajar.</td><td>Trabajas solo en una nube y prefieres su herramienta nativa.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Para quien prefiere un lenguaje de programación en lugar de HCL existen el <a href="../tema.html?id=cdk">AWS CDK</a>
+        (genera CloudFormation) y Pulumi.</p>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="terraform"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://developer.hashicorp.com/terraform/docs" target="_blank" rel="noopener">Terraform Documentation</a> (documentación oficial, versión 1.17, consultada el 07/11/2026).</li>
+        <li><a href="https://developer.hashicorp.com/terraform/language/backend/s3" target="_blank" rel="noopener">Backend Type: s3</a> (bloqueo con <code>use_lockfile</code>; consultada el 07/11/2026).</li>
+        <li><a href="https://developer.hashicorp.com/terraform/language/state/sensitive-data" target="_blank" rel="noopener">Sensitive data in state</a> (consultada el 07/11/2026).</li>
+        <li><a href="https://developer.hashicorp.com/terraform/cli/workspaces" target="_blank" rel="noopener">Managing workspaces</a> (consultada el 07/11/2026).</li>
+        <li><a href="https://github.com/hashicorp/terraform/releases" target="_blank" rel="noopener">Terraform releases</a> (GitHub, consultada el 07/11/2026).</li>
+        <li><a href="https://opentofu.org/faq/" target="_blank" rel="noopener">OpenTofu FAQ</a> (consultada el 07/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=c8872441" defer></script>
+<script src="../assets/cuenta.js?v=6c5f7ab0" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=81d3fcf3" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

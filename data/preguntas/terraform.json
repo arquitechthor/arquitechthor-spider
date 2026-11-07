@@ -1,0 +1,155 @@
+[
+  {
+    "id": "terraform-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué significa que la configuración de Terraform sea declarativa?",
+    "opciones": [
+      "Se escriben los pasos en orden y Terraform los ejecuta uno tras otro sin comprobar nada.",
+      "Cada recurso debe declararse también en la consola web antes de poder usarlo en HCL.",
+      "Se describe el resultado deseado y Terraform calcula qué cambiar para llegar a él.",
+      "Las variables se declaran al principio del fichero y no pueden cambiar de valor nunca."
+    ],
+    "correctas": [2],
+    "explicacion": "En HCL describes qué debe existir (un bucket con versionado, tres instancias). Terraform compara eso con el estado y la realidad y decide qué crear, modificar o destruir. No es una lista de pasos imperativos, no exige crear nada antes en la consola y lo de las variables no tiene que ver con ser declarativo.",
+    "fuentes": ["https://developer.hashicorp.com/terraform/intro"]
+  },
+  {
+    "id": "terraform-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Para qué sirve el fichero de estado (terraform.tfstate)?",
+    "opciones": [
+      "Para relacionar cada bloque de la configuración con el recurso real que creó Terraform.",
+      "Para guardar el historial de comandos que ha lanzado cada persona del equipo en la CLI.",
+      "Para almacenar las plantillas de los módulos públicos descargados desde el Registry.",
+      "Para registrar el coste mensual previsto de cada recurso según la tarifa del proveedor."
+    ],
+    "correctas": [0],
+    "explicacion": "El estado es el mapa entre direcciones como aws_s3_bucket.fotos y los recursos reales (identificadores y atributos). Sin él Terraform no sabría qué gestiona. No guarda historial de comandos, los módulos se descargan en .terraform/ y Terraform no calcula costes.",
+    "fuentes": ["https://developer.hashicorp.com/terraform/language/state"]
+  },
+  {
+    "id": "terraform-003",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "En la salida de terraform plan, un recurso aparece marcado con -/+. ¿Qué va a pasar si aplicas el plan?",
+    "opciones": [
+      "Se modificará en el sitio, conservando su identificador y todos los datos que contenga.",
+      "Se destruirá y se volverá a crear, así que se perderá lo que hubiera guardado dentro.",
+      "Se dejará de gestionar con Terraform, pero el recurso real seguirá existiendo igual.",
+      "Se moverá a otra dirección del estado sin hacer ningún cambio en la infraestructura."
+    ],
+    "correctas": [1],
+    "explicacion": "-/+ significa reemplazo: Terraform destruye el recurso y crea otro, normalmente porque cambió un atributo que no se puede modificar en el sitio. En una base de datos o un disco eso implica perder sus datos. La modificación en el sitio se marca con ~; dejar de gestionar o mover en el estado son operaciones distintas (removed, moved).",
+    "fuentes": ["https://developer.hashicorp.com/terraform/cli/commands/plan"]
+  },
+  {
+    "id": "terraform-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un equipo de cinco personas va a empezar a usar Terraform. ¿Dónde debería guardar el estado?",
+    "opciones": [
+      "En el repositorio Git, junto a los .tf, para que cada cambio quede en el historial.",
+      "En el portátil de quien lanza los apply, que es la única persona autorizada a ello.",
+      "En una carpeta compartida de red, para que todos lean siempre la misma copia local.",
+      "En un backend remoto con bloqueo, por ejemplo un bucket de S3 con use_lockfile activo."
+    ],
+    "correctas": [3],
+    "explicacion": "Un backend remoto con bloqueo da una única copia del estado y evita que dos apply simultáneos lo corrompan. En Git se pisan versiones y los secretos del estado quedarían en el historial; en un portátil se pierde y bloquea al resto; una carpeta compartida no tiene bloqueo fiable.",
+    "fuentes": ["https://developer.hashicorp.com/terraform/language/backend/s3"]
+  },
+  {
+    "id": "terraform-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Una variable con la contraseña de la base de datos lleva sensitive = true. ¿Qué consigue eso?",
+    "opciones": [
+      "Que la contraseña se cifre antes de escribirse en el fichero de estado y en el plan.",
+      "Que no aparezca en la salida de la consola, aunque sigue en texto plano en el estado.",
+      "Que Terraform la lea de un gestor de secretos en lugar de pedirla por la línea de comandos.",
+      "Que el proveedor la rote automáticamente cada cierto tiempo sin intervención del equipo."
+    ],
+    "correctas": [1],
+    "explicacion": "sensitive solo oculta el valor en la salida de plan y apply. Terraform lo sigue guardando en el estado y en el plan. Para que no se guarde existen los valores ephemeral y los argumentos de solo escritura; además, el backend debe estar cifrado y con acceso restringido.",
+    "fuentes": ["https://developer.hashicorp.com/terraform/language/state/sensitive-data"]
+  },
+  {
+    "id": "terraform-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Por qué Terraform crea aquí el bucket antes que su configuración de versionado, sin depends_on?",
+    "opciones": [
+      "Porque procesa los bloques resource en el orden en que aparecen escritos en el fichero.",
+      "Porque el provider de AWS ordena los recursos por orden alfabético de su tipo interno.",
+      "Porque el segundo recurso usa un atributo del primero y eso crea una dependencia implícita.",
+      "Porque los dos bloques comparten el nombre fotos y Terraform los agrupa en el mismo paso."
+    ],
+    "correctas": [2],
+    "explicacion": "Al referenciar aws_s3_bucket.fotos.id, Terraform sabe que necesita el bucket antes y lo incluye en su grafo de dependencias. El orden en el fichero no importa (los recursos independientes se crean en paralelo), el provider no ordena por nombre y compartir el nombre local no relaciona nada.",
+    "codigo": "resource \"aws_s3_bucket\" \"fotos\" {\n  bucket = \"mi-empresa-fotos-prod\"\n}\n\nresource \"aws_s3_bucket_versioning\" \"fotos\" {\n  bucket = aws_s3_bucket.fotos.id\n  versioning_configuration {\n    status = \"Enabled\"\n  }\n}",
+    "fuentes": ["https://developer.hashicorp.com/terraform/language/resources/behavior"]
+  },
+  {
+    "id": "terraform-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Quieres renombrar aws_instance.web a aws_instance.api sin que la máquina se destruya. ¿Qué usas?",
+    "opciones": [
+      "Un bloque moved que indique la dirección antigua y la nueva del mismo recurso.",
+      "Un bloque import que vuelva a importar la instancia con el nombre nuevo tras borrarla.",
+      "La opción -target en el apply para que solo se recree esa instancia y nada más.",
+      "Un lifecycle con prevent_destroy, que hace que Terraform aplique el cambio de nombre."
+    ],
+    "correctas": [0],
+    "explicacion": "El bloque moved (from = aws_instance.web, to = aws_instance.api) actualiza la dirección en el estado sin tocar la infraestructura. Sin él, Terraform vería un recurso que sobra y otro nuevo, y propondría destruir y crear. import adopta recursos externos, -target limita el apply pero sigue recreando y prevent_destroy solo hace fallar el plan.",
+    "codigo": "moved {\n  from = aws_instance.web\n  to   = aws_instance.api\n}",
+    "fuentes": ["https://developer.hashicorp.com/terraform/language/modules/develop/refactoring"]
+  },
+  {
+    "id": "terraform-008",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "Con count sobre la lista [\"fotos\", \"videos\", \"docs\"], quitas \"fotos\". ¿Qué propone el plan?",
+    "opciones": [
+      "Destruir solo el bucket fotos, porque Terraform identifica cada copia por su valor.",
+      "Nada, porque count ignora los cambios de la lista una vez creados los recursos.",
+      "Cambiar los buckets de índice 0 y 1 y destruir el de índice 2, porque se desplazan.",
+      "Fallar el plan, porque count no admite listas de cadenas y exige solo un número."
+    ],
+    "correctas": [2],
+    "explicacion": "count identifica las copias por posición. Al quitar el primer elemento, [0] pasa a ser videos y [1] docs, así que Terraform quiere cambiar (en un bucket, reemplazar) esos dos y destruir [2]. Con for_each y toset(var.nombres) cada copia se identifica por su clave y solo se destruiría fotos.",
+    "codigo": "resource \"aws_s3_bucket\" \"b\" {\n  count  = length(var.nombres)\n  bucket = \"mi-empresa-${var.nombres[count.index]}\"\n}",
+    "fuentes": ["https://developer.hashicorp.com/terraform/language/meta-arguments/count"]
+  },
+  {
+    "id": "terraform-009",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué ficheros de un proyecto de Terraform se suben normalmente al repositorio?",
+    "opciones": [
+      "Los .tf y la carpeta .terraform, para no tener que lanzar init en cada máquina.",
+      "Los .tf y el fichero de estado, para que todos sepan qué recursos existen ya.",
+      "Solo los .tf: el resto lo genera init de nuevo y fijar versiones no es necesario.",
+      "Los .tf y .terraform.lock.hcl, que fija las versiones exactas de los providers."
+    ],
+    "correctas": [3],
+    "explicacion": "El lock file .terraform.lock.hcl se versiona para que todo el equipo y el pipeline usen exactamente las mismas versiones de providers. La carpeta .terraform (binarios descargados) y el estado (que puede contener secretos y debe vivir en un backend remoto) no se suben.",
+    "fuentes": ["https://developer.hashicorp.com/terraform/language/files/dependency-lock"]
+  },
+  {
+    "id": "terraform-010",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "Pruebas y producción están en cuentas distintas, con credenciales distintas. ¿Cómo separarlas en Terraform?",
+    "opciones": [
+      "Con dos workspaces de la CLI en el mismo directorio, que ya comparten el mismo backend.",
+      "Con una configuración raíz por entorno, cada una con su backend, que reutilizan módulos.",
+      "Con un único estado y una variable entorno que elige qué recursos crear en cada apply.",
+      "Con dos ramas de Git que contienen copias completas e independientes de todo el código."
+    ],
+    "correctas": [1],
+    "explicacion": "HashiCorp recomienda una configuración raíz por despliegue, cada una con su backend y sus credenciales, compartiendo el código en módulos. Los workspaces de la CLI usan el mismo backend, así que no aíslan el acceso; un único estado mezcla los entornos; y copias en ramas acaban divergiendo.",
+    "fuentes": ["https://developer.hashicorp.com/terraform/cli/workspaces"]
+  }
+]

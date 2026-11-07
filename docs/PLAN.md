@@ -80,6 +80,10 @@ línea al "Registro de sesiones".
   código en una ficha: `styles.css` gana `.doc pre` (scroll dentro del bloque). Pendiente de revisión
   del usuario.
 
+- **Terraform (2026-11-07), petición del usuario:** ruta completa hasta Terraform: ficha de Terraform
+  (1.x, con 10 preguntas) y presentaciones de Infraestructura como código y del área DevOps. Pendiente
+  de revisión del usuario.
+
 #### Cuenta Kopi: cómo terminarlo (lista para retomar en otro ordenador)
 
 Repos (en el otro ordenador las rutas pueden cambiar): `arquitechthor-spider`, `aws-cert-study` y
@@ -117,7 +121,7 @@ funciones existentes): **es lo esperado** y lo arregla el paso 2 (que sube su c�
 6. Pendiente aparte: mencionar el progreso de Tech Spider y Apuntes AWS en la política de privacidad de
    Kopi Tools (`kopi-web/legal/privacidad.html`).
 7. Marca 5.7 y 5.8 aquí y actualiza "Estado actual" de este PLAN y del de aws-cert-study.
-- **Última actualización:** 2026-11-07 (ficha de Spring AI y sus ancestros)
+- **Última actualización:** 2026-11-07 (ficha de Terraform y sus ancestros)
 
 ---
 
@@ -378,6 +382,13 @@ directamente en `data/nodos.json` (el importador ya no se usa; con `--forzar` se
   añadió `spring-ai` en cada uno para que sean recíprocos). Sin nodos nuevos: 358 nodos.
 - Glosario: siglas JVM, SDK, ETL, HTTP, REST, IoC, DI, AOP, MVC, ORM, JPA, JDBC y SQL (con `enlace`
   donde hay nodo).
+
+**2026-11-07: Terraform y sus ancestros** (petición del usuario):
+- Publicadas la ficha de **Terraform** (10 preguntas, con frase nueva) y las presentaciones de
+  Infraestructura como código (`iac`) y del área DevOps.
+- `relacionados` de Terraform: CloudFormation, GitHub Actions, Secrets Management y Configuration
+  Management (recíprocos). Sin nodos nuevos: 358 nodos.
+- Glosario: siglas AWS, IaC, HCL, CDK, CI/CD, CLI, DNS, URL, YAML, SRE, DORA, BSL y MPL.
 
 ### 4.3 Preguntas: `data/preguntas/<id>.json`
 
@@ -950,6 +961,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-07 | **Ficha de Terraform y sus ancestros** (petición del usuario): `temas/terraform.html` con 10 preguntas (opciones equilibradas; la más larga es la correcta en 3, por 1–3 caracteres) y presentaciones de `iac` y `devops`. Comprobada con la documentación oficial de Terraform 1.17 (backend S3 con `use_lockfile` y bloqueo con DynamoDB obsoleto, datos sensibles en el estado, workspaces), las releases de GitHub y la FAQ de OpenTofu. 13 siglas nuevas en el glosario. Probadas a 375 px sin scroll horizontal y sin errores de consola. |
 | 2026-11-07 | **Ficha de Spring AI y sus ancestros** (petición del usuario): `temas/spring-ai.html` con 10 preguntas (opciones equilibradas; la más larga es la correcta solo en 1) y presentaciones de `ai-java-ecosystem`, `ai-integration`, `spring-framework` y `backend`. Contrastada con la referencia oficial de Spring AI 2.0.2 (ChatClient, Tool Calling, Advisors, Getting Started) y la documentación de LangChain4j. 13 siglas nuevas en el glosario y estilo `.doc pre` para bloques de código. Probadas a 375 px sin scroll horizontal y sin errores de consola. |
 | 2026-11-06 | **Cuenta Kopi también en aws-cert-study** (petición del usuario). `cuenta.js` reorganizado con un bloque `SITIO` (lo único que cambia entre webs; con unión propia por clave, p. ej. los intentos de simulacro); URL de vuelta de aws-cert-study y alternativa a la interfaz clásica de login en el bootstrap. Push de los tres repos; pasos para terminarlo desde otro ordenador en "Estado actual". |
 | 2026-11-06 | **Progreso en la cuenta Kopi** (decisión del usuario: backend sí mientras no se filtren datos privados de Kopi; opción A, login gestionado de Cognito con PKCE; fuera Exportar/Importar). Backend en `kopi-media-admin` (tabla, 3 Lambdas, authorizer y App Client propios, bootstrap, cascada en `rejectUser`, docs) y front (`cuenta.js`, `cuenta.html`, aviso en "Mi telaraña", aviso legal). Sincronización probada en Chrome headless con `fetch` simulado (unión la primera vez, subida a los 2 s, gana lo más reciente); sin configurar, la cuenta no se ofrece. Pendiente: bootstrap en AWS y prueba real. |

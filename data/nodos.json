@@ -1842,7 +1842,10 @@
     "area": "security",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "terraform"
+    ]
   },
   {
     "id": "vulnerability-management",
@@ -1899,7 +1902,9 @@
     "padre": "software-engineer",
     "area": "devops",
     "color": "#ed9a5e",
-    "frase": "Contenedores, orquestación, infraestructura como código y entrega continua de versiones."
+    "frase": "Contenedores, orquestación, infraestructura como código y entrega continua de versiones.",
+    "estado": "publicado",
+    "revisado": "2026-11-07"
   },
   {
     "id": "containers",
@@ -1986,7 +1991,9 @@
     "tipo": "bloque",
     "padre": "devops",
     "area": "devops",
-    "frase": "Describir servidores y redes en ficheros versionados con Terraform, CloudFormation o CDK."
+    "frase": "Describir servidores y redes en ficheros versionados con Terraform, CloudFormation o CDK.",
+    "estado": "publicado",
+    "revisado": "2026-11-07"
   },
   {
     "id": "terraform",
@@ -1994,9 +2001,17 @@
     "tipo": "tema",
     "padre": "iac",
     "area": "devops",
-    "estado": "pendiente",
+    "estado": "publicado",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "frase": "Declarar la nube en ficheros, revisar el plan de cambios y aplicarlo con un solo comando.",
+    "relacionados": [
+      "cloudformation",
+      "github-actions",
+      "secrets-management",
+      "configuration-management"
+    ],
+    "revisado": "2026-11-07"
   },
   {
     "id": "cdk",
@@ -2034,7 +2049,10 @@
     "area": "devops",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "terraform"
+    ]
   },
   {
     "id": "jenkins",
@@ -2083,7 +2101,10 @@
     "area": "devops",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "terraform"
+    ]
   },
   {
     "id": "release-strategies",
@@ -2544,7 +2565,10 @@
       "sitio": "aws-cert-study",
       "id": "cloudformation",
       "url": "../aws-cert-study/servicios/cloudformation.html"
-    }
+    },
+    "relacionados": [
+      "terraform"
+    ]
   },
   {
     "id": "cloud-architecture",

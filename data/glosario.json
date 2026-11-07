@@ -31,7 +31,20 @@
     "ORM": { "en": "Object-Relational Mapping", "es": "mapeo entre objetos del programa y tablas de una base de datos relacional", "enlace": "orm-persistence" },
     "JPA": { "en": "Jakarta Persistence API", "es": "estándar de Java para guardar objetos en bases relacionales (ORM)", "enlace": "jpa" },
     "JDBC": { "en": "Java Database Connectivity", "es": "API básica de Java para lanzar consultas SQL a una base de datos", "enlace": "jdbc" },
-    "SQL": { "en": "Structured Query Language", "es": "lenguaje estándar para consultar y modificar bases de datos relacionales" }
+    "SQL": { "en": "Structured Query Language", "es": "lenguaje estándar para consultar y modificar bases de datos relacionales" },
+    "AWS": { "en": "Amazon Web Services", "es": "la nube de Amazon", "enlace": "aws" },
+    "IaC": { "en": "Infrastructure as Code", "es": "infraestructura como código: servidores, redes y permisos descritos en ficheros versionados", "enlace": "iac" },
+    "HCL": { "en": "HashiCorp Configuration Language", "es": "lenguaje declarativo de configuración de Terraform y OpenTofu", "enlace": "terraform" },
+    "CDK": { "en": "Cloud Development Kit", "es": "kit de AWS para escribir la infraestructura en un lenguaje de programación", "enlace": "cdk" },
+    "CI/CD": { "en": "Continuous Integration / Continuous Delivery", "es": "integración y entrega continuas: compilar, probar y desplegar automáticamente en cada cambio", "enlace": "ci-cd" },
+    "CLI": { "en": "Command-Line Interface", "es": "interfaz de línea de comandos: un programa que se usa escribiendo órdenes en la terminal" },
+    "DNS": { "en": "Domain Name System", "es": "sistema que traduce nombres de dominio en direcciones IP" },
+    "URL": { "en": "Uniform Resource Locator", "es": "dirección de un recurso en la web" },
+    "YAML": { "leer": "yámel", "en": "YAML Ain't Markup Language", "es": "formato de datos en texto basado en sangrías, muy usado en ficheros de configuración" },
+    "SRE": { "en": "Site Reliability Engineering", "es": "ingeniería de fiabilidad: aplicar ingeniería de software a las operaciones, enfoque nacido en Google" },
+    "DORA": { "leer": "dora", "en": "DevOps Research and Assessment", "es": "programa de investigación (hoy en Google) que mide el rendimiento de los equipos de entrega de software" },
+    "BSL": { "en": "Business Source License", "es": "licencia de código visible que prohíbe ciertos usos comerciales; no se considera de código abierto" },
+    "MPL": { "en": "Mozilla Public License", "es": "licencia de código abierto de Mozilla" }
   },
   "conceptos": [
     {
