@@ -13,7 +13,7 @@
  * nivel 3), "codigo", "dominio", "certificaciones" y "fuentes". Formato completo en docs/PLAN.md 4.3.
  */
 (function () {
-  const { esc, leerProgreso, guardarProgreso } = window.SpiderDatos;
+  const { esc, leerProgreso, guardarProgreso, leer: leerDato, marcarLeida } = window.SpiderDatos;
   const LETRAS = 'ABCDEFGH';
 
   function hoy() {
@@ -268,7 +268,11 @@
     if (acierto) {
       if (!prog.aciertos.includes(idPregunta)) prog.aciertos.push(idPregunta);
       prog.fallos = prog.fallos.filter((id) => id !== idPregunta);
-      if (prog.aciertos.length === prog.total && !prog.finalizado) prog.finalizado = hoy();
+      if (prog.aciertos.length === prog.total && !prog.finalizado) {
+        prog.finalizado = hoy();
+        // Cuestionario aprobado al 100 %: su ficha cuenta como leída (si no lo estaba ya).
+        if (!leerDato('leidas')[idTema]) marcarLeida(idTema, true);
+      }
     } else if (!prog.fallos.includes(idPregunta)) {
       prog.fallos.push(idPregunta);
     }

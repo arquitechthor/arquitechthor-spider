@@ -95,6 +95,9 @@ no third-party requests).
   the evaluation, "Qué contiene", "Relacionados", "Fuentes" and `[data-sin-lectura]`. Acronyms are
   spelled out unless their glossary entry has `leer` (how to pronounce it: `"RAG": { "leer": "rag" }`).
   Speed and voice in `spider.lectura`. New fichas must load it before `tema.js` (see the template).
+- Passing a ficha's quiz at 100 % marks it as read (`SpiderPreguntas.registrar`, only if it was not
+  read yet); quizzes passed before that rule are migrated once per browser in `datos.js`
+  (`spider.leidasPorCuestionario` flag), so unmarking a ficha later is respected.
 - Read fichas: `spider.leidas` (`{ id: "AAAA-MM-DD" }`), helpers `SpiderDatos.tieneFicha/lecturaDe/
   marcarLeida`. `tema.js` adds "Marcar como leída" and offers it at the end of the text (scroll or
   end of "Escuchar"); `mapa.js` shows ✓ (↻ when `revisado` is later than the read date: "actualizada

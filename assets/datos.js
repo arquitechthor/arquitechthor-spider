@@ -176,6 +176,28 @@
     return guardar('leidas', Object.keys(leidas).length ? leidas : null);
   }
 
+  /**
+   * Una sola vez por navegador: los cuestionarios aprobados al 100 % antes de que existiera esta
+   * regla marcan su ficha como leída, con la fecha en que se aprobaron. Después ya no se repite,
+   * para respetar a quien desmarque una ficha (la regla nueva la aplica SpiderPreguntas.registrar).
+   */
+  const CLAVE_MIGRACION_LEIDAS = 'spider.leidasPorCuestionario';
+  function leidasPorCuestionario() {
+    try {
+      if (localStorage.getItem(CLAVE_MIGRACION_LEIDAS)) return;
+      const leidas = leer('leidas');
+      let cambios = 0;
+      for (const [id, p] of Object.entries(leerProgreso())) {
+        if (p && p.finalizado && !leidas[id]) { leidas[id] = p.finalizado; cambios++; }
+      }
+      if (cambios) guardar('leidas', leidas);
+      localStorage.setItem(CLAVE_MIGRACION_LEIDAS, '1');
+    } catch {
+      // sin localStorage: no hay nada que migrar
+    }
+  }
+  leidasPorCuestionario();
+
   /** Fecha local de hoy en AAAA-MM-DD. */
   function hoy() {
     const d = new Date();

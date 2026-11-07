@@ -154,6 +154,9 @@
     if (sugerencia) { sugerencia.remove(); sugerencia = null; }
   }
 
+  // Aprobar el cuestionario al 100 % marca la ficha como leída (SpiderPreguntas.registrar).
+  document.addEventListener('spider:guardado', (e) => { if (e.detail === 'leidas') pintarLeida(); });
+
   btnLeida.addEventListener('click', () => {
     const l = D.lecturaDe(n);
     marcar(!l || l.actualizada); // leída → desmarcar; sin leer o actualizada → marcar hoy
