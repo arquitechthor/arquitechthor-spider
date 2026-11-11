@@ -764,6 +764,9 @@ redundancia): las dos webs se mantienen, cada una con su telaraña, y comparten 
 - **Telaraña densa.** Con más de 100 nietos (la rama AWS) `telarana.js` agranda los anillos, reduce la
   letra del anillo exterior, da más hueco a las categorías pequeñas, intercala grandes y pequeñas y
   separa en vertical los nombres del anillo 1 que se pisarían. El resto del mapa no cambia.
+- **Audios:** los servicios con `"audio": true` en aws-cert-study llevan `externo.audio` y, en el
+  panel, la insignia "🎧 Resumen en audio en su guía" (solo enlaza: el audio vive en aws-cert-study y
+  este lo lee de la API pública de Kopi al pulsar "Escuchar"). De momento, S3 y CodeArtifact.
 - **En aws-cert-study:** "Mi telaraña de AWS" en Mi progreso, con una copia de `telarana.js`
   (`AwsTelarana`): si se arregla el dibujo, hay que llevarlo a los dos repos.
 - **Pendiente:** con la cuenta Kopi, el progreso de AWS solo llega a Spider en un dispositivo donde ya
@@ -1006,6 +1009,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-11 | Insignia 🎧 en el panel de los servicios de AWS con audio (`externo.audio`, desde `importar_aws.py`): S3 y CodeArtifact, cuyo audio aws-cert-study lee ahora de la API pública de Kopi. |
 | 2026-11-11 | **AWS unificado con aws-cert-study** (decisión del usuario tras valorar un 4 automático, quitar AWS o fusionar las webs): `scripts/importar_aws.py` (177 servicios en 19 categorías, 527 nodos), comprobación inversa en el validador, progreso de Apuntes AWS en solo lectura (`SpiderDatos.progresoAws`: ✓, panel, ramas, radar con AWS como un tema), telaraña densa en `telarana.js`, aviso legal. En aws-cert-study, "Mi telaraña de AWS" en Mi progreso. Probado en Chrome sin ventana (1400, 1100 y 520 px). |
 | 2026-11-07 | **Ficha de Terraform y sus ancestros** (petición del usuario): `temas/terraform.html` con 10 preguntas (opciones equilibradas; la más larga es la correcta en 3, por 1–3 caracteres) y presentaciones de `iac` y `devops`. Comprobada con la documentación oficial de Terraform 1.17 (backend S3 con `use_lockfile` y bloqueo con DynamoDB obsoleto, datos sensibles en el estado, workspaces), las releases de GitHub y la FAQ de OpenTofu. 13 siglas nuevas en el glosario. Probadas a 375 px sin scroll horizontal y sin errores de consola. |
 | 2026-11-07 | **Ficha de Spring AI y sus ancestros** (petición del usuario): `temas/spring-ai.html` con 10 preguntas (opciones equilibradas; la más larga es la correcta solo en 1) y presentaciones de `ai-java-ecosystem`, `ai-integration`, `spring-framework` y `backend`. Contrastada con la referencia oficial de Spring AI 2.0.2 (ChatClient, Tool Calling, Advisors, Getting Started) y la documentación de LangChain4j. 13 siglas nuevas en el glosario y estilo `.doc pre` para bloques de código. Probadas a 375 px sin scroll horizontal y sin errores de consola. |

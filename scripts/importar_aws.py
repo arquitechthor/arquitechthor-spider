@@ -135,6 +135,8 @@ def generar(nodos, servicios, categorias):
                 'prioridad': previo['prioridad'] if previo else PRIORIDAD_NUEVOS,
                 'externo': {'sitio': 'aws-cert-study', 'id': sid, 'url': url_servicio(s)},
             }
+            if s.get('audio'):
+                n['externo']['audio'] = True  # su guía tiene resumen en audio (🎧 en el panel)
             if frase_valida(s.get('frase'), n['nombre'], sid):
                 n['frase'] = s['frase']
             alias = list(previo.get('alias', [])) if previo else []

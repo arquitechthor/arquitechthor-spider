@@ -3492,7 +3492,8 @@
     "externo": {
       "sitio": "aws-cert-study",
       "id": "codeartifact",
-      "url": "../aws-cert-study/servicios/codeartifact.html"
+      "url": "../aws-cert-study/servicios/codeartifact.html",
+      "audio": true
     }
   },
   {
@@ -5653,7 +5654,8 @@
     "externo": {
       "sitio": "aws-cert-study",
       "id": "s3",
-      "url": "../aws-cert-study/servicios/s3.html"
+      "url": "../aws-cert-study/servicios/s3.html",
+      "audio": true
     }
   },
   {

@@ -461,6 +461,7 @@
       const chips = [];
       if (n.externo) {
         chips.push('<span class="badge badge-externo">☁ Guía en Apuntes AWS</span>');
+        if (n.externo.audio) chips.push(`<a class="badge badge-externo" href="${D.esc(D.urlFicha(n))}">🎧 Resumen en audio en su guía</a>`);
         const pa = D.progresoAws(n);
         if (pa && pa.finalizado) chips.push(`<span class="badge badge-leida">✓ Superado en Apuntes AWS el ${D.esc(D.formatoFecha(pa.finalizado))}</span>`);
         else if (pa) chips.push(`<span class="badge badge-actualizada">En curso: ${pa.aciertos} de ${pa.total} acertadas</span>`);
