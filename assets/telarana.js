@@ -70,7 +70,23 @@
       ...h,
       nietos: h.acceso ? [] : (datos.hijos.get(h.nodo.id) || []),
     }));
-    const pesos = items.map((it) => Math.max(1.6, it.nietos.length));
+    // Con muchos nietos (AWS: 19 categorías de 1 a 25 servicios), las ramas pequeñas reciben más hueco
+    // del que les toca para que los nombres del anillo 1 no se pisen.
+    const nietos = items.reduce((s, it) => s + it.nietos.length, 0);
+    const denso = nietos > 100;
+    const minimo = denso ? Math.max(1.6, (0.6 * nietos) / items.length) : 1.6;
+    if (denso) {
+      // Se intercalan grandes y pequeñas (la mayor, la menor, la segunda mayor…): así ninguna rama
+      // pequeña queda entre otras pequeñas. Solo cambia el dibujo; el orden de nodos.json se mantiene
+      // en las listas, y Tab sigue el del dibujo (agujas del reloj).
+      const orden = [...items].sort((x, y) => y.nietos.length - x.nietos.length);
+      items.length = 0;
+      while (orden.length) {
+        items.push(orden.shift());
+        if (orden.length) items.push(orden.pop());
+      }
+    }
+    const pesos = items.map((it) => Math.max(minimo, it.nietos.length));
     const total = pesos.reduce((a, b) => a + b, 0) || 1;
     let a = -Math.PI / 2 - (pesos[0] / total) * Math.PI;
     items.forEach((it, i) => {
@@ -79,13 +95,28 @@
       it.nietos = it.nietos.map((nt, j) => ({ ...nt, ang: a + ((j + 0.5) * sector) / it.nietos.length }));
       a += sector;
     });
+    items.peso = total; // hueco total del anillo 2, en nietos (ver medidas())
     return items;
   }
 
+  /**
+   * Con muchos nietos (los 177 servicios de AWS) no caben en el anillo 2 con las medidas normales:
+   * se agranda el anillo hasta un 35 % y, si aun así no caben, se reducen la letra y los puntos.
+   */
+  function medidas(base, nietos) {
+    const hueco = 1.1; // espacio por nieto en el anillo, en múltiplos de la letra (o de 2,4 radios en móvil)
+    const necesario = nietos * (base.f2 || base.r2 * 2.4) * hueco;
+    if (necesario <= 2 * Math.PI * base.R2) return base;
+    const R2 = Math.min(base.R2 * 1.35, necesario / (2 * Math.PI));
+    const escala = Math.min(1, (2 * Math.PI * R2) / necesario);
+    // El anillo 1 también crece, y sus nombres van a un lado del punto salvo justo arriba o abajo.
+    return { ...base, R1: base.R1 * 1.25, R2, f2: base.f2 * escala, r2: Math.max(4, base.r2 * escala), lado: 0.12 };
+  }
+
   function dibujar(svg, datos, op) {
-    const c = op.movil ? CFG.movil : CFG.escritorio;
     const foco = datos.porId.get(op.foco);
     const items = repartir(datos, op.foco);
+    const c = medidas(op.movil ? CFG.movil : CFG.escritorio, items.peso);
     const hayNietos = items.some((it) => it.nietos.length);
     const R1 = hayNietos ? c.R1 : c.R1 + 70;
     const R2 = c.R2;
@@ -163,6 +194,7 @@
       }
     }
 
+    if (c.lado) separarEtiquetas(capa);
     ajustar(svg, raiz, op.movil ? 24 : 16);
     activarResaltado(svg);
     if (op.enfocar) {
@@ -248,7 +280,7 @@
       const t = el('text', { 'font-size': c.f1, 'font-weight': 600 }, a);
       let x = it.x;
       let y0;
-      if (Math.abs(cos) > 0.3) {
+      if (Math.abs(cos) > (c.lado ?? 0.3)) {
         t.setAttribute('text-anchor', cos > 0 ? 'start' : 'end');
         x += cos > 0 ? sep : -sep;
         y0 = it.y - ((lineas.length - 1) / 2) * lh + c.f1 * 0.35;
@@ -270,6 +302,30 @@
         transform: `rotate(${(derecha ? grados : grados + 180).toFixed(2)} ${it.x.toFixed(1)} ${it.y.toFixed(1)})`,
       }, a);
       t.textContent = nube + recortar(nombre, c.max2) + marca;
+    }
+  }
+
+  /**
+   * Telaraña densa: si dos nombres del anillo 1 se pisan, el segundo se aparta en vertical (hacia
+   * fuera: abajo en la mitad inferior, arriba en la superior) lo justo para que no se toquen.
+   */
+  function separarEtiquetas(capa) {
+    const textos = [...capa.querySelectorAll('a[data-anillo="1"] > text')];
+    const cajas = [];
+    for (const t of textos) {
+      let b;
+      try { b = t.getBBox(); } catch { return; }
+      if (!b.width) return;
+      const abajo = b.y + b.height / 2 > 0;
+      let dy = 0;
+      for (let vuelta = 0; vuelta < 8; vuelta++) {
+        const choca = cajas.find((o) => b.x < o.x + o.width + 4 && o.x < b.x + b.width + 4
+          && b.y + dy < o.y + o.height + 2 && o.y < b.y + dy + b.height + 2);
+        if (!choca) break;
+        dy = abajo ? choca.y + choca.height + 2 - b.y : choca.y - b.height - 2 - b.y;
+      }
+      if (dy) t.setAttribute('transform', `translate(0 ${dy.toFixed(1)})`);
+      cajas.push({ x: b.x, y: b.y + dy, width: b.width, height: b.height });
     }
   }
 

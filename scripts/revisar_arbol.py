@@ -324,6 +324,14 @@ def revisar():
         if nid in preguntas_por_tema and not n.get('evaluable'):
             error(f'{nid}: tiene preguntas pero evaluable es false')
 
+    # Al revés: cada servicio de aws-cert-study tiene que estar en el mapa (docs/PLAN.md 5.6).
+    if aws_ids is not None:
+        enlazados = {n['externo'].get('id') for n in nodos if isinstance(n.get('externo'), dict)}
+        faltan = sorted(aws_ids - enlazados)
+        if faltan:
+            error(f'faltan {len(faltan)} servicios de aws-cert-study en el mapa ({", ".join(faltan[:5])}'
+                  f'{"…" if len(faltan) > 5 else ""}): ejecuta python scripts/importar_aws.py')
+
     for pagina in sorted(paginas - set(por_id)):
         error(f'temas/{pagina}.html no corresponde a ningún nodo')
     for tema in sorted(set(preguntas_por_tema) - set(por_id)):

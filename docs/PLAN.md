@@ -12,6 +12,15 @@ línea al "Registro de sesiones".
 
 ## Estado actual
 
+- **AWS completo en el mapa y progreso de Apuntes AWS (2026-11-11, decisión del usuario), publicado:**
+  la rama AWS tiene ya los **177 servicios** de aws-cert-study como nodos `externo`, agrupados en sus
+  **19 categorías oficiales** y generados con `python scripts/importar_aws.py` desde
+  `aws-cert-study/data/servicios.json` y `categorias.json`. El mapa lee en solo lectura
+  `apuntes-aws.progreso` (✓ en los superados, insignia en el panel y "Superados en Apuntes AWS" en las
+  ramas), y en el radar AWS cuenta como **un solo tema** del área Nube. aws-cert-study tiene a su vez su
+  propia telaraña de AWS en Mi progreso. Ver 5.6 y 4.2.1. Pendiente de que el usuario lo pruebe en
+  producción. Queda fuera, por ahora, que la cuenta Kopi de Spider traiga el progreso de AWS en un
+  dispositivo donde aún no se ha abierto aws-cert-study.
 - **Fase 1 completa (2026-11-02):** `data/nodos.json` generado (355 nodos: 13 áreas, 64 bloques,
   277 temas; 12 accesos; 21 externos a aws-cert-study), iconos de las áreas y validador en verde
   (`python scripts/revisar_arbol.py`). Desde ahora **`data/nodos.json` es la fuente de verdad**.
@@ -175,7 +184,7 @@ Consecuencias para el diseño:
 | Preguntas | **Mismo formato y mismo componente** que `aws-cert-study` (`preguntas.js`: `unica`, `multiple`, `ordenar`, `emparejar`, `dificil`), con campos añadidos (ver 4.3). Siempre **originales**: nunca preguntas reales de exámenes (NDA de Oracle, Broadcom, CNCF, HashiCorp…). |
 | Contenido | Sin copiar documentación: se resume con palabras propias y se enlaza la fuente. Lo literal, corto y en `<blockquote>` con `<cite>`. |
 | Logos | **Sin logos de terceros** (Java, Spring, Docker… son marcas con normas propias). Cada área tiene un color y un icono propio sencillo en SVG; los temas se identifican por nombre. |
-| AWS | **Decidido por el usuario (2026-11-02):** los temas de AWS viven en su web dedicada (`aws-cert-study`) y aquí solo se **enlazan**: ni apuntes ni preguntas propias, y no se evalúan en esta web. |
+| AWS | **Decidido por el usuario (2026-11-02):** los temas de AWS viven en su web dedicada (`aws-cert-study`) y aquí solo se **enlazan**: ni apuntes ni preguntas propias, y no se evalúan en esta web. **Ampliado el 2026-11-11:** todos sus servicios están en el mapa y su progreso de allí se muestra aquí en solo lectura (ver 5.6). Descartados marcar un "4" de autoevaluación al aprobar allí, quitar AWS de Spider y fusionar las dos webs. |
 | Vista predeterminada | **Decidido por el usuario (2026-11-02):** la **Telaraña** es la vista por defecto (es la temática del proyecto); las Cajas quedan como vista alternativa. |
 | Licencia | **CC BY-SA 4.0** (D2, aceptada el 2026-11-02), igual que `aws-cert-study`; sustituye a la GPL-3.0 inicial. |
 | Pie común | Enlace en `.footer-sitios` de las cuatro webs: "Kopi Tools · Apuntes AWS · Tech Spider · Kopi Chess · Prompt Quest · Sobre mí", y actualizar `kopi-docs/politicas.md`, `kopi/CLAUDE.md` (tabla de proyectos) y la web personal (D3, aceptada el 2026-11-02). |
@@ -382,6 +391,21 @@ directamente en `data/nodos.json` (el importador ya no se usa; con `--forzar` se
   añadió `spring-ai` en cada uno para que sean recíprocos). Sin nodos nuevos: 358 nodos.
 - Glosario: siglas JVM, SDK, ETL, HTTP, REST, IoC, DI, AOP, MVC, ORM, JPA, JDBC y SQL (con `enlace`
   donde hay nodo).
+
+**2026-11-11: todos los servicios de AWS** (decisión del usuario, ver 5.6), con
+`scripts/importar_aws.py`:
+- La rama `aws` pasa de 7 bloques y 19 servicios a las **19 categorías de aws-cert-study** y sus
+  **177 servicios** (`externo`, `evaluable: false`). Bloques que conservan el id: `aws-compute`
+  (Computación), `aws-storage` (Almacenamiento), `aws-databases` (Base de datos), `aws-networking`
+  (Redes y entrega de contenido), `aws-messaging` (Integración de aplicaciones), `aws-security`
+  (Seguridad, identidad y cumplimiento) y `aws-operations` (Administración y gobernanza). Nuevos:
+  `aws-analytics`, `aws-business-applications`, `aws-cloud-financial-management`, `aws-containers`,
+  `aws-customer-enablement`, `aws-developer-tools`, `aws-end-user-computing`, `aws-frontend-web-mobile`,
+  `aws-iot`, `aws-machine-learning`, `aws-media-services` y `aws-migration-and-transfer`.
+- ECS y EKS pasan de Computación a Contenedores, como en aws-cert-study. `cdk` sigue en `iac` con un
+  acceso nuevo en `aws-operations`.
+- Los 20 servicios que ya estaban pasan a `prioridad: 1`; todos los servicios llevan la frase de
+  aws-cert-study y el nombre largo en `alias`. Nueva frase del bloque `aws`. 527 nodos, 13 accesos.
 
 **2026-11-07: Terraform y sus ancestros** (petición del usuario):
 - Publicadas la ficha de **Terraform** (10 preguntas, con frase nueva) y las presentaciones de
@@ -716,14 +740,35 @@ licencia y la línea `.footer-sitios` común (D3).
 ### 5.6 Integración con aws-cert-study
 
 **Decisión del usuario (2026-11-02):** los temas de AWS van en su web dedicada y aquí solo se
-enlazan.
-- Cada nodo de AWS tiene `externo` con la URL de su guía; en el mapa lleva la marca ☁ y el panel
-  de detalle solo ofrece "Guía en Apuntes AWS ↗" (sin "Evaluarme": se evalúa allí).
-- Quedan fuera de los tests por rama y de los agregados de progreso de esta web; en el radar el
-  área "Cloud Computing" usa la autoevaluación.
-- **Opcional (mejora, Fase 8):** como las dos webs comparten origen (`arquitechthor.github.io`) y,
-  por tanto, `localStorage`, el mapa podría leer en solo lectura `apuntes-aws.progreso` para
-  pintar como estudiados los servicios ya hechos allí. No se copia ni se evalúa nada.
+enlazan. **Ampliada el 2026-11-11** (decisión del usuario, buscando una experiencia unificada y sin
+redundancia): las dos webs se mantienen, cada una con su telaraña, y comparten el progreso.
+- **Todos los servicios en el mapa.** La rama `aws` se genera con `scripts/importar_aws.py` desde
+  `aws-cert-study/data/servicios.json` y `categorias.json` (aws-cert-study es la única fuente): un
+  bloque por categoría oficial (19; los siete que ya existían conservan su id, p. ej. `aws-storage`) y
+  un nodo `externo` por servicio, con su frase de allí y el nombre sin "Amazon"/"AWS" (el completo va en
+  `alias`). El script conserva nombre, alias, accesos, relacionados y prioridad de los nodos que ya
+  existían; `cdk` sigue en `iac` y gana un acceso a su categoría. Los 20 servicios que ya estaban
+  tienen `prioridad: 1` ("Lo esencial"); los nuevos, 3. El validador falla si falta algún servicio de
+  aws-cert-study: al publicar uno allí, se ejecuta el script aquí.
+- Cada nodo de AWS lleva la marca ☁ y el panel de detalle ofrece "Ver la guía en Apuntes AWS ↗" (sin
+  "Evaluarme": se evalúa allí).
+- **Progreso de allí, en solo lectura.** Las dos webs comparten origen (`arquitechthor.github.io`) y,
+  por tanto, `localStorage`: `SpiderDatos.progresoAws()` lee `apuntes-aws.progreso` (nunca escribe).
+  Un servicio superado allí ("finalizado": todas sus preguntas acertadas) lleva ✓ en el mapa; el panel
+  muestra "✓ Superado en Apuntes AWS el …" o "En curso: x de y acertadas", y las ramas, "Superados en
+  Apuntes AWS: x de y". **No** se convierte en un 4 de "Mi nivel": la autoevaluación sigue siendo del
+  usuario.
+- **AWS cuenta como un tema.** En "Mis tests" del radar, el bloque `aws` es un único tema del área
+  Nube, con la media de sus categorías y, en cada una, la media de la parte acertada de sus servicios.
+  Así sus 177 servicios no se comen la cifra del área.
+- **Telaraña densa.** Con más de 100 nietos (la rama AWS) `telarana.js` agranda los anillos, reduce la
+  letra del anillo exterior, da más hueco a las categorías pequeñas, intercala grandes y pequeñas y
+  separa en vertical los nombres del anillo 1 que se pisarían. El resto del mapa no cambia.
+- **En aws-cert-study:** "Mi telaraña de AWS" en Mi progreso, con una copia de `telarana.js`
+  (`AwsTelarana`): si se arregla el dibujo, hay que llevarlo a los dos repos.
+- **Pendiente:** con la cuenta Kopi, el progreso de AWS solo llega a Spider en un dispositivo donde ya
+  se ha abierto aws-cert-study (cada web sincroniza solo sus claves). Se podría hacer que `cuenta.js`
+  de Spider lo descargue en solo lectura.
 
 ---
 
@@ -918,8 +963,8 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 ### Fase 8: extras (en cola, sin compromiso)
 - **Propuestas del usuario:** el usuario tiene propuestas de temáticas para pasos posteriores
   (2026-11-02); se recogen aquí cuando las comparta y se decide en qué fase entra cada una.
-- Pintar en el mapa, en solo lectura, el progreso de los servicios ya estudiados en
-  aws-cert-study (`apuntes-aws.progreso`, mismo origen); ver 5.6.
+- **Hecho (2026-11-11):** pintar en el mapa, en solo lectura, el progreso de los servicios ya
+  estudiados en aws-cert-study (`apuntes-aws.progreso`, mismo origen); ver 5.6.
 - Juego **Clasificador**: caen temas y hay que soltarlos en su caja del mapa (refuerza la
   estructura; aprovecha la vista Cajas).
 - Juego **Empareja** (tema ↔ frase), adaptado de aws-cert-study.
@@ -961,6 +1006,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-11 | **AWS unificado con aws-cert-study** (decisión del usuario tras valorar un 4 automático, quitar AWS o fusionar las webs): `scripts/importar_aws.py` (177 servicios en 19 categorías, 527 nodos), comprobación inversa en el validador, progreso de Apuntes AWS en solo lectura (`SpiderDatos.progresoAws`: ✓, panel, ramas, radar con AWS como un tema), telaraña densa en `telarana.js`, aviso legal. En aws-cert-study, "Mi telaraña de AWS" en Mi progreso. Probado en Chrome sin ventana (1400, 1100 y 520 px). |
 | 2026-11-07 | **Ficha de Terraform y sus ancestros** (petición del usuario): `temas/terraform.html` con 10 preguntas (opciones equilibradas; la más larga es la correcta en 3, por 1–3 caracteres) y presentaciones de `iac` y `devops`. Comprobada con la documentación oficial de Terraform 1.17 (backend S3 con `use_lockfile` y bloqueo con DynamoDB obsoleto, datos sensibles en el estado, workspaces), las releases de GitHub y la FAQ de OpenTofu. 13 siglas nuevas en el glosario. Probadas a 375 px sin scroll horizontal y sin errores de consola. |
 | 2026-11-07 | **Ficha de Spring AI y sus ancestros** (petición del usuario): `temas/spring-ai.html` con 10 preguntas (opciones equilibradas; la más larga es la correcta solo en 1) y presentaciones de `ai-java-ecosystem`, `ai-integration`, `spring-framework` y `backend`. Contrastada con la referencia oficial de Spring AI 2.0.2 (ChatClient, Tool Calling, Advisors, Getting Started) y la documentación de LangChain4j. 13 siglas nuevas en el glosario y estilo `.doc pre` para bloques de código. Probadas a 375 px sin scroll horizontal y sin errores de consola. |
 | 2026-11-06 | **Cuenta Kopi también en aws-cert-study** (petición del usuario). `cuenta.js` reorganizado con un bloque `SITIO` (lo único que cambia entre webs; con unión propia por clave, p. ej. los intentos de simulacro); URL de vuelta de aws-cert-study y alternativa a la interfaz clásica de login en el bootstrap. Push de los tres repos; pasos para terminarlo desde otro ordenador en "Estado actual". |

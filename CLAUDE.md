@@ -35,6 +35,14 @@ no third-party requests).
   topics deep in the tree (siblings + the parent's ficha explains the hierarchy). Each topic exists **once**;
   appearances elsewhere are `accesos`. AWS topics are `externo` links to `aws-cert-study` and are
   never evaluated here. Optional fields are omitted when empty.
+- **AWS branch is generated** (`docs/PLAN.md` 5.6): `python scripts/importar_aws.py` rebuilds `aws`
+  from `../aws-cert-study/data/servicios.json` + `categorias.json` (all 177 services, 19 categories),
+  keeping ids and manual fields (name, alias, accesos, relacionados, prioridad). Don't hand-edit nodes
+  under `aws`; the validator fails if a service is missing. `SpiderDatos.progresoAws()` reads
+  aws-cert-study's `apuntes-aws.progreso` (same origin) **read-only**: ✓ on passed services, panel
+  badges, "Superados en Apuntes AWS" per branch, and in the radar the `aws` block counts as **one**
+  topic of the Cloud area. It never touches "Mi nivel". aws-cert-study has a copy of `telarana.js`
+  (`AwsTelarana`, in its Mi progreso): fix the drawing in both repos.
 - `docs/tecnologias.md`: the original tree, kept as history. `scripts/importar_arbol.py` built
   `nodos.json` from it and refuses to overwrite it without `--forzar` (that would lose manual edits).
 - `assets/datos.js` (`window.SpiderDatos`): shared loader. Resolves every path against the site
@@ -54,6 +62,8 @@ no third-party requests).
   `decorar()` over the drawn `<a data-id>` nodes without redrawing); `assets/telarana.js` (`SpiderTelarana`) only draws the default
   **Telaraña** view as SVG: focused node in the center, children on ring 1 (horizontal labels),
   grandchildren on ring 2 (radial labels; dots only on mobile), viewBox fitted to the content.
+  Dense foci (>100 grandchildren, i.e. AWS) get bigger rings, smaller outer labels, a minimum sector
+  for small branches, big/small branches interleaved and a pass that separates ring-1 labels.
   Every node is a real `<a href>`; Tab goes clockwise, arrows move along the ring, Esc goes up.
   Areas carry `nombreCorto`, used for the 13 areas around the root. There is no separate "Áreas"
   section any more (removed 2026-11-03 at the user's request): the Cajas view at the root shows the
@@ -129,6 +139,7 @@ ends with `.footer-sitios` (Kopi Tools · Apuntes AWS · Tech Spider · Kopi Che
 ```bash
 python -m http.server 8765        # fetch() of the JSON files fails on file://
 python scripts/versionar.py       # after changing any assets/*.js or styles.css: stamps ?v=<hash> in every page
+python scripts/importar_aws.py    # after aws-cert-study publishes a service or changes a category
 python scripts/revisar_arbol.py   # validator: run after ANY change to nodos.json, temas/, data/preguntas/ or data/glosario.json
 ```
 

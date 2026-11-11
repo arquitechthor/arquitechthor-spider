@@ -2019,9 +2019,13 @@
     "tipo": "tema",
     "padre": "iac",
     "area": "devops",
+    "accesos": [
+      "aws-operations"
+    ],
+    "frase": "Define infraestructura con TypeScript, Python o Java y la convierte en plantillas",
     "estado": "pendiente",
     "evaluable": false,
-    "prioridad": 2,
+    "prioridad": 1,
     "externo": {
       "sitio": "aws-cert-study",
       "id": "cdk",
@@ -2192,12 +2196,44 @@
     "tipo": "bloque",
     "padre": "cloud",
     "area": "cloud",
-    "frase": "Los servicios más usados del proveedor líder; sus guías están en Apuntes AWS.",
+    "frase": "Todos sus servicios por categorías, cada uno con su guía y su test en Apuntes AWS.",
     "externo": {
       "sitio": "aws-cert-study",
       "id": null,
       "url": "../aws-cert-study/"
     }
+  },
+  {
+    "id": "aws-analytics",
+    "nombre": "Analytics",
+    "nombreEs": "Análisis",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "aws-messaging",
+    "nombre": "Application Integration",
+    "nombreEs": "Integración de aplicaciones",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "aws-business-applications",
+    "nombre": "Business Applications",
+    "nombreEs": "Aplicaciones empresariales",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "aws-cloud-financial-management",
+    "nombre": "Cloud Financial Management",
+    "nombreEs": "Administración financiera en la nube",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
   },
   {
     "id": "aws-compute",
@@ -2208,64 +2244,108 @@
     "area": "cloud"
   },
   {
-    "id": "ec2",
-    "nombre": "EC2",
-    "tipo": "tema",
-    "padre": "aws-compute",
-    "area": "cloud",
-    "estado": "pendiente",
-    "evaluable": false,
-    "prioridad": 2,
-    "externo": {
-      "sitio": "aws-cert-study",
-      "id": "ec2",
-      "url": "../aws-cert-study/servicios/ec2.html"
-    }
+    "id": "aws-containers",
+    "nombre": "Containers",
+    "nombreEs": "Contenedores",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
   },
   {
-    "id": "ecs",
-    "nombre": "ECS",
-    "tipo": "tema",
-    "padre": "aws-compute",
-    "area": "cloud",
-    "estado": "pendiente",
-    "evaluable": false,
-    "prioridad": 2,
-    "externo": {
-      "sitio": "aws-cert-study",
-      "id": "ecs",
-      "url": "../aws-cert-study/servicios/ecs.html"
-    }
+    "id": "aws-customer-enablement",
+    "nombre": "Customer Enablement",
+    "nombreEs": "Habilitación de clientes",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
   },
   {
-    "id": "eks",
-    "nombre": "EKS",
-    "tipo": "tema",
-    "padre": "aws-compute",
-    "area": "cloud",
-    "estado": "pendiente",
-    "evaluable": false,
-    "prioridad": 2,
-    "externo": {
-      "sitio": "aws-cert-study",
-      "id": "eks",
-      "url": "../aws-cert-study/servicios/eks.html"
-    }
+    "id": "aws-databases",
+    "nombre": "Database",
+    "nombreEs": "Base de datos",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
   },
   {
-    "id": "lambda",
-    "nombre": "Lambda",
-    "tipo": "tema",
-    "padre": "aws-compute",
-    "area": "cloud",
-    "estado": "pendiente",
-    "evaluable": false,
-    "prioridad": 2,
-    "externo": {
-      "sitio": "aws-cert-study",
-      "id": "lambda",
-      "url": "../aws-cert-study/servicios/lambda.html"
-    }
+    "id": "aws-developer-tools",
+    "nombre": "Developer Tools",
+    "nombreEs": "Herramientas para desarrolladores",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "aws-end-user-computing",
+    "nombre": "End User Computing",
+    "nombreEs": "Computación para usuarios finales",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "aws-frontend-web-mobile",
+    "nombre": "Frontend Web and Mobile",
+    "nombreEs": "Frontend web y móvil",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "aws-iot",
+    "nombre": "Internet of Things (IoT)",
+    "nombreEs": "Internet de las cosas (IoT)",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "aws-machine-learning",
+    "nombre": "Machine Learning",
+    "nombreEs": "Machine learning",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "aws-operations",
+    "nombre": "Management and Governance",
+    "nombreEs": "Administración y gobernanza",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "aws-media-services",
+    "nombre": "Media Services",
+    "nombreEs": "Servicios multimedia",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "aws-migration-and-transfer",
+    "nombre": "Migration and Transfer",
+    "nombreEs": "Migración y transferencia",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "aws-networking",
+    "nombre": "Networking and Content Delivery",
+    "nombreEs": "Redes y entrega de contenido",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
+  },
+  {
+    "id": "aws-security",
+    "nombre": "Security, Identity, and Compliance",
+    "nombreEs": "Seguridad, identidad y cumplimiento",
+    "tipo": "bloque",
+    "padre": "aws",
+    "area": "cloud"
   },
   {
     "id": "aws-storage",
@@ -2276,171 +2356,307 @@
     "area": "cloud"
   },
   {
-    "id": "s3",
-    "nombre": "S3",
+    "id": "athena",
+    "nombre": "Athena",
     "tipo": "tema",
-    "padre": "aws-storage",
+    "padre": "aws-analytics",
     "area": "cloud",
+    "frase": "Consulta con SQL estándar los ficheros de S3 sin cargarlos ni levantar servidores",
     "estado": "pendiente",
     "evaluable": false,
-    "prioridad": 2,
-    "externo": {
-      "sitio": "aws-cert-study",
-      "id": "s3",
-      "url": "../aws-cert-study/servicios/s3.html"
-    }
-  },
-  {
-    "id": "ebs",
-    "nombre": "EBS",
-    "tipo": "tema",
-    "padre": "aws-storage",
-    "area": "cloud",
-    "estado": "pendiente",
-    "evaluable": false,
-    "prioridad": 2,
-    "externo": {
-      "sitio": "aws-cert-study",
-      "id": "ebs",
-      "url": "../aws-cert-study/servicios/ebs.html"
-    }
-  },
-  {
-    "id": "aws-databases",
-    "nombre": "Databases",
-    "nombreEs": "Bases de datos",
-    "tipo": "bloque",
-    "padre": "aws",
-    "area": "cloud"
-  },
-  {
-    "id": "rds",
-    "nombre": "RDS",
-    "tipo": "tema",
-    "padre": "aws-databases",
-    "area": "cloud",
-    "estado": "pendiente",
-    "evaluable": false,
-    "prioridad": 2,
-    "externo": {
-      "sitio": "aws-cert-study",
-      "id": "rds",
-      "url": "../aws-cert-study/servicios/rds.html"
-    }
-  },
-  {
-    "id": "dynamodb",
-    "nombre": "DynamoDB",
-    "tipo": "tema",
-    "padre": "aws-databases",
-    "area": "cloud",
-    "accesos": [
-      "nosql-databases"
-    ],
-    "estado": "pendiente",
-    "evaluable": false,
-    "prioridad": 2,
-    "externo": {
-      "sitio": "aws-cert-study",
-      "id": "dynamodb",
-      "url": "../aws-cert-study/servicios/dynamodb.html"
-    }
-  },
-  {
-    "id": "aws-networking",
-    "nombre": "Networking",
-    "nombreEs": "Redes",
-    "tipo": "bloque",
-    "padre": "aws",
-    "area": "cloud"
-  },
-  {
-    "id": "vpc",
-    "nombre": "VPC",
-    "tipo": "tema",
-    "padre": "aws-networking",
-    "area": "cloud",
-    "estado": "pendiente",
-    "evaluable": false,
-    "prioridad": 2,
-    "externo": {
-      "sitio": "aws-cert-study",
-      "id": "vpc",
-      "url": "../aws-cert-study/servicios/vpc.html"
-    }
-  },
-  {
-    "id": "api-gateway",
-    "nombre": "API Gateway",
-    "tipo": "tema",
-    "padre": "aws-networking",
-    "area": "cloud",
-    "estado": "pendiente",
-    "evaluable": false,
-    "prioridad": 2,
-    "externo": {
-      "sitio": "aws-cert-study",
-      "id": "api-gateway",
-      "url": "../aws-cert-study/servicios/api-gateway.html"
-    }
-  },
-  {
-    "id": "cloudfront",
-    "nombre": "CloudFront",
-    "tipo": "tema",
-    "padre": "aws-networking",
-    "area": "cloud",
-    "estado": "pendiente",
-    "evaluable": false,
-    "prioridad": 2,
-    "externo": {
-      "sitio": "aws-cert-study",
-      "id": "cloudfront",
-      "url": "../aws-cert-study/servicios/cloudfront.html"
-    }
-  },
-  {
-    "id": "aws-messaging",
-    "nombre": "Messaging & Integration",
-    "nombreEs": "Mensajería e integración",
-    "tipo": "bloque",
-    "padre": "aws",
-    "area": "cloud"
-  },
-  {
-    "id": "sqs",
-    "nombre": "SQS",
-    "tipo": "tema",
-    "padre": "aws-messaging",
-    "area": "cloud",
-    "accesos": [
-      "messaging-event-streaming"
-    ],
-    "estado": "pendiente",
-    "evaluable": false,
-    "prioridad": 2,
+    "prioridad": 3,
     "alias": [
-      "Amazon SQS"
+      "Amazon Athena"
     ],
     "externo": {
       "sitio": "aws-cert-study",
-      "id": "sqs",
-      "url": "../aws-cert-study/servicios/sqs.html"
+      "id": "athena",
+      "url": "../aws-cert-study/servicios/athena.html"
     }
   },
   {
-    "id": "sns",
-    "nombre": "SNS",
+    "id": "clean-rooms",
+    "nombre": "Clean Rooms",
+    "tipo": "tema",
+    "padre": "aws-analytics",
+    "area": "cloud",
+    "frase": "Analiza datos con socios sin que ninguna parte vea los datos en bruto de la otra",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Clean Rooms"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "clean-rooms",
+      "url": "../aws-cert-study/servicios/clean-rooms.html"
+    }
+  },
+  {
+    "id": "data-exchange",
+    "nombre": "Data Exchange",
+    "tipo": "tema",
+    "padre": "aws-analytics",
+    "area": "cloud",
+    "frase": "Catálogo para suscribirse a conjuntos de datos de terceros y usarlos en tu cuenta",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Data Exchange"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "data-exchange",
+      "url": "../aws-cert-study/servicios/data-exchange.html"
+    }
+  },
+  {
+    "id": "data-firehose",
+    "nombre": "Data Firehose",
+    "tipo": "tema",
+    "padre": "aws-analytics",
+    "area": "cloud",
+    "frase": "Entrega flujos de datos a S3, Redshift u OpenSearch casi en tiempo real, sin código",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Data Firehose"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "data-firehose",
+      "url": "../aws-cert-study/servicios/data-firehose.html"
+    }
+  },
+  {
+    "id": "emr",
+    "nombre": "EMR",
+    "tipo": "tema",
+    "padre": "aws-analytics",
+    "area": "cloud",
+    "frase": "Clústeres gestionados de Spark, Hive o Hadoop para procesar big data",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon EMR"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "emr",
+      "url": "../aws-cert-study/servicios/emr.html"
+    }
+  },
+  {
+    "id": "glue",
+    "nombre": "Glue",
+    "tipo": "tema",
+    "padre": "aws-analytics",
+    "area": "cloud",
+    "frase": "ETL sin servidor con catálogo de datos y rastreadores que descubren esquemas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Glue"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "glue",
+      "url": "../aws-cert-study/servicios/glue.html"
+    }
+  },
+  {
+    "id": "glue-databrew",
+    "nombre": "Glue DataBrew",
+    "tipo": "tema",
+    "padre": "aws-analytics",
+    "area": "cloud",
+    "frase": "Limpia y prepara datos con más de 250 transformaciones visuales, sin escribir código",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Glue DataBrew"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "glue-databrew",
+      "url": "../aws-cert-study/servicios/glue-databrew.html"
+    }
+  },
+  {
+    "id": "kinesis-data-streams",
+    "nombre": "Kinesis Data Streams",
+    "tipo": "tema",
+    "padre": "aws-analytics",
+    "area": "cloud",
+    "frase": "Flujo de datos en tiempo real de AWS que escala por fragmentos y admite varios lectores",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Kinesis Data Streams"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "kinesis-data-streams",
+      "url": "../aws-cert-study/servicios/kinesis-data-streams.html"
+    }
+  },
+  {
+    "id": "lake-formation",
+    "nombre": "Lake Formation",
+    "tipo": "tema",
+    "padre": "aws-analytics",
+    "area": "cloud",
+    "frase": "Gobierna permisos finos por tabla, columna y fila sobre tu lago de datos en S3",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Lake Formation"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "lake-formation",
+      "url": "../aws-cert-study/servicios/lake-formation.html"
+    }
+  },
+  {
+    "id": "managed-service-for-apache-flink",
+    "nombre": "Managed Service for Apache Flink",
+    "tipo": "tema",
+    "padre": "aws-analytics",
+    "area": "cloud",
+    "frase": "Procesa flujos en tiempo real con aplicaciones Java, SQL o Python con estado",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Managed Service for Apache Flink"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "managed-service-for-apache-flink",
+      "url": "../aws-cert-study/servicios/managed-service-for-apache-flink.html"
+    }
+  },
+  {
+    "id": "msk",
+    "nombre": "MSK",
+    "tipo": "tema",
+    "padre": "aws-analytics",
+    "area": "cloud",
+    "frase": "Clústeres gestionados del broker de eventos abierto más usado, con topics y particiones",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon MSK"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "msk",
+      "url": "../aws-cert-study/servicios/msk.html"
+    }
+  },
+  {
+    "id": "opensearch-service",
+    "nombre": "OpenSearch Service",
+    "tipo": "tema",
+    "padre": "aws-analytics",
+    "area": "cloud",
+    "frase": "Búsqueda de texto completo y análisis de logs con índices, paneles y búsqueda vectorial",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon OpenSearch Service"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "opensearch-service",
+      "url": "../aws-cert-study/servicios/opensearch-service.html"
+    }
+  },
+  {
+    "id": "quick",
+    "nombre": "Quick",
+    "tipo": "tema",
+    "padre": "aws-analytics",
+    "area": "cloud",
+    "frase": "Paneles e informes de BI sin servidor con preguntas en lenguaje natural sobre tus datos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Quick"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "quick",
+      "url": "../aws-cert-study/servicios/quick.html"
+    }
+  },
+  {
+    "id": "redshift",
+    "nombre": "Redshift",
+    "tipo": "tema",
+    "padre": "aws-analytics",
+    "area": "cloud",
+    "frase": "Almacén de datos columnar para consultas analíticas de petabytes con SQL",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Redshift"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "redshift",
+      "url": "../aws-cert-study/servicios/redshift.html"
+    }
+  },
+  {
+    "id": "appflow",
+    "nombre": "AppFlow",
     "tipo": "tema",
     "padre": "aws-messaging",
     "area": "cloud",
+    "frase": "Copia datos entre apps SaaS como Salesforce o Slack y tus servicios, sin programar",
     "estado": "pendiente",
     "evaluable": false,
-    "prioridad": 2,
+    "prioridad": 3,
+    "alias": [
+      "Amazon AppFlow"
+    ],
     "externo": {
       "sitio": "aws-cert-study",
-      "id": "sns",
-      "url": "../aws-cert-study/servicios/sns.html"
+      "id": "appflow",
+      "url": "../aws-cert-study/servicios/appflow.html"
+    }
+  },
+  {
+    "id": "appsync",
+    "nombre": "AppSync",
+    "tipo": "tema",
+    "padre": "aws-messaging",
+    "area": "cloud",
+    "frase": "Sirve APIs GraphQL gestionadas con suscripciones en tiempo real y datos offline",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS AppSync"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "appsync",
+      "url": "../aws-cert-study/servicios/appsync.html"
     }
   },
   {
@@ -2452,9 +2668,10 @@
     "accesos": [
       "messaging-event-streaming"
     ],
+    "frase": "Bus de eventos que enruta sucesos de apps, SaaS y AWS a destinos según reglas",
     "estado": "pendiente",
     "evaluable": false,
-    "prioridad": 2,
+    "prioridad": 1,
     "alias": [
       "Amazon EventBridge"
     ],
@@ -2465,85 +2682,1552 @@
     }
   },
   {
-    "id": "aws-security",
-    "nombre": "Security & Identity",
-    "nombreEs": "Seguridad e identidad",
-    "tipo": "bloque",
-    "padre": "aws",
-    "area": "cloud"
-  },
-  {
-    "id": "iam",
-    "nombre": "IAM",
+    "id": "mq",
+    "nombre": "MQ",
     "tipo": "tema",
-    "padre": "aws-security",
+    "padre": "aws-messaging",
     "area": "cloud",
+    "frase": "Broker gestionado de ActiveMQ o RabbitMQ para apps que usan JMS, AMQP o MQTT",
     "estado": "pendiente",
     "evaluable": false,
-    "prioridad": 2,
+    "prioridad": 3,
+    "alias": [
+      "Amazon MQ"
+    ],
     "externo": {
       "sitio": "aws-cert-study",
-      "id": "iam",
-      "url": "../aws-cert-study/servicios/iam.html"
+      "id": "mq",
+      "url": "../aws-cert-study/servicios/mq.html"
     }
   },
   {
-    "id": "cognito",
-    "nombre": "Cognito",
+    "id": "sns",
+    "nombre": "SNS",
     "tipo": "tema",
-    "padre": "aws-security",
+    "padre": "aws-messaging",
+    "area": "cloud",
+    "frase": "Publica un mensaje una vez y lo entrega a todas las colas, funciones y endpoints suscritos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 1,
+    "alias": [
+      "Amazon SNS"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "sns",
+      "url": "../aws-cert-study/servicios/sns.html"
+    }
+  },
+  {
+    "id": "sqs",
+    "nombre": "SQS",
+    "tipo": "tema",
+    "padre": "aws-messaging",
     "area": "cloud",
     "accesos": [
-      "identity-access-management"
+      "messaging-event-streaming"
     ],
+    "frase": "Cola de mensajes que desacopla productores y consumidores y guarda lo pendiente",
     "estado": "pendiente",
     "evaluable": false,
-    "prioridad": 2,
+    "prioridad": 1,
     "alias": [
-      "AWS Cognito"
+      "Amazon SQS"
     ],
     "externo": {
       "sitio": "aws-cert-study",
-      "id": "cognito",
-      "url": "../aws-cert-study/servicios/cognito.html"
+      "id": "sqs",
+      "url": "../aws-cert-study/servicios/sqs.html"
     }
   },
   {
-    "id": "aws-operations",
-    "nombre": "Operations",
-    "nombreEs": "Operaciones",
-    "tipo": "bloque",
-    "padre": "aws",
-    "area": "cloud"
-  },
-  {
-    "id": "cloudwatch",
-    "nombre": "CloudWatch",
+    "id": "step-functions",
+    "nombre": "Step Functions",
     "tipo": "tema",
-    "padre": "aws-operations",
+    "padre": "aws-messaging",
     "area": "cloud",
+    "frase": "Orquesta pasos de un flujo como máquina de estados con reintentos y ramas visuales",
     "estado": "pendiente",
     "evaluable": false,
-    "prioridad": 2,
+    "prioridad": 3,
+    "alias": [
+      "AWS Step Functions"
+    ],
     "externo": {
       "sitio": "aws-cert-study",
-      "id": "cloudwatch",
-      "url": "../aws-cert-study/servicios/cloudwatch.html"
+      "id": "step-functions",
+      "url": "../aws-cert-study/servicios/step-functions.html"
     }
   },
   {
-    "id": "systems-manager",
-    "nombre": "Systems Manager",
+    "id": "connect",
+    "nombre": "Connect",
+    "tipo": "tema",
+    "padre": "aws-business-applications",
+    "area": "cloud",
+    "frase": "Centro de contacto en la nube con llamadas, chat, IVR y enrutado a agentes",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Connect"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "connect",
+      "url": "../aws-cert-study/servicios/connect.html"
+    }
+  },
+  {
+    "id": "ses",
+    "nombre": "SES",
+    "tipo": "tema",
+    "padre": "aws-business-applications",
+    "area": "cloud",
+    "frase": "Envía correo desde tus apps a gran escala, con DKIM, dominio verificado y rebotes",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon SES"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "ses",
+      "url": "../aws-cert-study/servicios/ses.html"
+    }
+  },
+  {
+    "id": "budgets",
+    "nombre": "Budgets",
+    "tipo": "tema",
+    "padre": "aws-cloud-financial-management",
+    "area": "cloud",
+    "frase": "Fija límites de gasto o uso y te avisa, o actúa, cuando se superan o se prevé superarlos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Budgets"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "budgets",
+      "url": "../aws-cert-study/servicios/budgets.html"
+    }
+  },
+  {
+    "id": "cost-and-usage-report",
+    "nombre": "Cost and Usage Report",
+    "tipo": "tema",
+    "padre": "aws-cloud-financial-management",
+    "area": "cloud",
+    "frase": "Exporta el detalle más fino de facturación, línea a línea, a S3 para analizarlo",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Cost and Usage Report"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "cost-and-usage-report",
+      "url": "../aws-cert-study/servicios/cost-and-usage-report.html"
+    }
+  },
+  {
+    "id": "cost-categories",
+    "nombre": "Cost Categories",
+    "tipo": "tema",
+    "padre": "aws-cloud-financial-management",
+    "area": "cloud",
+    "frase": "Agrupa el gasto con reglas propias, como equipos o proyectos, para repartir la factura",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Cost Categories"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "cost-categories",
+      "url": "../aws-cert-study/servicios/cost-categories.html"
+    }
+  },
+  {
+    "id": "cost-explorer",
+    "nombre": "Cost Explorer",
+    "tipo": "tema",
+    "padre": "aws-cloud-financial-management",
+    "area": "cloud",
+    "frase": "Visualiza y filtra tu gasto de meses pasados y hace previsiones del próximo",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Cost Explorer"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "cost-explorer",
+      "url": "../aws-cert-study/servicios/cost-explorer.html"
+    }
+  },
+  {
+    "id": "marketplace",
+    "nombre": "Marketplace",
+    "tipo": "tema",
+    "padre": "aws-cloud-financial-management",
+    "area": "cloud",
+    "frase": "Tienda de software de terceros que compras y despliegas con tu factura de AWS",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Marketplace"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "marketplace",
+      "url": "../aws-cert-study/servicios/marketplace.html"
+    }
+  },
+  {
+    "id": "reserved-instances",
+    "nombre": "Reserved Instances",
+    "tipo": "tema",
+    "padre": "aws-cloud-financial-management",
+    "area": "cloud",
+    "frase": "Descuento por comprometer uso de EC2 o RDS durante uno o tres años en una región",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "reserved-instances",
+      "url": "../aws-cert-study/servicios/reserved-instances.html"
+    }
+  },
+  {
+    "id": "savings-plans",
+    "nombre": "Savings Plans",
+    "tipo": "tema",
+    "padre": "aws-cloud-financial-management",
+    "area": "cloud",
+    "frase": "Descuento a cambio de comprometer un gasto por hora durante uno o tres años",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "savings-plans",
+      "url": "../aws-cert-study/servicios/savings-plans.html"
+    }
+  },
+  {
+    "id": "app-runner",
+    "nombre": "App Runner",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "frase": "De imagen de contenedor o repositorio a una web con HTTPS, sin ver ni gestionar máquinas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS App Runner"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "app-runner",
+      "url": "../aws-cert-study/servicios/app-runner.html"
+    }
+  },
+  {
+    "id": "application-auto-scaling",
+    "nombre": "Application Auto Scaling",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "frase": "Ajusta la capacidad de ECS, DynamoDB, Aurora o Lambda según métricas o un horario",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Application Auto Scaling"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "application-auto-scaling",
+      "url": "../aws-cert-study/servicios/application-auto-scaling.html"
+    }
+  },
+  {
+    "id": "auto-scaling",
+    "nombre": "Auto Scaling",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "frase": "Plan de escalado único para instancias, tablas NoSQL, réplicas y otros recursos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Auto Scaling"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "auto-scaling",
+      "url": "../aws-cert-study/servicios/auto-scaling.html"
+    }
+  },
+  {
+    "id": "batch",
+    "nombre": "Batch",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "frase": "Ejecuta miles de trabajos por lotes en cola eligiendo y escalando el cómputo por ti",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Batch"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "batch",
+      "url": "../aws-cert-study/servicios/batch.html"
+    }
+  },
+  {
+    "id": "ec2",
+    "nombre": "EC2",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "frase": "Servidores virtuales en la nube que eliges por tipo de CPU, memoria y red",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 1,
+    "alias": [
+      "Amazon EC2"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "ec2",
+      "url": "../aws-cert-study/servicios/ec2.html"
+    }
+  },
+  {
+    "id": "ec2-auto-scaling",
+    "nombre": "EC2 Auto Scaling",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "frase": "Añade o quita servidores de un grupo según la demanda y reemplaza los que fallan",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon EC2 Auto Scaling"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "ec2-auto-scaling",
+      "url": "../aws-cert-study/servicios/ec2-auto-scaling.html"
+    }
+  },
+  {
+    "id": "elastic-beanstalk",
+    "nombre": "Elastic Beanstalk",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "frase": "Sube tu código y te monta el entorno: balanceador, escalado, instancias y alarmas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Elastic Beanstalk"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "elastic-beanstalk",
+      "url": "../aws-cert-study/servicios/elastic-beanstalk.html"
+    }
+  },
+  {
+    "id": "fargate",
+    "nombre": "Fargate",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "frase": "Motor sin servidor para contenedores: tú defines la tarea y AWS pone las máquinas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Fargate"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "fargate",
+      "url": "../aws-cert-study/servicios/fargate.html"
+    }
+  },
+  {
+    "id": "lambda",
+    "nombre": "Lambda",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "frase": "Ejecuta tu código como funciones por evento, sin servidores y pagando por milisegundo",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 1,
+    "alias": [
+      "AWS Lambda"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "lambda",
+      "url": "../aws-cert-study/servicios/lambda.html"
+    }
+  },
+  {
+    "id": "lightsail",
+    "nombre": "Lightsail",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "frase": "Servidores privados virtuales con precio mensual fijo para webs y apps sencillas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Lightsail"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "lightsail",
+      "url": "../aws-cert-study/servicios/lightsail.html"
+    }
+  },
+  {
+    "id": "local-zones",
+    "nombre": "Local Zones",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "frase": "Lleva cómputo y almacenamiento a grandes ciudades para latencias de milisegundos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Local Zones"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "local-zones",
+      "url": "../aws-cert-study/servicios/local-zones.html"
+    }
+  },
+  {
+    "id": "outposts",
+    "nombre": "Outposts",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "frase": "Racks y servidores de AWS instalados en tu centro de datos para baja latencia local",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Outposts"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "outposts",
+      "url": "../aws-cert-study/servicios/outposts.html"
+    }
+  },
+  {
+    "id": "serverless-application-repository",
+    "nombre": "Serverless Application Repository",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "frase": "Publica y reutiliza aplicaciones sin servidor ya empaquetadas por ti o por la comunidad",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Serverless Application Repository"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "serverless-application-repository",
+      "url": "../aws-cert-study/servicios/serverless-application-repository.html"
+    }
+  },
+  {
+    "id": "vmware-cloud-on-aws",
+    "nombre": "VMware Cloud on AWS",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "frase": "Lleva tus cargas vSphere a hardware de AWS sin cambiar herramientas ni procesos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "vmware-cloud-on-aws",
+      "url": "../aws-cert-study/servicios/vmware-cloud-on-aws.html"
+    }
+  },
+  {
+    "id": "wavelength",
+    "nombre": "Wavelength",
+    "tipo": "tema",
+    "padre": "aws-compute",
+    "area": "cloud",
+    "frase": "Lleva cómputo al borde de las redes 5G de las operadoras para latencia mínima",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Wavelength"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "wavelength",
+      "url": "../aws-cert-study/servicios/wavelength.html"
+    }
+  },
+  {
+    "id": "ecr",
+    "nombre": "ECR",
+    "tipo": "tema",
+    "padre": "aws-containers",
+    "area": "cloud",
+    "frase": "Registro privado de imágenes Docker con escaneo de vulnerabilidades y réplica",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon ECR"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "ecr",
+      "url": "../aws-cert-study/servicios/ecr.html"
+    }
+  },
+  {
+    "id": "ecs",
+    "nombre": "ECS",
+    "tipo": "tema",
+    "padre": "aws-containers",
+    "area": "cloud",
+    "frase": "Orquestador de contenedores propio de AWS que ejecuta tareas y servicios en clústeres",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 1,
+    "alias": [
+      "Amazon ECS"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "ecs",
+      "url": "../aws-cert-study/servicios/ecs.html"
+    }
+  },
+  {
+    "id": "eks",
+    "nombre": "EKS",
+    "tipo": "tema",
+    "padre": "aws-containers",
+    "area": "cloud",
+    "frase": "Plano de control gestionado para clústeres del orquestador de contenedores de la CNCF",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 1,
+    "alias": [
+      "Amazon EKS"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "eks",
+      "url": "../aws-cert-study/servicios/eks.html"
+    }
+  },
+  {
+    "id": "support",
+    "nombre": "Support",
+    "tipo": "tema",
+    "padre": "aws-customer-enablement",
+    "area": "cloud",
+    "frase": "Planes de ayuda técnica con casos, tiempos de respuesta y un TAM en los superiores",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Support"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "support",
+      "url": "../aws-cert-study/servicios/support.html"
+    }
+  },
+  {
+    "id": "aurora",
+    "nombre": "Aurora",
+    "tipo": "tema",
+    "padre": "aws-databases",
+    "area": "cloud",
+    "frase": "Motor relacional de AWS compatible con MySQL y PostgreSQL, con almacenamiento en 3 AZ",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Aurora"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "aurora",
+      "url": "../aws-cert-study/servicios/aurora.html"
+    }
+  },
+  {
+    "id": "documentdb",
+    "nombre": "DocumentDB",
+    "tipo": "tema",
+    "padre": "aws-databases",
+    "area": "cloud",
+    "frase": "Base de datos de documentos JSON con consultas ricas e índices, para catálogos y perfiles",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon DocumentDB"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "documentdb",
+      "url": "../aws-cert-study/servicios/documentdb.html"
+    }
+  },
+  {
+    "id": "dynamodb",
+    "nombre": "DynamoDB",
+    "tipo": "tema",
+    "padre": "aws-databases",
+    "area": "cloud",
+    "accesos": [
+      "nosql-databases"
+    ],
+    "frase": "Base NoSQL clave-valor sin servidor con latencia de milisegundos a cualquier escala",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 1,
+    "alias": [
+      "Amazon DynamoDB"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "dynamodb",
+      "url": "../aws-cert-study/servicios/dynamodb.html"
+    }
+  },
+  {
+    "id": "elasticache",
+    "nombre": "ElastiCache",
+    "tipo": "tema",
+    "padre": "aws-databases",
+    "area": "cloud",
+    "frase": "Caché en memoria compatible con Redis, Valkey o Memcached para acelerar lecturas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon ElastiCache"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "elasticache",
+      "url": "../aws-cert-study/servicios/elasticache.html"
+    }
+  },
+  {
+    "id": "keyspaces",
+    "nombre": "Keyspaces",
+    "tipo": "tema",
+    "padre": "aws-databases",
+    "area": "cloud",
+    "frase": "Base de columnas anchas sin servidor compatible con CQL y sus drivers de código abierto",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Keyspaces"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "keyspaces",
+      "url": "../aws-cert-study/servicios/keyspaces.html"
+    }
+  },
+  {
+    "id": "memorydb",
+    "nombre": "MemoryDB",
+    "tipo": "tema",
+    "padre": "aws-databases",
+    "area": "cloud",
+    "frase": "Base de datos en memoria compatible con Valkey y Redis, duradera con registro multi-AZ",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon MemoryDB"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "memorydb",
+      "url": "../aws-cert-study/servicios/memorydb.html"
+    }
+  },
+  {
+    "id": "neptune",
+    "nombre": "Neptune",
+    "tipo": "tema",
+    "padre": "aws-databases",
+    "area": "cloud",
+    "frase": "Base de datos de grafos para relaciones: redes sociales, fraude y grafos de conocimiento",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Neptune"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "neptune",
+      "url": "../aws-cert-study/servicios/neptune.html"
+    }
+  },
+  {
+    "id": "rds",
+    "nombre": "RDS",
+    "tipo": "tema",
+    "padre": "aws-databases",
+    "area": "cloud",
+    "frase": "Base relacional gestionada con motores como Oracle, SQL Server o MariaDB: parches y copias",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 1,
+    "alias": [
+      "Amazon RDS"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "rds",
+      "url": "../aws-cert-study/servicios/rds.html"
+    }
+  },
+  {
+    "id": "timestream",
+    "nombre": "Timestream",
+    "tipo": "tema",
+    "padre": "aws-databases",
+    "area": "cloud",
+    "frase": "Base de datos de series temporales para métricas y lecturas con marca de tiempo",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Timestream"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "timestream",
+      "url": "../aws-cert-study/servicios/timestream.html"
+    }
+  },
+  {
+    "id": "cloudshell",
+    "nombre": "CloudShell",
+    "tipo": "tema",
+    "padre": "aws-developer-tools",
+    "area": "cloud",
+    "frase": "Terminal en el navegador ya autenticada, con las herramientas de línea de comandos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS CloudShell"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "cloudshell",
+      "url": "../aws-cert-study/servicios/cloudshell.html"
+    }
+  },
+  {
+    "id": "codeartifact",
+    "nombre": "CodeArtifact",
+    "tipo": "tema",
+    "padre": "aws-developer-tools",
+    "area": "cloud",
+    "frase": "Repositorio privado de paquetes npm, Maven o PyPI para compartir dependencias",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS CodeArtifact"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "codeartifact",
+      "url": "../aws-cert-study/servicios/codeartifact.html"
+    }
+  },
+  {
+    "id": "codebuild",
+    "nombre": "CodeBuild",
+    "tipo": "tema",
+    "padre": "aws-developer-tools",
+    "area": "cloud",
+    "frase": "Compila el código, ejecuta las pruebas y genera artefactos en entornos efímeros",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS CodeBuild"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "codebuild",
+      "url": "../aws-cert-study/servicios/codebuild.html"
+    }
+  },
+  {
+    "id": "codecommit",
+    "nombre": "CodeCommit",
+    "tipo": "tema",
+    "padre": "aws-developer-tools",
+    "area": "cloud",
+    "frase": "Repositorios Git privados y gestionados, integrados con IAM y las canalizaciones de AWS",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS CodeCommit"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "codecommit",
+      "url": "../aws-cert-study/servicios/codecommit.html"
+    }
+  },
+  {
+    "id": "codedeploy",
+    "nombre": "CodeDeploy",
+    "tipo": "tema",
+    "padre": "aws-developer-tools",
+    "area": "cloud",
+    "frase": "Despliega versiones en servidores, funciones o contenedores con estrategias blue/green",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS CodeDeploy"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "codedeploy",
+      "url": "../aws-cert-study/servicios/codedeploy.html"
+    }
+  },
+  {
+    "id": "codeguru",
+    "nombre": "CodeGuru",
+    "tipo": "tema",
+    "padre": "aws-developer-tools",
+    "area": "cloud",
+    "frase": "Revisa el código con aprendizaje automático y señala fallos y problemas de rendimiento",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon CodeGuru"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "codeguru",
+      "url": "../aws-cert-study/servicios/codeguru.html"
+    }
+  },
+  {
+    "id": "codepipeline",
+    "nombre": "CodePipeline",
+    "tipo": "tema",
+    "padre": "aws-developer-tools",
+    "area": "cloud",
+    "frase": "Encadena fuente, compilación, pruebas y despliegue en un flujo de entrega continua",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS CodePipeline"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "codepipeline",
+      "url": "../aws-cert-study/servicios/codepipeline.html"
+    }
+  },
+  {
+    "id": "distro-for-opentelemetry",
+    "nombre": "Distro for OpenTelemetry",
+    "tipo": "tema",
+    "padre": "aws-developer-tools",
+    "area": "cloud",
+    "frase": "Recoge trazas y métricas con un estándar abierto y las envía a X-Ray o CloudWatch",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Distro for OpenTelemetry"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "distro-for-opentelemetry",
+      "url": "../aws-cert-study/servicios/distro-for-opentelemetry.html"
+    }
+  },
+  {
+    "id": "kiro",
+    "nombre": "Kiro",
+    "tipo": "tema",
+    "padre": "aws-developer-tools",
+    "area": "cloud",
+    "frase": "IDE con agentes de IA que parte de especificaciones para planificar y escribir código",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "kiro",
+      "url": "../aws-cert-study/servicios/kiro.html"
+    }
+  },
+  {
+    "id": "sam",
+    "nombre": "SAM",
+    "tipo": "tema",
+    "padre": "aws-developer-tools",
+    "area": "cloud",
+    "frase": "Plantillas abreviadas para definir, probar en local y desplegar aplicaciones sin servidor",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS SAM"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "sam",
+      "url": "../aws-cert-study/servicios/sam.html"
+    }
+  },
+  {
+    "id": "strands-agents",
+    "nombre": "Strands Agents",
+    "tipo": "tema",
+    "padre": "aws-developer-tools",
+    "area": "cloud",
+    "frase": "SDK de código abierto para crear agentes de IA en Python con unas pocas líneas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "strands-agents",
+      "url": "../aws-cert-study/servicios/strands-agents.html"
+    }
+  },
+  {
+    "id": "x-ray",
+    "nombre": "X-Ray",
+    "tipo": "tema",
+    "padre": "aws-developer-tools",
+    "area": "cloud",
+    "frase": "Traza cada petición entre servicios y dibuja un mapa con latencias y errores",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS X-Ray"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "x-ray",
+      "url": "../aws-cert-study/servicios/x-ray.html"
+    }
+  },
+  {
+    "id": "appstream-2-0",
+    "nombre": "WorkSpaces Applications",
+    "tipo": "tema",
+    "padre": "aws-end-user-computing",
+    "area": "cloud",
+    "frase": "Transmite aplicaciones de escritorio al navegador sin instalarlas en el equipo",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon WorkSpaces Applications"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "appstream-2-0",
+      "url": "../aws-cert-study/servicios/appstream-2-0.html"
+    }
+  },
+  {
+    "id": "workspaces",
+    "nombre": "WorkSpaces",
+    "tipo": "tema",
+    "padre": "aws-end-user-computing",
+    "area": "cloud",
+    "frase": "Escritorios Windows o Linux completos en la nube accesibles desde cualquier equipo",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon WorkSpaces"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "workspaces",
+      "url": "../aws-cert-study/servicios/workspaces.html"
+    }
+  },
+  {
+    "id": "workspaces-secure-browser",
+    "nombre": "WorkSpaces Secure Browser",
+    "tipo": "tema",
+    "padre": "aws-end-user-computing",
+    "area": "cloud",
+    "frase": "Navegador aislado en la nube para usar webs internas sin dejar datos en el equipo",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon WorkSpaces Secure Browser"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "workspaces-secure-browser",
+      "url": "../aws-cert-study/servicios/workspaces-secure-browser.html"
+    }
+  },
+  {
+    "id": "amplify",
+    "nombre": "Amplify",
+    "tipo": "tema",
+    "padre": "aws-frontend-web-mobile",
+    "area": "cloud",
+    "frase": "Crea y aloja apps web y móviles full stack con autenticación y datos ya conectados",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Amplify"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "amplify",
+      "url": "../aws-cert-study/servicios/amplify.html"
+    }
+  },
+  {
+    "id": "api-gateway",
+    "nombre": "API Gateway",
+    "tipo": "tema",
+    "padre": "aws-frontend-web-mobile",
+    "area": "cloud",
+    "frase": "Expone tus backends como endpoints REST, HTTP o WebSocket con autorización y cuotas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 1,
+    "alias": [
+      "Amazon API Gateway"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "api-gateway",
+      "url": "../aws-cert-study/servicios/api-gateway.html"
+    }
+  },
+  {
+    "id": "device-farm",
+    "nombre": "Device Farm",
+    "tipo": "tema",
+    "padre": "aws-frontend-web-mobile",
+    "area": "cloud",
+    "frase": "Prueba tu app en móviles y navegadores reales alojados en la nube",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Device Farm"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "device-farm",
+      "url": "../aws-cert-study/servicios/device-farm.html"
+    }
+  },
+  {
+    "id": "iot-core",
+    "nombre": "IoT Core",
+    "tipo": "tema",
+    "padre": "aws-iot",
+    "area": "cloud",
+    "frase": "Conecta millones de dispositivos por MQTT y enruta sus mensajes con reglas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS IoT Core"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "iot-core",
+      "url": "../aws-cert-study/servicios/iot-core.html"
+    }
+  },
+  {
+    "id": "iot-device-defender",
+    "nombre": "IoT Device Defender",
+    "tipo": "tema",
+    "padre": "aws-iot",
+    "area": "cloud",
+    "frase": "Audita la configuración de tu flota de sensores y alerta de comportamientos anómalos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS IoT Device Defender"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "iot-device-defender",
+      "url": "../aws-cert-study/servicios/iot-device-defender.html"
+    }
+  },
+  {
+    "id": "iot-device-management",
+    "nombre": "IoT Device Management",
+    "tipo": "tema",
+    "padre": "aws-iot",
+    "area": "cloud",
+    "frase": "Registra, organiza, actualiza por OTA y controla en remoto flotas de sensores",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS IoT Device Management"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "iot-device-management",
+      "url": "../aws-cert-study/servicios/iot-device-management.html"
+    }
+  },
+  {
+    "id": "iot-greengrass",
+    "nombre": "IoT Greengrass",
+    "tipo": "tema",
+    "padre": "aws-iot",
+    "area": "cloud",
+    "frase": "Ejecuta funciones y modelos de ML en dispositivos del borde, incluso sin conexión",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS IoT Greengrass"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "iot-greengrass",
+      "url": "../aws-cert-study/servicios/iot-greengrass.html"
+    }
+  },
+  {
+    "id": "iot-sitewise",
+    "nombre": "IoT SiteWise",
+    "tipo": "tema",
+    "padre": "aws-iot",
+    "area": "cloud",
+    "frase": "Recoge y modela datos de equipos industriales para vigilar el rendimiento de plantas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS IoT SiteWise"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "iot-sitewise",
+      "url": "../aws-cert-study/servicios/iot-sitewise.html"
+    }
+  },
+  {
+    "id": "amazon-q",
+    "nombre": "Q",
+    "tipo": "tema",
+    "padre": "aws-machine-learning",
+    "area": "cloud",
+    "frase": "Asistente de IA generativa que responde dudas y escribe código en tu IDE y la consola",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Q"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "amazon-q",
+      "url": "../aws-cert-study/servicios/amazon-q.html"
+    }
+  },
+  {
+    "id": "bedrock",
+    "nombre": "Bedrock",
+    "tipo": "tema",
+    "padre": "aws-machine-learning",
+    "area": "cloud",
+    "frase": "Acceso por API a modelos fundacionales de varias empresas para crear apps de IA",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Bedrock"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "bedrock",
+      "url": "../aws-cert-study/servicios/bedrock.html"
+    }
+  },
+  {
+    "id": "bedrock-agentcore",
+    "nombre": "Bedrock AgentCore",
+    "tipo": "tema",
+    "padre": "aws-machine-learning",
+    "area": "cloud",
+    "frase": "Ejecuta y protege agentes de IA en producción con memoria, identidad y observabilidad",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Bedrock AgentCore"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "bedrock-agentcore",
+      "url": "../aws-cert-study/servicios/bedrock-agentcore.html"
+    }
+  },
+  {
+    "id": "comprehend",
+    "nombre": "Comprehend",
+    "tipo": "tema",
+    "padre": "aws-machine-learning",
+    "area": "cloud",
+    "frase": "Analiza textos para sacar sentimiento, entidades, idioma y temas con NLP gestionado",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Comprehend"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "comprehend",
+      "url": "../aws-cert-study/servicios/comprehend.html"
+    }
+  },
+  {
+    "id": "fraud-detector",
+    "nombre": "Fraud Detector",
+    "tipo": "tema",
+    "padre": "aws-machine-learning",
+    "area": "cloud",
+    "frase": "Modelos de aprendizaje automático que puntúan pagos y altas sospechosas de fraude",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Fraud Detector"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "fraud-detector",
+      "url": "../aws-cert-study/servicios/fraud-detector.html"
+    }
+  },
+  {
+    "id": "kendra",
+    "nombre": "Kendra",
+    "tipo": "tema",
+    "padre": "aws-machine-learning",
+    "area": "cloud",
+    "frase": "Buscador empresarial inteligente que responde preguntas sobre tus documentos internos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Kendra"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "kendra",
+      "url": "../aws-cert-study/servicios/kendra.html"
+    }
+  },
+  {
+    "id": "lex",
+    "nombre": "Lex",
+    "tipo": "tema",
+    "padre": "aws-machine-learning",
+    "area": "cloud",
+    "frase": "Crea chatbots de voz y texto que entienden intenciones en lenguaje natural",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Lex"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "lex",
+      "url": "../aws-cert-study/servicios/lex.html"
+    }
+  },
+  {
+    "id": "nova",
+    "nombre": "Nova",
+    "tipo": "tema",
+    "padre": "aws-machine-learning",
+    "area": "cloud",
+    "frase": "Familia de modelos fundacionales propios de AWS para texto, imagen y vídeo",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Nova"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "nova",
+      "url": "../aws-cert-study/servicios/nova.html"
+    }
+  },
+  {
+    "id": "personalize",
+    "nombre": "Personalize",
+    "tipo": "tema",
+    "padre": "aws-machine-learning",
+    "area": "cloud",
+    "frase": "Recomendaciones personalizadas en tiempo real como las de una tienda online",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Personalize"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "personalize",
+      "url": "../aws-cert-study/servicios/personalize.html"
+    }
+  },
+  {
+    "id": "polly",
+    "nombre": "Polly",
+    "tipo": "tema",
+    "padre": "aws-machine-learning",
+    "area": "cloud",
+    "frase": "Convierte texto en voz natural en muchos idiomas para narrar o dar voz a apps",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Polly"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "polly",
+      "url": "../aws-cert-study/servicios/polly.html"
+    }
+  },
+  {
+    "id": "rekognition",
+    "nombre": "Rekognition",
+    "tipo": "tema",
+    "padre": "aws-machine-learning",
+    "area": "cloud",
+    "frase": "Analiza imágenes y vídeos para detectar caras, objetos, texto y contenido inapropiado",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Rekognition"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "rekognition",
+      "url": "../aws-cert-study/servicios/rekognition.html"
+    }
+  },
+  {
+    "id": "sagemaker-ai",
+    "nombre": "SageMaker AI",
+    "tipo": "tema",
+    "padre": "aws-machine-learning",
+    "area": "cloud",
+    "frase": "Plataforma para preparar datos, entrenar, ajustar y desplegar tus propios modelos de ML",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon SageMaker AI"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "sagemaker-ai",
+      "url": "../aws-cert-study/servicios/sagemaker-ai.html"
+    }
+  },
+  {
+    "id": "textract",
+    "nombre": "Textract",
+    "tipo": "tema",
+    "padre": "aws-machine-learning",
+    "area": "cloud",
+    "frase": "Extrae texto, tablas y campos de formularios de documentos escaneados",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Textract"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "textract",
+      "url": "../aws-cert-study/servicios/textract.html"
+    }
+  },
+  {
+    "id": "transcribe",
+    "nombre": "Transcribe",
+    "tipo": "tema",
+    "padre": "aws-machine-learning",
+    "area": "cloud",
+    "frase": "Convierte audio de voz en texto, con marcas de tiempo e identificación de hablantes",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Transcribe"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "transcribe",
+      "url": "../aws-cert-study/servicios/transcribe.html"
+    }
+  },
+  {
+    "id": "transform",
+    "nombre": "Transform",
+    "tipo": "tema",
+    "padre": "aws-machine-learning",
+    "area": "cloud",
+    "frase": "Agentes de IA que modernizan código heredado: .NET, mainframe y cargas de VMware",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Transform"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "transform",
+      "url": "../aws-cert-study/servicios/transform.html"
+    }
+  },
+  {
+    "id": "translate",
+    "nombre": "Translate",
+    "tipo": "tema",
+    "padre": "aws-machine-learning",
+    "area": "cloud",
+    "frase": "Traduce textos entre decenas de idiomas con traducción automática neuronal",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Translate"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "translate",
+      "url": "../aws-cert-study/servicios/translate.html"
+    }
+  },
+  {
+    "id": "appconfig",
+    "nombre": "AppConfig",
     "tipo": "tema",
     "padre": "aws-operations",
     "area": "cloud",
+    "frase": "Publica cambios de configuración y feature flags de forma gradual y con marcha atrás",
     "estado": "pendiente",
     "evaluable": false,
-    "prioridad": 2,
+    "prioridad": 3,
+    "alias": [
+      "AWS AppConfig"
+    ],
     "externo": {
       "sitio": "aws-cert-study",
-      "id": "systems-manager",
-      "url": "../aws-cert-study/servicios/systems-manager.html"
+      "id": "appconfig",
+      "url": "../aws-cert-study/servicios/appconfig.html"
+    }
+  },
+  {
+    "id": "cli",
+    "nombre": "CLI",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Herramienta que instalas en tu equipo para controlar los servicios con comandos y scripts",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS CLI"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "cli",
+      "url": "../aws-cert-study/servicios/cli.html"
     }
   },
   {
@@ -2555,9 +4239,10 @@
     "accesos": [
       "iac"
     ],
+    "frase": "Crea y actualiza pilas de recursos a partir de plantillas declarativas YAML o JSON",
     "estado": "pendiente",
     "evaluable": false,
-    "prioridad": 2,
+    "prioridad": 1,
     "alias": [
       "AWS CloudFormation"
     ],
@@ -2569,6 +4254,1445 @@
     "relacionados": [
       "terraform"
     ]
+  },
+  {
+    "id": "cloudtrail",
+    "nombre": "CloudTrail",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Registra quién hizo cada llamada a la API de tu cuenta, cuándo y desde dónde",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS CloudTrail"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "cloudtrail",
+      "url": "../aws-cert-study/servicios/cloudtrail.html"
+    }
+  },
+  {
+    "id": "cloudwatch",
+    "nombre": "CloudWatch",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Recoge métricas y logs, dibuja paneles y lanza alarmas cuando algo se sale de rango",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 1,
+    "alias": [
+      "Amazon CloudWatch"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "cloudwatch",
+      "url": "../aws-cert-study/servicios/cloudwatch.html"
+    }
+  },
+  {
+    "id": "compute-optimizer",
+    "nombre": "Compute Optimizer",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Sugiere el tamaño idóneo de instancias, volúmenes y funciones según su uso real",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Compute Optimizer"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "compute-optimizer",
+      "url": "../aws-cert-study/servicios/compute-optimizer.html"
+    }
+  },
+  {
+    "id": "config",
+    "nombre": "Config",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Guarda el historial de configuración de tus recursos y evalúa si cumplen tus reglas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Config"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "config",
+      "url": "../aws-cert-study/servicios/config.html"
+    }
+  },
+  {
+    "id": "control-tower",
+    "nombre": "Control Tower",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Monta una landing zone multicuenta con barreras de protección predefinidas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Control Tower"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "control-tower",
+      "url": "../aws-cert-study/servicios/control-tower.html"
+    }
+  },
+  {
+    "id": "fault-injection-service",
+    "nombre": "Fault Injection Service",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Provoca fallos controlados en tus recursos para probar cómo resiste la aplicación",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Fault Injection Service"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "fault-injection-service",
+      "url": "../aws-cert-study/servicios/fault-injection-service.html"
+    }
+  },
+  {
+    "id": "health-dashboard",
+    "nombre": "Health Dashboard",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Te avisa de incidencias y mantenimientos de AWS que afectan a tus recursos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Health Dashboard"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "health-dashboard",
+      "url": "../aws-cert-study/servicios/health-dashboard.html"
+    }
+  },
+  {
+    "id": "license-manager",
+    "nombre": "License Manager",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Controla cuántas licencias de software usas y evita excederlas o incumplirlas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS License Manager"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "license-manager",
+      "url": "../aws-cert-study/servicios/license-manager.html"
+    }
+  },
+  {
+    "id": "managed-grafana",
+    "nombre": "Managed Grafana",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Paneles de observabilidad de código abierto gestionados, con varias fuentes de datos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Managed Grafana"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "managed-grafana",
+      "url": "../aws-cert-study/servicios/managed-grafana.html"
+    }
+  },
+  {
+    "id": "managed-service-for-prometheus",
+    "nombre": "Managed Service for Prometheus",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Guarda y consulta métricas de contenedores y Kubernetes con un estándar abierto",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Managed Service for Prometheus"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "managed-service-for-prometheus",
+      "url": "../aws-cert-study/servicios/managed-service-for-prometheus.html"
+    }
+  },
+  {
+    "id": "management-console",
+    "nombre": "Management Console",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Interfaz web de clics y formularios para gestionar tus recursos sin escribir comandos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Management Console"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "management-console",
+      "url": "../aws-cert-study/servicios/management-console.html"
+    }
+  },
+  {
+    "id": "organizations",
+    "nombre": "Organizations",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Agrupa cuentas en unidades, unifica la factura y aplica SCP a todas a la vez",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Organizations"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "organizations",
+      "url": "../aws-cert-study/servicios/organizations.html"
+    }
+  },
+  {
+    "id": "resilience-hub",
+    "nombre": "Resilience Hub",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Evalúa si tu aplicación cumple sus objetivos de RTO y RPO y propone cómo mejorarla",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Resilience Hub"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "resilience-hub",
+      "url": "../aws-cert-study/servicios/resilience-hub.html"
+    }
+  },
+  {
+    "id": "service-catalog",
+    "nombre": "Service Catalog",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Portafolio de productos aprobados por TI, con restricciones, que los equipos lanzan solos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Service Catalog"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "service-catalog",
+      "url": "../aws-cert-study/servicios/service-catalog.html"
+    }
+  },
+  {
+    "id": "service-quotas",
+    "nombre": "Service Quotas",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Consulta los límites de tu cuenta por servicio y pide que te los amplíen",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "service-quotas",
+      "url": "../aws-cert-study/servicios/service-quotas.html"
+    }
+  },
+  {
+    "id": "systems-manager",
+    "nombre": "Systems Manager",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Parchea, ejecuta comandos y abre sesiones en tus instancias sin SSH ni bastiones",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 1,
+    "alias": [
+      "AWS Systems Manager"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "systems-manager",
+      "url": "../aws-cert-study/servicios/systems-manager.html"
+    }
+  },
+  {
+    "id": "trusted-advisor",
+    "nombre": "Trusted Advisor",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Revisa tu cuenta y recomienda ahorros, mejoras de seguridad y límites a punto de agotarse",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Trusted Advisor"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "trusted-advisor",
+      "url": "../aws-cert-study/servicios/trusted-advisor.html"
+    }
+  },
+  {
+    "id": "well-architected-tool",
+    "nombre": "Well-Architected Tool",
+    "tipo": "tema",
+    "padre": "aws-operations",
+    "area": "cloud",
+    "frase": "Evalúa tus cargas con preguntas sobre los seis pilares de buenas prácticas de AWS",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Well-Architected Tool"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "well-architected-tool",
+      "url": "../aws-cert-study/servicios/well-architected-tool.html"
+    }
+  },
+  {
+    "id": "elastic-transcoder",
+    "nombre": "Elastic Transcoder",
+    "tipo": "tema",
+    "padre": "aws-media-services",
+    "area": "cloud",
+    "frase": "Convierte ficheros de vídeo de S3 a formatos aptos para móviles, webs y televisores",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Elastic Transcoder"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "elastic-transcoder",
+      "url": "../aws-cert-study/servicios/elastic-transcoder.html"
+    }
+  },
+  {
+    "id": "kinesis-video-streams",
+    "nombre": "Kinesis Video Streams",
+    "tipo": "tema",
+    "padre": "aws-media-services",
+    "area": "cloud",
+    "frase": "Ingiere vídeo de cámaras en directo y lo guarda para reproducirlo o analizarlo",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Kinesis Video Streams"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "kinesis-video-streams",
+      "url": "../aws-cert-study/servicios/kinesis-video-streams.html"
+    }
+  },
+  {
+    "id": "application-discovery-service",
+    "nombre": "Application Discovery Service",
+    "tipo": "tema",
+    "padre": "aws-migration-and-transfer",
+    "area": "cloud",
+    "frase": "Inventaría los servidores de tu centro de datos y sus dependencias antes de migrar",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Application Discovery Service"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "application-discovery-service",
+      "url": "../aws-cert-study/servicios/application-discovery-service.html"
+    }
+  },
+  {
+    "id": "application-migration-service",
+    "nombre": "Transform MGN",
+    "tipo": "tema",
+    "padre": "aws-migration-and-transfer",
+    "area": "cloud",
+    "frase": "Replica servidores físicos o virtuales a la nube tal cual, para migrarlos sin rehacer",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Transform MGN"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "application-migration-service",
+      "url": "../aws-cert-study/servicios/application-migration-service.html"
+    }
+  },
+  {
+    "id": "data-transfer-terminal",
+    "nombre": "Data Transfer Terminal",
+    "tipo": "tema",
+    "padre": "aws-migration-and-transfer",
+    "area": "cloud",
+    "frase": "Sedes físicas donde llevas tus discos y subes datos a AWS por enlaces muy rápidos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Data Transfer Terminal"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "data-transfer-terminal",
+      "url": "../aws-cert-study/servicios/data-transfer-terminal.html"
+    }
+  },
+  {
+    "id": "datasync",
+    "nombre": "DataSync",
+    "tipo": "tema",
+    "padre": "aws-migration-and-transfer",
+    "area": "cloud",
+    "frase": "Tareas de copia en línea de grandes volúmenes desde NAS o servidores a S3, EFS o FSx",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS DataSync"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "datasync",
+      "url": "../aws-cert-study/servicios/datasync.html"
+    }
+  },
+  {
+    "id": "dms",
+    "nombre": "DMS",
+    "tipo": "tema",
+    "padre": "aws-migration-and-transfer",
+    "area": "cloud",
+    "frase": "Migra bases de datos con la de origen en marcha y replica los cambios hasta el corte",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS DMS"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "dms",
+      "url": "../aws-cert-study/servicios/dms.html"
+    }
+  },
+  {
+    "id": "migration-evaluator",
+    "nombre": "Migration Evaluator",
+    "tipo": "tema",
+    "padre": "aws-migration-and-transfer",
+    "area": "cloud",
+    "frase": "Estima el coste en la nube de tu centro de datos para preparar el caso de negocio",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "migration-evaluator",
+      "url": "../aws-cert-study/servicios/migration-evaluator.html"
+    }
+  },
+  {
+    "id": "migration-hub",
+    "nombre": "Migration Hub",
+    "tipo": "tema",
+    "padre": "aws-migration-and-transfer",
+    "area": "cloud",
+    "frase": "Panel único para seguir el progreso de todas tus migraciones de aplicaciones",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Migration Hub"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "migration-hub",
+      "url": "../aws-cert-study/servicios/migration-hub.html"
+    }
+  },
+  {
+    "id": "sct",
+    "nombre": "SCT",
+    "tipo": "tema",
+    "padre": "aws-migration-and-transfer",
+    "area": "cloud",
+    "frase": "Traduce esquemas y código SQL de un motor de bases de datos a otro distinto",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS SCT"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "sct",
+      "url": "../aws-cert-study/servicios/sct.html"
+    }
+  },
+  {
+    "id": "snow-family",
+    "nombre": "Snow Family",
+    "tipo": "tema",
+    "padre": "aws-migration-and-transfer",
+    "area": "cloud",
+    "frase": "Dispositivos físicos resistentes para mover terabytes sin red o procesar en el borde",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Snow Family"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "snow-family",
+      "url": "../aws-cert-study/servicios/snow-family.html"
+    }
+  },
+  {
+    "id": "transfer-family",
+    "nombre": "Transfer Family",
+    "tipo": "tema",
+    "padre": "aws-migration-and-transfer",
+    "area": "cloud",
+    "frase": "Servidores SFTP, FTPS y FTP gestionados que guardan los ficheros en S3 o EFS",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Transfer Family"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "transfer-family",
+      "url": "../aws-cert-study/servicios/transfer-family.html"
+    }
+  },
+  {
+    "id": "client-vpn",
+    "nombre": "Client VPN",
+    "tipo": "tema",
+    "padre": "aws-networking",
+    "area": "cloud",
+    "frase": "Da a empleados en remoto un túnel cifrado desde su portátil hasta tus redes privadas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Client VPN"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "client-vpn",
+      "url": "../aws-cert-study/servicios/client-vpn.html"
+    }
+  },
+  {
+    "id": "cloud-wan",
+    "nombre": "Cloud WAN",
+    "tipo": "tema",
+    "padre": "aws-networking",
+    "area": "cloud",
+    "frase": "Red global gestionada que une regiones y oficinas con una política central declarativa",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Cloud WAN"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "cloud-wan",
+      "url": "../aws-cert-study/servicios/cloud-wan.html"
+    }
+  },
+  {
+    "id": "cloudfront",
+    "nombre": "CloudFront",
+    "tipo": "tema",
+    "padre": "aws-networking",
+    "area": "cloud",
+    "frase": "Red de distribución que cachea tu web y tus vídeos en ubicaciones cerca del usuario",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 1,
+    "alias": [
+      "Amazon CloudFront"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "cloudfront",
+      "url": "../aws-cert-study/servicios/cloudfront.html"
+    }
+  },
+  {
+    "id": "direct-connect",
+    "nombre": "Direct Connect",
+    "tipo": "tema",
+    "padre": "aws-networking",
+    "area": "cloud",
+    "frase": "Enlace de red dedicado y privado entre tu centro de datos y la nube, sin Internet",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Direct Connect"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "direct-connect",
+      "url": "../aws-cert-study/servicios/direct-connect.html"
+    }
+  },
+  {
+    "id": "elb",
+    "nombre": "Elastic Load Balancing (ELB)",
+    "tipo": "tema",
+    "padre": "aws-networking",
+    "area": "cloud",
+    "frase": "Reparte el tráfico entre instancias, contenedores o IP y deja fuera los que fallan",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "elb",
+      "url": "../aws-cert-study/servicios/elb.html"
+    }
+  },
+  {
+    "id": "global-accelerator",
+    "nombre": "Global Accelerator",
+    "tipo": "tema",
+    "padre": "aws-networking",
+    "area": "cloud",
+    "frase": "Dos IP estáticas anycast que llevan a tus usuarios por la red troncal de AWS",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Global Accelerator"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "global-accelerator",
+      "url": "../aws-cert-study/servicios/global-accelerator.html"
+    }
+  },
+  {
+    "id": "privatelink",
+    "nombre": "PrivateLink",
+    "tipo": "tema",
+    "padre": "aws-networking",
+    "area": "cloud",
+    "frase": "Accede a servicios de otra VPC o de AWS por IP privada, sin salir a Internet",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS PrivateLink"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "privatelink",
+      "url": "../aws-cert-study/servicios/privatelink.html"
+    }
+  },
+  {
+    "id": "route-53",
+    "nombre": "Route 53",
+    "tipo": "tema",
+    "padre": "aws-networking",
+    "area": "cloud",
+    "frase": "DNS gestionado que registra dominios y enruta por latencia, geografía o salud",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Route 53"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "route-53",
+      "url": "../aws-cert-study/servicios/route-53.html"
+    }
+  },
+  {
+    "id": "site-to-site-vpn",
+    "nombre": "Site-to-Site VPN",
+    "tipo": "tema",
+    "padre": "aws-networking",
+    "area": "cloud",
+    "frase": "Túnel IPsec cifrado sobre Internet entre tu red local y tus redes privadas en AWS",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Site-to-Site VPN"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "site-to-site-vpn",
+      "url": "../aws-cert-study/servicios/site-to-site-vpn.html"
+    }
+  },
+  {
+    "id": "transit-gateway",
+    "nombre": "Transit Gateway",
+    "tipo": "tema",
+    "padre": "aws-networking",
+    "area": "cloud",
+    "frase": "Hub central que interconecta cientos de VPC y redes locales en estrella",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Transit Gateway"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "transit-gateway",
+      "url": "../aws-cert-study/servicios/transit-gateway.html"
+    }
+  },
+  {
+    "id": "vpc",
+    "nombre": "VPC",
+    "tipo": "tema",
+    "padre": "aws-networking",
+    "area": "cloud",
+    "frase": "Red aislada y lógica en la nube con subredes, tablas de rutas y grupos de seguridad",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 1,
+    "alias": [
+      "Amazon VPC"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "vpc",
+      "url": "../aws-cert-study/servicios/vpc.html"
+    }
+  },
+  {
+    "id": "vpc-lattice",
+    "nombre": "VPC Lattice",
+    "tipo": "tema",
+    "padre": "aws-networking",
+    "area": "cloud",
+    "frase": "Conecta y protege la comunicación entre servicios de varias cuentas sin gestionar redes",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon VPC Lattice"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "vpc-lattice",
+      "url": "../aws-cert-study/servicios/vpc-lattice.html"
+    }
+  },
+  {
+    "id": "acm",
+    "nombre": "Certificate Manager (ACM)",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Emite y renueva automáticamente los certificados TLS de tus dominios para webs cifradas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Certificate Manager (ACM)"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "acm",
+      "url": "../aws-cert-study/servicios/acm.html"
+    }
+  },
+  {
+    "id": "artifact",
+    "nombre": "Artifact",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Descarga los informes ISO, SOC y PCI DSS que acreditan cómo cumple AWS y acepta acuerdos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Artifact"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "artifact",
+      "url": "../aws-cert-study/servicios/artifact.html"
+    }
+  },
+  {
+    "id": "audit-manager",
+    "nombre": "Audit Manager",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Recoge evidencias automáticas para preparar auditorías frente a marcos como PCI DSS",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Audit Manager"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "audit-manager",
+      "url": "../aws-cert-study/servicios/audit-manager.html"
+    }
+  },
+  {
+    "id": "cloudhsm",
+    "nombre": "CloudHSM",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Módulos de hardware dedicados de un solo cliente para guardar tus claves criptográficas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS CloudHSM"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "cloudhsm",
+      "url": "../aws-cert-study/servicios/cloudhsm.html"
+    }
+  },
+  {
+    "id": "cognito",
+    "nombre": "Cognito",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "accesos": [
+      "identity-access-management"
+    ],
+    "frase": "Registro e inicio de sesión de los clientes de tus apps, con tokens JWT y login social",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 1,
+    "alias": [
+      "AWS Cognito",
+      "Amazon Cognito"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "cognito",
+      "url": "../aws-cert-study/servicios/cognito.html"
+    }
+  },
+  {
+    "id": "detective",
+    "nombre": "Detective",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Investiga el origen de hallazgos de seguridad con gráficos de relaciones entre eventos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Detective"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "detective",
+      "url": "../aws-cert-study/servicios/detective.html"
+    }
+  },
+  {
+    "id": "directory-service",
+    "nombre": "Directory Service",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Controladores de dominio de Microsoft AD gestionados o un conector hacia tu AD local",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Directory Service"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "directory-service",
+      "url": "../aws-cert-study/servicios/directory-service.html"
+    }
+  },
+  {
+    "id": "firewall-manager",
+    "nombre": "Firewall Manager",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Impone reglas de cortafuegos y de protección DDoS iguales en todas tus cuentas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Firewall Manager"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "firewall-manager",
+      "url": "../aws-cert-study/servicios/firewall-manager.html"
+    }
+  },
+  {
+    "id": "guardduty",
+    "nombre": "GuardDuty",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Detecta amenazas analizando logs de red, DNS y actividad de la cuenta con ML",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon GuardDuty"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "guardduty",
+      "url": "../aws-cert-study/servicios/guardduty.html"
+    }
+  },
+  {
+    "id": "iam",
+    "nombre": "IAM",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Usuarios, roles y políticas que deciden quién puede hacer qué en tu cuenta",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 1,
+    "alias": [
+      "AWS IAM"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "iam",
+      "url": "../aws-cert-study/servicios/iam.html"
+    }
+  },
+  {
+    "id": "iam-identity-center",
+    "nombre": "IAM Identity Center",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Inicio de sesión único de tus empleados en todas las cuentas y apps de la empresa",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS IAM Identity Center"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "iam-identity-center",
+      "url": "../aws-cert-study/servicios/iam-identity-center.html"
+    }
+  },
+  {
+    "id": "inspector",
+    "nombre": "Inspector",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Escanea instancias, imágenes de contenedor y funciones en busca de CVE y exposición",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Inspector"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "inspector",
+      "url": "../aws-cert-study/servicios/inspector.html"
+    }
+  },
+  {
+    "id": "kms",
+    "nombre": "KMS",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Crea y controla claves de cifrado gestionadas e integradas con casi todos los servicios",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS KMS"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "kms",
+      "url": "../aws-cert-study/servicios/kms.html"
+    }
+  },
+  {
+    "id": "macie",
+    "nombre": "Macie",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Descubre datos personales y sensibles en tus buckets de S3 con aprendizaje automático",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Macie"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "macie",
+      "url": "../aws-cert-study/servicios/macie.html"
+    }
+  },
+  {
+    "id": "network-firewall",
+    "nombre": "Network Firewall",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Cortafuegos gestionado con inspección de paquetes e IPS para el tráfico de tu VPC",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Network Firewall"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "network-firewall",
+      "url": "../aws-cert-study/servicios/network-firewall.html"
+    }
+  },
+  {
+    "id": "private-ca",
+    "nombre": "Private CA",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Emite certificados privados para identificar servidores, dispositivos y servicios internos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Private CA"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "private-ca",
+      "url": "../aws-cert-study/servicios/private-ca.html"
+    }
+  },
+  {
+    "id": "ram",
+    "nombre": "RAM",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Comparte subredes, licencias y otros recursos con otras cuentas sin duplicarlos",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS RAM"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "ram",
+      "url": "../aws-cert-study/servicios/ram.html"
+    }
+  },
+  {
+    "id": "secrets-manager",
+    "nombre": "Secrets Manager",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Guarda contraseñas y claves de API cifradas y las rota automáticamente cada cierto tiempo",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Secrets Manager"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "secrets-manager",
+      "url": "../aws-cert-study/servicios/secrets-manager.html"
+    }
+  },
+  {
+    "id": "security-hub",
+    "nombre": "Security Hub",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Reúne hallazgos de seguridad de varios servicios y puntúa tu cumplimiento de normas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Security Hub"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "security-hub",
+      "url": "../aws-cert-study/servicios/security-hub.html"
+    }
+  },
+  {
+    "id": "security-lake",
+    "nombre": "Security Lake",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Centraliza en S3 los registros de seguridad de cuentas y regiones en formato OCSF",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Security Lake"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "security-lake",
+      "url": "../aws-cert-study/servicios/security-lake.html"
+    }
+  },
+  {
+    "id": "shield",
+    "nombre": "Shield",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Protege contra ataques DDoS, gratis en capa básica y con equipo de respuesta en avanzada",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Shield"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "shield",
+      "url": "../aws-cert-study/servicios/shield.html"
+    }
+  },
+  {
+    "id": "sts",
+    "nombre": "STS",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Emite credenciales temporales para asumir roles o federar identidades externas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS STS"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "sts",
+      "url": "../aws-cert-study/servicios/sts.html"
+    }
+  },
+  {
+    "id": "verified-access",
+    "nombre": "Verified Access",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Da acceso a apps internas sin VPN, comprobando identidad y dispositivo en cada petición",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Verified Access"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "verified-access",
+      "url": "../aws-cert-study/servicios/verified-access.html"
+    }
+  },
+  {
+    "id": "verified-permissions",
+    "nombre": "Verified Permissions",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Autoriza acciones dentro de tus aplicaciones con políticas Cedar fuera del código",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Verified Permissions"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "verified-permissions",
+      "url": "../aws-cert-study/servicios/verified-permissions.html"
+    }
+  },
+  {
+    "id": "waf",
+    "nombre": "WAF",
+    "tipo": "tema",
+    "padre": "aws-security",
+    "area": "cloud",
+    "frase": "Filtra peticiones HTTP con reglas contra inyección SQL, XSS, bots y exceso de tráfico",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS WAF"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "waf",
+      "url": "../aws-cert-study/servicios/waf.html"
+    }
+  },
+  {
+    "id": "backup",
+    "nombre": "Backup",
+    "tipo": "tema",
+    "padre": "aws-storage",
+    "area": "cloud",
+    "frase": "Centraliza y programa copias de seguridad de muchos servicios con políticas y bóvedas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Backup"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "backup",
+      "url": "../aws-cert-study/servicios/backup.html"
+    }
+  },
+  {
+    "id": "data-lifecycle-manager",
+    "nombre": "Data Lifecycle Manager",
+    "tipo": "tema",
+    "padre": "aws-storage",
+    "area": "cloud",
+    "frase": "Automatiza la creación, copia y borrado de instantáneas EBS y AMI con políticas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon Data Lifecycle Manager"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "data-lifecycle-manager",
+      "url": "../aws-cert-study/servicios/data-lifecycle-manager.html"
+    }
+  },
+  {
+    "id": "ebs",
+    "nombre": "EBS",
+    "tipo": "tema",
+    "padre": "aws-storage",
+    "area": "cloud",
+    "frase": "Discos de bloque persistentes que se conectan a una instancia, con instantáneas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 1,
+    "alias": [
+      "Amazon EBS"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "ebs",
+      "url": "../aws-cert-study/servicios/ebs.html"
+    }
+  },
+  {
+    "id": "efs",
+    "nombre": "EFS",
+    "tipo": "tema",
+    "padre": "aws-storage",
+    "area": "cloud",
+    "frase": "Sistema de ficheros NFS compartido que crece solo y montan muchas instancias a la vez",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon EFS"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "efs",
+      "url": "../aws-cert-study/servicios/efs.html"
+    }
+  },
+  {
+    "id": "elastic-disaster-recovery",
+    "nombre": "Elastic Disaster Recovery",
+    "tipo": "tema",
+    "padre": "aws-storage",
+    "area": "cloud",
+    "frase": "Mantiene réplicas baratas de tus servidores para arrancarlos en minutos si algo cae",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Elastic Disaster Recovery"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "elastic-disaster-recovery",
+      "url": "../aws-cert-study/servicios/elastic-disaster-recovery.html"
+    }
+  },
+  {
+    "id": "fsx",
+    "nombre": "FSx",
+    "tipo": "tema",
+    "padre": "aws-storage",
+    "area": "cloud",
+    "frase": "Sistemas de ficheros gestionados de Windows, Lustre, NetApp ONTAP u OpenZFS",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon FSx"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "fsx",
+      "url": "../aws-cert-study/servicios/fsx.html"
+    }
+  },
+  {
+    "id": "s3",
+    "nombre": "S3",
+    "tipo": "tema",
+    "padre": "aws-storage",
+    "area": "cloud",
+    "frase": "Almacenamiento de objetos casi ilimitado con clases por coste y 11 nueves de durabilidad",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 1,
+    "alias": [
+      "Amazon S3"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "s3",
+      "url": "../aws-cert-study/servicios/s3.html"
+    }
+  },
+  {
+    "id": "s3-glacier",
+    "nombre": "S3 Glacier",
+    "tipo": "tema",
+    "padre": "aws-storage",
+    "area": "cloud",
+    "frase": "Archivo de muy bajo coste para datos fríos que recuperas en minutos u horas",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "Amazon S3 Glacier"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "s3-glacier",
+      "url": "../aws-cert-study/servicios/s3-glacier.html"
+    }
+  },
+  {
+    "id": "storage-gateway",
+    "nombre": "Storage Gateway",
+    "tipo": "tema",
+    "padre": "aws-storage",
+    "area": "cloud",
+    "frase": "Tus servidores locales usan S3 como disco, recurso NFS o cinta virtual, con caché local",
+    "estado": "pendiente",
+    "evaluable": false,
+    "prioridad": 3,
+    "alias": [
+      "AWS Storage Gateway"
+    ],
+    "externo": {
+      "sitio": "aws-cert-study",
+      "id": "storage-gateway",
+      "url": "../aws-cert-study/servicios/storage-gateway.html"
+    }
   },
   {
     "id": "cloud-architecture",

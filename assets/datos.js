@@ -198,6 +198,32 @@
   }
   leidasPorCuestionario();
 
+  /**
+   * Progreso de Apuntes AWS (aws-cert-study), en solo lectura: las dos webs comparten origen y, por
+   * tanto, localStorage (docs/PLAN.md 5.6). Formato de aquella web: { "<servicio>": { aciertos: [ids],
+   * fallos?, total, finalizado? } }; un servicio está superado ("finalizado") cuando se han acertado
+   * todas sus preguntas. Aquí nunca se escribe.
+   */
+  const CLAVE_PROGRESO_AWS = 'apuntes-aws.progreso';
+  function leerProgresoAws() {
+    try {
+      const v = JSON.parse(localStorage.getItem(CLAVE_PROGRESO_AWS) || '{}');
+      return v && typeof v === 'object' ? v : {};
+    } catch {
+      return {};
+    }
+  }
+
+  /** Estado en Apuntes AWS de un nodo externo: null si no se ha empezado; si no, { aciertos, total, finalizado, parte }. */
+  function progresoAws(nodo, progreso = leerProgresoAws()) {
+    const id = nodo && nodo.externo && nodo.externo.id;
+    const p = id ? progreso[id] : null;
+    if (!p || !p.total) return null;
+    const aciertos = Math.min(p.total, new Set(p.aciertos || []).size);
+    if (!aciertos && !(p.fallos || []).length && !p.finalizado) return null;
+    return { aciertos, total: p.total, finalizado: p.finalizado || null, parte: p.finalizado ? 1 : aciertos / p.total };
+  }
+
   /** Fecha local de hoy en AAAA-MM-DD. */
   function hoy() {
     const d = new Date();
@@ -213,7 +239,7 @@
 
   window.SpiderDatos = {
     url, json, cargar, temasDe, esc, nombreHtml, nombreTexto, iconoArea, leer, guardar, formatoFecha,
-    leerProgreso, guardarProgreso, urlFicha, cargarGlosario, tieneFicha, lecturaDe, marcarLeida, hoy,
+    leerProgreso, guardarProgreso, leerProgresoAws, progresoAws, urlFicha, cargarGlosario, tieneFicha, lecturaDe, marcarLeida, hoy,
     claves: CLAVES,
   };
 })();

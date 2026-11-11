@@ -325,6 +325,7 @@
   function decorar() {
     const auto = D.leer('autoevaluacion');
     const leidas = D.leer('leidas');
+    const progAws = D.leerProgresoAws();
     const activos = hayFiltros();
     const f = activos ? calcularFiltro() : null;
     // Pares [elemento que se pinta, enlace que se etiqueta]: en la telaraña son el mismo <a>; en
@@ -349,7 +350,10 @@
       if (coincide) extra += '. Coincide con la búsqueda';
       const l = D.lecturaDe(n, leidas);
       if (l) extra += l.actualizada ? '. Ficha actualizada desde que la leíste' : '. Ficha leída';
-      marcarLeida(a, l);
+      // Servicios de AWS: ✓ si se ha superado su test en Apuntes AWS (docs/PLAN.md 5.6).
+      const pa = n.externo ? D.progresoAws(n, progAws) : null;
+      if (pa) extra += pa.finalizado ? '. Superado en Apuntes AWS' : `. En curso en Apuntes AWS: ${pa.aciertos} de ${pa.total} preguntas acertadas`;
+      marcarLeida(a, l || (pa && pa.finalizado ? { actualizada: false } : null));
       a.setAttribute('aria-label', a.dataset.etiqueta + extra);
     }
     svg.classList.toggle('filtrando', activos);
@@ -419,7 +423,9 @@
     const nube = n.externo ? '☁ ' : '';
     // ✓ (o ↻ si se actualizó después) igual que en los nodos del mapa y en las fichas.
     const l = D.lecturaDe(n);
-    const leida = !l ? ''
+    const pa = n.externo ? D.progresoAws(n) : null;
+    const leida = pa && pa.finalizado ? ' <span class="marca-leida" title="Superado en Apuntes AWS">✓<span class="visually-hidden"> (superado en Apuntes AWS)</span></span>'
+      : !l ? ''
       : l.actualizada
         ? ' <span class="marca-leida actualizada" title="Actualizada desde que la leíste">↻<span class="visually-hidden"> (actualizada desde que la leíste)</span></span>'
         : ' <span class="marca-leida" title="Leída">✓<span class="visually-hidden"> (leída)</span></span>';
@@ -453,7 +459,12 @@
 
     if (n.tipo === 'tema') {
       const chips = [];
-      if (n.externo) chips.push('<span class="badge badge-externo">☁ Guía en Apuntes AWS</span>');
+      if (n.externo) {
+        chips.push('<span class="badge badge-externo">☁ Guía en Apuntes AWS</span>');
+        const pa = D.progresoAws(n);
+        if (pa && pa.finalizado) chips.push(`<span class="badge badge-leida">✓ Superado en Apuntes AWS el ${D.esc(D.formatoFecha(pa.finalizado))}</span>`);
+        else if (pa) chips.push(`<span class="badge badge-actualizada">En curso: ${pa.aciertos} de ${pa.total} acertadas</span>`);
+      }
       else chips.push(n.estado === 'publicado' ? '<span class="badge badge-publicado">Publicado</span>' : '<span class="badge badge-pendiente">Próximamente</span>');
       if (!n.evaluable && !n.externo) chips.push('<span class="badge badge-pendiente">Solo autoevaluación</span>');
       if (n.prioridad === 1) chips.push('<span class="badge badge-esencial">Lo esencial</span>');
@@ -505,6 +516,13 @@
           ${lr.actualizadas ? `<p class="text-faint lectura-propia">↻ ${lr.actualizadas} ${lr.actualizadas === 1 ? 'actualizada' : 'actualizadas'} desde que las leíste</p>` : ''}
           ${propia ? `<p class="text-faint lectura-propia">${propia.actualizada ? '↻ Su ficha se actualizó desde que la leíste' : `✓ Su ficha: leída el ${D.esc(D.formatoFecha(propia.fecha))}`}</p>` : ''}`);
       }
+      const ra = awsRama(n.id);
+      if (ra.total) {
+        const pct = Math.round((ra.superados / ra.total) * 100);
+        partes.push(`<h3>Superados en Apuntes AWS</h3>
+          <p class="lectura-rama"><span class="barra-lectura" aria-hidden="true"><span style="width:${pct}%"></span></span>
+          ${ra.superados} de ${ra.total}${ra.enCurso ? ` <span class="text-faint">(${ra.enCurso} en curso)</span>` : ''}</p>`);
+      }
       const m = A.nivelMedio(datos, n.id, auto);
       if (m.media !== null) {
         const i = Math.round(m.media);
@@ -535,16 +553,66 @@
     panel.innerHTML = partes.join('');
   }
 
+  /** Servicios de AWS (nodos externos) de una rama, con accesos (cdk), y cuántos están superados o en curso. */
+  function awsRama(id, progAws = D.leerProgresoAws()) {
+    const vistos = new Set();
+    const pila = [id];
+    let total = 0;
+    let superados = 0;
+    let enCurso = 0;
+    while (pila.length) {
+      const actual = pila.pop();
+      if (vistos.has(actual)) continue;
+      vistos.add(actual);
+      const nodo = datos.porId.get(actual);
+      if (nodo && nodo.tipo === 'tema' && nodo.externo && nodo.externo.id) {
+        total++;
+        const pa = D.progresoAws(nodo, progAws);
+        if (pa) { if (pa.finalizado) superados++; else enCurso++; }
+      }
+      for (const h of datos.hijos.get(actual) || []) pila.push(h.nodo.id);
+    }
+    return { total, superados, enCurso };
+  }
+
   /* ── Radar "Mi telaraña" (assets/radar.js) ────────────────────────── */
+
+  /**
+   * Bloques de AWS de un área (en la práctica, `aws` en Cloud Computing): cada uno cuenta como UN
+   * tema en los tests del área, con la media de sus categorías y, en cada categoría, la media de la
+   * parte acertada de sus servicios en Apuntes AWS (sin empezar cuenta 0). Así sus 177 servicios no
+   * se comen la cifra del área (docs/PLAN.md 5.6). empezado: si hay algún servicio con progreso.
+   */
+  function awsDeArea(area, progAws) {
+    const bloques = datos.nodos.filter((n) => n.area === area.id && n.tipo === 'bloque' && n.externo
+      && (datos.hijos.get(n.id) || []).length);
+    return bloques.map((b) => {
+      let empezado = false;
+      const medias = [];
+      for (const { nodo: cat } of datos.hijos.get(b.id) || []) {
+        const servicios = (datos.hijos.get(cat.id) || []).map((h) => h.nodo).filter((x) => x.externo && x.externo.id);
+        if (!servicios.length) continue;
+        let suma = 0;
+        for (const sv of servicios) {
+          const pa = D.progresoAws(sv, progAws);
+          if (pa) { empezado = true; suma += pa.parte; }
+        }
+        medias.push(suma / servicios.length);
+      }
+      return { valor: medias.length ? medias.reduce((x, y) => x + y, 0) / medias.length : 0, empezado };
+    });
+  }
 
   /**
    * Resultado en tests de un área: media, entre sus temas publicados y evaluables, de la parte de
    * sus preguntas acertada (un tema sin empezar cuenta 0). null si el área no tiene ningún tema con
    * evaluación o si no se ha empezado ninguno.
    */
-  function testsDeArea(area, progreso) {
+  function testsDeArea(area, progreso, progAws) {
     const temas = D.temasDe(datos, area.id).filter((t) => t.estado === 'publicado' && t.evaluable && !t.externo);
-    if (!temas.length) return { valor: null, texto: 'sin temas con evaluación todavía', corto: 'aún sin evaluación' };
+    const aws = awsDeArea(area, progAws);
+    const n = temas.length + aws.length;
+    if (!n) return { valor: null, texto: 'sin temas con evaluación todavía', corto: 'aún sin evaluación' };
     let suma = 0;
     let empezados = 0;
     for (const t of temas) {
@@ -553,9 +621,15 @@
       empezados++;
       suma += Math.min(1, new Set(p.aciertos || []).size / p.total);
     }
-    if (!empezados) return { valor: null, texto: `sin empezar (${temas.length} ${temas.length === 1 ? 'tema' : 'temas'} con evaluación)`, corto: 'sin empezar' };
-    const valor = suma / temas.length;
-    return { valor, texto: `${Math.round(valor * 100)} % acertado (${empezados} de ${temas.length} ${temas.length === 1 ? 'tema empezado' : 'temas empezados'})`, corto: `${Math.round(valor * 100)} %` };
+    for (const x of aws) {
+      if (!x.empezado) continue;
+      empezados++;
+      suma += x.valor;
+    }
+    const nota = aws.length ? '; AWS cuenta como uno' : '';
+    if (!empezados) return { valor: null, texto: `sin empezar (${n} ${n === 1 ? 'tema' : 'temas'} con evaluación${nota})`, corto: 'sin empezar' };
+    const valor = suma / n;
+    return { valor, texto: `${Math.round(valor * 100)} % acertado (${empezados} de ${n} ${n === 1 ? 'tema empezado' : 'temas empezados'}${nota})`, corto: `${Math.round(valor * 100)} %` };
   }
 
   const radarSvg = document.getElementById('radar');
@@ -566,12 +640,13 @@
     if (!radarSvg || !window.SpiderRadar) return;
     const auto = D.leer('autoevaluacion');
     const progreso = D.leerProgreso();
+    const progAws = D.leerProgresoAws();
     const ejes = datos.areas.map((area) => {
       const m = A.nivelMedio(datos, area.id, auto);
       const nivelTxt = m.media === null
         ? 'sin marcar'
         : `${m.media.toFixed(1).replace('.', ',')}, ${NIVELES[Math.round(m.media)].toLowerCase()} (${m.marcados} de ${m.total} temas marcados)`;
-      const tests = testsDeArea(area, progreso);
+      const tests = testsDeArea(area, progreso, progAws);
       return {
         area,
         nivel: m.media === null ? null : m.media / 4,
@@ -671,7 +746,7 @@
   });
   // Cambios hechos en otra pestaña (una ficha marcada como leída, un test, el nivel de un tema).
   window.addEventListener('storage', (ev) => {
-    if (ev.key && !ev.key.startsWith('spider.')) return;
+    if (ev.key && !ev.key.startsWith('spider.') && ev.key !== 'apuntes-aws.progreso') return;
     decorar(); pintarPanel(); avisarResultados(); pintarRadar();
   });
   // Progreso traído de la cuenta Kopi (assets/cuenta.js).
