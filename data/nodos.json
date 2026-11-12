@@ -3924,7 +3924,8 @@
     "externo": {
       "sitio": "aws-cert-study",
       "id": "bedrock",
-      "url": "../aws-cert-study/servicios/bedrock.html"
+      "url": "../aws-cert-study/servicios/bedrock.html",
+      "audio": true
     }
   },
   {
