@@ -105,6 +105,22 @@
           lo que no escribiste tú como no confiable.</li>
       </ul>
 
+      <h2 id="caso-real">Caso real: Prompt Quest</h2>
+      <p><a href="https://github.com/arquitechthor/prompt-quest" target="_blank" rel="noopener">Prompt Quest</a> (código público) es un juego para eventos en el que
+        cada jugador escribe en lenguaje natural la estrategia de su agente. Muestra cómo diseñar alrededor de las
+        limitaciones de esta ficha:</p>
+      <ul>
+        <li><strong>No determinismo:</strong> el LLM no decide cada jugada. Se le llama <strong>una vez por estrategia</strong>
+          para traducirla a una política JSON, y un motor determinista la ejecuta. La misma semilla da la misma partida.</li>
+        <li><strong>Inyección de prompts:</strong> el texto del jugador va delimitado como dato, la salida está restringida por
+          un JSON Schema con un vocabulario cerrado y el código la vuelve a validar. Lo que el vocabulario no puede expresar
+          («vida infinita») no se puede conseguir.</li>
+        <li><strong>Alucinaciones:</strong> la crónica de cada partida se escribe solo a partir de hechos que extrae el código.</li>
+        <li><strong>Elegir modelo:</strong> traducir una estrategia no necesita un modelo grande; uno pequeño y rápido baja el
+          coste y la latencia.</li>
+      </ul>
+      <p>El caso completo, con el código explicado: <a href="https://arquitechthor.github.io/aprendizajes/prompt-quest.html">Aprendizajes de Prompt Quest</a>.</p>
+
       <section data-seccion-contiene>
         <h2 id="contiene">Qué contiene</h2>
         <div id="ficha-contiene"></div>

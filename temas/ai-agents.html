@@ -93,6 +93,15 @@
         <li><strong>Usar un agente donde basta un flujo fijo.</strong> Es más caro, más lento y más difícil de probar.</li>
       </ul>
 
+      <h2 id="caso-real">Caso real: agentes sin bucle de agente</h2>
+      <p>En <a href="https://github.com/arquitechthor/prompt-quest" target="_blank" rel="noopener">Prompt Quest</a> (código público) hay 16 «agentes» que luchan en una
+        arena, pero ninguno es un agente LLM. El modelo interviene en un único paso de un <strong>flujo de trabajo</strong>:
+        traduce la estrategia del jugador a una lista ordenada de reglas. Después, cada agente las evalúa turno a turno con
+        código determinista y cada jugada apunta a la regla que la decidió.</p>
+      <p>Es la recomendación de esta ficha llevada a la práctica: una llamada bien preparada en lugar de un bucle. Llamar al
+        modelo en cada turno serían hasta 800 llamadas por partida, con su latencia, su coste y sus respuestas cambiantes. El
+        caso completo: <a href="https://arquitechthor.github.io/aprendizajes/prompt-quest.html#compilar">Aprendizajes de Prompt Quest</a>.</p>
+
       <section data-seccion-contiene>
         <h2 id="contiene">Qué contiene</h2>
         <div id="ficha-contiene"></div>

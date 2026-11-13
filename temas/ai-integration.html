@@ -82,6 +82,22 @@
           <a href="spring-ai.html">Spring AI</a> si usas Spring Boot.</li>
       </ol>
 
+      <h2 id="caso-real">Caso real: Prompt Quest</h2>
+      <p><a href="https://github.com/arquitechthor/prompt-quest" target="_blank" rel="noopener">Prompt Quest</a> (código público) integra Claude en Amazon Bedrock en un
+        sistema que funciona en directo. Casi todo el trabajo está alrededor de la llamada:</p>
+      <ul>
+        <li><strong>Salida estructurada</strong> con un JSON Schema, y validación posterior en el código.</li>
+        <li><strong>Caché del prompt</strong> para el mensaje de sistema, largo e igual en todas las llamadas.</li>
+        <li><strong>Contexto generado desde la fuente de verdad:</strong> las reglas del juego que lee el modelo salen del mismo
+          fichero que usa el motor.</li>
+        <li><strong>Tiempo máximo, reintentos y negativas</strong> tratadas como errores.</li>
+        <li><strong>Una cola</strong> que limita a cinco las llamadas simultáneas y un <strong>compilador de respaldo</strong>
+          si el modelo no responde.</li>
+        <li><strong>Puertos y adaptadores:</strong> el compilador es una interfaz, así que en local se juega gratis con el de
+          respaldo y en la nube con Bedrock.</li>
+      </ul>
+      <p>El caso completo, con el código explicado: <a href="https://arquitechthor.github.io/aprendizajes/prompt-quest.html#bedrock">Aprendizajes de Prompt Quest</a>.</p>
+
       <section data-seccion-contiene>
         <h2 id="contiene">Qué contiene</h2>
         <div id="ficha-contiene"></div>

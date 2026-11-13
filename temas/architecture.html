@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Software Architecture &amp; Distributed Systems — Tech Spider</title>
+<meta name="description" content="Arquitectura de software y sistemas distribuidos: principios, estilos, diseño guiado por el dominio, patrones y mensajería, y por dónde empezar a estudiarlos.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/architecture.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=04c39275">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="architecture">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>La <strong>arquitectura de software</strong> son las decisiones de diseño que dan forma a un sistema y que cuesta mucho
+        cambiar después: en qué piezas se divide, qué responsabilidad tiene cada una, cómo se comunican, dónde viven los datos
+        y cómo se comporta todo cuando algo falla. Si el código es cómo está hecha cada habitación, la arquitectura es el plano
+        del edificio.</p>
+      <p>Cuando esas piezas se reparten en varias máquinas que hablan por la red, aparecen problemas propios (mensajes que se
+        pierden, servicios caídos, datos que no coinciden), y por eso esta área junta la arquitectura con los
+        <strong>sistemas distribuidos</strong>. Agrupa:</p>
+      <ul>
+        <li><a href="../tema.html?id=architectural-principles">Principios de arquitectura</a>: separar responsabilidades, alta
+          cohesión (lo relacionado, junto), bajo acoplamiento (las piezas dependen poco unas de otras) y modularidad.</li>
+        <li><a href="architectural-styles.html">Estilos arquitectónicos</a>: la organización general del sistema, de las capas a
+          la <a href="hexagonal-architecture.html">arquitectura hexagonal</a>, el monolito modular, los microservicios o los
+          eventos.</li>
+        <li><a href="../tema.html?id=ddd">Diseño guiado por el dominio</a>: modelar el software alrededor del negocio y su
+          lenguaje, y usarlo para trazar las fronteras entre partes.</li>
+        <li><a href="../tema.html?id=distributed-systems">Sistemas distribuidos</a>: consistencia, tolerancia a fallos,
+          idempotencia (repetir una operación no cambia el resultado) y transacciones repartidas entre servicios.</li>
+        <li><a href="../tema.html?id=architectural-patterns">Patrones de arquitectura</a>: soluciones conocidas a problemas
+          concretos, como CQRS, Event Sourcing, Saga u Outbox.</li>
+        <li><a href="../tema.html?id=messaging-event-streaming">Mensajería y flujos de eventos</a>: comunicar piezas de forma
+          asíncrona con colas y plataformas como Kafka o RabbitMQ.</li>
+      </ul>
+
+      <h2 id="siglas">Siglas</h2>
+      <ul>
+        <li><strong>DDD</strong> (<em>Domain-Driven Design</em>): diseño guiado por el dominio, es decir, por el negocio que el
+          software resuelve.</li>
+        <li><strong>CAP</strong> (<em>Consistency, Availability, Partition tolerance</em>): el teorema que dice que, cuando la red
+          se parte, un sistema distribuido tiene que elegir entre responder siempre o responder siempre con datos
+          consistentes.</li>
+        <li><strong>CQRS</strong> (<em>Command Query Responsibility Segregation</em>): separar el modelo que cambia datos del que
+          los consulta.</li>
+        <li><strong>ADR</strong> (<em>Architecture Decision Record</em>): un documento corto que registra una decisión de
+          arquitectura con su contexto y sus consecuencias.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Un sistema mal estructurado funciona al principio y se vuelve lento de cambiar con cada mes: todo depende de todo,
+        nadie se atreve a tocar ciertas partes y cualquier fallo se propaga. Las decisiones de arquitectura son las que evitan
+        eso, o lo provocan, y casi siempre se toman pronto y con poca información. Saber de arquitectura es saber qué compra y
+        qué cuesta cada opción.</p>
+      <p>Es lo que distingue a los perfiles senior, de líder técnico y de arquitecto, y ocupa buena parte de las entrevistas de
+        diseño de sistemas. Además, con la nube y los microservicios, los problemas de los sistemas distribuidos han dejado de
+        ser cosa de unos pocos: casi cualquier backend actual habla con otros servicios por la red.</p>
+
+      <h2 id="por-donde-empezar">Por dónde empezar</h2>
+      <ol>
+        <li>Los <a href="../tema.html?id=architectural-principles">principios</a>: cohesión, acoplamiento y separación de
+          responsabilidades son la vara de medir de todo lo demás. <a href="../tema.html?id=solid">SOLID</a> los aterriza al nivel
+          de las clases.</li>
+        <li>Los <a href="architectural-styles.html">estilos</a>, empezando por las capas y la
+          <a href="hexagonal-architecture.html">arquitectura hexagonal</a>, que tiene ficha completa con un ejemplo y casos
+          reales.</li>
+        <li><a href="../tema.html?id=ddd">DDD</a>, para aprender a trazar fronteras desde el negocio.</li>
+        <li>Los <a href="../tema.html?id=distributed-systems">sistemas distribuidos</a> y la
+          <a href="../tema.html?id=messaging-event-streaming">mensajería</a>, cuando el sistema se reparte en varios
+          servicios.</li>
+      </ol>
+      <p>Dos proyectos de código abierto explicados como casos de estudio:
+        <a href="https://arquitechthor.github.io/aprendizajes/kopi-chess.html">Kopi Chess</a> (arquitectura hexagonal en Java,
+        con sus decisiones escritas en ADR) y
+        <a href="https://arquitechthor.github.io/aprendizajes/prompt-quest.html">Prompt Quest</a> (hexagonal, serverless y
+        con colas en AWS).</p>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://martinfowler.com/architecture/" target="_blank" rel="noopener">Software Architecture Guide</a> (Martin Fowler, consultada el 13/11/2026).</li>
+        <li><a href="https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/" target="_blank" rel="noopener">Architecture styles</a> (Azure Architecture Center, Microsoft, consultada el 13/11/2026).</li>
+        <li><a href="https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions" target="_blank" rel="noopener">Documenting Architecture Decisions</a> (Michael Nygard, 2011, consultada el 13/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=6c5f7ab0" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=81d3fcf3" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

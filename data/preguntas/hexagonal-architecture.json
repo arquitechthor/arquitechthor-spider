@@ -1,0 +1,152 @@
+[
+  {
+    "id": "hexagonal-architecture-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Cuál es la idea central de la arquitectura hexagonal?",
+    "opciones": [
+      "Dividir la aplicación en exactamente seis módulos, uno por cada lado del hexágono.",
+      "Desplegar cada caso de uso como un servicio independiente con su propia base de datos.",
+      "Que la lógica de negocio no dependa de las tecnologías con las que habla con el exterior.",
+      "Apilar presentación, negocio y datos para que cada capa solo use la que tiene debajo."
+    ],
+    "correctas": [2],
+    "explicacion": "El núcleo habla con el exterior solo a través de puertos, y las tecnologías (web, base de datos, colas, pruebas) se conectan con adaptadores. El número seis no importa: el hexágono solo deja sitio para dibujar varios puertos. Desplegar cada caso de uso por separado se parece a los microservicios, y apilar capas es la arquitectura en capas.",
+    "fuentes": ["https://alistair.cockburn.us/hexagonal-architecture/"]
+  },
+  {
+    "id": "hexagonal-architecture-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "En una arquitectura hexagonal, ¿qué es un puerto?",
+    "opciones": [
+      "Una interfaz del núcleo que define una conversación con el exterior en términos del negocio.",
+      "El número de puerto TCP en el que la aplicación escucha las peticiones HTTP que le llegan.",
+      "Una clase del exterior que traduce una tecnología concreta a las llamadas que hace el núcleo.",
+      "Un módulo de configuración que arranca el framework y registra todos los componentes."
+    ],
+    "correctas": [0],
+    "explicacion": "Un puerto es una interfaz que pertenece al núcleo y expresa, con vocabulario del negocio, lo que la aplicación ofrece (entrada) o necesita (salida). La clase que traduce una tecnología es un adaptador, y el sitio que conecta todo al arrancar es la raíz de composición. El puerto TCP no tiene nada que ver.",
+    "fuentes": ["https://alistair.cockburn.us/hexagonal-architecture/"]
+  },
+  {
+    "id": "hexagonal-architecture-003",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Un caso de uso necesita guardar pedidos. ¿Quién define la interfaz RepositorioDePedidos y quién la implementa?",
+    "opciones": [
+      "La define el adaptador de base de datos y el núcleo la implementa para poder usarla.",
+      "La define el framework de persistencia y la implementan las entidades del dominio.",
+      "La define el controlador web y la implementa el caso de uso que recibe la petición.",
+      "La define el núcleo, según lo que necesita, y la implementa un adaptador de salida."
+    ],
+    "correctas": [3],
+    "explicacion": "Es un puerto de salida: el núcleo lo define con lo que necesita y un adaptador de fuera (JDBC, JPA, en memoria) lo implementa. Así la dependencia apunta hacia dentro aunque la llamada vaya hacia fuera: es la inversión de dependencias. Si lo definiera el adaptador o el framework, el núcleo dependería de ellos.",
+    "fuentes": ["https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/hexagonal-architecture.html"]
+  },
+  {
+    "id": "hexagonal-architecture-004",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Cuál de estos es un adaptador de entrada (primario, o driving)?",
+    "opciones": [
+      "Un repositorio que guarda los pedidos en PostgreSQL con consultas SQL escritas a mano.",
+      "Un controlador REST que convierte cada petición HTTP en una llamada a un caso de uso.",
+      "Un cliente HTTP que consulta el tipo de cambio a la API de un proveedor externo.",
+      "Un servicio que envía un correo de confirmación al cliente cuando se crea el pedido."
+    ],
+    "correctas": [1],
+    "explicacion": "Los adaptadores de entrada usan la aplicación: un controlador web, un consumidor de mensajes, una línea de comandos o una prueba automática. El repositorio, el cliente del proveedor externo y el envío de correo son adaptadores de salida: la aplicación los usa a ellos a través de sus puertos.",
+    "fuentes": ["https://alistair.cockburn.us/hexagonal-architecture/"]
+  },
+  {
+    "id": "hexagonal-architecture-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué dice la regla de dependencias en una arquitectura hexagonal?",
+    "opciones": [
+      "Que cada adaptador debe depender de todos los demás para poder coordinar sus llamadas.",
+      "Que el núcleo debe depender de los adaptadores para saber qué tecnologías tiene disponibles.",
+      "Que las dependencias del código fuente solo apuntan hacia dentro, hacia el núcleo.",
+      "Que las dependencias se resuelven siempre en tiempo de ejecución, nunca al compilar."
+    ],
+    "correctas": [2],
+    "explicacion": "Los adaptadores conocen al núcleo; el núcleo no conoce a ningún adaptador ni al framework, y los adaptadores no se conocen entre sí. La regla habla de qué código importa a qué código, no de cuándo se resuelven las dependencias.",
+    "fuentes": ["https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html"]
+  },
+  {
+    "id": "hexagonal-architecture-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un equipo usa como puerto de salida una interfaz que extiende JpaRepository de Spring Data. ¿Qué problema tiene?",
+    "opciones": [
+      "Ninguno: Spring Data genera la implementación y eso ahorra escribir un adaptador.",
+      "El núcleo pasa a depender de JPA y de Spring, justo lo que el puerto debía evitar.",
+      "JpaRepository no admite consultas personalizadas, así que el núcleo no podrá filtrar.",
+      "Obliga a que todas las entidades del dominio sean records inmutables sin identificador."
+    ],
+    "correctas": [1],
+    "explicacion": "Un puerto se diseña desde lo que necesita el caso de uso. Si extiende una interfaz de la librería, la tecnología entra en el núcleo y las pruebas y los cambios de tecnología vuelven a depender de ella. JpaRepository sí admite consultas propias, y no impone records.",
+    "fuentes": ["https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/hexagonal-architecture.html"]
+  },
+  {
+    "id": "hexagonal-architecture-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Cómo se prueba normalmente un caso de uso en una arquitectura hexagonal?",
+    "opciones": [
+      "Arrancando la aplicación completa contra una copia de la base de datos de producción.",
+      "Solo con pruebas manuales de la interfaz, porque el núcleo no se puede aislar del resto.",
+      "Desplegándolo en un entorno de pruebas en la nube y llamándolo a través de su API web.",
+      "Creándolo con new y pasándole adaptadores en memoria que implementan sus puertos."
+    ],
+    "correctas": [3],
+    "explicacion": "Como el caso de uso recibe sus puertos por el constructor, se le pasan dobles de prueba (un repositorio en memoria, un reloj fijo) y se prueba en milisegundos, sin framework ni base de datos. Las pruebas de los adaptadores contra la tecnología real se hacen aparte, y son menos.",
+    "fuentes": ["https://alistair.cockburn.us/hexagonal-architecture/"]
+  },
+  {
+    "id": "hexagonal-architecture-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Para qué sirve una herramienta como ArchUnit en un proyecto con arquitectura hexagonal?",
+    "opciones": [
+      "Para convertir la regla de dependencias en pruebas que fallan si alguien la incumple.",
+      "Para generar automáticamente los adaptadores de base de datos a partir de los puertos.",
+      "Para dibujar el hexágono del proyecto en un diagrama a partir de sus comentarios.",
+      "Para medir el tiempo de respuesta de cada caso de uso cuando la aplicación está en marcha."
+    ],
+    "correctas": [0],
+    "explicacion": "ArchUnit analiza las clases compiladas de Java y permite escribir reglas como «nada del paquete dominio depende de org.springframework». Si alguien añade un import prohibido, la build falla. No genera código, no dibuja diagramas y no mide rendimiento.",
+    "fuentes": ["https://www.archunit.org/userguide/html/000_Index.html"]
+  },
+  {
+    "id": "hexagonal-architecture-009",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿En qué caso la arquitectura hexagonal suele aportar menos de lo que cuesta?",
+    "opciones": [
+      "En un sistema con reglas de negocio complejas que reciben peticiones web y mensajes.",
+      "En un servicio que probablemente cambie de base de datos en los próximos meses.",
+      "En una aplicación que solo guarda y muestra formularios, sin apenas lógica propia.",
+      "En un proyecto que necesita probar sus reglas sin depender de servicios externos."
+    ],
+    "correctas": [2],
+    "explicacion": "En un CRUD sencillo no hay apenas negocio que proteger, y los puertos, los mapeos y los módulos son ceremonia. Las otras tres situaciones (reglas complejas con varias entradas, cambio de tecnología previsible, probar sin dependencias externas) son justo donde el estilo compensa.",
+    "fuentes": ["https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/hexagonal-architecture.html"]
+  },
+  {
+    "id": "hexagonal-architecture-010",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "¿Qué diferencia principal hay entre una arquitectura en capas clásica y una hexagonal?",
+    "opciones": [
+      "En capas no hay base de datos, mientras que la hexagonal siempre necesita al menos una.",
+      "En capas el negocio suele depender de la capa de datos; en la hexagonal es al revés.",
+      "En capas hay que usar un framework web, y la hexagonal solo funciona sin frameworks.",
+      "En capas todo el código está en un único fichero; en la hexagonal hay uno por puerto."
+    ],
+    "correctas": [1],
+    "explicacion": "En las capas clásicas, la de negocio llama a la de datos y depende de ella. En la hexagonal, el núcleo define los puertos y la persistencia es un adaptador más que depende del núcleo: la interfaz, la base de datos y las pruebas quedan en el mismo plano, «fuera». Las otras opciones no describen ninguno de los dos estilos.",
+    "fuentes": ["https://martinfowler.com/bliki/PresentationDomainDataLayering.html", "https://alistair.cockburn.us/hexagonal-architecture/"]
+  }
+]

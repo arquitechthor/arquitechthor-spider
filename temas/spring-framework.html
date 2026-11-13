@@ -99,6 +99,22 @@
         <li>Después, según el proyecto: Spring Cloud, Spring Batch, Spring WebFlux o Spring AI.</li>
       </ol>
 
+      <h2 id="caso-real">Caso real: Spring solo en el anillo exterior</h2>
+      <p><a href="https://github.com/arquitechthor/kopi-chess" target="_blank" rel="noopener">Kopi Chess</a> (código público) usa Spring Boot 4 sin dejar que entre en
+        el núcleo:</p>
+      <ul>
+        <li>Los casos de uso son clases Java planas, sin <code>@Service</code> ni <code>@Transactional</code>. Una clase
+          <code>@Configuration</code> los crea a mano con sus adaptadores: la inyección de dependencias sigue siendo de Spring,
+          pero explícita y en un solo sitio.</li>
+        <li>El BOM de Spring Boot se importa en <code>dependencyManagement</code> en lugar de heredar de
+          <code>spring-boot-starter-parent</code>, para que el módulo del dominio no herede nada de Spring.</li>
+        <li>Los trabajos en segundo plano son <em>beans</em> <code>SmartLifecycle</code> que arrancan y paran con la
+          aplicación.</li>
+        <li>La persistencia usa <code>JdbcClient</code> y <code>TransactionTemplate</code> solo dentro del adaptador; los
+          errores de la API, <code>ProblemDetail</code>; las métricas, Micrometer en decoradores de los puertos.</li>
+      </ul>
+      <p>El caso completo: <a href="https://arquitechthor.github.io/aprendizajes/kopi-chess.html#puertos">Aprendizajes de Kopi Chess</a>.</p>
+
       <section data-seccion-contiene>
         <h2 id="contiene">Qué contiene</h2>
         <div id="ficha-contiene"></div>

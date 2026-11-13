@@ -86,6 +86,14 @@
         <li>Si trabajas solo en AWS, compara con CloudFormation y CDK para elegir con criterio.</li>
       </ol>
 
+      <h2 id="caso-real">Caso real: Prompt Quest con AWS CDK</h2>
+      <p><a href="https://github.com/arquitechthor/prompt-quest" target="_blank" rel="noopener">Prompt Quest</a> (código público) define toda su infraestructura en un
+        único <em>stack</em> de CDK en TypeScript (<code>infra/app.ts</code>): CloudFront, dos buckets S3, tres funciones
+        Lambda, DynamoDB, una cola SQS con su cola de mensajes fallidos, una regla de EventBridge, un secreto y un presupuesto
+        con alertas. Los permisos se dan con métodos <code>grant*</code>, las variantes se despliegan con parámetros de
+        contexto (<code>-c compiler=heuristic</code>) y todo se puede borrar con <code>cdk destroy</code> sin dejar costes. El
+        caso completo: <a href="https://arquitechthor.github.io/aprendizajes/prompt-quest.html#operacion">Aprendizajes de Prompt Quest</a>.</p>
+
       <section data-seccion-contiene>
         <h2 id="contiene">Qué contiene</h2>
         <div id="ficha-contiene"></div>

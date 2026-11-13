@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hexagonal Architecture — Tech Spider</title>
+<meta name="description" content="Arquitectura hexagonal o de puertos y adaptadores: el núcleo de negocio habla con el exterior solo a través de interfaces, y las tecnologías concretas se conectan desde fuera. Conceptos, ejemplo en Java, errores frecuentes y casos reales.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/hexagonal-architecture.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=04c39275">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="hexagonal-architecture">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>La <strong>arquitectura hexagonal</strong>, también llamada de <strong>puertos y adaptadores</strong>
+        (<em>Ports and Adapters</em>), es una forma de organizar una aplicación para que su lógica de negocio no dependa de
+        cómo se comunica con el mundo exterior. La propuso Alistair Cockburn en un artículo de 2005.</p>
+      <p>La idea es separar un <strong>dentro</strong> y un <strong>fuera</strong>. Dentro está lo que la aplicación sabe hacer:
+        sus reglas y sus casos de uso. Fuera está todo lo demás: la interfaz web, una API REST, la base de datos, una cola de
+        mensajes, un servicio de terceros, las pruebas automáticas. El dentro define unas interfaces, los
+        <strong>puertos</strong>, y cada tecnología concreta se conecta a ellos mediante un <strong>adaptador</strong>. Así, la
+        misma lógica puede usarse desde una web, desde un script o desde una prueba, y guardar sus datos en PostgreSQL o en
+        memoria, sin cambiar una línea del núcleo.</p>
+      <p>El hexágono no tiene nada de especial: Cockburn lo dibujó así para dejar sitio a varios puertos alrededor y romper
+        con el dibujo clásico de capas apiladas, en el que parece que solo hay un «arriba» (la interfaz) y un «abajo» (la base
+        de datos).</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>En muchos proyectos la lógica de negocio acaba repartida entre controladores, consultas SQL y anotaciones del
+        <em>framework</em>. Probarla exige arrancar la aplicación entera con su base de datos, y cambiar de tecnología obliga a
+        tocarla. La arquitectura hexagonal ataca justo eso:</p>
+      <ul>
+        <li><strong>Pruebas rápidas:</strong> el núcleo se prueba con objetos en memoria, en milisegundos, sin servidor ni base
+          de datos.</li>
+        <li><strong>Tecnología reemplazable:</strong> cambiar de base de datos, de proveedor de correo o de interfaz es escribir
+          otro adaptador.</li>
+        <li><strong>Desarrollo en paralelo:</strong> se puede construir y demostrar la lógica antes de decidir la base de datos
+          o con servicios externos que aún no existen.</li>
+        <li><strong>Código que cuenta el negocio:</strong> el núcleo habla de pedidos, partidas o facturas, no de tablas ni de
+          peticiones HTTP.</li>
+      </ul>
+      <p>Es uno de los estilos más citados en el desarrollo backend actual, sobre todo junto a
+        <a href="../tema.html?id=ddd">DDD</a> y en <a href="../tema.html?id=microservices-architecture">microservicios</a>, y una
+        pregunta habitual en entrevistas de perfiles senior.</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>Núcleo (aplicación):</strong> el código de negocio. Suele dividirse en el <strong>dominio</strong> (las
+          entidades y reglas: un pedido, sus líneas, cuándo se puede cancelar) y los <strong>casos de uso</strong> (una clase o
+          función por cada cosa que un usuario puede hacer: «crear pedido», «cancelar pedido»).</li>
+        <li><strong>Puerto:</strong> una interfaz que define una conversación del núcleo con el exterior, con el vocabulario del
+          negocio. Cockburn los agrupa por propósito: «para hacer pedidos», «para guardar pedidos», «para notificar al
+          cliente».</li>
+        <li><strong>Puerto de entrada</strong> (primario, <em>driving</em>): cómo se <em>usa</em> la aplicación. Suele ser la
+          interfaz de un caso de uso (<code>CrearPedido</code>). Lo llaman los adaptadores de entrada.</li>
+        <li><strong>Puerto de salida</strong> (secundario, <em>driven</em>): lo que la aplicación <em>necesita</em> del
+          exterior (<code>RepositorioDePedidos</code>, <code>Notificador</code>). Lo define el núcleo y lo implementan los
+          adaptadores de salida.</li>
+        <li><strong>Adaptador:</strong> el código que traduce entre un puerto y una tecnología. De entrada: un controlador web,
+          un consumidor de mensajes, una línea de comandos, una prueba. De salida: un repositorio con JDBC o
+          <a href="../tema.html?id=spring-data-jpa">JPA</a>, un cliente HTTP, un envío de correo. Un puerto puede tener varios
+          adaptadores (el real y uno en memoria para las pruebas).</li>
+        <li><strong>Regla de dependencias:</strong> las dependencias del código fuente solo apuntan hacia dentro. Los adaptadores
+          conocen al núcleo; el núcleo no conoce a ningún adaptador ni al <em>framework</em>.</li>
+        <li><strong>Inversión de dependencias:</strong> es lo que hace posible la regla. Cuando un caso de uso necesita guardar,
+          no llama a la base de datos: llama a una interfaz suya, y el adaptador de fuera la implementa. Es la «D» de
+          <a href="../tema.html?id=solid">SOLID</a>.</li>
+        <li><strong>Raíz de composición</strong> (<em>composition root</em>): el único sitio, en el arranque, que conoce todas
+          las piezas y conecta cada puerto con su adaptador, a mano o con un contenedor de
+          <a href="../tema.html?id=dependency-injection">inyección de dependencias</a>.</li>
+      </ul>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>Un ejemplo mínimo en Java, de dentro hacia fuera. Primero, el núcleo: un puerto de salida y un caso de uso que lo
+        recibe por el constructor. Ninguna de las dos clases importa nada de Spring ni de JDBC.</p>
+      <pre><code>// núcleo: puerto de salida, con lenguaje del negocio
+public interface RepositorioDePedidos {
+    Optional&lt;Pedido&gt; buscar(PedidoId id);
+    void guardar(Pedido pedido);
+}
+
+// núcleo: caso de uso (su interfaz CancelarPedido es el puerto de entrada)
+public final class CancelarPedidoServicio implements CancelarPedido {
+    private final RepositorioDePedidos pedidos;
+
+    public CancelarPedidoServicio(RepositorioDePedidos pedidos) {
+        this.pedidos = pedidos;
+    }
+
+    @Override
+    public void cancelar(PedidoId id) {
+        var pedido = pedidos.buscar(id).orElseThrow(() -&gt; new PedidoNoEncontrado(id));
+        pedidos.guardar(pedido.cancelar());   // la regla "¿se puede cancelar?" vive en Pedido
+    }
+}</code></pre>
+      <p>Fuera, los adaptadores. Uno de salida, con la tecnología real, y otro de entrada, que traduce HTTP al caso de uso:</p>
+      <pre><code>// adaptador de salida: implementa el puerto con JDBC
+public final class RepositorioDePedidosJdbc implements RepositorioDePedidos {
+    private final JdbcClient jdbc;
+    // buscar(...) y guardar(...) con SQL y conversión fila ⇄ Pedido
+}
+
+// adaptador de entrada: un controlador web que solo traduce
+@RestController
+class PedidosController {
+    private final CancelarPedido cancelarPedido;
+
+    @PostMapping("/pedidos/{id}/cancelacion")
+    ResponseEntity&lt;Void&gt; cancelar(@PathVariable UUID id) {
+        cancelarPedido.cancelar(new PedidoId(id));
+        return ResponseEntity.noContent().build();
+    }
+}</code></pre>
+      <p>Y la recompensa: el caso de uso se prueba con un adaptador en memoria, sin Spring ni base de datos.</p>
+      <pre><code>var pedidos = new RepositorioDePedidosEnMemoria();   // otro adaptador del mismo puerto
+pedidos.guardar(Pedido.nuevo(ID));
+
+new CancelarPedidoServicio(pedidos).cancelar(ID);
+
+assertThat(pedidos.buscar(ID).orElseThrow().estado()).isEqualTo(CANCELADO);</code></pre>
+      <p>Para que la regla de dependencias no dependa de la buena voluntad, conviene comprobarla automáticamente: con
+        <strong>módulos</strong> separados (Maven, Gradle, paquetes de npm), donde un <code>import</code> prohibido ni compila,
+        o con <strong>ArchUnit</strong>, una librería de Java que convierte la regla en una prueba:</p>
+      <pre><code>@ArchTest
+static final ArchRule nucleoSinFramework = noClasses()
+        .that().resideInAPackage("..dominio..")
+        .should().dependOnClassesThat().resideInAnyPackage("org.springframework..", "java.sql..");</code></pre>
+
+      <h2 id="caso-real">Casos reales de código abierto</h2>
+      <ul>
+        <li><a href="https://github.com/arquitechthor/kopi-chess" target="_blank" rel="noopener">Kopi Chess</a>, en Java 25 y
+          Spring Boot 4: un módulo Maven por anillo (dominio, aplicación, un módulo por adaptador y el arranque), reglas de
+          ArchUnit, casos de uso sin anotaciones de Spring, un puerto implementado por dos adaptadores (bots propios y
+          Stockfish) y métricas añadidas con decoradores de los puertos. Explicado paso a paso en
+          <a href="https://arquitechthor.github.io/aprendizajes/kopi-chess.html">Aprendizajes de Kopi Chess</a>.</li>
+        <li><a href="https://github.com/arquitechthor/prompt-quest" target="_blank" rel="noopener">Prompt Quest</a>, en
+          TypeScript y serverless en AWS: los mismos puertos (almacén, cola, compilador con IA) tienen adaptadores locales con
+          ficheros y adaptadores de AWS, así que el juego entero funciona en local sin nube. Explicado en
+          <a href="https://arquitechthor.github.io/aprendizajes/prompt-quest.html#hexagonal">Aprendizajes de Prompt Quest</a>.</li>
+      </ul>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Puertos que reflejan la tecnología:</strong> usar como puerto un <code>JpaRepository</code> o un cliente del
+          SDK de la nube mete la tecnología en el núcleo por la puerta de atrás. El puerto se diseña desde lo que necesita el caso
+          de uso, no desde lo que ofrece la librería.</li>
+        <li><strong>Anotaciones del <em>framework</em> en el dominio:</strong> entidades con <code>@Entity</code> o servicios con
+          <code>@Transactional</code> atan el núcleo a JPA o a Spring. Si se acepta como compromiso práctico, que sea una
+          decisión consciente y escrita.</li>
+        <li><strong>Lógica de negocio en los adaptadores:</strong> un controlador que decide si un pedido se puede cancelar, o
+          una consulta SQL que aplica una regla de negocio, dejan esa regla fuera del alcance de las pruebas rápidas.</li>
+        <li><strong>Adaptadores que se llaman entre sí:</strong> el controlador web que usa directamente el repositorio se salta
+          el caso de uso. Todo pasa por el núcleo.</li>
+        <li><strong>Ceremonia donde no hay dominio:</strong> en una aplicación que solo guarda y lee formularios (un CRUD), los
+          puertos, los mapeos y los módulos cuestan más de lo que aportan.</li>
+        <li><strong>Un puerto por tabla:</strong> los puertos agrupan conversaciones del negocio; no tienen por qué coincidir con
+          el modelo de datos.</li>
+        <li><strong>Dejar la regla sin comprobar:</strong> con el tiempo aparecen los <code>import</code> prohibidos. Módulos o
+          pruebas de arquitectura evitan que la estructura se degrade.</li>
+      </ul>
+
+      <h2 id="comparativa">Hexagonal, capas, cebolla y arquitectura limpia</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th><a href="../tema.html?id=layered-architecture">Capas</a></th><th>Hexagonal</th><th><a href="../tema.html?id=clean-architecture">Limpia</a> / cebolla</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Imagen</td><td>Presentación sobre negocio sobre datos.</td><td>Un núcleo con puertos y adaptadores alrededor.</td><td>Círculos concéntricos: entidades, casos de uso, adaptadores, <em>frameworks</em>.</td></tr>
+            <tr><td>Dirección de las dependencias</td><td>Hacia abajo: el negocio suele depender de la capa de datos.</td><td>Hacia dentro: los adaptadores dependen del núcleo.</td><td>Hacia dentro, igual que la hexagonal.</td></tr>
+            <tr><td>Qué aporta</td><td>Sencillez y orden en aplicaciones pequeñas.</td><td>La simetría: interfaz, base de datos y pruebas son «el exterior» por igual.</td><td>Más anillos con nombre y reglas más detalladas.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Las tres últimas comparten la idea central (la regla de dependencias y la inversión de dependencias); cambian sobre
+        todo el dibujo y el vocabulario. En la práctica, muchos equipos dicen «hexagonal» y aplican una mezcla.</p>
+      <p><strong>Cuándo elegirla:</strong> cuando hay lógica de negocio que merece protegerse y probarse sola, cuando se espera
+        cambiar o añadir tecnologías (otra base de datos, otro canal de entrada) o cuando varias entradas usan los mismos casos de
+        uso (web, API, mensajes). <strong>Cuándo no:</strong> en un CRUD sencillo, un prototipo de usar y tirar o un script.</p>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="hexagonal-architecture"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://alistair.cockburn.us/hexagonal-architecture/" target="_blank" rel="noopener">Hexagonal architecture</a> (Alistair Cockburn, artículo original de 2005, consultada el 13/11/2026).</li>
+        <li><a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/hexagonal-architecture.html" target="_blank" rel="noopener">Hexagonal architecture pattern</a> (AWS Prescriptive Guidance, consultada el 13/11/2026).</li>
+        <li><a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank" rel="noopener">The Clean Architecture</a> (Robert C. Martin, 2012, consultada el 13/11/2026).</li>
+        <li><a href="https://www.archunit.org/userguide/html/000_Index.html" target="_blank" rel="noopener">ArchUnit User Guide</a> (ArchUnit, consultada el 13/11/2026).</li>
+        <li><a href="https://martinfowler.com/bliki/PresentationDomainDataLayering.html" target="_blank" rel="noopener">Presentation Domain Data Layering</a> (Martin Fowler, consultada el 13/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=6c5f7ab0" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=81d3fcf3" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architectural Styles — Tech Spider</title>
+<meta name="description" content="Estilos arquitectónicos: cómo se organiza un sistema (capas, arquitectura limpia, hexagonal, monolito modular, microservicios y eventos), qué los distingue y cómo elegir entre ellos.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/architectural-styles.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=04c39275">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="architectural-styles">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>Un <strong>estilo arquitectónico</strong> es la forma general en que se organiza un sistema: en qué piezas se divide,
+        cómo se comunican y hacia dónde apuntan sus dependencias. Es la decisión de más alto nivel del diseño y la más cara de
+        cambiar después, porque condiciona cómo se escribe, se prueba, se despliega y se escala todo lo demás.</p>
+      <p>Conviene no confundirlo con lo que hay a su alrededor en esta área: los
+        <a href="../tema.html?id=architectural-principles">principios</a> (separar responsabilidades, alta cohesión, bajo
+        acoplamiento) son los criterios que cualquier estilo intenta cumplir, y los
+        <a href="../tema.html?id=architectural-patterns">patrones</a> (CQRS, Saga, Outbox) son soluciones a problemas concretos
+        que se usan <em>dentro</em> de un estilo. Este bloque reúne los estilos más habituales en el backend:</p>
+      <ul>
+        <li><a href="../tema.html?id=layered-architecture">Arquitectura en capas</a>: presentación, negocio y datos apilados,
+          cada capa usa la de debajo. Es la más conocida y la más sencilla.</li>
+        <li><a href="../tema.html?id=clean-architecture">Arquitectura limpia</a> (y su pariente, la de cebolla): círculos
+          concéntricos con el negocio en el centro y las dependencias siempre hacia dentro.</li>
+        <li><a href="hexagonal-architecture.html">Arquitectura hexagonal</a>: el negocio en el centro, que habla con el exterior
+          solo a través de interfaces (puertos) a las que se conectan las tecnologías (adaptadores). Ficha completa en este
+          sitio.</li>
+        <li><a href="../tema.html?id=modular-monolith">Monolito modular</a>: una sola aplicación desplegable, dividida por
+          dentro en módulos de negocio con fronteras claras.</li>
+        <li><a href="../tema.html?id=microservices-architecture">Microservicios</a>: muchos servicios pequeños, cada uno con
+          sus datos, que se despliegan y escalan por separado y se comunican por red.</li>
+        <li><a href="../tema.html?id=event-driven-architecture">Arquitectura orientada a eventos</a>: las piezas no se llaman
+          entre sí, sino que publican hechos («pedido creado») y otras reaccionan a ellos.</li>
+      </ul>
+      <p>No son excluyentes. Las tres primeras hablan de cómo se organiza el código <em>por dentro</em> de una aplicación; las
+        tres últimas, de cómo se reparte un sistema en piezas desplegables y cómo se comunican. Es muy común un sistema de
+        microservicios en el que cada servicio sigue una arquitectura hexagonal y se comunica por eventos.</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>El estilo decide qué será fácil y qué será difícil durante años: probar el negocio sin base de datos, que dos equipos
+        trabajen sin pisarse, escalar solo la parte que recibe más carga o cambiar una tecnología. Elegirlo mal se paga caro:
+        una base de código donde todo depende de todo, o, en el otro extremo, microservicios para un equipo de tres personas que
+        pasan más tiempo con la red y los despliegues que con el producto.</p>
+      <p>Por eso es materia de entrevistas para perfiles senior y de arquitectura, y el vocabulario (capas, hexagonal,
+        monolito modular, microservicios, eventos) aparece en casi cualquier conversación técnica sobre un sistema.</p>
+
+      <h2 id="como-elegir">Cómo elegir</h2>
+      <ul>
+        <li><strong>Empieza por lo más simple que resuelva el problema.</strong> Para una aplicación pequeña, unas capas bien
+          separadas bastan. Si hay lógica de negocio que merece protegerse y probarse sola, una arquitectura hexagonal o limpia.</li>
+        <li><strong>Un monolito modular antes que microservicios</strong> es la recomendación habitual (Martin Fowler la llama
+          <em>monolith first</em>): las fronteras entre módulos se descubren trabajando, y moverlas dentro de una aplicación es
+          mucho más barato que entre servicios.</li>
+        <li><strong>Microservicios cuando el problema es organizativo o de escala:</strong> varios equipos que necesitan
+          desplegar por separado o partes con necesidades de carga muy distintas. Traen consigo los problemas de los
+          <a href="../tema.html?id=distributed-systems">sistemas distribuidos</a>.</li>
+        <li><strong>Eventos cuando hace falta desacoplar en el tiempo:</strong> que quien produce algo no tenga que esperar ni
+          conocer a quien lo consume.</li>
+        <li><strong>Escribe la decisión.</strong> Un ADR (un documento corto con el contexto, la decisión y sus consecuencias)
+          explica después por qué se eligió lo que se eligió.</li>
+      </ul>
+
+      <h2 id="por-donde-empezar">Por dónde empezar</h2>
+      <ol>
+        <li><a href="../tema.html?id=layered-architecture">Capas</a>, para tener la referencia clásica y entender sus
+          límites.</li>
+        <li><a href="hexagonal-architecture.html">Hexagonal</a>: la idea de puertos, adaptadores y dependencias hacia dentro,
+          que reaparece en la arquitectura limpia.</li>
+        <li><a href="../tema.html?id=modular-monolith">Monolito modular</a>, antes de pensar en repartir el sistema.</li>
+        <li><a href="../tema.html?id=microservices-architecture">Microservicios</a> y
+          <a href="../tema.html?id=event-driven-architecture">eventos</a>, junto con los
+          <a href="../tema.html?id=distributed-systems">sistemas distribuidos</a> y <a href="../tema.html?id=ddd">DDD</a>, que
+          ayuda a trazar las fronteras.</li>
+      </ol>
+      <p>Para verlo en código real: <a href="https://github.com/arquitechthor/kopi-chess" target="_blank" rel="noopener">Kopi
+        Chess</a> (hexagonal en Java, explicado en
+        <a href="https://arquitechthor.github.io/aprendizajes/kopi-chess.html">Aprendizajes de Kopi Chess</a>) y
+        <a href="https://github.com/arquitechthor/prompt-quest" target="_blank" rel="noopener">Prompt Quest</a> (hexagonal y
+        serverless en TypeScript, explicado en
+        <a href="https://arquitechthor.github.io/aprendizajes/prompt-quest.html">Aprendizajes de Prompt Quest</a>).</p>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/" target="_blank" rel="noopener">Architecture styles</a> (Azure Architecture Center, Microsoft, consultada el 13/11/2026).</li>
+        <li><a href="https://martinfowler.com/architecture/" target="_blank" rel="noopener">Software Architecture Guide</a> (Martin Fowler, consultada el 13/11/2026).</li>
+        <li><a href="https://martinfowler.com/bliki/MonolithFirst.html" target="_blank" rel="noopener">MonolithFirst</a> (Martin Fowler, consultada el 13/11/2026).</li>
+        <li><a href="https://alistair.cockburn.us/hexagonal-architecture/" target="_blank" rel="noopener">Hexagonal architecture</a> (Alistair Cockburn, consultada el 13/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=6c5f7ab0" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=81d3fcf3" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

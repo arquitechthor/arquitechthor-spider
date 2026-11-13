@@ -193,7 +193,10 @@
     ],
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "hexagonal-architecture"
+    ]
   },
   {
     "id": "dry",
@@ -509,7 +512,10 @@
     "area": "testing",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 1
+    "prioridad": 1,
+    "relacionados": [
+      "hexagonal-architecture"
+    ]
   },
   {
     "id": "mutation-testing",
@@ -653,7 +659,7 @@
     "color": "#8eed5e",
     "frase": "Servidores en Java: inyección de dependencias, persistencia y construcción del proyecto.",
     "estado": "publicado",
-    "revisado": "2026-11-07"
+    "revisado": "2026-11-13"
   },
   {
     "id": "java-backend",
@@ -684,7 +690,8 @@
     "evaluable": true,
     "prioridad": 2,
     "relacionados": [
-      "spring-core"
+      "spring-core",
+      "hexagonal-architecture"
     ]
   },
   {
@@ -705,7 +712,7 @@
     "area": "backend",
     "frase": "El marco más usado en servidores: núcleo, Boot, MVC, datos, seguridad, nube y lotes.",
     "estado": "publicado",
-    "revisado": "2026-11-07"
+    "revisado": "2026-11-13"
   },
   {
     "id": "spring-core",
@@ -1301,7 +1308,9 @@
     "padre": "software-engineer",
     "area": "architecture",
     "color": "#a65eed",
-    "frase": "Cómo organizar sistemas grandes: estilos, DDD, patrones, resiliencia y mensajería."
+    "frase": "Cómo organizar sistemas grandes: estilos, DDD, patrones, resiliencia y mensajería.",
+    "estado": "publicado",
+    "revisado": "2026-11-13"
   },
   {
     "id": "architectural-principles",
@@ -1349,7 +1358,9 @@
     "tipo": "bloque",
     "padre": "architecture",
     "area": "architecture",
-    "frase": "Capas, arquitectura limpia, hexagonal, monolito modular, microservicios y eventos."
+    "frase": "Capas, arquitectura limpia, hexagonal, monolito modular, microservicios y eventos.",
+    "estado": "publicado",
+    "revisado": "2026-11-13"
   },
   {
     "id": "layered-architecture",
@@ -1359,7 +1370,10 @@
     "area": "architecture",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "hexagonal-architecture"
+    ]
   },
   {
     "id": "clean-architecture",
@@ -1369,7 +1383,10 @@
     "area": "architecture",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "hexagonal-architecture"
+    ]
   },
   {
     "id": "hexagonal-architecture",
@@ -1377,9 +1394,23 @@
     "tipo": "tema",
     "padre": "architectural-styles",
     "area": "architecture",
-    "estado": "pendiente",
+    "estado": "publicado",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "frase": "Puertos y adaptadores: el núcleo de negocio no depende de la web ni de la base de datos.",
+    "alias": [
+      "Ports and Adapters",
+      "Puertos y adaptadores"
+    ],
+    "relacionados": [
+      "clean-architecture",
+      "layered-architecture",
+      "dependency-injection",
+      "solid",
+      "test-doubles",
+      "ddd"
+    ],
+    "revisado": "2026-11-13"
   },
   {
     "id": "modular-monolith",
@@ -1421,7 +1452,10 @@
     "tipo": "bloque",
     "padre": "architecture",
     "area": "architecture",
-    "frase": "Modelar el software alrededor del negocio con contextos, agregados y lenguaje común."
+    "frase": "Modelar el software alrededor del negocio con contextos, agregados y lenguaje común.",
+    "relacionados": [
+      "hexagonal-architecture"
+    ]
   },
   {
     "id": "strategic-design",
@@ -1993,7 +2027,7 @@
     "area": "devops",
     "frase": "Describir servidores y redes en ficheros versionados con Terraform, CloudFormation o CDK.",
     "estado": "publicado",
-    "revisado": "2026-11-07"
+    "revisado": "2026-11-13"
   },
   {
     "id": "terraform",
@@ -6390,7 +6424,7 @@
     "evaluable": true,
     "prioridad": 2,
     "volatil": true,
-    "revisado": "2026-11-03",
+    "revisado": "2026-11-13",
     "alias": [
       "LLM"
     ]
@@ -6585,7 +6619,7 @@
     "evaluable": true,
     "prioridad": 2,
     "volatil": true,
-    "revisado": "2026-11-03"
+    "revisado": "2026-11-13"
   },
   {
     "id": "tool-calling",
@@ -6742,7 +6776,7 @@
     "frase": "Llamar a modelos desde una aplicación: APIs, embeddings, vectores, MCP y Java.",
     "estado": "publicado",
     "volatil": true,
-    "revisado": "2026-11-07"
+    "revisado": "2026-11-13"
   },
   {
     "id": "model-apis",
