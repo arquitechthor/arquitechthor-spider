@@ -1,0 +1,193 @@
+[
+  {
+    "id": "clean-architecture-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué dice la regla de dependencias de la arquitectura limpia?",
+    "opciones": [
+      "Que cada círculo puede usar libremente el código de los círculos que tiene alrededor.",
+      "Que el código fuente solo puede depender de lo que está en círculos más interiores.",
+      "Que todas las dependencias se declaran en un único fichero de configuración del proyecto.",
+      "Que los casos de uso deben depender de la base de datos para poder guardar sus datos."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "Las dependencias del código fuente solo apuntan hacia dentro: nada de un círculo interior puede nombrar algo de uno exterior. Por eso los casos de uso no dependen de la base de datos (es la base de datos, a través de un adaptador, la que depende de ellos). Dónde se declaran las dependencias no tiene que ver con la regla.",
+    "fuentes": [
+      "https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html"
+    ]
+  },
+  {
+    "id": "clean-architecture-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué orden siguen los cuatro círculos del diagrama original, del centro hacia fuera?",
+    "opciones": [
+      "Casos de uso, entidades, frameworks y drivers, adaptadores de interfaz.",
+      "Adaptadores de interfaz, casos de uso, entidades, frameworks y drivers.",
+      "Frameworks y drivers, adaptadores de interfaz, casos de uso, entidades.",
+      "Entidades, casos de uso, adaptadores de interfaz, frameworks y drivers."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "En el centro están las entidades (reglas de negocio generales), después los casos de uso (reglas propias de la aplicación), luego los adaptadores de interfaz (controladores, presentadores, persistencia) y por fuera los frameworks y drivers (la web, la base de datos). Cuanto más dentro, más abstracto y estable.",
+    "fuentes": [
+      "https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html"
+    ]
+  },
+  {
+    "id": "clean-architecture-003",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿En qué círculo va el código SQL que guarda y lee los datos de la aplicación?",
+    "opciones": [
+      "En las entidades, para que cada objeto de negocio sepa guardarse a sí mismo.",
+      "En los casos de uso, porque son los que deciden cuándo hay que guardar algo.",
+      "En los adaptadores de interfaz, que traducen entre casos de uso y base de datos.",
+      "En un círculo propio, situado por dentro de las entidades, porque los datos van primero."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "Todo el SQL y el código de persistencia vive en los adaptadores de interfaz. Los casos de uso deciden cuándo guardar, pero lo hacen a través de una interfaz suya; ni ellos ni las entidades saben que hay una base de datos. No hay ningún círculo de datos en el centro.",
+    "fuentes": [
+      "https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html"
+    ]
+  },
+  {
+    "id": "clean-architecture-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un caso de uso tiene que enviar su resultado al presentador, que está en un círculo exterior. ¿Cómo se hace sin romper la regla de dependencias?",
+    "opciones": [
+      "El caso de uso define una interfaz de salida y el presentador, de fuera, la implementa.",
+      "El caso de uso crea el presentador con new y le llama directamente al terminar su trabajo.",
+      "El presentador consulta la base de datos para leer el resultado que ha guardado el caso de uso.",
+      "Se mueve el presentador al círculo de los casos de uso para que puedan llamarse entre sí."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "Es inversión de dependencias: el control va de dentro hacia fuera, pero la dependencia del código apunta hacia dentro porque la interfaz (output port) pertenece al círculo de los casos de uso. Crear el presentador con new obligaría a nombrar una clase de fuera; las otras dos opciones desordenan los círculos.",
+    "fuentes": [
+      "https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html"
+    ]
+  },
+  {
+    "id": "clean-architecture-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué datos deberían cruzar las fronteras entre círculos?",
+    "opciones": [
+      "Las entidades completas, para que cada círculo tenga acceso a todas sus reglas.",
+      "Las filas tal como las devuelve el framework de base de datos, para no copiar nada.",
+      "Los objetos de la petición HTTP, que ya contienen todo lo que ha enviado el usuario.",
+      "Estructuras de datos simples, en el formato que más le conviene al círculo interior."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "Por las fronteras pasan datos simples y aislados (argumentos, DTO, objetos sencillos). Pasar entidades hacia fuera, o filas y peticiones HTTP hacia dentro, haría que un círculo dependiera de los formatos de otro: es romper la regla de dependencias por los datos.",
+    "fuentes": [
+      "https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html"
+    ]
+  },
+  {
+    "id": "clean-architecture-006",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué diferencia hay entre las entidades y los casos de uso?",
+    "opciones": [
+      "Las entidades guardan datos en la base de datos y los casos de uso los muestran en pantalla.",
+      "Las entidades tienen las reglas generales y los casos de uso, las de esta aplicación.",
+      "Las entidades son las clases de JPA y los casos de uso son los controladores REST de Spring.",
+      "Las entidades cambian con cada pantalla nueva y los casos de uso no cambian prácticamente nunca."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "Las entidades contienen las reglas más generales, las que seguirían valiendo para otras aplicaciones del negocio; los casos de uso, las de esta aplicación concreta, y orquestan a las entidades. No son clases de JPA ni controladores, y es al revés: las entidades son lo más estable.",
+    "fuentes": [
+      "https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html"
+    ]
+  },
+  {
+    "id": "clean-architecture-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué significa que la arquitectura de un proyecto «grita» (Screaming Architecture)?",
+    "opciones": [
+      "Que la estructura del código deja claro de qué va el negocio, no qué framework se ha usado.",
+      "Que el proyecto registra en los logs cada vez que alguien incumple una regla de arquitectura.",
+      "Que cada módulo publica eventos para avisar a los demás de los cambios que va haciendo.",
+      "Que el framework web obliga a seguir una estructura de carpetas fija en todos los proyectos."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "Robert C. Martin lo propuso en otro artículo: al ver las carpetas deberían aparecer pedidos, préstamos o envíos, no controllers, services y repositories. El framework es un detalle; el negocio es lo que debería verse. No tiene que ver con logs ni con eventos.",
+    "fuentes": [
+      "https://blog.cleancoder.com/uncle-bob/2011/09/30/Screaming-Architecture.html"
+    ]
+  },
+  {
+    "id": "clean-architecture-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un equipo usa sus clases con @Entity de JPA como entidades del círculo central. ¿Qué problema tiene?",
+    "opciones": [
+      "El círculo central pasa a depender de JPA y del modelo de la base de datos.",
+      "Ninguno: las entidades de JPA y las del dominio son siempre exactamente lo mismo.",
+      "JPA no permite añadir métodos con reglas de negocio a las clases anotadas.",
+      "Las clases con @Entity no se pueden usar dentro de los casos de uso de Java."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "Las entidades de la arquitectura limpia son objetos de negocio; las de JPA son el mapeo de una tabla. Anotarlas ata el centro a un framework de persistencia, justo lo que la regla de dependencias quiere evitar. Puede aceptarse como compromiso práctico, pero es una decisión, no lo mismo. JPA sí admite métodos.",
+    "fuentes": [
+      "https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html"
+    ]
+  },
+  {
+    "id": "clean-architecture-009",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué relación hay entre la arquitectura limpia y la hexagonal?",
+    "opciones": [
+      "Son opuestas: la limpia prohíbe las interfaces que la hexagonal usa como puertos.",
+      "La hexagonal es una versión posterior que sustituyó a la limpia en los proyectos Java.",
+      "Comparten la idea central: la limpia se presentó como síntesis de la hexagonal y otras.",
+      "La limpia solo sirve para aplicaciones móviles, y la hexagonal solo para servicios web."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "El artículo de 2012 cita la hexagonal (2005) y la cebolla (2008) entre las propuestas que intenta unir. Todas separan el negocio de los detalles y hacen que las dependencias apunten hacia dentro; la limpia añade círculos con nombre y reglas sobre cómo cruzar cada frontera. No son opuestas ni específicas de un tipo de aplicación.",
+    "fuentes": [
+      "https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html",
+      "https://alistair.cockburn.us/hexagonal-architecture/"
+    ]
+  },
+  {
+    "id": "clean-architecture-010",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "¿Cuál de estas afirmaciones sobre los cuatro círculos es correcta?",
+    "opciones": [
+      "Son obligatorios: un proyecto con tres o con cinco círculos ya no es arquitectura limpia.",
+      "Son orientativos: puede haber más, pero las dependencias siempre apuntan hacia dentro.",
+      "Solo son obligatorios los dos círculos exteriores; los dos del centro se pueden fusionar.",
+      "Cada círculo tiene que ser un microservicio que se despliega por separado de los demás."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "El propio artículo aclara que los círculos son esquemáticos y que puede hacer falta más de cuatro; lo que no cambia es la regla de dependencias. Los círculos organizan código, no despliegues: una aplicación con arquitectura limpia puede ser un único ejecutable.",
+    "fuentes": [
+      "https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html"
+    ]
+  }
+]

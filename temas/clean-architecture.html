@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clean Architecture — Tech Spider</title>
+<meta name="description" content="Arquitectura limpia (Clean Architecture) de Robert C. Martin: entidades, casos de uso, adaptadores de interfaz y frameworks en círculos concéntricos, la regla de dependencias, cómo cruzar las fronteras, ejemplo en Java, errores frecuentes y comparativa con la hexagonal y la cebolla.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/clean-architecture.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=532e81a3">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="clean-architecture">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>La <strong>arquitectura limpia</strong> (<em>Clean Architecture</em>) es una forma de organizar una aplicación en
+        <strong>círculos concéntricos</strong>: en el centro, las reglas de negocio; alrededor, los casos de uso; después, el
+        código que traduce entre la aplicación y el exterior; y por fuera, los <em>frameworks</em>, la base de datos y la web.
+        La propuso Robert C. Martin («Uncle Bob») en un artículo de 2012, que desarrolló después en su libro
+        <em>Clean Architecture</em> (2017).</p>
+      <p>No partía de cero: el propio artículo la presenta como un intento de unir en una sola idea varias propuestas que
+        se parecían mucho, entre ellas la <a href="hexagonal-architecture.html">arquitectura hexagonal</a> de Alistair Cockburn
+        y la <strong>arquitectura cebolla</strong> (<em>Onion Architecture</em>) de Jeffrey Palermo (2008). Todas buscan lo
+        mismo, separar responsabilidades, y todas lo consiguen igual: con capas y con una regla sobre hacia dónde pueden
+        apuntar las dependencias.</p>
+      <p>El resultado que promete es un sistema independiente de los <em>frameworks</em>, de la interfaz de usuario, de la base
+        de datos y de cualquier servicio externo, y que por eso se puede <strong>probar sin ninguno de ellos</strong>.</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Es probablemente el nombre más conocido de esta familia de estilos: el libro es lectura habitual para perfiles
+        backend y de arquitectura, hay plantillas de proyecto «Clean Architecture» para .NET, Java, Android, Node.js o Go, y
+        el vocabulario (entidades, casos de uso, adaptadores de interfaz, regla de dependencias) aparece en entrevistas y en
+        revisiones de diseño. También es uno de los estilos más malinterpretados: muchos equipos copian las carpetas del
+        diagrama sin aplicar la regla que lo sostiene, o al revés, la aplican con tanta ceremonia que el código se llena de
+        capas que no aportan nada.</p>
+
+      <h2 id="circulos">Los cuatro círculos</h2>
+      <p>Del centro hacia fuera, cuanto más dentro, más abstracto y más estable; cuanto más fuera, más concreto y más
+        cambiante:</p>
+      <ol>
+        <li><strong>Entidades:</strong> las reglas de negocio más generales, las que seguirían siendo ciertas aunque no
+          existiera la aplicación (un préstamo tiene un tipo de interés; un pedido cancelado no se envía). Pueden ser objetos
+          con métodos o estructuras de datos con funciones. No cambian porque cambie la navegación de la web o la
+          seguridad.</li>
+        <li><strong>Casos de uso:</strong> las reglas propias de <em>esta</em> aplicación, una por cada cosa que un usuario
+          puede hacer («solicitar préstamo», «cancelar pedido»). Orquestan a las entidades. Cambian cuando cambia lo que la
+          aplicación hace, no cuando cambia la base de datos.</li>
+        <li><strong>Adaptadores de interfaz:</strong> convierten los datos del formato que conviene a los casos de uso al que
+          conviene al exterior, y al revés. Aquí viven los controladores, los presentadores y las vistas de un patrón MVC, y
+          todo el SQL o el código de persistencia.</li>
+        <li><strong><em>Frameworks</em> y <em>drivers</em>:</strong> el <em>framework</em> web, el de persistencia, la base
+          de datos, las librerías. Normalmente se escribe poco código aquí, solo el «pegamento» con el círculo de dentro.
+          Martin lo resume en que la web y la base de datos son <strong>detalles</strong>.</li>
+      </ol>
+      <p>Los cuatro círculos son un esquema, no una norma: puede haber más. Lo que no cambia es la regla.</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>Regla de dependencias:</strong> las dependencias del código fuente solo apuntan hacia dentro. Nada de un
+          círculo interior puede nombrar algo de uno exterior: ni una clase, ni una función, ni una variable. Y tampoco usar
+          sus formatos de datos, sobre todo los que genera un <em>framework</em>.</li>
+        <li><strong>Cruzar fronteras con inversión de dependencias:</strong> a veces el control va de dentro hacia fuera (el
+          caso de uso tiene que mostrar un resultado o guardar algo). Para que la dependencia siga apuntando hacia dentro, el
+          círculo interior define una interfaz y el exterior la implementa. Es la «D» de
+          <a href="../tema.html?id=solid">SOLID</a>, y es el mismo mecanismo que los puertos de la arquitectura hexagonal.</li>
+        <li><strong>Puertos de entrada y de salida:</strong> en la terminología del libro, el caso de uso (el
+          <em>interactor</em>) implementa un <em>input port</em> que llama el controlador, y habla con el exterior a través de
+          <em>output ports</em>: uno para el presentador y otros para la persistencia o los servicios externos.</li>
+        <li><strong>Modelos de petición y de respuesta:</strong> por las fronteras solo cruzan estructuras de datos simples y
+          aisladas (argumentos, DTO, objetos sencillos), en el formato que conviene al círculo interior. Nunca entidades
+          hacia fuera ni filas de la base de datos hacia dentro.</li>
+        <li><strong>Presentador:</strong> recibe del caso de uso los datos de la respuesta y los prepara para mostrarlos (un
+          <em>view model</em> con textos ya formateados), de modo que la vista solo tenga que pintarlos.</li>
+        <li><strong>Arquitectura que «grita»</strong> (<em>Screaming Architecture</em>, otro artículo de Martin): al abrir
+          las carpetas del proyecto debería verse de qué va el negocio (pedidos, préstamos, envíos), no qué
+          <em>framework</em> se usa (controllers, services, repositories).</li>
+      </ul>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>Un caso de uso en Java siguiendo el libro al pie de la letra, con su puerto de entrada, su modelo de petición y su
+        puerto de salida hacia el presentador. Nada de esto conoce la web ni la base de datos:</p>
+      <pre><code>// casos de uso: puerto de entrada y modelos de petición y respuesta (datos simples)
+public interface SolicitarPrestamo { void solicitar(SolicitudPrestamo peticion); }
+public record SolicitudPrestamo(String clienteId, long importeCentimos, int meses) {}
+public record PrestamoConcedido(String prestamoId, long cuotaCentimos) {}
+
+// casos de uso: puertos de salida
+public interface PresentadorDePrestamo { void concedido(PrestamoConcedido r); void rechazado(String motivo); }
+public interface RepositorioDePrestamos { void guardar(Prestamo prestamo); }
+
+// casos de uso: el interactor orquesta a la entidad Prestamo, que tiene las reglas generales
+public final class SolicitarPrestamoInteractor implements SolicitarPrestamo {
+    private final RepositorioDePrestamos prestamos;
+    private final PresentadorDePrestamo presentador;
+    // constructor con los dos puertos
+
+    @Override
+    public void solicitar(SolicitudPrestamo p) {
+        var prestamo = Prestamo.nuevo(p.clienteId(), p.importeCentimos(), p.meses());
+        if (!prestamo.esConcedible()) {
+            presentador.rechazado("El importe supera el máximo para ese plazo");
+            return;
+        }
+        prestamos.guardar(prestamo);
+        presentador.concedido(new PrestamoConcedido(prestamo.id(), prestamo.cuotaMensual()));
+    }
+}</code></pre>
+      <p>En el círculo de los adaptadores, el controlador traduce la petición web al modelo de petición y el presentador
+        convierte la respuesta en lo que la vista necesita:</p>
+      <pre><code>// adaptadores de interfaz: el presentador implementa el puerto de salida
+final class PresentadorWebDePrestamo implements PresentadorDePrestamo {
+    private VistaPrestamo vista;   // view model: solo textos listos para pintar
+
+    @Override public void concedido(PrestamoConcedido r) {
+        vista = new VistaPrestamo("Préstamo concedido", formatearEuros(r.cuotaCentimos()) + " al mes");
+    }
+    @Override public void rechazado(String motivo) { vista = new VistaPrestamo("Préstamo rechazado", motivo); }
+    VistaPrestamo vista() { return vista; }
+}</code></pre>
+      <p>Fíjate en el flujo: el control va del controlador al caso de uso y de ahí al presentador, pero <strong>las dos
+        dependencias apuntan hacia el caso de uso</strong>, porque el presentador implementa una interfaz definida dentro.
+        Para probar el interactor basta con un repositorio y un presentador falsos que apunten lo que reciben.</p>
+      <p>Y la estructura de carpetas que «grita» el negocio en lugar del <em>framework</em>:</p>
+      <pre><code>prestamos/
+  dominio/          Prestamo, reglas de concesión          (entidades)
+  aplicacion/       SolicitarPrestamo, SolicitarPrestamoInteractor, puertos   (casos de uso)
+  adaptadores/      PrestamosController, PresentadorWebDePrestamo, RepositorioDePrestamosJdbc
+  arranque/         configuración de Spring que conecta todo   (frameworks y drivers)</code></pre>
+      <p>Muchos equipos simplifican el presentador: el caso de uso <strong>devuelve</strong> el modelo de respuesta y el
+        controlador lo convierte. Es una variante muy extendida y válida siempre que lo devuelto sea un modelo de respuesta,
+        no la entidad.</p>
+
+      <h2 id="caso-real">Caso real: Kopi Chess</h2>
+      <p><a href="https://github.com/arquitechthor/kopi-chess" target="_blank" rel="noopener">Kopi Chess</a> (código público, Java
+        25 y Spring Boot 4) describe su propio código como «anillos, como una cebolla», y sus módulos Maven encajan casi uno a
+        uno con los círculos: <code>kopi-domain</code> (entidades: las reglas del ajedrez), <code>kopi-application</code>
+        (casos de uso y puertos), los <code>kopi-adapter-*</code> (adaptadores de interfaz: web, REST, PostgreSQL, Stockfish)
+        y <code>kopi-bootstrap</code> (el <em>framework</em> que lo conecta todo). Usa la variante simplificada: cada caso de
+        uso devuelve un modelo de respuesta (<code>GameView</code>) en lugar de llamar a un presentador. La regla de
+        dependencias la comprueban el compilador y ArchUnit. Explicado paso a paso en
+        <a href="https://arquitechthor.github.io/aprendizajes/kopi-chess.html">Aprendizajes de Kopi Chess</a>.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Copiar las carpetas y olvidar la regla:</strong> tener <code>domain</code>, <code>application</code> e
+          <code>infrastructure</code> no sirve de nada si el dominio importa clases del <em>framework</em>. Comprueba la regla
+          con módulos separados o con pruebas de arquitectura (ArchUnit en Java).</li>
+        <li><strong>Confundir entidades con entidades de JPA:</strong> las entidades de la arquitectura limpia son objetos de
+          negocio, no clases con <code>@Entity</code> mapeadas a tablas. Mezclarlas ata el centro a la base de datos.</li>
+        <li><strong>Pasar entidades o filas por las fronteras:</strong> devolver la entidad al controlador o subir una fila de
+          la base de datos al caso de uso rompe la regla por los datos aunque no la rompa por los <code>import</code>.</li>
+        <li><strong>Ceremonia por defecto:</strong> un puerto, un interactor, un presentador, un modelo de petición, otro de
+          respuesta y tres mapeos para guardar un formulario. En partes sin lógica de negocio, cuesta más de lo que
+          aporta.</li>
+        <li><strong>Entidades vacías y casos de uso que lo hacen todo:</strong> si las entidades son solo datos y toda la
+          lógica está en los casos de uso, las reglas generales se repiten entre casos de uso.</li>
+        <li><strong>Tomar los cuatro círculos como dogma:</strong> son un esquema. Lo obligatorio es que las dependencias
+          apunten hacia dentro.</li>
+      </ul>
+
+      <h2 id="comparativa">Limpia, hexagonal y cebolla</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th><a href="hexagonal-architecture.html">Hexagonal</a></th><th>Cebolla</th><th>Limpia</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Autor y año</td><td>Alistair Cockburn, 2005</td><td>Jeffrey Palermo, 2008</td><td>Robert C. Martin, 2012</td></tr>
+            <tr><td>Imagen</td><td>Un núcleo con puertos y adaptadores alrededor.</td><td>Capas concéntricas con el modelo de dominio en el centro.</td><td>Cuatro círculos: entidades, casos de uso, adaptadores, <em>frameworks</em>.</td></tr>
+            <tr><td>Qué subraya</td><td>La simetría: interfaz, base de datos y pruebas son por igual «el exterior».</td><td>Todo el acoplamiento va hacia el centro.</td><td>La regla de dependencias, también para los datos, y cómo cruzar cada frontera.</td></tr>
+            <tr><td>Por dentro del núcleo</td><td>No lo detalla.</td><td>Dominio, servicios de dominio y de aplicación.</td><td>Separa reglas generales (entidades) y propias de la aplicación (casos de uso).</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Las tres comparten lo esencial y en la práctica se mezclan. Frente a la
+        <a href="../tema.html?id=layered-architecture">arquitectura en capas</a> clásica, la diferencia es la misma: allí el
+        negocio depende de la capa de datos; aquí la capa de datos depende del negocio.</p>
+      <p><strong>Cuándo elegirla:</strong> aplicaciones con reglas de negocio que duran más que las tecnologías que las
+        rodean, varias entradas (web, API, mensajes) sobre los mismos casos de uso o necesidad de probar el negocio sin
+        infraestructura. <strong>Cuándo no:</strong> un CRUD sencillo, un prototipo o un servicio muy pequeño, donde unas capas
+        bien separadas bastan.</p>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="clean-architecture"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank" rel="noopener">The Clean Architecture</a> (Robert C. Martin, 2012, consultada el 13/11/2026).</li>
+        <li><a href="https://blog.cleancoder.com/uncle-bob/2011/09/30/Screaming-Architecture.html" target="_blank" rel="noopener">Screaming Architecture</a> (Robert C. Martin, 2011, consultada el 13/11/2026).</li>
+        <li><a href="https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/" target="_blank" rel="noopener">The Onion Architecture: part 1</a> (Jeffrey Palermo, 2008, consultada el 13/11/2026).</li>
+        <li><a href="https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures" target="_blank" rel="noopener">Common web application architectures</a> (Microsoft Learn, consultada el 13/11/2026).</li>
+        <li><a href="https://alistair.cockburn.us/hexagonal-architecture/" target="_blank" rel="noopener">Hexagonal architecture</a> (Alistair Cockburn, consultada el 13/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=6c5f7ab0" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 {
   "siglas": {
+    "DTO": { "en": "Data Transfer Object", "es": "objeto que solo transporta datos entre partes de un sistema, sin lógica" },
     "ADR": { "en": "Architecture Decision Record", "es": "documento corto que registra una decisión de arquitectura, su contexto y sus consecuencias" },
     "CAP": { "leer": "cap", "en": "Consistency, Availability, Partition tolerance", "es": "teorema según el cual, si la red se parte, un sistema distribuido debe elegir entre consistencia y disponibilidad", "enlace": "cap-theorem" },
     "CQRS": { "en": "Command Query Responsibility Segregation", "es": "separar el modelo que cambia los datos del que los consulta", "enlace": "cqrs" },

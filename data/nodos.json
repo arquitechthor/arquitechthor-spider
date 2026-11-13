@@ -180,7 +180,10 @@
     "area": "fundamentals",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "clean-architecture"
+    ]
   },
   {
     "id": "solid",
@@ -195,7 +198,8 @@
     "evaluable": true,
     "prioridad": 2,
     "relacionados": [
-      "hexagonal-architecture"
+      "hexagonal-architecture",
+      "clean-architecture"
     ]
   },
   {
@@ -691,7 +695,8 @@
     "prioridad": 2,
     "relacionados": [
       "spring-core",
-      "hexagonal-architecture"
+      "hexagonal-architecture",
+      "clean-architecture"
     ]
   },
   {
@@ -1372,7 +1377,8 @@
     "evaluable": true,
     "prioridad": 2,
     "relacionados": [
-      "hexagonal-architecture"
+      "hexagonal-architecture",
+      "clean-architecture"
     ]
   },
   {
@@ -1381,12 +1387,21 @@
     "tipo": "tema",
     "padre": "architectural-styles",
     "area": "architecture",
-    "estado": "pendiente",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
     "relacionados": [
-      "hexagonal-architecture"
-    ]
+      "hexagonal-architecture",
+      "layered-architecture",
+      "solid",
+      "dependency-injection",
+      "clean-code"
+    ],
+    "frase": "Círculos concéntricos con el negocio en el centro y las dependencias siempre hacia dentro.",
+    "alias": [
+      "Arquitectura limpia"
+    ],
+    "revisado": "2026-11-13"
   },
   {
     "id": "hexagonal-architecture",
