@@ -1410,7 +1410,8 @@
       "test-doubles",
       "ddd"
     ],
-    "revisado": "2026-11-13"
+    "revisado": "2026-11-13",
+    "audio": true
   },
   {
     "id": "modular-monolith",

@@ -27,6 +27,7 @@
   const SIN_MARCAR = '#6b7490';
   const ESTADOS = {
     publicado: 'con guía publicada', pendiente: 'próximamente', aws: 'con guía en Apuntes AWS',
+    audio: 'con resumen en audio',
     leida: 'con ficha leída', sinleer: 'con ficha sin leer', actualizada: 'actualizados desde que los leíste',
   };
   const TIPO = { raiz: 'Mapa completo', area: 'Área', bloque: 'Bloque', tema: 'Tema' };
@@ -248,6 +249,8 @@
 
   /** ¿Cumple el tema el filtro Estado? Los de lectura solo cuentan fichas escritas. */
   function cumpleEstado(tema, filtro, leidas) {
+    // Resumen en audio: en su ficha ("audio": true) o en su guía de Apuntes AWS (externo.audio).
+    if (filtro === 'audio') return Boolean(tema.audio || tema.externo?.audio);
     if (filtro === 'leida' || filtro === 'sinleer' || filtro === 'actualizada') {
       if (!D.tieneFicha(tema)) return false;
       const l = D.lecturaDe(tema, leidas);
@@ -467,6 +470,7 @@
         else if (pa) chips.push(`<span class="badge badge-actualizada">En curso: ${pa.aciertos} de ${pa.total} acertadas</span>`);
       }
       else chips.push(n.estado === 'publicado' ? '<span class="badge badge-publicado">Publicado</span>' : '<span class="badge badge-pendiente">Próximamente</span>');
+      if (n.audio && n.estado === 'publicado') chips.push(`<a class="badge badge-publicado" href="${D.esc(D.urlFicha(n))}">🎧 Resumen en audio en su ficha</a>`);
       if (!n.evaluable && !n.externo) chips.push('<span class="badge badge-pendiente">Solo autoevaluación</span>');
       if (n.prioridad === 1) chips.push('<span class="badge badge-esencial">Lo esencial</span>');
       const l = D.lecturaDe(n);

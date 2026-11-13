@@ -747,3 +747,15 @@ footer { padding: 36px 0; border-top: 1px solid var(--border); }
   position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
+
+/* Resumen en audio de una ficha, antes de "Qué es" (nodo con "audio": true; assets/audio-kopi.js). */
+.audio-recurso {
+  margin: 0 0 8px; padding: 14px 16px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.audio-recurso figcaption { font-size: 14.5px; color: var(--text-muted); margin-bottom: 10px; }
+.audio-recurso .audio-nota { color: var(--text-faint); font-size: 13px; }
+.audio-recurso audio { display: block; width: 100%; }
+.audio-recurso audio[hidden] { display: none; }
+.audio-recurso .audio-aviso { margin: 8px 0 0; font-size: 13.5px; color: var(--amber); }
+.audio-recurso .audio-aviso:empty { display: none; }

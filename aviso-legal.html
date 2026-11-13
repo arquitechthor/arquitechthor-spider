@@ -9,7 +9,7 @@
 <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="stylesheet" href="styles.css?v=04c39275">
+<link rel="stylesheet" href="styles.css?v=532e81a3">
 </head>
 <body>
 <a class="saltar" href="#contenido">Saltar al contenido</a>
@@ -95,6 +95,12 @@
       sustituye a la documentación oficial.</p>
     <p>No lo uses como única fuente para decisiones técnicas, de seguridad, legales o de
       arquitectura en entornos reales.</p>
+    <p>Algunas fichas incluyen un resumen en audio (🎧) generado con inteligencia artificial (NotebookLM)
+      a partir de sus apuntes. Se sirven desde Kopi Tools, el proyecto personal del mismo autor:
+      <strong>solo cuando pulsas «Escuchar»</strong>, tu navegador pide el audio a la API pública de Kopi
+      (<code>api.kopitools.link</code>) y lo descarga de su almacenamiento en AWS (Amazon S3, región de
+      España). Pueden contener imprecisiones: ante cualquier duda, manda el texto de la ficha y la
+      documentación oficial.</p>
 
     <h2 id="responsabilidad">6. Limitación de responsabilidad</h2>
     <p>En la medida en que lo permita la ley aplicable, el autor no se hace responsable de
@@ -134,8 +140,10 @@
     <h2 id="privacidad">10. Privacidad</h2>
     <ul>
       <li><strong>No se usan cookies</strong>, analítica, píxeles de seguimiento, formularios ni
-        servicios de terceros que recojan datos. El sitio no carga recursos de otros dominios; solo
-        si entras con tu cuenta Kopi (ver más abajo) se comunica con Kopi para guardar tu progreso.</li>
+        servicios de terceros que recojan datos. El sitio solo se comunica con Kopi en dos casos: si
+        entras con tu cuenta Kopi (ver más abajo), para guardar tu progreso, y cuando pulsas «Escuchar» en
+        un resumen en audio (ver la sección 5), para descargarlo. Esa petición no lleva ningún dato tuyo
+        más allá de los que envía cualquier navegador (dirección IP, navegador).</li>
       <li>Algunas funciones guardan datos en el <strong>almacenamiento local de tu navegador</strong>
         (<code>localStorage</code>, claves que empiezan por <code>spider.</code>): tus preferencias del
         mapa (vista, filtros y color) y de la lectura en voz alta (velocidad y voz), tu autoevaluación de cada tema, qué fichas has marcado como leídas (con la fecha), tu progreso en las preguntas de

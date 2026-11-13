@@ -105,6 +105,14 @@ no third-party requests).
   the evaluation, "Qué contiene", "Relacionados", "Fuentes" and `[data-sin-lectura]`. Acronyms are
   spelled out unless their glossary entry has `leer` (how to pronounce it: `"RAG": { "leer": "rag" }`).
   Speed and voice in `spider.lectura`. New fichas must load it before `tema.js` (see the template).
+- **Audio summaries from Kopi** (same as aws-cert-study): a topic with `"audio": true` in `nodos.json` shows,
+  right before "Qué es", `<figure class="audio-recurso" data-kopi="<Kopi resource id>">` (copy it from
+  `temas/hexagonal-architecture.html`) and loads `assets/audio-kopi.js` after `lectura.js`. The script is a copy
+  of aws-cert-study's (keep both identical except the header comment): on "▶ Escuchar" it fetches the
+  public `GET https://api.kopitools.link/public/knowledge/resources/{id}` and plays its `fileUrl` (presigned S3,
+  1 h, renewed on error). Audios never go in the repo. Before adding one, check the resource with `curl` on that
+  URL (`tipo` must be `AUDIO` and `title`/`originalName` must match the topic). The map panel shows a 🎧 badge
+  and the Estado filter has "Con resumen en audio"; the validator checks the ficha has the block and the script.
 - Passing a ficha's quiz at 100 % marks it as read (`SpiderPreguntas.registrar`, only if it was not
   read yet); quizzes passed before that rule are migrated once per browser in `datos.js`
   (`spider.leidasPorCuestionario` flag), so unmarking a ficha later is respected.

@@ -31,8 +31,9 @@ FRASE_MIN, FRASE_MAX = 60, 90
 MIN_PREGUNTAS = 5
 MAX_CORTO = 14
 MESES_VOLATIL = 6
+RAIZ_AUDIO = __import__('pathlib').Path(__file__).resolve().parent.parent
 CAMPOS = {'id', 'nombre', 'nombreEs', 'nombreCorto', 'tipo', 'padre', 'area', 'accesos', 'color', 'frase', 'estado',
-          'evaluable', 'prioridad', 'volatil', 'alias', 'relacionados', 'externo', 'revisado',
+          'evaluable', 'prioridad', 'volatil', 'alias', 'relacionados', 'externo', 'revisado', 'audio',
           'certificaciones'}
 
 errores, avisos = [], []
@@ -307,6 +308,14 @@ def revisar():
             continue
 
         estado = n.get('estado')
+        if 'audio' in n:
+            # Resumen en audio servido desde Kopi: solo en fichas publicadas que lo muestran.
+            pagina = RAIZ_AUDIO / 'temas' / f'{nid}.html'
+            html = pagina.read_text(encoding='utf-8') if pagina.exists() else ''
+            if n['audio'] is not True or externo is not None or estado != 'publicado':
+                error(f'{nid}: audio solo vale true, en un tema publicado de esta web')
+            elif 'class="audio-recurso" data-kopi="' not in html or 'assets/audio-kopi.js' not in html:
+                error(f'{nid}: audio true pero su ficha no tiene el bloque audio-recurso o no carga audio-kopi.js')
         if not isinstance(n.get('evaluable'), bool):
             error(f'{nid}: evaluable tiene que ser true o false')
         if n.get('prioridad') not in (1, 2, 3):

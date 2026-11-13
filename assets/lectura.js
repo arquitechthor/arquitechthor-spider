@@ -5,7 +5,8 @@
  * "Natural" de Edge) envían el texto al servicio de quien las ofrece (ver aviso legal, privacidad).
  *
  * Qué se lee: el nombre y "En una frase" de la cabecera y, del texto (.doc), los títulos, párrafos,
- * elementos de lista, citas y filas de tabla, en orden. Se salta el código (<pre>), la evaluación,
+ * elementos de lista, citas y filas de tabla, en orden. Se salta el código (<pre>), el resumen en
+ * audio, la evaluación,
  * "Qué contiene", "Relacionados", "Fuentes" y lo marcado con [data-sin-lectura].
  * Siglas: se pronuncia lo indicado en "leer" de data/glosario.json; si no hay, las de solo
  * mayúsculas se deletrean ("LLM" → "L L M") y el resto se lee tal cual.
@@ -20,7 +21,7 @@
   if (!voz || !window.SpeechSynthesisUtterance) return;
 
   const BLOQUES = 'h2, h3, h4, p, li, blockquote, dt, dd, tr, figcaption, .callout';
-  const SALTAR = 'pre, .quiz, [data-seccion-contiene], [data-seccion-relacionados], [data-sin-lectura], [hidden], .lectura-barra';
+  const SALTAR = 'pre, .quiz, .audio-recurso, [data-seccion-contiene], [data-seccion-relacionados], [data-sin-lectura], [hidden], .lectura-barra';
   const SECCIONES_SIN_LECTURA = new Set(['evaluacion', 'fuentes', 'contiene', 'relacionados']);
   const VELOCIDADES = [0.8, 1, 1.25, 1.5, 1.75];
 
@@ -186,6 +187,8 @@
       trozo = 0;
       voz.cancel();
       if (estado === 'pausado') estado = 'leyendo';
+      // No se oyen dos cosas a la vez: el resumen en audio se pausa.
+      document.querySelectorAll('audio').forEach((a) => a.pause());
       resaltar();
       pintar();
       hablar();
@@ -263,6 +266,8 @@
       barra?.querySelector('[data-pausa]').focus({ preventScroll: true });
     });
 
+    // Si arranca el resumen en audio, la lectura se pausa.
+    document.addEventListener('play', () => { if (estado === 'leyendo') pausar(); }, true);
     // Chrome sigue hablando tras salir de la página si no se cancela.
     window.addEventListener('pagehide', () => voz.cancel());
     document.addEventListener('keydown', (e) => {
