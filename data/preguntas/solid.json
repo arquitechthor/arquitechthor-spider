@@ -1,0 +1,153 @@
+[
+  {
+    "id": "solid-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Según Robert C. Martin, ¿qué significa que un módulo tenga una sola responsabilidad?",
+    "opciones": [
+      "Que solo tiene un método público y el resto son métodos privados de apoyo.",
+      "Que solo tiene una razón para cambiar: responde ante un único grupo que pide cambios.",
+      "Que no depende de ninguna otra clase del programa y se puede compilar por separado.",
+      "Que hace una sola operación, como leer, calcular o escribir, y nunca dos a la vez."
+    ],
+    "correctas": [1],
+    "explicacion": "Martin aclaró en 2014 que la responsabilidad única va de personas: un módulo debe tener una sola razón para cambiar, es decir, responder ante una sola persona o grupo. «Hacer una sola cosa» es una regla distinta, pensada para funciones. El número de métodos o de dependencias no define una responsabilidad.",
+    "fuentes": ["https://blog.cleancoder.com/uncle-bob/2014/05/08/SingleReponsibilityPrinciple.html"]
+  },
+  {
+    "id": "solid-002",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Una clase Factura calcula los impuestos (lo pide el departamento financiero) y genera su PDF (lo pide el de diseño). ¿Qué propone la responsabilidad única?",
+    "opciones": [
+      "Separar el cálculo de impuestos y la generación del PDF en clases distintas.",
+      "Dejarla igual, porque las dos operaciones trabajan con los datos de la factura.",
+      "Convertir los dos métodos en estáticos para que la clase no tenga estado propio.",
+      "Añadir una interfaz Factura para que la clase pueda tener varias implementaciones."
+    ],
+    "correctas": [0],
+    "explicacion": "Son dos razones para cambiar que vienen de grupos distintos: un cambio de diseño en el PDF no debería poder romper el cálculo de impuestos, ni al revés. Trabajar con los mismos datos no las convierte en una sola responsabilidad. Hacer los métodos estáticos o añadir una interfaz no separa nada.",
+    "fuentes": ["https://blog.cleancoder.com/uncle-bob/2014/05/08/SingleReponsibilityPrinciple.html"]
+  },
+  {
+    "id": "solid-003",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Cuál de estos diseños cumple mejor el principio abierto/cerrado al añadir un medio de pago nuevo?",
+    "opciones": [
+      "Un método cobrar con un switch sobre el tipo de pago, al que se añade un case por cada medio nuevo.",
+      "Una clase base con todos los medios de pago posibles como métodos, aunque cada uno use solo uno.",
+      "Una interfaz MedioDePago y una clase por medio; la caja cobra a través de la interfaz sin conocerlos.",
+      "Un fichero de configuración con el nombre de cada medio, que la caja lee al arrancar la aplicación."
+    ],
+    "correctas": [2],
+    "explicacion": "Con la interfaz, añadir un medio de pago es escribir una clase nueva: el código de la caja, que ya funciona, no se modifica. El switch obliga a editar el método (y cualquier otro switch parecido) con cada medio nuevo. La clase base con todos los métodos rompe además la segregación de interfaces, y leer nombres de un fichero no evita tener que programar cada medio en algún sitio.",
+    "fuentes": ["https://blog.cleancoder.com/uncle-bob/2014/05/12/TheOpenClosedPrinciple.html"]
+  },
+  {
+    "id": "solid-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Una clase TimedBotPlayer implementa la interfaz BotPlayer, recibe otro BotPlayer en el constructor y mide cuánto tarda en elegir cada jugada antes de devolverla. ¿Qué técnica es y qué principio ayuda a cumplir?",
+    "opciones": [
+      "Es una estrategia, y ayuda a cumplir la responsabilidad única al juntar bot y métricas.",
+      "Es un decorador, y ayuda a cumplir el abierto/cerrado: añade algo sin tocar el bot.",
+      "Es una fábrica, y ayuda a cumplir la inversión de dependencias al crear los bots.",
+      "Es un adaptador, y ayuda a cumplir la sustitución de Liskov al cambiar la interfaz."
+    ],
+    "correctas": [1],
+    "explicacion": "Envolver un objeto con otro que cumple la misma interfaz para añadirle comportamiento es el patrón decorador. Así se añaden las métricas sin modificar ni los bots ni los casos de uso que los usan: el código existente queda cerrado y el comportamiento, ampliado. No crea objetos (fábrica), no cambia la interfaz (adaptador) y precisamente separa métricas y bot en lugar de juntarlos.",
+    "fuentes": ["https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-bootstrap/src/main/java/com/arquitechthor/kopi/bootstrap/TimedBotPlayer.java"]
+  },
+  {
+    "id": "solid-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Por qué este código muestra que Cuadrado no debería heredar de Rectangulo, aunque compile?",
+    "codigo": "void probar(Rectangulo r) {\n    r.setAncho(5);\n    r.setAlto(4);\n    assert r.area() == 20;\n}",
+    "opciones": [
+      "Porque Java no permite redefinir en una subclase los métodos setAncho y setAlto de la clase base.",
+      "Porque un cuadrado tiene menos atributos que un rectángulo, y la herencia solo puede añadir atributos.",
+      "Porque el método probar debería comprobar con instanceof qué tipo de figura recibe antes de usarla.",
+      "Porque con un Cuadrado falla una expectativa válida para cualquier Rectangulo: no es sustituible."
+    ],
+    "correctas": [3],
+    "explicacion": "La sustitución de Liskov exige que el código que funciona con un tipo siga funcionando con sus subtipos. Si fijar el alto de un Cuadrado cambia también su ancho, el área sale 16 y no 20: el subtipo rompe una expectativa del contrato. Java sí permite redefinir esos métodos, y preguntar el tipo con instanceof es justo el síntoma de que el subtipo no es sustituible.",
+    "fuentes": ["https://en.wikipedia.org/wiki/Liskov_substitution_principle"]
+  },
+  {
+    "id": "solid-006",
+    "tipo": "multiple",
+    "nivel": 3,
+    "enunciado": "La interfaz Almacen promete: «guardar(p) acepta cualquier producto con precio positivo y, si ya existe uno con el mismo id, lanza ProductoDuplicadoException». ¿Qué implementaciones rompen la sustitución de Liskov? Elige 2.",
+    "opciones": [
+      "Una que rechaza con una excepción los productos de más de 1.000 € de precio.",
+      "Una que guarda en memoria en lugar de en una base de datos, con el mismo comportamiento.",
+      "Una que lanza ProductoDuplicadoException al repetir id, como anuncia el contrato.",
+      "Una que, si el id ya existe, sobrescribe el producto anterior sin avisar a nadie."
+    ],
+    "correctas": [0, 3],
+    "explicacion": "Rechazar los productos caros endurece la precondición (el contrato acepta cualquier precio positivo). Sobrescribir en silencio debilita la postcondición (el contrato promete una excepción ante un duplicado). Guardar en memoria es un detalle que el contrato no menciona, y lanzar la excepción anunciada es justo cumplirlo: lanzar errores no rompe a Liskov, lo que lo rompe es la sorpresa.",
+    "fuentes": ["https://en.wikipedia.org/wiki/Liskov_substitution_principle", "https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html"]
+  },
+  {
+    "id": "solid-007",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Una clase ImpresoraSencilla implementa la interfaz Multifuncion y deja vacíos los métodos escanear y enviarFax porque no sabe hacerlo. ¿Qué principio se está incumpliendo sobre todo?",
+    "opciones": [
+      "Segregación de interfaces: la clase depende de métodos que no usa.",
+      "Responsabilidad única: la clase imprime y además guarda documentos.",
+      "Inversión de dependencias: la impresora depende del sistema operativo.",
+      "Abierto/cerrado: la clase no se puede ampliar sin heredar de ella."
+    ],
+    "correctas": [0],
+    "explicacion": "Ningún cliente debería depender de métodos que no usa: lo correcto es partir Multifuncion en interfaces pequeñas (Impresora, Escaner, Fax) y que cada clase implemente solo las suyas. Los métodos vacíos son la señal típica, y además suelen romper la sustitución de Liskov, porque quien llame a escanear no obtendrá lo que el contrato promete.",
+    "fuentes": ["https://en.wikipedia.org/wiki/Interface_segregation_principle"]
+  },
+  {
+    "id": "solid-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué cambio aplica la inversión de dependencias a un ServicioDePedidos que hoy crea y usa directamente una clase PedidosPostgres?",
+    "opciones": [
+      "Mover ServicioDePedidos al mismo paquete que PedidosPostgres para que se encuentren antes.",
+      "Que el servicio defina una interfaz RepositorioDePedidos y que PedidosPostgres la implemente.",
+      "Anotar PedidosPostgres con @Component para que Spring la inyecte en el servicio de pedidos.",
+      "Convertir PedidosPostgres en una clase abstracta de la que herede el servicio de pedidos."
+    ],
+    "correctas": [1],
+    "explicacion": "La inversión pide que el negocio no dependa del detalle sino de una abstracción que el propio negocio define; así es el detalle (PostgreSQL) el que depende del negocio. Que Spring inyecte la clase concreta es inyección de dependencias, pero la dependencia seguiría apuntando a PostgreSQL. Moverla de paquete o heredar de ella no cambia la dirección.",
+    "fuentes": ["https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html"]
+  },
+  {
+    "id": "solid-009",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Cuál es la diferencia entre inversión de dependencias e inyección de dependencias?",
+    "opciones": [
+      "Son dos nombres para lo mismo; «inyección» es el término que se usa en Spring.",
+      "La inyección es una regla de diseño y la inversión, la anotación que la activa.",
+      "La inversión dice hacia dónde apuntan las dependencias; la inyección las entrega.",
+      "La inversión solo vale con herencia y la inyección solo vale con interfaces."
+    ],
+    "correctas": [2],
+    "explicacion": "La inversión es un principio sobre la dirección: el alto nivel no depende del bajo nivel, ambos dependen de abstracciones. La inyección es una técnica: dar a cada objeto ya hechas las piezas que necesita (por ejemplo, por el constructor) en lugar de que las cree. Suelen ir juntas, pero se puede inyectar una clase concreta sin invertir nada.",
+    "fuentes": ["https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html"]
+  },
+  {
+    "id": "solid-010",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "En Kopi Chess, los tipos de jugada son una interfaz sellada y aplicar una jugada es un switch sobre todos ellos, que no compila si falta un caso. ¿Cómo se valora frente al principio abierto/cerrado?",
+    "opciones": [
+      "Es un error de diseño: habría que sustituir el switch por una clase con un método por tipo de jugada.",
+      "Es indiferente: el abierto/cerrado solo se aplica a las clases públicas, y la interfaz es interna.",
+      "Lo cumple igual que una interfaz abierta, porque los records se pueden ampliar con nuevos campos.",
+      "Es una decisión a propósito: las reglas del ajedrez no cambian y el compilador vigila cada caso."
+    ],
+    "correctas": [3],
+    "explicacion": "Ningún código está cerrado frente a todos los cambios; hay que elegir frente a cuáles. Los tipos de jugada no van a crecer, así que se prefiere que el compilador avise si un switch olvida uno, a costa de editar ese switch si algún día cambiaran. Abrirse a extensiones que nunca van a llegar solo añade complejidad.",
+    "fuentes": ["https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-domain/src/main/java/com/arquitechthor/kopi/domain/chess/MoveKind.java", "https://blog.cleancoder.com/uncle-bob/2014/05/12/TheOpenClosedPrinciple.html"]
+  }
+]

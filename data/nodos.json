@@ -141,6 +141,9 @@
     "alias": [
       "OOP",
       "POO"
+    ],
+    "relacionados": [
+      "solid"
     ]
   },
   {
@@ -182,7 +185,8 @@
     "evaluable": true,
     "prioridad": 2,
     "relacionados": [
-      "clean-architecture"
+      "clean-architecture",
+      "solid"
     ]
   },
   {
@@ -194,13 +198,23 @@
     "accesos": [
       "architectural-principles"
     ],
-    "estado": "pendiente",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
     "relacionados": [
       "hexagonal-architecture",
-      "clean-architecture"
-    ]
+      "clean-architecture",
+      "dependency-injection",
+      "clean-code",
+      "oop",
+      "high-cohesion-low-coupling",
+      "test-doubles"
+    ],
+    "frase": "Cinco reglas de diseño para que cada clase cambie sin arrastrar consigo al resto.",
+    "alias": [
+      "Principios SOLID"
+    ],
+    "revisado": "2026-11-16"
   },
   {
     "id": "dry",
@@ -518,7 +532,8 @@
     "evaluable": true,
     "prioridad": 1,
     "relacionados": [
-      "hexagonal-architecture"
+      "hexagonal-architecture",
+      "solid"
     ]
   },
   {
@@ -696,7 +711,8 @@
     "relacionados": [
       "spring-core",
       "hexagonal-architecture",
-      "clean-architecture"
+      "clean-architecture",
+      "solid"
     ]
   },
   {
@@ -1344,7 +1360,10 @@
     "area": "architecture",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "solid"
+    ]
   },
   {
     "id": "modularity",

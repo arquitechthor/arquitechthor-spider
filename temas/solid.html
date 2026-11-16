@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLID — Tech Spider</title>
+<meta name="description" content="Los principios SOLID explicados desde cero: responsabilidad única, abierto/cerrado, sustitución de Liskov, segregación de interfaces e inversión de dependencias, con ejemplos en Java, errores frecuentes y un ejemplo real de cada uno en Kopi Chess.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/solid.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=532e81a3">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="solid">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p><strong>SOLID</strong> es el nombre de cinco principios de diseño para escribir código orientado a objetos que se
+        pueda <strong>cambiar sin miedo</strong>: que añadir una funcionalidad no obligue a tocar medio programa, que un
+        arreglo en un sitio no rompa otro y que cada pieza se pueda probar por separado. Cada letra es un principio:</p>
+      <ul>
+        <li><strong>S</strong>: principio de responsabilidad única (SRP).</li>
+        <li><strong>O</strong>: principio abierto/cerrado (OCP).</li>
+        <li><strong>L</strong>: principio de sustitución de Liskov (LSP).</li>
+        <li><strong>I</strong>: principio de segregación de interfaces (ISP).</li>
+        <li><strong>D</strong>: principio de inversión de dependencias (DIP).</li>
+      </ul>
+      <p>Los reunió Robert C. Martin («Uncle Bob») a finales de los años noventa, a partir de ideas que venían de antes: el
+        abierto/cerrado es de Bertrand Meyer (1988) y la sustitución, de Barbara Liskov (1987). El acrónimo no es suyo: según
+        el propio Martin, lo propuso Michael Feathers hacia 2004, y forma la palabra inglesa <em>solid</em>
+        («sólido»).</p>
+      <p>Para seguir la ficha bastan tres palabras. Un <strong>módulo</strong> es una unidad de código con sentido propio:
+        una clase, un paquete o un fichero. Una <strong>interfaz</strong> es un contrato: la lista de operaciones que algo
+        ofrece, sin decir cómo las hace; en Java, un <code>interface</code>. Y una <strong>dependencia</strong> es que un
+        módulo necesite a otro: si la clase A usa la clase B (la crea, la llama o la nombra en su código), A depende de B, y
+        un cambio en B puede obligar a cambiar A.</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Casi todo el coste de un programa llega después de escribirlo, al cambiarlo. Los cinco principios atacan la causa
+        más común de que cambiar sea caro: el <strong>acoplamiento</strong>, es decir, que las piezas dependan demasiado unas
+        de otras (ver <a href="../tema.html?id=high-cohesion-low-coupling">alta cohesión y bajo acoplamiento</a>). Por eso
+        son la base de casi todo lo que viene después: los patrones de diseño, la
+        <a href="../tema.html?id=dependency-injection">inyección de dependencias</a> de Spring, la
+        <a href="hexagonal-architecture.html">arquitectura hexagonal</a> o la <a href="clean-architecture.html">arquitectura
+        limpia</a> son SOLID aplicado a mayor escala.</p>
+      <p>También son una pregunta clásica de entrevista para perfiles backend, y un vocabulario compartido en las revisiones
+        de código: «esta clase tiene dos razones para cambiar» o «esta interfaz obliga a implementar métodos que no usa» se
+        entienden sin más explicación.</p>
+
+      <h2 id="srp">S: responsabilidad única</h2>
+      <p>La formulación más conocida es que <strong>un módulo debe tener una sola razón para cambiar</strong>. Martin la
+        aclaró en 2014 porque se malinterpretaba mucho: no significa «hacer una sola cosa» (eso es otra regla, para
+        funciones), sino que el módulo responde ante <strong>una sola persona o un solo grupo</strong> que pide cambios. Su
+        versión más práctica: <em>junta lo que cambia por las mismas razones y separa lo que cambia por razones
+        distintas</em>.</p>
+      <p>Su ejemplo es una clase <code>Empleado</code> con tres métodos: calcular la nómina (lo pide finanzas), guardarse en
+        la base de datos (lo decide el equipo técnico) y generar el informe de horas (lo pide operaciones). Son tres
+        responsabilidades porque son tres jefes distintos: un cambio pedido por finanzas puede romper el informe de
+        operaciones, que no pidió nada.</p>
+      <pre><code>// Antes: tres razones para cambiar en una clase
+class Empleado {
+    Dinero calcularNomina() { … }        // finanzas
+    void guardar() { … }                  // equipo técnico (SQL, tablas)
+    String informeDeHoras() { … }         // operaciones
+}
+
+// Después: cada clase responde ante un solo grupo
+record Empleado(String id, String nombre, Contrato contrato) {}
+class CalculadoraDeNominas { Dinero calcular(Empleado e) { … } }
+class RepositorioDeEmpleados { void guardar(Empleado e) { … } }
+class InformeDeHoras { String generar(Empleado e) { … } }</code></pre>
+      <p><strong>Señales de alarma:</strong> una clase que cambia en casi todos los <em>commits</em>, un nombre genérico
+        (<code>Gestor</code>, <code>Utilidades</code>, <code>Servicio</code> a secas) o una prueba que necesita preparar una
+        base de datos para comprobar un cálculo.</p>
+
+      <h2 id="ocp">O: abierto/cerrado</h2>
+      <p>Un módulo debe estar <strong>abierto a la extensión y cerrado a la modificación</strong>: se le puede añadir
+        comportamiento nuevo sin editar el código que ya funciona. Meyer lo propuso en 1988 pensando en la herencia; hoy se
+        consigue sobre todo con <strong>interfaces y polimorfismo</strong>, es decir, haciendo que el código trabaje contra
+        un contrato y que cada variante sea una clase que lo cumple. Martin lo resume en que el comportamiento de un sistema
+        debería poder ampliarse sin modificar ese sistema, como hace una arquitectura de <em>plugins</em>.</p>
+      <pre><code>// Cerrado a la modificación: este método no cambia al añadir medios de pago
+interface MedioDePago { Recibo cobrar(Dinero importe); }
+
+final class Caja {
+    Recibo cobrar(Dinero importe, MedioDePago medio) { return medio.cobrar(importe); }
+}
+
+// Abierto a la extensión: un medio nuevo es una clase nueva
+final class PagoConBizum implements MedioDePago { … }</code></pre>
+      <p>Lo contrario es la cadena de <code>if</code> o de <code>switch</code> sobre un tipo que se repite por el código:
+        cada caso nuevo obliga a encontrar y editar todas las copias. Dos técnicas habituales para cumplirlo son el patrón
+        <strong>estrategia</strong> (cada variante es un objeto intercambiable, como <code>MedioDePago</code>) y el
+        <strong>decorador</strong> (una clase envuelve a otra con la misma interfaz y le añade algo, por ejemplo medir o
+        registrar, sin tocarla); ver <a href="../tema.html?id=behavioral-patterns">patrones de comportamiento</a> y
+        <a href="../tema.html?id=structural-patterns">patrones estructurales</a>.</p>
+      <p><strong>No es una regla absoluta.</strong> Ningún código está cerrado frente a todos los cambios posibles: hay que
+        elegir frente a cuáles cerrarse. A veces lo mejor es justo lo contrario, como se ve en el caso de Kopi Chess más
+        abajo.</p>
+
+      <h2 id="lsp">L: sustitución de Liskov</h2>
+      <p>Si un programa funciona con un tipo, debe seguir funcionando igual con cualquier <strong>subtipo</strong> suyo (una
+        clase que lo extiende o una implementación de una interfaz), sin que el programa tenga que saber cuál le ha tocado.
+        Barbara Liskov lo planteó en 1987, y en 1994 lo formalizó con Jeannette Wing. Martin insiste en que no va de herencia
+        sino de <strong>contratos</strong>: quien usa una interfaz no debe llevarse sorpresas con ninguna implementación.</p>
+      <p>Para no romper el contrato, un subtipo:</p>
+      <ul>
+        <li><strong>No puede pedir más</strong> que el tipo original (no endurecer las <em>precondiciones</em>, lo que se
+          exige antes de llamar). Si el contrato acepta cualquier importe positivo, una implementación que rechace los
+          mayores de 100 € lo rompe.</li>
+        <li><strong>No puede prometer menos</strong> (no debilitar las <em>postcondiciones</em>, lo que se garantiza al
+          terminar). Si el contrato promete devolver una lista ordenada, una implementación que a veces la devuelva
+          desordenada lo rompe.</li>
+        <li><strong>Debe mantener las reglas que siempre se cumplen</strong> (los <em>invariantes</em>) y no lanzar errores
+          que el contrato no anuncia.</li>
+      </ul>
+      <p>El ejemplo clásico es el cuadrado que hereda del rectángulo. Matemáticamente un cuadrado «es un» rectángulo, pero en
+        código no lo es si el rectángulo deja cambiar ancho y alto por separado:</p>
+      <pre><code>void probar(Rectangulo r) {
+    r.setAncho(5);
+    r.setAlto(4);
+    assert r.area() == 20;   // falla si r es un Cuadrado: al fijar el alto, cambia también el ancho
+}</code></pre>
+      <p>El código compila y la herencia es correcta para el compilador, pero el comportamiento no lo es. Por eso LSP no se
+        comprueba con el compilador sino con <strong>pruebas</strong>: si las mismas pruebas del contrato pasan con todas las
+        implementaciones, son intercambiables.</p>
+
+      <h2 id="isp">I: segregación de interfaces</h2>
+      <p><strong>Ningún cliente debería depender de métodos que no usa.</strong> Mejor varias interfaces pequeñas, pensadas
+        para quien las usa, que una grande para todos. Se cuenta que Martin lo formuló trabajando como consultor para Xerox:
+        una sola clase de «trabajo» de impresora servía para imprimir, grapar y enviar faxes, y cualquier cambio obligaba a
+        recompilar y desplegar todo, aunque una tarea de grapado no usara nada de la impresión.</p>
+      <pre><code>// Una interfaz grande obliga a todos a implementarlo todo
+interface Multifuncion { void imprimir(Doc d); void escanear(Doc d); void enviarFax(Doc d); }
+
+// Mejor: cada cliente depende solo de lo que usa
+interface Impresora { void imprimir(Doc d); }
+interface Escaner   { void escanear(Doc d); }
+final class ImpresoraSencilla implements Impresora { … }   // sin métodos vacíos ni excepciones de "no soportado"</code></pre>
+      <p><strong>Señal de alarma:</strong> implementaciones llenas de métodos vacíos o que lanzan
+        <code>UnsupportedOperationException</code>; eso además suele romper la sustitución de Liskov.</p>
+
+      <h2 id="dip">D: inversión de dependencias</h2>
+      <p>Tiene dos partes: los módulos de alto nivel (las reglas de negocio) <strong>no deben depender de los de bajo
+        nivel</strong> (la base de datos, la red, un <em>framework</em>), sino ambos de <strong>abstracciones</strong>; y las
+        abstracciones no deben depender de los detalles, sino al revés.</p>
+      <p>Se llama «inversión» porque da la vuelta a la dirección natural. Sin aplicarlo, el servicio de pedidos usa
+        directamente la clase que habla con PostgreSQL, y depende de ella. Aplicándolo, el servicio define la interfaz que
+        necesita (<code>RepositorioDePedidos</code>) y la clase de PostgreSQL la implementa: ahora es el detalle el que depende
+        del negocio.</p>
+      <pre><code>// Alto nivel: define lo que necesita, sin saber cómo se hace
+interface RepositorioDePedidos { void guardar(Pedido p); }
+
+final class ServicioDePedidos {
+    private final RepositorioDePedidos pedidos;
+    ServicioDePedidos(RepositorioDePedidos pedidos) { this.pedidos = pedidos; }   // se lo dan hecho
+}
+
+// Bajo nivel: implementa la abstracción del alto nivel
+final class RepositorioDePedidosPostgres implements RepositorioDePedidos { … }</code></pre>
+      <p>No hay que confundirla con la <a href="../tema.html?id=dependency-injection">inyección de dependencias</a>, aunque
+        vayan juntas: la inversión es una regla sobre <strong>hacia dónde</strong> apuntan las dependencias; la inyección es
+        una técnica para <strong>entregar</strong> a cada objeto las piezas que necesita (por el constructor, como arriba) en
+        lugar de que las cree él. Spring hace la inyección; la inversión la decide quien diseña.</p>
+
+      <h2 id="juntos">Cómo encajan entre sí</h2>
+      <p>Los cinco se refuerzan. Las interfaces pequeñas (I) son más fáciles de implementar bien (L) y de usar como frontera
+        entre el negocio y los detalles (D). Esas fronteras permiten añadir variantes sin tocar el núcleo (O). Y separar
+        responsabilidades (S) es lo que hace que cada interfaz salga pequeña. Aplicados a la arquitectura entera, dan
+        exactamente los puertos y adaptadores de la <a href="hexagonal-architecture.html">arquitectura hexagonal</a>.</p>
+
+      <h2 id="caso-real">Caso real: Kopi Chess</h2>
+      <p><a href="https://github.com/arquitechthor/kopi-chess" target="_blank" rel="noopener">Kopi Chess</a> (código público,
+        Java 25 y Spring Boot 4) tiene un ejemplo de cada principio. Su <em>backend</em> sigue la arquitectura hexagonal: un
+        dominio con las reglas del ajedrez, una capa de aplicación con los casos de uso y los <strong>puertos</strong> (las
+        interfaces que necesita) y un módulo por cada <strong>adaptador</strong> (web, PostgreSQL, Stockfish…). Explicado con
+        más detalle y con el código completo en
+        <a href="https://arquitechthor.github.io/aprendizajes/kopi-chess-solid.html">Kopi Chess, un caso de estudio de
+        SOLID</a>.</p>
+
+      <h3>S: Stockfish, repartido en cuatro clases</h3>
+      <p>Hablar con Stockfish (el motor de ajedrez que analiza las partidas) podría ser una sola clase. Kopi Chess lo reparte
+        en cuatro, cada una con su razón para cambiar: <code>UciProcess</code> lanza el proceso y lee su salida;
+        <code>UciConnection</code> es la conversación por líneas (entra un comando, salen líneas); <code>UciEngine</code> es el
+        protocolo UCI (qué se envía y qué respuesta se espera); y <code>EnginePool</code> presta un motor a cada llamada. La
+        recompensa se ve en las pruebas: <code>UciEngine</code> se prueba con una conexión simulada, sin instalar Stockfish.
+        (<a href="https://github.com/arquitechthor/kopi-chess/tree/main/backend/kopi-adapter-stockfish/src/main/java/com/arquitechthor/kopi/adapter/stockfish" target="_blank" rel="noopener">código</a>)</p>
+      <p>Lo mismo pasa con el análisis: <code>AnalysisRepository</code> solo guarda los análisis terminados, y su comentario
+        dice que si un análisis está en cola, en marcha o ha fallado es asunto de otra interfaz, <code>AnalysisJobQueue</code>.
+        Y cada caso de uso es una clase: <code>PlayMove</code>, <code>Resign</code>, <code>AgreeDraw</code>…</p>
+
+      <h3>O: decoradores que miden sin tocar nada</h3>
+      <p>Los bots y los casos de uso no saben nada de métricas. Para medir cuánto tarda cada bot en mover, Kopi Chess añade
+        un decorador, <code>TimedBotPlayer</code>, que cumple la misma interfaz <code>BotPlayer</code>, envuelve al bot real y
+        cronometra cada jugada. Se añadió comportamiento sin editar ni los bots ni los casos de uso:</p>
+      <pre><code>final class TimedBotPlayer implements BotPlayer {
+    private final BotPlayer bot;            // el bot de verdad
+    private final MeterRegistry registry;   // Micrometer, solo aquí
+
+    @Override
+    public Move chooseMove(Position position, BotProfile profile) {
+        var sample = Timer.start(registry);
+        // … llama a bot.chooseMove(position, profile) y para el cronómetro en un finally
+    }
+}</code></pre>
+      <p>(<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-bootstrap/src/main/java/com/arquitechthor/kopi/bootstrap/TimedBotPlayer.java" target="_blank" rel="noopener">TimedBotPlayer.java</a>;
+        <code>LoggedAnalysisJobQueue</code> y <code>TimedAnalysisRepository</code> hacen lo mismo con sus interfaces.) Y en la
+        configuración, los bots propios (Peón y Caballo) y Stockfish (Alfil, Torre y Dama) se combinan detrás del mismo
+        <code>BotPlayer</code>: los casos de uso no saben quién juega.</p>
+      <p><strong>El contraejemplo, a propósito:</strong> los tipos de jugada (normal, captura, enroque, al paso,
+        promoción…) son una <em>interfaz sellada</em> (<code>sealed</code>, solo admite las implementaciones que ella
+        enumera), y aplicar una jugada es un <code>switch</code> sobre todos ellos. Añadir un tipo obligaría a modificar ese
+        <code>switch</code>, y es lo que se quiere: las reglas del ajedrez no cambian, y si alguien olvida un caso, el código
+        no compila. Cerrarse frente a cambios que no van a llegar no aporta nada.</p>
+
+      <h3>L: dos repositorios que cumplen el mismo contrato</h3>
+      <p>La interfaz <code>GameRepository</code> promete un <strong>bloqueo optimista</strong>: <code>update(partida,
+        versionCargada)</code> solo guarda si la partida sigue en la versión que se leyó, y si no, lanza
+        <code>ConcurrentGameUpdateException</code>. Así, si dos peticiones mueven a la vez, una falla en lugar de pisar a la
+        otra. Lo cumplen la implementación real con PostgreSQL y la de memoria que usan las pruebas:</p>
+      <pre><code>// En memoria, para las pruebas de los casos de uso
+public void update(Game game, long loadedVersion) {
+    var stored = games.get(game.id());
+    if (stored == null || stored.version() != loadedVersion) {
+        throw new ConcurrentGameUpdateException(game.id(), loadedVersion);
+    }
+    games.put(game.id(), game);
+}
+
+// Con PostgreSQL: el mismo contrato, con "where id = :id and version = :loadedVersion"
+if (updated == 0) {
+    throw new ConcurrentGameUpdateException(game.id(), loadedVersion);
+}</code></pre>
+      <p>Por eso las pruebas de <code>PlayMove</code> hechas con la versión en memoria valen también para producción. Una
+        versión en memoria que guardara sin comprobar la versión compilaría igual, pero rompería la promesa de «si hay
+        conflicto, no se guarda nada».
+        (<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-application/src/main/java/com/arquitechthor/kopi/application/port/GameRepository.java" target="_blank" rel="noopener">GameRepository.java</a>)</p>
+      <p>Un matiz útil: <code>KopiBots</code> lanza <code>BotUnavailableException</code> si le piden un bot que no es suyo, y
+        eso <strong>no</strong> rompe la sustitución, porque el contrato de <code>BotPlayer</code> ya anuncia esa excepción.
+        Lo que rompe a Liskov es la sorpresa, no la excepción.</p>
+
+      <h3>I: una interfaz por caso de uso</h3>
+      <p>Cada caso de uso tiene su propia interfaz con un solo método: <code>PlayMoveUseCase.play(…)</code>,
+        <code>ResignUseCase</code>, <code>ListGamesUseCase</code>… Un controlador pide solo las que usa. Y los puertos también
+        son pequeños: la cola de análisis, los resultados y los avisos de progreso son tres interfaces distintas, no un
+        «servicio de análisis» con todo. El caso más claro es que elegir la jugada de un bot (<code>BotPlayer</code>) y
+        analizar una posición (<code>ChessEngine</code>) son interfaces distintas aunque las dos las implemente el adaptador de Stockfish: el
+        comentario del código lo justifica en que el bot más flojo no necesita motor y el análisis no necesita
+        personalidad.</p>
+
+      <h3>D: la aplicación define lo que necesita</h3>
+      <p>Las interfaces viven en la capa de aplicación (<code>application/port/</code>) y las implementan los adaptadores:
+        <code>JdbcGameRepository</code>, <code>StockfishAnalysis</code>, <code>LichessOpeningBook</code>… Todo se conecta en un
+        solo sitio, la configuración del módulo de arranque. Y la regla no depende de la buena voluntad: una prueba con
+        ArchUnit (una librería que comprueba la estructura del código) falla si el dominio o la aplicación dependen de un
+        adaptador, de Spring o de <code>java.sql</code>.</p>
+      <pre><code>static final ArchRule applicationDependsOnlyOnTheDomain = noClasses()
+        .that().resideInAPackage(APPLICATION)
+        .should().dependOnClassesThat().resideInAnyPackage(
+                ADAPTERS, BOOTSTRAP, "org.springframework..", "jakarta..", "io.micrometer..", "java.sql..")
+        .because("use cases must not depend on adapters or on Spring (ADR-002)");</code></pre>
+      <p>(<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-architecture-tests/src/test/java/com/arquitechthor/kopi/architecture/HexagonalArchitectureTest.java" target="_blank" rel="noopener">HexagonalArchitectureTest.java</a>)
+        Esa regla es la que obliga a que <code>TimedBotPlayer</code> viva en el módulo de arranque: la aplicación no puede ni
+        ver Micrometer.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Leer «responsabilidad única» como «un método por clase»:</strong> trocear sin criterio produce decenas de
+          clases diminutas que hay que cambiar juntas. La pregunta es quién pide los cambios, no cuántas cosas hace.</li>
+        <li><strong>Una interfaz para cada clase, por si acaso:</strong> una interfaz con una única implementación que nunca
+          va a tener otra (ni siquiera en las pruebas) solo añade un salto al leer el código. Las interfaces se ponen en las
+          fronteras que importan.</li>
+        <li><strong>Abstraer por adelantado para cumplir el abierto/cerrado:</strong> diseñar puntos de extensión para cambios
+          que nadie ha pedido. Choca con <a href="../tema.html?id=yagni">YAGNI</a>; es mejor abrir el código cuando llega la
+          segunda variante.</li>
+        <li><strong>Usar la herencia para reutilizar código:</strong> heredar solo para aprovechar métodos lleva a subtipos que
+          no cumplen el contrato del padre. Si no es sustituible, compón (ten un objeto dentro) en vez de heredar.</li>
+        <li><strong>Confundir inversión con inyección de dependencias:</strong> usar Spring no garantiza la inversión. Si el
+          servicio de negocio recibe inyectada la clase concreta de PostgreSQL, la dependencia sigue apuntando al
+          detalle.</li>
+        <li><strong>Tomarlos como leyes:</strong> son principios, y a veces chocan entre sí o con la simplicidad. Cada uno
+          tiene un coste; se aplican donde el cambio es probable.</li>
+      </ul>
+
+      <h2 id="hoy">¿Siguen vigentes?</h2>
+      <p>Hay críticas razonables: que nacieron con la orientación a objetos de los noventa, que con microservicios o con
+        programación funcional importan menos, o que llevan a sobrediseñar (Dan North, por ejemplo, defiende sustituirlos por
+        «escribe código sencillo»). Martin respondió en 2020 que el software sigue estando hecho de lo mismo y que la
+        sencillez también necesita principios que la guíen. En la práctica, lo que perdura es la idea de fondo de cada uno,
+        más allá del lenguaje: separar lo que cambia por motivos distintos, depender de contratos y no de detalles, y que los
+        contratos sean pequeños y se cumplan.</p>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="solid"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://blog.cleancoder.com/uncle-bob/2014/05/08/SingleReponsibilityPrinciple.html" target="_blank" rel="noopener">The Single Responsibility Principle</a> (Robert C. Martin, 2014, consultada el 16/11/2026).</li>
+        <li><a href="https://blog.cleancoder.com/uncle-bob/2014/05/12/TheOpenClosedPrinciple.html" target="_blank" rel="noopener">The Open Closed Principle</a> (Robert C. Martin, 2014, consultada el 16/11/2026).</li>
+        <li><a href="https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html" target="_blank" rel="noopener">Solid Relevance</a> (Robert C. Martin, 2020, consultada el 16/11/2026).</li>
+        <li><a href="https://en.wikipedia.org/wiki/SOLID" target="_blank" rel="noopener">SOLID</a> (Wikipedia, consultada el 16/11/2026): historia del acrónimo.</li>
+        <li><a href="https://en.wikipedia.org/wiki/Liskov_substitution_principle" target="_blank" rel="noopener">Liskov substitution principle</a> (Wikipedia, consultada el 16/11/2026): reglas del contrato y ejemplo del cuadrado.</li>
+        <li>Barbara Liskov y Jeannette Wing, <a href="https://doi.org/10.1145/197320.197383" target="_blank" rel="noopener">A behavioral notion of subtyping</a> (ACM TOPLAS, 1994): la formalización del principio (referencia; no consultada en línea).</li>
+        <li><a href="https://en.wikipedia.org/wiki/Interface_segregation_principle" target="_blank" rel="noopener">Interface segregation principle</a> (Wikipedia, consultada el 16/11/2026): el origen en Xerox.</li>
+        <li><a href="https://github.com/arquitechthor/kopi-chess" target="_blank" rel="noopener">Kopi Chess</a>, código fuente (consultado el 16/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=d08c2823" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>
