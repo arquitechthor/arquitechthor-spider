@@ -366,8 +366,14 @@
       a.href = VUELTA;
       a.dataset.cuentaMenu = '';
       if (document.querySelector('[data-cuenta]')) a.setAttribute('aria-current', 'page');
+      // Si el menú tiene un submenú marcado con data-cuenta-destino (p. ej. "Mi estudio" en
+      // aws-cert-study), el enlace va al final de ese submenú; si no, antes de "Arquitechthor".
+      const destino = links.querySelector('[data-cuenta-destino]');
       const ultimo = links.lastElementChild;
-      if (ultimo && ultimo.tagName === 'A' && /sobre m/i.test(ultimo.textContent)) links.insertBefore(a, ultimo);
+      if (destino) {
+        destino.appendChild(a);
+        if (a.hasAttribute('aria-current')) destino.closest('.nav-menu')?.querySelector('.nav-menu-btn')?.classList.add('is-actual');
+      } else if (ultimo && ultimo.tagName === 'A' && /arquitechthor|sobre m/i.test(ultimo.textContent)) links.insertBefore(a, ultimo);
       else links.appendChild(a);
     }
     const i = info();
