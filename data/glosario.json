@@ -122,6 +122,28 @@
       ]
     },
     {
+      "id": "token",
+      "termino": "Token",
+      "en": "Token",
+      "definicion": "La unidad de texto con la que trabaja un LLM: una palabra corta, un trozo de una palabra larga o un signo de puntuación. El modelo lee el texto partido en tokens y genera su respuesta de token en token. Los precios y los límites (ventana de contexto, longitud máxima de la respuesta) se cuentan en tokens, no en palabras; en español, una palabra suele ocupar uno o dos tokens.",
+      "tema": "tokens-context-window",
+      "relacionados": ["llms", "sampling-parameters"],
+      "fuentes": [
+        { "titulo": "Machine Learning Glossary: token (Google)", "url": "https://developers.google.com/machine-learning/glossary#token" }
+      ]
+    },
+    {
+      "id": "top-p",
+      "termino": "Top-p (muestreo de núcleo)",
+      "en": "Top-p / nucleus sampling",
+      "definicion": "Ajuste que se elige en cada petición a un modelo generativo y recorta la lista de candidatos antes de sortear la siguiente palabra (token): ordena los candidatos de más a menos probable y se queda con los primeros hasta que sus probabilidades suman p. Con top-p = 0,9 se descarta la «cola» de opciones raras que juntas solo suman el 10 %. Es una alternativa a la temperatura; lo habitual es tocar una de las dos, no ambas.",
+      "tema": "sampling-parameters",
+      "relacionados": ["llms", "temperatura"],
+      "fuentes": [
+        { "titulo": "The Curious Case of Neural Text Degeneration (Holtzman et al., 2019)", "url": "https://arxiv.org/abs/1904.09751" }
+      ]
+    },
+    {
       "id": "arquitectura-modelo",
       "termino": "Arquitectura (estructura) de un modelo",
       "en": "Model architecture",

@@ -6454,18 +6454,37 @@
     "estado": "pendiente",
     "evaluable": true,
     "prioridad": 2,
-    "volatil": true
+    "volatil": true,
+    "relacionados": [
+      "sampling-parameters"
+    ]
   },
   {
     "id": "sampling-parameters",
     "nombre": "Sampling Parameters (Temperature, Top-p)",
+    "nombreEs": "Parámetros de muestreo",
     "tipo": "tema",
     "padre": "llms",
     "area": "ai",
-    "estado": "pendiente",
+    "frase": "Deciden cuánto se arriesga el modelo al escoger cada palabra: previsible o variado.",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
-    "volatil": true
+    "volatil": true,
+    "revisado": "2026-11-16",
+    "relacionados": [
+      "tokens-context-window",
+      "reasoning-models",
+      "hallucinations",
+      "structured-outputs",
+      "evals"
+    ],
+    "alias": [
+      "Temperatura",
+      "Top-p",
+      "Top-k",
+      "Muestreo"
+    ]
   },
   {
     "id": "inference-vs-training",
@@ -6487,7 +6506,10 @@
     "estado": "pendiente",
     "evaluable": true,
     "prioridad": 2,
-    "volatil": true
+    "volatil": true,
+    "relacionados": [
+      "sampling-parameters"
+    ]
   },
   {
     "id": "model-selection",
@@ -6512,7 +6534,10 @@
     "evaluable": true,
     "prioridad": 2,
     "volatil": true,
-    "revisado": "2026-11-06"
+    "revisado": "2026-11-06",
+    "relacionados": [
+      "sampling-parameters"
+    ]
   },
   {
     "id": "prompt-engineering",
@@ -6816,7 +6841,8 @@
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
-      "spring-ai"
+      "spring-ai",
+      "sampling-parameters"
     ]
   },
   {
@@ -6998,7 +7024,10 @@
     "estado": "pendiente",
     "evaluable": true,
     "prioridad": 2,
-    "volatil": true
+    "volatil": true,
+    "relacionados": [
+      "sampling-parameters"
+    ]
   },
   {
     "id": "llm-tracing",

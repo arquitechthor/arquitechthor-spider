@@ -1,0 +1,152 @@
+[
+  {
+    "id": "sampling-parameters-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué controlan los parámetros de muestreo de un LLM?",
+    "opciones": [
+      "Cuántos datos de entrenamiento usa el modelo al responder.",
+      "Cómo se escoge cada token entre los candidatos probables.",
+      "Qué conocimientos aprende el modelo en cada conversación.",
+      "Cuántos tokens del prompt puede leer el modelo a la vez."
+    ],
+    "correctas": [1],
+    "explicacion": "En cada paso el modelo propone candidatos con su probabilidad; los parámetros de muestreo deciden cómo se elige uno. No cambian lo que el modelo sabe ni su ventana de contexto, y no se aprenden.",
+    "fuentes": ["https://arxiv.org/abs/1904.09751"]
+  },
+  {
+    "id": "sampling-parameters-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Bajas la temperatura de 1 a 0,2. ¿Qué cambia en las probabilidades de los candidatos?",
+    "opciones": [
+      "Todos los candidatos pasan a tener la misma probabilidad.",
+      "Se eliminan los candidatos que no llegan al 20 % de probabilidad.",
+      "El favorito gana todavía más peso y el resto pierde terreno.",
+      "Los candidatos menos probables ganan peso frente al favorito."
+    ],
+    "correctas": [2],
+    "explicacion": "Una temperatura baja afila la distribución: el más probable crece y los demás encogen, así que el modelo se vuelve más previsible. No elimina candidatos (eso lo hacen top-p o top-k) ni los iguala; igualar se acerca a lo que hace una temperatura muy alta.",
+    "fuentes": ["https://developers.google.com/machine-learning/glossary#temperature"]
+  },
+  {
+    "id": "sampling-parameters-003",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Los candidatos para el siguiente token son A (60 %), B (25 %), C (10 %) y D (5 %). Con top-p = 0,8, ¿entre cuáles se sortea?",
+    "opciones": [
+      "Solo A, porque es el único que supera el 50 %.",
+      "A y B, porque juntos ya alcanzan el 80 %.",
+      "A, B y C, porque D no llega al 8 % mínimo.",
+      "Entre los cuatro, con D reducido al 80 % de su peso."
+    ],
+    "correctas": [1],
+    "explicacion": "Top-p ordena de más a menos probable y se queda con los primeros hasta que suman p: A (60 %) + B (25 %) = 85 %, que ya supera 0,8. C y D quedan fuera y se sortea entre A y B con sus probabilidades reajustadas.",
+    "fuentes": ["https://arxiv.org/abs/1904.09751"]
+  },
+  {
+    "id": "sampling-parameters-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué ventaja tiene el top-p frente al top-k?",
+    "opciones": [
+      "El número de candidatos se adapta a lo seguro que esté el modelo.",
+      "Siempre deja el mismo número de candidatos, lo que es más estable.",
+      "Elimina la aleatoriedad, de modo que la respuesta es siempre igual.",
+      "Funciona sin probabilidades, solo con el orden de los candidatos."
+    ],
+    "correctas": [0],
+    "explicacion": "Top-k se queda siempre con k candidatos; top-p con los que suman p, así que cuando el modelo lo tiene claro sobreviven pocos y cuando hay muchas opciones razonables sobreviven más. Dejar siempre el mismo número es justo lo que hace top-k, y ninguno de los dos elimina el sorteo.",
+    "fuentes": ["https://arxiv.org/abs/1904.09751", "https://aistudio.google.com/docs/prompting-strategies"]
+  },
+  {
+    "id": "sampling-parameters-005",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Tienes que extraer fecha e importe de facturas y guardarlos en una base de datos. ¿Qué ajuste de muestreo es el más razonable en un modelo que lo permita?",
+    "opciones": [
+      "Temperatura alta, para que el modelo explore formatos de fecha.",
+      "Temperatura baja, para obtener la respuesta más probable y estable.",
+      "Top-p muy bajo y temperatura muy alta, para compensar uno con otro.",
+      "Top-k = 1 y temperatura alta, para tener lo mejor de los dos."
+    ],
+    "correctas": [1],
+    "explicacion": "Para extraer o clasificar interesa la opción más probable y que se repita igual, así que se baja la temperatura. Combinar ajustes que se contrarrestan complica el comportamiento: lo recomendado es tocar la temperatura o el top-p, no ambos.",
+    "fuentes": ["https://developers.openai.com/api/reference/resources/responses/methods/create"]
+  },
+  {
+    "id": "sampling-parameters-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un compañero dice: «con temperatura 0 el modelo ya no puede inventarse datos». ¿Qué le contestas?",
+    "opciones": [
+      "Es cierto: con temperatura 0 solo se usan hechos verificados.",
+      "Es cierto, siempre que además se fije el top-p a 1.",
+      "No: elige lo más probable, y lo más probable puede ser falso.",
+      "No: con temperatura 0 el modelo inventa todavía más datos."
+    ],
+    "correctas": [2],
+    "explicacion": "La temperatura 0 hace que el modelo escoja casi siempre el token más probable, pero probable no significa verdadero: puede alucinar igual, solo que de forma más repetible. La veracidad se mejora dándole los datos (por ejemplo con RAG) y comprobando.",
+    "fuentes": ["https://developers.google.com/machine-learning/glossary#temperature"]
+  },
+  {
+    "id": "sampling-parameters-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Lanzas la misma petición dos veces con temperatura 0 y las respuestas difieren en una palabra. ¿Cuál es la explicación más probable?",
+    "opciones": [
+      "El modelo aprendió algo nuevo entre la primera petición y la segunda.",
+      "Pequeñas diferencias de cálculo en el servidor cambiaron un empate.",
+      "La temperatura 0 se ignora siempre y se usa 1 en su lugar.",
+      "El top-p por defecto vuelve a introducir el azar con temperatura 0."
+    ],
+    "correctas": [1],
+    "explicacion": "Con temperatura 0 las respuestas suelen ser muy parecidas, pero no se garantiza que sean idénticas: diferencias numéricas mínimas en el hardware o en cómo se agrupan las peticiones pueden cambiar qué candidato queda primero cuando dos están casi empatados, y el resto del texto sigue a partir de ahí. El modelo no aprende entre peticiones.",
+    "fuentes": ["https://developers.openai.com/api/reference/resources/responses/methods/create"]
+  },
+  {
+    "id": "sampling-parameters-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Por qué la mayoría de proveedores recomiendan ajustar la temperatura o el top-p, pero no los dos?",
+    "opciones": [
+      "Porque la API devuelve siempre un error si llegan los dos.",
+      "Porque los dos solo funcionan en los modelos de razonamiento.",
+      "Porque el top-p anula la temperatura y esta deja de tener efecto.",
+      "Porque hacen algo parecido y combinados cuesta saber qué influye."
+    ],
+    "correctas": [3],
+    "explicacion": "Los dos regulan cuánto se arriesga el modelo al elegir; si se tocan a la vez, el efecto es difícil de prever y de depurar. Muchas API los aceptan juntos (no siempre dan error) y uno no anula al otro: el top-p recorta la lista y la temperatura reparte el peso dentro de ella.",
+    "fuentes": ["https://developers.openai.com/api/reference/resources/responses/methods/create"]
+  },
+  {
+    "id": "sampling-parameters-009",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "Migras tu aplicación a un modelo de razonamiento reciente y las peticiones con temperature: 0.2 empiezan a fallar o a ignorar ese valor. ¿Qué haces?",
+    "opciones": [
+      "Quitar el parámetro y controlar el estilo con el prompt y el esfuerzo.",
+      "Pasar la temperatura a 0, que todos los modelos aceptan siempre.",
+      "Sustituir la temperatura por un top-k de 1 con el mismo efecto.",
+      "Volver al modelo anterior: sin temperatura no se puede extraer datos."
+    ],
+    "correctas": [0],
+    "explicacion": "Varios proveedores ya no dejan ajustar el muestreo en sus modelos que razonan: unos lo rechazan, otros lo ignoran, y el control pasa al esfuerzo de razonamiento. El top-k y la temperatura 0 suelen estar igual de restringidos. El formato y la precisión se consiguen con instrucciones claras y salidas estructuradas.",
+    "fuentes": ["https://aistudio.google.com/docs/prompting-strategies", "https://developers.openai.com/api/docs/guides/reasoning"]
+  },
+  {
+    "id": "sampling-parameters-010",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Cuál de estos ajustes de una petición NO es un parámetro de muestreo?",
+    "opciones": [
+      "La temperatura de la petición.",
+      "El top-p de la petición.",
+      "El máximo de tokens de salida.",
+      "El top-k de la petición."
+    ],
+    "correctas": [2],
+    "explicacion": "La longitud máxima (max_tokens o similar) solo corta la respuesta al llegar al límite; no influye en qué token se elige en cada paso. Temperatura, top-p y top-k sí deciden cómo se escoge entre los candidatos.",
+    "fuentes": ["https://developers.openai.com/api/reference/resources/responses/methods/create"]
+  }
+]

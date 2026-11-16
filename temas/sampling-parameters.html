@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sampling Parameters (Temperature, Top-p) — Tech Spider</title>
+<meta name="description" content="Qué son la temperatura, el top-p y el top-k de un LLM, explicados desde cero con un ejemplo numérico: cómo elige el modelo cada palabra, qué valores usar y por qué los modelos que razonan ya no los aceptan.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/sampling-parameters.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=532e81a3">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="sampling-parameters">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>Un <a href="llms.html">LLM</a> escribe su respuesta pieza a pieza. En cada paso no sabe con certeza qué pieza
+        poner: tiene una lista de candidatas, cada una con su probabilidad, y tiene que <strong>escoger una</strong>. Los
+        <strong>parámetros de muestreo</strong> (<em>sampling parameters</em>) son los ajustes que deciden cómo se hace esa
+        elección: si se coge siempre la favorita o si se deja sitio a la sorpresa.</p>
+      <p>Los más conocidos son la <a class="concepto" data-concepto="temperatura">temperatura</a> y el
+        <a class="concepto" data-concepto="top-p">top-p</a>. Se envían en cada petición, junto con el prompt, y cambian el
+        estilo de la respuesta: más previsible y repetible, o más variada y creativa.</p>
+      <p>Ojo con el nombre: aunque se llamen «parámetros», <strong>no son parámetros del modelo</strong> (los miles de
+        millones de números que aprendió al entrenarse, ver <a class="concepto" data-concepto="parametros">parámetros</a>).
+        No cambian lo que el modelo sabe; solo cómo elige entre lo que ya propone.</p>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <p>Si es la primera vez que lees sobre esto, estas palabras salen en toda la ficha:</p>
+      <ul>
+        <li><strong><a class="concepto" data-concepto="token">Token</a>:</strong> la pieza con la que escribe el modelo.
+          Puede ser una palabra corta («sol»), un trozo de una larga («incre» + «íble») o un signo («.»). En esta ficha,
+          para simplificar, hablaremos de «palabras».</li>
+        <li><strong>Probabilidad:</strong> un número entre 0 y 1 (o entre 0 % y 100 %) que dice lo probable que es algo.
+          Que una palabra tenga probabilidad 0,5 significa que, si se sorteara muchas veces, saldría más o menos en la mitad
+          de ellas.</li>
+        <li><strong>Distribución de probabilidad:</strong> la lista completa de candidatas con su probabilidad. Todas juntas
+          suman el 100 %.</li>
+        <li><strong>Muestrear</strong> (<em>sampling</em>)<strong>:</strong> elegir una candidata al azar, pero respetando
+          sus probabilidades. Es como una ruleta en la que cada palabra ocupa un trozo del tamaño de su probabilidad: la
+          favorita sale más a menudo, pero no siempre.</li>
+        <li><strong>Elección voraz</strong> (<em>greedy decoding</em>)<strong>:</strong> lo contrario de muestrear: coger
+          siempre la candidata más probable, sin ruleta.</li>
+        <li><strong>Determinista:</strong> que con la misma entrada da siempre la misma salida. Un LLM que muestrea
+          <strong>no</strong> es determinista: la misma pregunta puede recibir respuestas distintas.</li>
+      </ul>
+
+      <h2 id="como-elige">Cómo elige un LLM la siguiente palabra</h2>
+      <p>Imagina que el modelo ha escrito «El café está muy…» y tiene que seguir. Por dentro calcula una puntuación para
+        cada palabra de su vocabulario y la convierte en probabilidades. Nos quedamos con las cinco mejores:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Candidata</th><th>Probabilidad</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>caliente</td><td>50 %</td></tr>
+            <tr><td>rico</td><td>25 %</td></tr>
+            <tr><td>bueno</td><td>15 %</td></tr>
+            <tr><td>frío</td><td>7 %</td></tr>
+            <tr><td>amargo</td><td>3 %</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Ahora hay que escoger. Si cogiera siempre «caliente», el texto sería correcto pero monótono: con la misma pregunta,
+        la misma respuesta, palabra por palabra, y a menudo frases repetitivas. Si sorteara entre todas sin más, de vez en
+        cuando saldría una palabra rara que descarrila la frase. Los parámetros de muestreo son los mandos para colocarse en
+        un punto intermedio. Se aplican <strong>en cada palabra</strong> de la respuesta, no una vez al principio.</p>
+
+      <h2 id="temperatura">Temperatura: aplanar o afilar las probabilidades</h2>
+      <p>La temperatura <strong>transforma las probabilidades antes de sortear</strong>. No quita candidatas; cambia el
+        tamaño de sus trozos en la ruleta:</p>
+      <ul>
+        <li><strong>Temperatura baja</strong> (cerca de 0): la favorita crece y las demás encogen. El modelo se vuelve
+          conservador. Con temperatura 0 se comporta prácticamente como la elección voraz.</li>
+        <li><strong>Temperatura 1:</strong> las probabilidades quedan como el modelo las calculó.</li>
+        <li><strong>Temperatura alta</strong> (por encima de 1): las diferencias se suavizan y las opciones raras ganan
+          terreno. Más variedad, pero también más riesgo de frases sin sentido.</li>
+      </ul>
+      <p>Así quedaría nuestro ejemplo con tres temperaturas distintas:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Candidata</th><th>Temperatura 0,5</th><th>Temperatura 1</th><th>Temperatura 1,5</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>caliente</td><td>73 %</td><td>50 %</td><td>40 %</td></tr>
+            <tr><td>rico</td><td>18 %</td><td>25 %</td><td>25 %</td></tr>
+            <tr><td>bueno</td><td>7 %</td><td>15 %</td><td>18 %</td></tr>
+            <tr><td>frío</td><td>1 %</td><td>7 %</td><td>11 %</td></tr>
+            <tr><td>amargo</td><td>0,3 %</td><td>3 %</td><td>6 %</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>El nombre viene de la física: a más temperatura, más agitación y desorden. Para quien quiera la fórmula: el modelo
+        divide sus puntuaciones internas entre la temperatura antes de convertirlas en probabilidades (con la función
+        <em>softmax</em>); dividir entre un número pequeño agranda las diferencias y dividir entre uno grande las
+        reduce.</p>
+
+      <h2 id="top-p">Top-p: quedarse solo con las candidatas que importan</h2>
+      <p>El top-p (también llamado <strong>muestreo de núcleo</strong>, <em>nucleus sampling</em>) no cambia las
+        probabilidades: <strong>recorta la lista</strong>. Ordena las candidatas de más a menos probable y se queda con las
+        primeras hasta que, sumadas, llegan a p. Las demás quedan fuera del sorteo.</p>
+      <p>En el ejemplo, con <strong>top-p = 0,9</strong>: caliente (50 %) + rico (25 %) + bueno (15 %) ya suman el 90 %, así
+        que «frío» y «amargo» se descartan. El sorteo se hace solo entre las tres supervivientes, con sus probabilidades
+        reajustadas para que vuelvan a sumar el 100 % (56 %, 28 % y 17 %, redondeando).</p>
+      <p>Lo interesante es que el recorte <strong>se adapta</strong>. Cuando el modelo lo tiene claro (una candidata con el
+        95 %), sobrevive solo esa. Cuando hay muchas opciones razonables (al empezar una historia), sobreviven muchas. Así se
+        corta la «cola» de opciones raras que, sumadas, acaban colándose de vez en cuando. Lo propusieron Holtzman y otros en
+        2019 precisamente para evitar tanto el texto repetitivo de la elección voraz como las incoherencias de sortear entre
+        todo.</p>
+      <p>Con top-p = 1 no se recorta nada. Cuanto más bajo, más conservador.</p>
+
+      <h2 id="otros">Top-k y otros ajustes que te encontrarás</h2>
+      <ul>
+        <li><strong>Top-k:</strong> parecido al top-p, pero con un número fijo: se queda con las k candidatas más probables,
+          sin mirar cuánto suman. Con top-k = 2, en el ejemplo, solo compiten «caliente» y «rico». Es más tosco que el top-p
+          porque no se adapta a lo seguro que esté el modelo. Unas API lo ofrecen y otras no.</li>
+        <li><strong>Penalizaciones de frecuencia y presencia:</strong> restan puntos a las palabras que ya han aparecido en
+          la respuesta, para que el modelo no se repita. Solo existen en algunas API.</li>
+        <li><strong>Semilla</strong> (<em>seed</em>)<strong>:</strong> un número que fija el «azar» del sorteo para poder
+          repetir un resultado. Donde existe, el proveedor suele avisar de que ayuda pero no garantiza respuestas
+          idénticas.</li>
+        <li><strong>Longitud máxima de la respuesta</strong> (<code>max_tokens</code> o similar): no es un parámetro de
+          muestreo, porque no influye en qué palabra se elige; solo corta la respuesta cuando llega al límite. Se confunde a
+          menudo con ellos porque va en la misma petición.</li>
+      </ul>
+      <p>Cuando se combinan, el orden típico es: primero se recorta la lista (top-k y luego top-p) y después se sortea entre
+        lo que queda, con la temperatura aplicada. La documentación de Gemini, por ejemplo, lo describe así.</p>
+
+      <h2 id="valores">Qué valores usar</h2>
+      <p>Los rangos cambian según el proveedor (en OpenAI la temperatura va de 0 a 2; en otros, de 0 a 1), pero la idea es
+        la misma en todos:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Tarea</th><th>Ajuste orientativo</th><th>Por qué</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Extraer datos, clasificar, responder sobre un documento</td><td>Temperatura baja (0–0,3)</td><td>Quieres la respuesta más probable y que se repita igual.</td></tr>
+            <tr><td>Generar código</td><td>Baja o moderada</td><td>Una palabra rara puede romper el programa.</td></tr>
+            <tr><td>Chat de propósito general</td><td>El valor por defecto</td><td>Los proveedores lo eligen para que suene natural.</td></tr>
+            <tr><td>Lluvia de ideas, nombres, textos creativos</td><td>Más alta (0,8–1,2)</td><td>Buscas variedad; generar varias respuestas y elegir es parte del juego.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Dos reglas que repiten casi todos los proveedores: <strong>toca la temperatura o el top-p, no los dos a la
+        vez</strong> (hacen cosas parecidas y combinados se vuelve difícil saber qué causa qué), y <strong>mide antes de
+        cambiar</strong>: compara con <a href="../tema.html?id=evals">evaluaciones</a> (una batería de casos con la
+        respuesta esperada) en lugar de fiarte de un par de pruebas.</p>
+
+      <h2 id="modelos-recientes">Los modelos que razonan cambian las reglas</h2>
+      <div class="callout callout-warn">
+        <p><strong>Antes de usar estos parámetros, mira la documentación de tu modelo.</strong> En muchos modelos recientes
+          ya no se pueden ajustar.</p>
+      </div>
+      <p>Los <a href="reasoning-models.html">modelos de razonamiento</a> (los que escriben pasos intermedios antes de
+        contestar) se entrenan y se prueban con su forma de muestrear, y tocarla les hace razonar peor. Por eso los
+        proveedores la han ido cerrando:</p>
+      <ul>
+        <li><strong>Anthropic:</strong> sus modelos de Claude más recientes rechazan con un error las peticiones que envían
+          temperatura, top-p o top-k.</li>
+        <li><strong>OpenAI:</strong> en sus modelos de razonamiento el control principal es el <strong>esfuerzo</strong>
+          (<code>reasoning.effort</code>: cuánto piensa el modelo), no la temperatura.</li>
+        <li><strong>Google:</strong> la documentación de Gemini indica que sus modelos más nuevos ignoran los valores
+          personalizados de temperatura, top-p y top-k, y recomienda dejar los valores por defecto en los anteriores para no
+          empeorar su razonamiento.</li>
+      </ul>
+      <p>En la práctica, con estos modelos el estilo y la creatividad se piden <strong>en el prompt</strong> («dame cinco
+        propuestas muy distintas», «responde solo con el dato, sin explicaciones») y el formato se garantiza con
+        <a href="../tema.html?id=structured-outputs">salidas estructuradas</a> (pedir que la respuesta siga un esquema
+        JSON). La temperatura sigue siendo un mando útil en modelos sin razonamiento, en modelos abiertos que ejecutas tú y
+        en muchas otras API, y entenderla te ayuda a entender por qué un LLM no responde siempre lo mismo.</p>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>En una API que los acepta, van en el cuerpo de la petición junto al prompt. Los nombres exactos cambian según el
+        proveedor; este es el aspecto típico de una petición para extraer datos, donde interesa una respuesta previsible:</p>
+      <pre><code>{
+  "model": "nombre-del-modelo",
+  "temperature": 0.2,
+  "messages": [
+    { "role": "user", "content": "Extrae la fecha y el importe de esta factura: ..." }
+  ]
+}</code></pre>
+      <p>Fíjate en que solo se ajusta la temperatura: el top-p se deja en su valor por defecto. Las librerías como
+        <a href="spring-ai.html">Spring AI</a> o LangChain4j exponen los mismos ajustes como opciones del cliente del
+        modelo, y la librería los traduce al nombre que espera cada proveedor.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Creer que temperatura 0 lo hace exacto:</strong> elegir siempre la palabra más probable no la hace
+          verdadera. Con temperatura 0 el modelo puede <a href="../tema.html?id=hallucinations">alucinar</a> (inventar algo
+          plausible pero falso) igual, solo que de forma más repetible. La veracidad se mejora dándole los datos (por
+          ejemplo con RAG) y comprobando, no bajando la temperatura.</li>
+        <li><strong>Esperar respuestas idénticas con temperatura 0:</strong> suelen parecerse mucho, pero pequeñas
+          diferencias de cálculo en los servidores pueden cambiar alguna palabra, y a partir de ahí el resto. Si necesitas
+          repetibilidad exacta, guarda la respuesta.</li>
+        <li><strong>Subir la temperatura para que «piense mejor»:</strong> la temperatura no da inteligencia ni
+          creatividad de fondo; solo cambia cuánto se arriesga con las palabras. Demasiado alta produce frases
+          incoherentes.</li>
+        <li><strong>Tocar temperatura y top-p a la vez:</strong> el efecto se vuelve difícil de predecir y de depurar.
+          Ajusta uno y deja el otro por defecto.</li>
+        <li><strong>Copiar ajustes de un modelo a otro:</strong> el mismo número no significa lo mismo en todos los
+          proveedores (rangos distintos) y en los modelos que razonan puede dar un error o ignorarse.</li>
+        <li><strong>Pensar que cambian el modelo:</strong> no se aprenden ni se guardan; valen solo para la petición en la
+          que se envían.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="sampling-parameters"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://arxiv.org/abs/1904.09751" target="_blank" rel="noopener">The Curious Case of Neural Text Degeneration</a> (Holtzman et al., 2019, el artículo que propone el top-p, consultada el 16/11/2026).</li>
+        <li><a href="https://developers.openai.com/api/reference/resources/responses/methods/create" target="_blank" rel="noopener">Create a model response</a> (referencia de la API de OpenAI: <code>temperature</code> y <code>top_p</code>, consultada el 16/11/2026).</li>
+        <li><a href="https://developers.openai.com/api/docs/guides/reasoning" target="_blank" rel="noopener">Reasoning models</a> (documentación de OpenAI: el esfuerzo de razonamiento, consultada el 16/11/2026).</li>
+        <li><a href="https://platform.claude.com/docs/en/api/messages" target="_blank" rel="noopener">Messages API</a> (referencia de la API de Anthropic, consultada el 16/11/2026).</li>
+        <li><a href="https://aistudio.google.com/docs/prompting-strategies" target="_blank" rel="noopener">Prompt design strategies</a> (documentación de Gemini: temperatura, top-k y top-p y su orden, consultada el 16/11/2026).</li>
+        <li><a href="https://developers.google.com/machine-learning/glossary#temperature" target="_blank" rel="noopener">Machine Learning Glossary: temperature</a> (Google, consultada el 16/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=d08c2823" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>
