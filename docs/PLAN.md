@@ -12,6 +12,10 @@ línea al "Registro de sesiones".
 
 ## Estado actual
 
+- **Idiomas: inglés e italiano (2026-11-16, petición del usuario), solo planificado:** el español sigue
+  siendo el idioma por defecto. Plan completo en [`docs/PLAN-IDIOMAS.md`](PLAN-IDIOMAS.md): traducción
+  de interfaz, árbol, glosario, fichas y preguntas, y voces por idioma (lectura y audios de Kopi).
+  Pendiente de que el usuario resuelva sus decisiones I1–I7.
 - **AWS completo en el mapa y progreso de Apuntes AWS (2026-11-11, decisión del usuario), publicado:**
   la rama AWS tiene ya los **177 servicios** de aws-cert-study como nodos `externo`, agrupados en sus
   **19 categorías oficiales** y generados con `python scripts/importar_aws.py` desde
@@ -153,7 +157,6 @@ funciones existentes): **es lo esperado** y lo arregla el paso 2 (que sube su c�
 
 | Dato | Valor |
 |---|---|
-| 2026-11-16 | **Ficha de Sampling Parameters (Temperature, Top-p)** (petición del usuario, con énfasis en que los términos queden claros para principiantes): `temas/sampling-parameters.html` con sección "Vocabulario para empezar" (token, probabilidad, distribución, muestrear, elección voraz, determinista), un ejemplo numérico que recorre la ficha («El café está muy…»: temperatura 0,5 / 1 / 1,5 y top-p 0,9), top-k, penalizaciones y semilla, tabla de valores por tarea, aviso de que los modelos que razonan ya no admiten estos ajustes (Anthropic los rechaza, OpenAI usa el esfuerzo, Gemini los ignora en sus modelos nuevos) y errores frecuentes; 10 preguntas (la opción más larga es la correcta en 2). `nombreEs` "Parámetros de muestreo", alias, relacionados recíprocos con `tokens-context-window`, `reasoning-models`, `hallucinations`, `structured-outputs` y `evals`; conceptos nuevos **token** y **top-p** en el glosario; el enlace de la ficha de LLMs apunta ya a la ficha. Fuentes: Holtzman et al. 2019, referencia y guía de razonamiento de OpenAI, referencia de Anthropic, estrategias de prompt de Gemini y glosario de Google. Probada a 375 px sin scroll horizontal. |
 | Nodos | 364 (tras la ampliación del área 13 del 2026-11-02; antes 322): 1 raíz, 13 áreas, 56 bloques, 227 temas de nivel 3 y 68 subtemas de nivel 4 |
 | Hojas | 276 (antes 245) |
 | Profundidad | variable: la mayoría termina en el nivel 3, pero hay ramas de 4 (Java, Spring Data, Resilience Patterns, AWS, Domain Knowledge) y una de 2 (TypeScript, sin hijos) |
@@ -966,6 +969,8 @@ Meta orientativa: una ruta publicada por bloque de trabajo; el mapa es útil des
 aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona.
 
 ### Fase 8: extras (en cola, sin compromiso)
+- **Idiomas (inglés e italiano):** línea de trabajo propia, con sus fases en
+  [`docs/PLAN-IDIOMAS.md`](PLAN-IDIOMAS.md).
 - **Propuestas del usuario:** el usuario tiene propuestas de temáticas para pasos posteriores
   (2026-11-02); se recogen aquí cuando las comparta y se decide en qué fase entra cada una.
 - **Hecho (2026-11-11):** pintar en el mapa, en solo lectura, el progreso de los servicios ya
@@ -1011,6 +1016,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-16 | **Ficha de Sampling Parameters (Temperature, Top-p)** (petición del usuario, con énfasis en que los términos queden claros para principiantes): `temas/sampling-parameters.html` con sección "Vocabulario para empezar" (token, probabilidad, distribución, muestrear, elección voraz, determinista), un ejemplo numérico que recorre la ficha («El café está muy…»: temperatura 0,5 / 1 / 1,5 y top-p 0,9), top-k, penalizaciones y semilla, tabla de valores por tarea, aviso de que los modelos que razonan ya no admiten estos ajustes (Anthropic los rechaza, OpenAI usa el esfuerzo, Gemini los ignora en sus modelos nuevos) y errores frecuentes; 10 preguntas (la opción más larga es la correcta en 2). `nombreEs` "Parámetros de muestreo", alias, relacionados recíprocos con `tokens-context-window`, `reasoning-models`, `hallucinations`, `structured-outputs` y `evals`; conceptos nuevos **token** y **top-p** en el glosario; el enlace de la ficha de LLMs apunta ya a la ficha. Fuentes: Holtzman et al. 2019, referencia y guía de razonamiento de OpenAI, referencia de Anthropic, estrategias de prompt de Gemini y glosario de Google. Probada a 375 px sin scroll horizontal. |
 | 2026-11-13 | **Ficha de arquitectura limpia** (petición del usuario; sus ancestros `architectural-styles` y `architecture` ya estaban publicados): `temas/clean-architecture.html` (qué es y de dónde viene, los cuatro círculos, regla de dependencias, cruzar fronteras con puertos de salida y presentador, datos que cruzan las fronteras, Screaming Architecture, ejemplo en Java con interactor, presentador y estructura de carpetas, la variante que devuelve el modelo de respuesta, Kopi Chess como caso real, errores frecuentes y comparativa con hexagonal y cebolla) con 10 preguntas (la opción más larga es la correcta solo en 1). Relacionados recíprocos con `hexagonal-architecture`, `layered-architecture`, `solid`, `dependency-injection` y `clean-code`; sigla DTO en el glosario; los enlaces de las fichas hexagonal y de estilos apuntan ya a la ficha. Fuentes: artículos de Robert C. Martin (The Clean Architecture y Screaming Architecture), Jeffrey Palermo (Onion Architecture), Microsoft Learn y Alistair Cockburn. Probada a 375 px sin scroll horizontal. |
 | 2026-11-13 | **Resumen en audio en la ficha de arquitectura hexagonal** (petición del usuario): recurso público de Kopi `6516972e-41d0-431f-8f22-40b62e2fe372` (AUDIO, «Arquitectura Hexagonal», comprobado en la API pública) antes de "Qué es", como en Apuntes AWS: `assets/audio-kopi.js` copiado de aws-cert-study (pide el enlace de S3 al pulsar «Escuchar» y lo renueva si caduca), estilos `.audio-recurso`, campo nuevo `audio` en `nodos.json` (4.2) comprobado por el validador, insignia 🎧 en el panel, opción "🎧 Con resumen en audio" en el filtro Estado, «Escuchar la ficha» se salta el bloque y no suena a la vez que el audio, y aviso legal (secciones 5 y 10) actualizado. |
 | 2026-11-13 | **Ficha de arquitectura hexagonal y sus ancestros** (petición del usuario): `temas/hexagonal-architecture.html` (qué es, conceptos, ejemplo en Java de puerto, caso de uso, adaptadores, prueba en memoria y regla de ArchUnit, casos reales de Kopi Chess y Prompt Quest, errores frecuentes y comparativa con capas y arquitectura limpia) con 10 preguntas (opciones equilibradas; la más larga es la correcta solo en 1), y presentaciones de `architectural-styles` y `architecture`. Alias "Ports and Adapters" / "Puertos y adaptadores"; relacionados recíprocos con `clean-architecture`, `layered-architecture`, `dependency-injection`, `solid`, `test-doubles` y `ddd`. Siglas nuevas en el glosario: ADR, CAP, CQRS, CRUD, DDD, SOLID y TCP. Fuentes: artículo original de Alistair Cockburn (2005), AWS Prescriptive Guidance, Robert C. Martin, guía de ArchUnit, Martin Fowler, Azure Architecture Center y Michael Nygard. Probadas a 375 px sin scroll horizontal; cuestionario cargado. |
