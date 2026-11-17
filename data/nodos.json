@@ -208,7 +208,9 @@
       "clean-code",
       "oop",
       "high-cohesion-low-coupling",
-      "test-doubles"
+      "test-doubles",
+      "strategy-pattern",
+      "decorator-pattern"
     ],
     "frase": "Cinco reglas de diseño para que cada clase cambie sin arrastrar consigo al resto.",
     "alias": [
@@ -267,10 +269,133 @@
     "prioridad": 2
   },
   {
+    "id": "abstract-factory-pattern",
+    "nombre": "Abstract Factory",
+    "tipo": "tema",
+    "padre": "creational-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 3
+  },
+  {
+    "id": "builder-pattern",
+    "nombre": "Builder",
+    "tipo": "tema",
+    "padre": "creational-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "factory-method-pattern",
+    "nombre": "Factory Method",
+    "tipo": "tema",
+    "padre": "creational-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "prototype-pattern",
+    "nombre": "Prototype",
+    "tipo": "tema",
+    "padre": "creational-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 3
+  },
+  {
+    "id": "singleton-pattern",
+    "nombre": "Singleton",
+    "tipo": "tema",
+    "padre": "creational-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
     "id": "structural-patterns",
     "nombre": "Structural Patterns",
     "tipo": "tema",
     "padre": "design-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "adapter-pattern",
+    "nombre": "Adapter",
+    "tipo": "tema",
+    "padre": "structural-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "bridge-pattern",
+    "nombre": "Bridge",
+    "tipo": "tema",
+    "padre": "structural-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 3
+  },
+  {
+    "id": "composite-pattern",
+    "nombre": "Composite",
+    "tipo": "tema",
+    "padre": "structural-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "decorator-pattern",
+    "nombre": "Decorator",
+    "tipo": "tema",
+    "padre": "structural-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "relacionados": [
+      "solid"
+    ]
+  },
+  {
+    "id": "facade-pattern",
+    "nombre": "Facade",
+    "tipo": "tema",
+    "padre": "structural-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "flyweight-pattern",
+    "nombre": "Flyweight",
+    "tipo": "tema",
+    "padre": "structural-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 3
+  },
+  {
+    "id": "proxy-pattern",
+    "nombre": "Proxy",
+    "tipo": "tema",
+    "padre": "structural-patterns",
     "area": "fundamentals",
     "estado": "pendiente",
     "evaluable": true,
@@ -285,6 +410,119 @@
     "estado": "pendiente",
     "evaluable": true,
     "prioridad": 2
+  },
+  {
+    "id": "chain-of-responsibility-pattern",
+    "nombre": "Chain of Responsibility",
+    "tipo": "tema",
+    "padre": "behavioral-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "command-pattern",
+    "nombre": "Command",
+    "tipo": "tema",
+    "padre": "behavioral-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "interpreter-pattern",
+    "nombre": "Interpreter",
+    "tipo": "tema",
+    "padre": "behavioral-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 3
+  },
+  {
+    "id": "iterator-pattern",
+    "nombre": "Iterator",
+    "tipo": "tema",
+    "padre": "behavioral-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "mediator-pattern",
+    "nombre": "Mediator",
+    "tipo": "tema",
+    "padre": "behavioral-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 3
+  },
+  {
+    "id": "memento-pattern",
+    "nombre": "Memento",
+    "tipo": "tema",
+    "padre": "behavioral-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 3
+  },
+  {
+    "id": "observer-pattern",
+    "nombre": "Observer",
+    "tipo": "tema",
+    "padre": "behavioral-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "state-pattern",
+    "nombre": "State",
+    "tipo": "tema",
+    "padre": "behavioral-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "strategy-pattern",
+    "nombre": "Strategy",
+    "tipo": "tema",
+    "padre": "behavioral-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2,
+    "relacionados": [
+      "solid"
+    ]
+  },
+  {
+    "id": "template-method-pattern",
+    "nombre": "Template Method",
+    "tipo": "tema",
+    "padre": "behavioral-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 2
+  },
+  {
+    "id": "visitor-pattern",
+    "nombre": "Visitor",
+    "tipo": "tema",
+    "padre": "behavioral-patterns",
+    "area": "fundamentals",
+    "estado": "pendiente",
+    "evaluable": true,
+    "prioridad": 3
   },
   {
     "id": "enterprise-integration-patterns",

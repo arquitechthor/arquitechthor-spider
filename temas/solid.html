@@ -118,10 +118,11 @@ final class Caja {
 final class PagoConBizum implements MedioDePago { … }</code></pre>
       <p>Lo contrario es la cadena de <code>if</code> o de <code>switch</code> sobre un tipo que se repite por el código:
         cada caso nuevo obliga a encontrar y editar todas las copias. Dos técnicas habituales para cumplirlo son el patrón
-        <strong>estrategia</strong> (cada variante es un objeto intercambiable, como <code>MedioDePago</code>) y el
-        <strong>decorador</strong> (una clase envuelve a otra con la misma interfaz y le añade algo, por ejemplo medir o
-        registrar, sin tocarla); ver <a href="../tema.html?id=behavioral-patterns">patrones de comportamiento</a> y
-        <a href="../tema.html?id=structural-patterns">patrones estructurales</a>.</p>
+        <a href="../tema.html?id=strategy-pattern"><strong>Strategy</strong></a> (cada variante es un objeto intercambiable,
+        como <code>MedioDePago</code>) y el patrón <a href="../tema.html?id=decorator-pattern"><strong>Decorator</strong></a>
+        (una clase envuelve a otra con la misma interfaz y le añade algo, por ejemplo medir o registrar, sin tocarla). El
+        primero es uno de los <a href="../tema.html?id=behavioral-patterns">patrones de comportamiento</a> y el segundo, de
+        los <a href="../tema.html?id=structural-patterns">patrones estructurales</a>.</p>
       <p><strong>No es una regla absoluta.</strong> Ningún código está cerrado frente a todos los cambios posibles: hay que
         elegir frente a cuáles cerrarse. A veces lo mejor es justo lo contrario, como se ve en el caso de Kopi Chess más
         abajo.</p>
@@ -217,9 +218,9 @@ final class RepositorioDePedidosPostgres implements RepositorioDePedidos { … }
         dice que si un análisis está en cola, en marcha o ha fallado es asunto de otra interfaz, <code>AnalysisJobQueue</code>.
         Y cada caso de uso es una clase: <code>PlayMove</code>, <code>Resign</code>, <code>AgreeDraw</code>…</p>
 
-      <h3>O: decoradores que miden sin tocar nada</h3>
+      <h3>O: un Decorator que mide sin tocar nada</h3>
       <p>Los bots y los casos de uso no saben nada de métricas. Para medir cuánto tarda cada bot en mover, Kopi Chess añade
-        un decorador, <code>TimedBotPlayer</code>, que cumple la misma interfaz <code>BotPlayer</code>, envuelve al bot real y
+        un <a href="../tema.html?id=decorator-pattern">Decorator</a>, <code>TimedBotPlayer</code>, que cumple la misma interfaz <code>BotPlayer</code>, envuelve al bot real y
         cronometra cada jugada. Se añadió comportamiento sin editar ni los bots ni los casos de uso:</p>
       <pre><code>final class TimedBotPlayer implements BotPlayer {
     private final BotPlayer bot;            // el bot de verdad

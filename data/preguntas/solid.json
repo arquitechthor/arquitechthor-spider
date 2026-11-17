@@ -50,13 +50,13 @@
     "nivel": 2,
     "enunciado": "Una clase TimedBotPlayer implementa la interfaz BotPlayer, recibe otro BotPlayer en el constructor y mide cuánto tarda en elegir cada jugada antes de devolverla. ¿Qué técnica es y qué principio ayuda a cumplir?",
     "opciones": [
-      "Es una estrategia, y ayuda a cumplir la responsabilidad única al juntar bot y métricas.",
-      "Es un decorador, y ayuda a cumplir el abierto/cerrado: añade algo sin tocar el bot.",
-      "Es una fábrica, y ayuda a cumplir la inversión de dependencias al crear los bots.",
-      "Es un adaptador, y ayuda a cumplir la sustitución de Liskov al cambiar la interfaz."
+      "Es un Strategy, y ayuda a cumplir la responsabilidad única al juntar bot y métricas.",
+      "Es un Decorator, y ayuda a cumplir el abierto/cerrado: añade algo sin tocar el bot.",
+      "Es un Factory Method, y ayuda a cumplir la inversión de dependencias al crear los bots.",
+      "Es un Adapter, y ayuda a cumplir la sustitución de Liskov al cambiar la interfaz."
     ],
     "correctas": [1],
-    "explicacion": "Envolver un objeto con otro que cumple la misma interfaz para añadirle comportamiento es el patrón decorador. Así se añaden las métricas sin modificar ni los bots ni los casos de uso que los usan: el código existente queda cerrado y el comportamiento, ampliado. No crea objetos (fábrica), no cambia la interfaz (adaptador) y precisamente separa métricas y bot en lugar de juntarlos.",
+    "explicacion": "Envolver un objeto con otro que cumple la misma interfaz para añadirle comportamiento es el patrón Decorator. Así se añaden las métricas sin modificar ni los bots ni los casos de uso que los usan: el código existente queda cerrado y el comportamiento, ampliado. No crea objetos (Factory Method), no cambia la interfaz (Adapter) y precisamente separa métricas y bot en lugar de juntarlos.",
     "fuentes": ["https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-bootstrap/src/main/java/com/arquitechthor/kopi/bootstrap/TimedBotPlayer.java"]
   },
   {
