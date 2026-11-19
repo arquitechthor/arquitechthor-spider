@@ -55,14 +55,17 @@ línea al "Registro de sesiones".
   con esos conceptos: recoger su feedback antes de seguir.
 - **Piloto de IA revisado por el usuario (2026-11-05):** lo da por bueno.
 - **Fase 3 completa (2026-11-05):** 3.8 radar "Mi telaraña", 3.7 responsive y accesibilidad y 3.9
-  vista general, en ese orden (decisión del usuario). Pendiente de que el usuario lo revise en
-  producción.
-- **Próximo paso (al cierre del 2026-11-05):** 1) el usuario revisa la Fase 3 en producción (radar,
-  vista General en escritorio, tocar un tema en móvil); 2) repasar las 7 fichas publicadas buscando
-  términos sin explicar (regla "cada ficha se entiende sola", como pasó con «temperatura»); después,
-  según prefiera el usuario, más contenido (Java o Spring, prioridad 1), la pasada de bloques
-  candidatos a tema (4.5) o la Fase 5 (5.3 evaluación por rama, 5.5 página de progreso, que
-  reutilizará `radar.js`). **Tarea 2.6 casi cerrada (2026-11-03):**
+  vista general, en ese orden (decisión del usuario). **Revisada por el usuario en producción
+  (2026-11-19):** radar, vista General y móvil, todo bien y usable.
+- **Próximo paso (2026-11-19):** contenido con el criterio nuevo (decisión "Orden del contenido" en
+  la sección 2): temas sueltos y relevantes de distintas áreas, sacados de los proyectos personales
+  (Kopi Chess, Kopi, Prompt Quest), en lugar de completar una rama entera. Ejemplos del usuario:
+  lambdas de Java 8, Spring AI (ya publicada), caché en Java 25 (solo ejemplos: el usuario pide que
+  Claude priorice lo más relevante de los proyectos, **sobre todo Kopi Chess**). Cola propuesta en la
+  Fase 7 ("Cola desde Kopi Chess"); se empieza por la 1. Antes de cada tema, comprobar si cabe en un
+  nodo existente o si hace falta uno nuevo (registrarlo en 4.2.1). El repaso de términos sin explicar ya no es una tarea aparte: la regla
+  "cada ficha se entiende sola" se aplica siempre, al escribir o tocar cualquier ficha.
+- **Tarea 2.6 casi cerrada (2026-11-03):**
   enlaces publicados en `kopi-web`, `aws-cert-study`, `arquitechthor.github.io` y
   `kopi-chess`; falta `kopi-docs/politicas.md`, que no está versionado y vive en otro ordenador: se
   actualiza cuando se trabaje allí (política "Mismo menú y pie": añadir Tech Spider a la lista).
@@ -134,7 +137,11 @@ funciones existentes): **es lo esperado** y lo arregla el paso 2 (que sube su c�
 6. Pendiente aparte: mencionar el progreso de Tech Spider y Apuntes AWS en la política de privacidad de
    Kopi Tools (`kopi-web/legal/privacidad.html`).
 7. Marca 5.7 y 5.8 aquí y actualiza "Estado actual" de este PLAN y del de aws-cert-study.
-- **Última actualización:** 2026-11-07 (ficha de Terraform y sus ancestros)
+- **Java moderno (2026-11-19), primer tema de la cola de Kopi Chess:** ficha `temas/modern-java.html`
+  (de Java 8 a 25, una sección por novedad, caso real de Kopi Chess y caché AOT medida) con 14
+  preguntas sin Kopi Chess. Sin probar en navegador en local (no se permitió levantar el servidor):
+  comprobar en producción. Siguiente: la 2 de la cola (`concurrency`).
+- **Última actualización:** 2026-11-19 (Java moderno publicado)
 
 ---
 
@@ -192,6 +199,7 @@ Consecuencias para el diseño:
 | Vista predeterminada | **Decidido por el usuario (2026-11-02):** la **Telaraña** es la vista por defecto (es la temática del proyecto); las Cajas quedan como vista alternativa. |
 | Licencia | **CC BY-SA 4.0** (D2, aceptada el 2026-11-02), igual que `aws-cert-study`; sustituye a la GPL-3.0 inicial. |
 | Pie común | Enlace en `.footer-sitios` de las cuatro webs: "Kopi Tools · Apuntes AWS · Tech Spider · Kopi Chess · Prompt Quest · Sobre mí", y actualizar `kopi-docs/politicas.md`, `kopi/CLAUDE.md` (tabla de proyectos) y la web personal (D3, aceptada el 2026-11-02). |
+| Orden del contenido | **Decidido por el usuario (2026-11-19):** no se avanza por ramas (toda la profundidad de Java, luego Spring…) sino con **temas sueltos y relevantes de distintas áreas** (p. ej. lambdas de Java 8, Spring AI, caché en Java 25), **priorizando lo que se pueda sacar de los proyectos personales** (Kopi Chess, Kopi, Prompt Quest), con ejemplos reales como en SOLID o arquitectura limpia. Sustituye a la cola por rutas de la Fase 7. |
 | Contenido inicial | **Java y Spring son los temas fundacionales** del proyecto (D5, aceptada el 2026-11-02): ruta Java → Testing con Java → Spring → JPA/Hibernate, todos con `prioridad: 1`. |
 | Nombre | **Tech Spider** (D1, elegido por el usuario el 2026-11-02 entre varias propuestas en inglés con *Spider*). Es el nombre visible (título, marca del menú, pie común); el repo sigue siendo `arquitechthor-spider`. |
 | Un tema, un sitio | **Cada tema existe una sola vez** (D4, aceptada el 2026-11-02): los duplicados del árbol, con el mismo nombre o con otro, se fusionan en un nodo con su ubicación principal y "accesos ↗" en las demás (tabla 4.2). |
@@ -429,6 +437,11 @@ directamente en `data/nodos.json` (el importador ya no se usa; con `--forzar` se
   (el usuario prefiere los términos originales de los patrones). `prioridad` 2 en los de uso diario y 3
   en Abstract Factory, Prototype, Bridge, Flyweight, Interpreter, Mediator, Memento y Visitor.
 - `strategy-pattern` y `decorator-pattern` relacionados con `solid` (recíproco). 550 nodos.
+
+**2026-11-19: Java moderno publicado** (primer tema de la "Cola desde Kopi Chess"):
+- `modern-java`: nombre «Modern Java (8-21+)» → «Modern Java (8-25)», `nombreEs` «Java moderno», alias
+  (Java 17/21/25, Records, Sealed classes, Pattern matching…). Relacionados recíprocos con
+  `streams-lambdas`, `concurrency`, `functional-programming`, `oop` y `solid`. Sin nodos nuevos: 550.
 
 ### 4.3 Preguntas: `data/preguntas/<id>.json`
 
@@ -960,7 +973,33 @@ Completa el 2026-11-02.
 
 ### Fase 7: contenido (iterativa, la más larga)
 
-Cola por prioridad; cada tema sigue el flujo de `CLAUDE.md` (investigar en documentación
+> **2026-11-19:** la cola por rutas de esta tabla queda solo como referencia. El orden real lo marca
+> la decisión "Orden del contenido" (sección 2): temas sueltos de distintas áreas, primero los que
+> salen de los proyectos personales.
+
+**Cola desde Kopi Chess (2026-11-19).** Temas con ejemplos reales en `kopi/kopi-chess` (Java 25,
+Spring Boot 4, hexagonal en módulos Maven, PostgreSQL), por relevancia y por cuánto material da el
+proyecto. Cada ficha lleva ejemplos de Kopi Chess siempre que se pueda (sección "Caso real: Kopi
+Chess", como SOLID y arquitectura limpia), pero **las preguntas evitan Kopi Chess** en lo posible:
+evalúan el concepto general (decisión del usuario, 2026-11-19).
+
+| # | Nodo | Qué sale de Kopi Chess |
+|---|---|---|
+| 1 ✓ | `modern-java` (2026-11-19) | Java 17→25: `record`, `sealed` + `switch` exhaustivo (`Evaluation`, `MoveKind`), patrones de registro, `_`, cuerpos de constructor flexibles (`InvalidFenException`), archivos fuente compactos (`Perft.java`), `///`, colecciones secuenciadas, caché AOT y la política de *preview* (`kopi-labs`, ADR-012) |
+| 2 | `concurrency` | hilos virtuales para leer la salida de Stockfish (`UciProcess`, `EnginePool`) y en el relé; bloqueos; *structured concurrency* en preview (`PositionBatchAnalyser`) |
+| 3 | `testcontainers` | PostgreSQL real en los IT (`JdbcGameRepositoryIT`, `TestcontainersConfiguration`) |
+| 4 | `strategy-pattern`, `decorator-pattern`, `adapter-pattern` | ya enlazados desde SOLID: bots por nivel, `TimedBotPlayer` y métricas como decoradores, adaptadores de Stockfish y persistencia |
+| 5 | `junit-5` | `@ParameterizedTest`, `@Tag("slow")`, perft contra Stockfish y test diferencial (ADR-004) |
+| 6 | `jdbc` | `JdbcClient` sin JPA (ADR-003), bloqueo optimista de `GameRepository` |
+| 7 | `postgresql` | cola de análisis con `FOR UPDATE SKIP LOCKED` (ADR-007) |
+| 8 | `transaction-management` | casos de uso sin transacción (ADR-014) |
+| 9 | `dependency-injection` | casos de uso sin Spring, cableados en `kopi-bootstrap` (ADR-002) |
+| 10 | `websockets` | relé de partidas (ADR-020, `RelayWebSocket`) |
+| 11 | `metrics` / `prometheus` | métricas fuera de los casos de uso (ADR-017), carpeta `observability` |
+| 12 | `streams-lambdas` | lambdas, *streams* y *Stream Gatherers* (`AnalysisSummary`) |
+| 13 | resto | `maven` (multimódulo), `github-actions` (CI, *release*, Dependabot), `docker-compose`, `flyway`, `modularity` (ArchUnit) |
+
+Cola anterior por rutas (solo referencia). Cada tema sigue el flujo de `CLAUDE.md` (investigar en documentación
 oficial → copiar plantilla → apuntes → 5–15 preguntas → `estado: publicado` → validadores →
 sitemap → probar en navegador → commit y push a `main`).
 
@@ -1027,6 +1066,8 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-19 | **Ficha de Java moderno** (`modern-java`, primero de la cola de Kopi Chess): vocabulario (JDK, JEP, LTS, preview), versiones que marcan época (8, 11, 17, 21, 25, y 26/27), una sección por novedad (lambdas, `var`, `switch` y bloques de texto, `record`, patrones, `sealed`, colecciones secuenciadas, hilos virtuales, *Gatherers*, `///`, constructores flexibles, ficheros compactos, caché AOT, preview), caso real de Kopi Chess (`MoveKind`, `Evaluation`, `InvalidFenException`, `windowSliding`, `SequencedMap`, `UciProcess`, `Perft.java`, caché AOT medida y `kopi-labs`/ADR-012), errores frecuentes y por dónde empezar. 14 preguntas sin Kopi Chess (la opción más larga es la correcta en 3). Glosario: FEN, JDK, JEP, LTS, AOT y TLS. Fuentes: índice de JEP, calendario de Oracle, anuncios de Java 26 y 27 (openjdk.org devolvió 403 al consultarlo automáticamente; JEP verificadas de memoria y con buscador). Validador en verde; sin probar en navegador. |
+| 2026-11-19 | El usuario revisa la Fase 3 en producción (radar, vista General y móvil): todo bien y usable. Se cierra el repaso de términos sin explicar como tarea aparte (la regla se aplica siempre). Decisión "Orden del contenido": temas sueltos de distintas áreas sacados de los proyectos personales, en lugar de completar ramas. |
 | 2026-11-17 | **Patrones GoF en el árbol** (petición del usuario): 23 temas nuevos, uno por patrón, bajo sus tres familias (ver 4.2.1). En la ficha de SOLID y en su pregunta `solid-004`, los patrones se nombran en inglés (Strategy, Decorator, Factory Method, Adapter) y Strategy y Decorator enlazan a su ficha (`tema.html?id=`, que redirige cuando se publique). Validador en verde; sin probar en navegador. |
 | 2026-11-16 | **Ficha de SOLID** (petición del usuario, con ejemplos detallados de Kopi Chess): `temas/solid.html` con vocabulario mínimo (módulo, interfaz, dependencia), una sección por principio con ejemplo en Java y señales de alarma, cómo encajan, caso real de Kopi Chess con un ejemplo por principio (Stockfish en cuatro clases, `TimedBotPlayer` como decorador, el contraejemplo de `MoveKind` sellado, el bloqueo optimista de `GameRepository` en memoria y en PostgreSQL, una interfaz por caso de uso, ArchUnit), errores frecuentes y si siguen vigentes; 10 preguntas (la opción más larga es la correcta en 4). Siglas nuevas en el glosario: SRP, OCP, LSP, ISP, DIP y UCI. Relacionados recíprocos con `dependency-injection`, `clean-code`, `oop`, `high-cohesion-low-coupling` y `test-doubles`; los enlaces a `tema.html?id=solid` de tres fichas apuntan ya a la ficha. Enlaza a la nueva página `aprendizajes/kopi-chess-solid.html` de la web personal. Fuentes: artículos de Robert C. Martin (2014 y 2020), Wikipedia (SOLID, LSP, ISP) y Liskov y Wing (1994, solo como referencia). Sin probar en navegador en local (no se permitió levantar el servidor); pendiente de comprobar en producción. |
 | 2026-11-16 | **Ficha de Sampling Parameters (Temperature, Top-p)** (petición del usuario, con énfasis en que los términos queden claros para principiantes): `temas/sampling-parameters.html` con sección "Vocabulario para empezar" (token, probabilidad, distribución, muestrear, elección voraz, determinista), un ejemplo numérico que recorre la ficha («El café está muy…»: temperatura 0,5 / 1 / 1,5 y top-p 0,9), top-k, penalizaciones y semilla, tabla de valores por tarea, aviso de que los modelos que razonan ya no admiten estos ajustes (Anthropic los rechaza, OpenAI usa el esfuerzo, Gemini los ignora en sus modelos nuevos) y errores frecuentes; 10 preguntas (la opción más larga es la correcta en 2). `nombreEs` "Parámetros de muestreo", alias, relacionados recíprocos con `tokens-context-window`, `reasoning-models`, `hallucinations`, `structured-outputs` y `evals`; conceptos nuevos **token** y **top-p** en el glosario; el enlace de la ficha de LLMs apunta ya a la ficha. Fuentes: Holtzman et al. 2019, referencia y guía de razonamiento de OpenAI, referencia de Anthropic, estrategias de prompt de Gemini y glosario de Google. Probada a 375 px sin scroll horizontal. |

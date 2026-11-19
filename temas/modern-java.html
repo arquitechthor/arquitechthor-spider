@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern Java (8-25) — Tech Spider</title>
+<meta name="description" content="Java moderno explicado desde cero: lambdas, var, records, clases selladas, pattern matching, hilos virtuales, Stream Gatherers, ficheros compactos y la caché AOT, de Java 8 a Java 25, con ejemplos reales de Kopi Chess.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/modern-java.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=532e81a3">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="modern-java">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>«Java moderno» es el nombre informal del lenguaje tal y como ha quedado tras más de diez años de cambios, desde
+        Java 8 (2014) hasta Java 25 (2025). En ese tiempo Java ha ganado funciones anónimas (<em>lambdas</em>), clases
+        que solo guardan datos (<code>record</code>), jerarquías cerradas (<code>sealed</code>), un <code>switch</code>
+        que descompone objetos, hilos casi gratis y programas de un solo fichero sin clase.</p>
+      <p>No es una versión ni un producto: es una forma de escribir Java. El mismo programa escrito al estilo de
+        Java 6 y al estilo de Java 25 puede ocupar la mitad y, sobre todo, dejar al compilador comprobar cosas que antes
+        solo se veían al ejecutar.</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <ul>
+        <li><strong>Es el Java que vas a encontrar.</strong> Spring Boot 3 exige Java 17 como mínimo, y las librerías
+          actuales ya usan <code>record</code>, <code>sealed</code> y <code>switch</code> con patrones en sus API.</li>
+        <li><strong>El compilador trabaja por ti.</strong> Con un tipo sellado y un <code>switch</code> exhaustivo, olvidar
+          un caso es un error de compilación, no un fallo en producción.</li>
+        <li><strong>Menos código que mantener.</strong> Un <code>record</code> sustituye a decenas de líneas de
+          constructor, <code>getters</code>, <code>equals</code>, <code>hashCode</code> y <code>toString</code>.</li>
+        <li><strong>Rendimiento sin tocar el código.</strong> Los hilos virtuales o la caché AOT mejoran aplicaciones
+          existentes casi sin cambios.</li>
+      </ul>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <ul>
+        <li><strong>JDK:</strong> el kit de desarrollo de Java: compilador (<code>javac</code>), máquina virtual
+          (JVM) y librerías. «Instalar Java 25» es instalar un JDK 25.</li>
+        <li><strong>JEP:</strong> la propuesta con la que se diseña cada cambio de Java. Tiene número (los
+          <code>record</code> son la JEP 395) y su página explica qué cambia y por qué. Es la fuente de verdad de cada
+          novedad.</li>
+        <li><strong>Calendario:</strong> desde Java 10 (2018) sale una versión cada seis meses, en marzo y septiembre.
+          Así, Java 26 salió en marzo de 2026 y Java 27 en septiembre de 2026.</li>
+        <li><strong>LTS:</strong> las versiones con soporte de varios años, una cada dos años: 8, 11, 17, 21 y 25 (la
+          siguiente será la 29). Las empresas suelen saltar de LTS a LTS; las versiones intermedias reciben parches
+          solo seis meses.</li>
+        <li><strong>Preview (vista previa):</strong> una novedad completa pero aún no definitiva. Solo funciona
+          compilando y ejecutando con <code>--enable-preview</code>, y puede cambiar o desaparecer en la versión
+          siguiente. Cuando se da por buena, pasa a <em>final</em> y ya no cambia.</li>
+      </ul>
+
+      <h2 id="hitos">Las versiones que marcan época</h2>
+      <ul>
+        <li><strong>Java 8 (2014, LTS):</strong> <em>lambdas</em>, <em>streams</em>, <code>Optional</code>, la API de fechas
+          <code>java.time</code> y métodos por defecto en las interfaces. El gran salto hacia la
+          <a href="../tema.html?id=functional-programming">programación funcional</a>.</li>
+        <li><strong>Java 11 (2018, LTS):</strong> <code>var</code> (llegó en la 10), el cliente HTTP estándar y ejecutar
+          un fichero <code>.java</code> sin compilarlo antes. Fue el primer LTS del calendario de seis meses.</li>
+        <li><strong>Java 17 (2021, LTS):</strong> <code>switch</code> como expresión, bloques de texto,
+          <code>record</code> y clases selladas, todo ya definitivo. El mínimo de Spring Boot 3.</li>
+        <li><strong>Java 21 (2023, LTS):</strong> hilos virtuales, <code>switch</code> con patrones, patrones de registro
+          y colecciones secuenciadas.</li>
+        <li><strong>Java 25 (2025, LTS):</strong> variables sin nombre <code>_</code> (desde la 22), comentarios en
+          Markdown (23), <em>Stream Gatherers</em> (24), cuerpos de constructor flexibles, ficheros fuente compactos y la
+          caché AOT.</li>
+        <li><strong>Java 26 y 27 (2026):</strong> sobre todo mejoras de la JVM y de seguridad (HTTP/3 en el cliente HTTP,
+          intercambio de claves poscuántico en TLS). Las novedades del lenguaje que siguen llegando, como la
+          concurrencia estructurada o las constantes perezosas, seguían en <em>preview</em> en Java 26.</li>
+      </ul>
+
+      <h2 id="lambdas">Lambdas y streams (Java 8)</h2>
+      <p>Una <em>lambda</em> es una función sin nombre que se pasa como valor; un <em>stream</em> es una tubería de
+        operaciones sobre una colección (filtrar, transformar, agrupar) que se describe en lugar de programarla con
+        bucles. Tienen ficha propia: <a href="../tema.html?id=streams-lambdas">Streams &amp; Lambda Expressions</a>.</p>
+      <pre><code>List&lt;String&gt; nombres = usuarios.stream()
+        .filter(u -&gt; u.activo())          // una lambda: recibe u, devuelve un boolean
+        .map(Usuario::nombre)              // referencia a método
+        .sorted()
+        .toList();                         // Java 16: lista inmutable, sin Collectors</code></pre>
+
+      <h2 id="var">var: inferencia de tipos locales (Java 10)</h2>
+      <p><code>var</code> deja que el compilador deduzca el tipo de una variable local a partir de lo que se le asigna.
+        El tipo sigue siendo fijo y se comprueba al compilar: Java no se vuelve dinámico.</p>
+      <pre><code>var porNivel = new EnumMap&lt;Nivel, List&lt;Pregunta&gt;&gt;(Nivel.class); // el tipo ya se lee a la derecha
+var total = calcular();   // peor: ¿qué devuelve calcular()? El lector no lo ve</code></pre>
+      <p>Úsalo cuando el tipo es evidente en la propia línea; evítalo cuando obliga a ir a otro sitio para saber qué es.
+        Solo vale para variables locales, no para atributos ni parámetros.</p>
+
+      <h2 id="switch-texto">switch como expresión y bloques de texto (Java 14 y 15)</h2>
+      <p>El <code>switch</code> con flecha (<code>-&gt;</code>) devuelve un valor, no «se cuela» al caso siguiente
+        (adiós a los <code>break</code> olvidados) y admite varias etiquetas por caso. Los bloques de texto
+        (<code>"""</code>) escriben cadenas de varias líneas sin concatenar ni escapar comillas.</p>
+      <pre><code>int dias = switch (mes) {
+    case FEBRERO -&gt; bisiesto ? 29 : 28;
+    case ABRIL, JUNIO, SEPTIEMBRE, NOVIEMBRE -&gt; 30;
+    default -&gt; 31;
+};
+
+String sql = """
+        SELECT id, nombre
+        FROM usuario
+        WHERE activo = true
+        """;</code></pre>
+
+      <h2 id="records">Records (Java 16)</h2>
+      <p>Un <code>record</code> es una clase cuyo único propósito es llevar datos. Con declarar sus componentes, el
+        compilador genera el constructor, un método de acceso por componente (<code>nombre()</code>, sin
+        <code>get</code>), <code>equals</code>, <code>hashCode</code> y <code>toString</code>. Sus campos son
+        <code>final</code>: un <code>record</code> no se modifica, se crea otro.</p>
+      <pre><code>public record Casilla(int columna, int fila) {
+    public Casilla {                       // constructor compacto: solo validar
+        if (columna &lt; 0 || columna &gt; 7 || fila &lt; 0 || fila &gt; 7) {
+            throw new IllegalArgumentException("Fuera del tablero");
+        }
+    }
+}
+
+var e4 = new Casilla(4, 3);
+e4.equals(new Casilla(4, 3));   // true: dos records son iguales si sus datos lo son</code></pre>
+      <p>Encajan como objetos de valor, DTO, mensajes, eventos o claves de un mapa. No sustituyen a las entidades de JPA,
+        que necesitan ser modificables y tener un constructor sin argumentos.</p>
+
+      <h2 id="patrones">Pattern matching: instanceof, switch y patrones de registro (Java 16–22)</h2>
+      <p>Un <em>patrón</em> comprueba la forma de un objeto y, si encaja, extrae sus partes en variables, todo en un
+        paso. Llegó por etapas:</p>
+      <ul>
+        <li><strong><code>instanceof</code> con patrón (16):</strong> <code>if (o instanceof String s)</code> comprueba y
+          declara <code>s</code> sin el <em>cast</em> de después.</li>
+        <li><strong><code>switch</code> con patrones (21):</strong> cada <code>case</code> puede ser un tipo, con una
+          condición extra opcional (<code>when</code>).</li>
+        <li><strong>Patrones de registro (21):</strong> <code>case Punto(var x, var y)</code> descompone un
+          <code>record</code> en sus componentes, y se pueden anidar.</li>
+        <li><strong>Variables y patrones sin nombre (22):</strong> <code>_</code> marca lo que no se va a usar:
+          <code>case Circulo _</code>, <code>catch (IOException _)</code>.</li>
+      </ul>
+      <pre><code>static double area(Figura f) {
+    return switch (f) {
+        case Circulo(var radio)            -&gt; Math.PI * radio * radio;
+        case Rectangulo(var a, var b) when a == b -&gt; a * a;   // un cuadrado
+        case Rectangulo(var a, var b)      -&gt; a * b;
+    };
+}</code></pre>
+      <p>El orden importa: los casos se prueban de arriba abajo, y el compilador rechaza un caso que nunca se puede
+        alcanzar porque otro anterior ya lo cubre.</p>
+
+      <h2 id="sealed">Clases e interfaces selladas (Java 17)</h2>
+      <p>Una interfaz o clase <code>sealed</code> enumera quién puede implementarla o heredar de ella. Nadie más puede.
+        Así el compilador conoce <strong>todos</strong> los casos posibles, y un <code>switch</code> sobre ella que los
+        cubra todos no necesita <code>default</code>: es <em>exhaustivo</em>. Si mañana se añade un caso, cada
+        <code>switch</code> que no lo trate deja de compilar.</p>
+      <pre><code>public sealed interface Figura permits Circulo, Rectangulo {}
+public record Circulo(double radio) implements Figura {}
+public record Rectangulo(double ancho, double alto) implements Figura {}</code></pre>
+      <p>Cada subtipo debe declararse <code>final</code>, <code>sealed</code> o <code>non-sealed</code> (este último
+        vuelve a abrir la jerarquía por esa rama); los <code>record</code> ya son <code>final</code>. Si los subtipos
+        están en el mismo fichero, <code>permits</code> se puede omitir.</p>
+      <p><strong>Records + sealed + switch</strong> forman juntos lo que otros lenguajes llaman <em>tipos algebraicos</em>:
+        modelar «un resultado es esto, o esto, o esto» con datos y dejar que el compilador vigile que se tratan todos
+        los casos. Es la novedad que más cambia cómo se diseña el código, y choca a propósito con el principio
+        abierto/cerrado de <a href="solid.html">SOLID</a>: conviene cuando el conjunto de casos es fijo (las reglas de un
+        juego, los estados de un pedido) y no cuando terceros deben poder añadir los suyos.</p>
+
+      <h2 id="secuenciadas">Colecciones secuenciadas (Java 21)</h2>
+      <p>Tres interfaces nuevas, <code>SequencedCollection</code>, <code>SequencedSet</code> y
+        <code>SequencedMap</code>, dan a toda colección con orden los mismos métodos: <code>getFirst()</code>,
+        <code>getLast()</code>, <code>addFirst()</code>, <code>removeLast()</code> y <code>reversed()</code>. Antes,
+        obtener el último elemento era <code>lista.get(lista.size() - 1)</code> en una <code>List</code> y algo distinto
+        en cada otra colección.</p>
+
+      <h2 id="hilos-virtuales">Hilos virtuales (Java 21)</h2>
+      <p>Un hilo virtual es un hilo que gestiona la JVM, no el sistema operativo: crearlo cuesta casi nada y, cuando se
+        bloquea esperando (una consulta, una respuesta HTTP), libera el hilo real para que otro trabaje. Permiten
+        escribir código bloqueante sencillo, un hilo por petición, y aun así atender miles de peticiones a la vez. Desde
+        Java 24 un bloque <code>synchronized</code> ya no deja «clavado» el hilo real. Se ven a fondo en
+        <a href="../tema.html?id=concurrency">Concurrency &amp; Multithreading</a>.</p>
+      <pre><code>try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+    pedidos.forEach(p -&gt; executor.submit(() -&gt; procesar(p)));  // un hilo virtual por pedido
+}</code></pre>
+
+      <h2 id="gatherers">Stream Gatherers (Java 24)</h2>
+      <p>Los <em>streams</em> tenían operaciones fijas (<code>map</code>, <code>filter</code>…). <code>gather()</code>
+        admite operaciones intermedias a medida, y la clase <code>Gatherers</code> trae algunas hechas, como ventanas de
+        elementos consecutivos:</p>
+      <pre><code>Stream.of(1, 2, 3, 4).gather(Gatherers.windowSliding(2)).toList();  // [[1, 2], [2, 3], [3, 4]]
+Stream.of(1, 2, 3, 4).gather(Gatherers.windowFixed(2)).toList();    // [[1, 2], [3, 4]]</code></pre>
+
+      <h2 id="markdown">Comentarios de documentación en Markdown (Java 23)</h2>
+      <p>La documentación del código (Javadoc) se puede escribir con <code>///</code> en Markdown en lugar de HTML dentro
+        de <code>/** … */</code>: <code>**negrita**</code>, listas con guiones, <code>`código`</code> y enlaces a otras
+        clases con <code>[Clase]</code>. Se lee igual de bien en el fichero que en la documentación generada.</p>
+
+      <h2 id="constructores">Cuerpos de constructor flexibles (Java 25)</h2>
+      <p>Hasta Java 24, la llamada a <code>super(...)</code> o <code>this(...)</code> tenía que ser la primera línea del
+        constructor. Ahora se pueden poner antes sentencias que validen argumentos, preparen valores e incluso asignen
+        campos de la propia clase, siempre que no usen el objeto que se está construyendo (<code>this</code>).</p>
+      <pre><code>public PrecioPositivo(BigDecimal valor) {
+    if (valor.signum() &lt;= 0) {
+        throw new IllegalArgumentException("El precio debe ser positivo");  // antes de super(...)
+    }
+    super(valor);
+}</code></pre>
+
+      <h2 id="compactos">Ficheros fuente compactos y main de instancia (Java 25)</h2>
+      <p>Un programa pequeño ya no necesita clase ni <code>public static void main(String[] args)</code>. El fichero
+        declara directamente sus métodos, y el compilador los envuelve en una clase implícita. La nueva clase
+        <code>IO</code> (<code>java.lang.IO</code>) da <code>println</code> y <code>readln</code> sin importar nada:</p>
+      <pre><code>// Hola.java: se ejecuta con «java Hola.java», sin compilar antes
+void main() {
+    var nombre = IO.readln("¿Cómo te llamas? ");
+    IO.println("Hola, " + nombre);
+}</code></pre>
+      <p>Sirve para aprender, para guiones y para utilidades de desarrollo. Desde Java 22, <code>java Hola.java</code>
+        también compila y ejecuta programas de varios ficheros.</p>
+
+      <h2 id="aot">La caché AOT: arrancar antes (Java 24 y 25)</h2>
+      <p>Al arrancar, la JVM lee, verifica y enlaza miles de clases y empieza a observar qué métodos se usan más para
+        optimizarlos. La caché AOT hace ese trabajo una vez, en una <strong>ejecución de entrenamiento</strong>, y lo
+        guarda en un fichero que leen los arranques siguientes. Java 24 trajo la carga y el enlace anticipados de clases
+        (JEP 483); Java 25 lo simplificó a una sola opción (JEP 514) y añadió los perfiles de los métodos (JEP 515).</p>
+      <pre><code>java -XX:AOTCacheOutput=app.aot -jar app.jar   # entrenamiento: crea la caché
+java -XX:AOTCache=app.aot -jar app.jar         # arranques normales: la usan</code></pre>
+      <p>La caché solo vale para la misma JVM y los mismos <code>jar</code>; si no encaja, la JVM arranca igual, sin
+        ella. El código de la aplicación no cambia.</p>
+
+      <h2 id="preview">Lo que está en preview</h2>
+      <p>En Java 25 había en vista previa, entre otras, la <strong>concurrencia estructurada</strong> (tratar varias
+        tareas en paralelo como una sola: si una falla, se cancelan las demás), los <strong>valores estables</strong>
+        (constantes que se calculan la primera vez que se usan; en Java 26 pasaron a llamarse <em>lazy constants</em>)
+        y los <strong>patrones con tipos primitivos</strong>. En Java 26 las tres seguían en preview, y las constantes
+        perezosas, también en Java 27. Probarlas está bien;
+        construir una aplicación sobre ellas obliga a revisarla en cada versión.</p>
+
+      <h2 id="caso-real">Caso real: Kopi Chess</h2>
+      <p><a href="https://github.com/arquitechthor/kopi-chess" target="_blank" rel="noopener">Kopi Chess</a> (código
+        público, Java 25 y Spring Boot) es un programa de ajedrez escrito, entre otras cosas, para practicar Java moderno:
+        cada cambio explica en sus notas qué novedad usa y por qué. Estos son los ejemplos más claros.</p>
+
+      <h3>Una jugada es uno de seis tipos, y el compilador lo sabe</h3>
+      <p>Qué hace una jugada además de mover una pieza (capturar, enrocar, comer al paso, coronar…) es una interfaz
+        sellada con seis <code>record</code>. Los que no tienen datos están vacíos; el enroque guarda el lado y la
+        coronación, la pieza nueva:</p>
+      <pre><code>public sealed interface MoveKind {
+    record Quiet() implements MoveKind {}
+    record Capture() implements MoveKind {}
+    record DoublePawnPush() implements MoveKind {}
+    record EnPassant() implements MoveKind {}
+    record Castling(CastleSide side) implements MoveKind { … }
+    record Promotion(PieceType piece, boolean capture) implements MoveKind { … }
+
+    default boolean isCapture() {
+        return switch (this) {
+            case Capture _, EnPassant _ -&gt; true;
+            case Promotion(_, var capture) -&gt; capture;
+            case Quiet _, DoublePawnPush _, Castling _ -&gt; false;
+        };
+    }
+}</code></pre>
+      <p>En un solo método aparecen los tipos sellados, el <code>switch</code> exhaustivo sin <code>default</code>, un
+        patrón de registro que extrae <code>capture</code> y <code>_</code> para lo que no interesa. Aplicar la jugada al
+        tablero (<code>Position.apply</code>) es otro <code>switch</code> sobre los seis tipos: un séptimo no compilaría
+        hasta tratarlo allí
+        (<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-domain/src/main/java/com/arquitechthor/kopi/domain/chess/MoveKind.java" target="_blank" rel="noopener">MoveKind.java</a>,
+        <a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-domain/src/main/java/com/arquitechthor/kopi/domain/chess/Position.java" target="_blank" rel="noopener">Position.java</a>).</p>
+
+      <h3>Una evaluación con condición en el patrón</h3>
+      <p>La valoración de Stockfish es una ventaja en centésimas de peón, un mate en N jugadas o un jaque mate ya dado.
+        Para saber si un bando tiene mate, el <code>when</code> afina un caso:</p>
+      <pre><code>default OptionalInt mateFor(Color side) {
+    return switch (this) {
+        case Centipawns _ -&gt; OptionalInt.empty();
+        case MateIn(var moves) when (moves &gt; 0) == (side == Color.WHITE) -&gt; OptionalInt.of(Math.abs(moves));
+        case MateIn _ -&gt; OptionalInt.empty();
+        case Checkmate(var winner) -&gt; winner == side ? OptionalInt.of(0) : OptionalInt.empty();
+    };
+}</code></pre>
+      <p>(<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-domain/src/main/java/com/arquitechthor/kopi/domain/analysis/Evaluation.java" target="_blank" rel="noopener">Evaluation.java</a>)</p>
+
+      <h3>Validar antes de super(...)</h3>
+      <p>Una posición de ajedrez se escribe como texto en notación FEN. Si el texto está mal, la excepción construye su
+        mensaje y guarda sus campos antes de llamar al constructor del padre, algo que antes de Java 25 no compilaba:</p>
+      <pre><code>InvalidFenException(Problem problem, String fen, String detail) {
+    Objects.requireNonNull(problem, "problem");
+    var message = problem + " in FEN \"" + fen + "\": " + detail;
+    this.problem = problem;
+    this.fen = fen;
+    super(message);
+}</code></pre>
+      <p>(<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-domain/src/main/java/com/arquitechthor/kopi/domain/chess/InvalidFenException.java" target="_blank" rel="noopener">InvalidFenException.java</a>)</p>
+
+      <h3>Ventanas de dos posiciones con un Gatherer</h3>
+      <p>Para calcular la precisión de cada jugada hay que comparar la posición de antes con la de después.
+        <code>windowSliding(2)</code> convierte la lista de posiciones en pares consecutivos sin índices a mano:</p>
+      <pre><code>// Cada jugada es el paso de una posición a la siguiente.
+var steps = positions.stream().gather(Gatherers.windowSliding(2)).toList();</code></pre>
+      <p>(<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-domain/src/main/java/com/arquitechthor/kopi/domain/analysis/AnalysisSummary.java" target="_blank" rel="noopener">AnalysisSummary.java</a>)</p>
+
+      <h3>Más ejemplos repartidos por el código</h3>
+      <ul>
+        <li><strong>Colecciones secuenciadas:</strong> el tablero devuelve sus piezas como
+          <code>SequencedMap&lt;Square, Piece&gt;</code>, de <code>a1</code> a <code>h8</code>: el orden forma parte del
+          contrato
+          (<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-domain/src/main/java/com/arquitechthor/kopi/domain/chess/Board.java" target="_blank" rel="noopener">Board.java</a>).</li>
+        <li><strong>Hilos virtuales:</strong> la salida de Stockfish se lee con una llamada bloqueante en un hilo virtual
+          por motor, <code>Thread.ofVirtual().start(this::readOutput)</code>, sin gastar hilos del sistema
+          (<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-adapter-stockfish/src/main/java/com/arquitechthor/kopi/adapter/stockfish/UciProcess.java" target="_blank" rel="noopener">UciProcess.java</a>).</li>
+        <li><strong>Fichero compacto:</strong> <code>Perft.java</code> cuenta las jugadas posibles hasta cierta profundidad
+          para compararlas con Stockfish línea a línea. Es un <code>void main(String[] args)</code> suelto que se lanza
+          con <code>java … Perft.java "&lt;fen&gt;" 4</code>, sin proyecto aparte
+          (<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-domain/dev/Perft.java" target="_blank" rel="noopener">Perft.java</a>).</li>
+        <li><strong>Comentarios <code>///</code>:</strong> todo el dominio está documentado en Markdown.</li>
+      </ul>
+
+      <h3>La caché AOT, medida</h3>
+      <p>La imagen Docker hace el entrenamiento al construirse: arranca la aplicación con
+        <code>-XX:AOTCacheOutput</code>, deja que Spring cree su contexto y sale (sin base de datos: las migraciones y los
+        procesos de análisis se apagan para el entrenamiento). Los arranques reales añaden <code>-XX:AOTCache</code>.
+        Medido en un portátil, Spring pasó de arrancar en 4,8–5,8 s a hacerlo en 2,5–3,2 s, casi la mitad, sin tocar una
+        línea de Java
+        (<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/Dockerfile" target="_blank" rel="noopener">Dockerfile</a>,
+        <a href="https://github.com/arquitechthor/kopi-chess/blob/main/docs/notas/arranque-aot.md" target="_blank" rel="noopener">notas de la medición</a>).</p>
+
+      <h3>Las preview, en cuarentena</h3>
+      <p>La aplicación solo usa novedades definitivas. Las que están en vista previa se practican en un módulo aparte,
+        <code>kopi-labs</code>, el único compilado con <code>--enable-preview</code>, y una prueba de arquitectura rompe la
+        compilación si otro módulo lo usa. Su primer ejemplo analiza varias posiciones en paralelo con concurrencia
+        estructurada: si un análisis falla, los demás se cancelan
+        (<a href="https://github.com/arquitechthor/kopi-chess/blob/main/docs/adr/012-politica-features-preview.md" target="_blank" rel="noopener">ADR-012</a>,
+        <a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-labs/src/main/java/com/arquitechthor/kopi/labs/structuredconcurrency/PositionBatchAnalyser.java" target="_blank" rel="noopener">PositionBatchAnalyser.java</a>).</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Poner <code>default</code> en un <code>switch</code> sobre un tipo sellado:</strong> compila, pero
+          anula la ventaja. Si se añade un caso, el <code>default</code> lo traga en silencio en lugar de avisar.</li>
+        <li><strong>Creer que un <code>record</code> es inmutable del todo:</strong> sus campos no se reasignan, pero si
+          uno es una <code>List</code> modificable, la lista sí cambia. Cópiala en el constructor compacto
+          (<code>List.copyOf</code>).</li>
+        <li><strong>Usar <code>record</code> como entidad JPA:</strong> JPA necesita objetos modificables con constructor
+          vacío. Los <code>record</code> van bien para proyecciones y DTO.</li>
+        <li><strong><code>var</code> en todas partes:</strong> si el lector tiene que adivinar el tipo, se ha perdido
+          claridad. Es una herramienta de legibilidad, no un atajo de tecleo.</li>
+        <li><strong>Agrupar hilos virtuales en un <em>pool</em></strong> (un conjunto fijo de hilos que se reutilizan): no
+          hace falta y estorba; se crea uno por tarea. Para limitar el acceso a un recurso escaso, como las conexiones
+          a la base de datos, se usa un semáforo (<code>Semaphore</code>, un contador de permisos: quien no consigue uno,
+          espera).</li>
+        <li><strong>Usar <em>preview</em> en producción:</strong> obliga a ejecutar siempre con
+          <code>--enable-preview</code> y puede romperse al actualizar el JDK. Mejor aislarlas, como hace Kopi Chess.</li>
+        <li><strong>Quedarse en Java 8 «porque funciona»:</strong> se pierde soporte de librerías (Spring Boot 3 ya no
+          arranca en Java 8 ni en 11) y las mejoras gratuitas de rendimiento de la JVM.</li>
+      </ul>
+
+      <h2 id="adoptar">Por dónde empezar</h2>
+      <ol>
+        <li>Pasa a la última LTS que admitan tus dependencias (hoy, Java 25; si no, Java 21).</li>
+        <li>Empieza por lo que no cambia el diseño: <code>var</code> con criterio, bloques de texto, <code>switch</code>
+          con flecha, <code>toList()</code> y <code>getFirst()</code>/<code>getLast()</code>.</li>
+        <li>Convierte en <code>record</code> los objetos que solo llevan datos (DTO, eventos, resultados).</li>
+        <li>Cuando un valor sea «uno de estos casos y ningún otro», modélalo con <code>sealed</code> y trátalo con
+          <code>switch</code> y patrones, sin <code>default</code>.</li>
+        <li>En servicios con mucha espera (base de datos, HTTP), prueba los hilos virtuales; con Spring Boot basta con
+          <code>spring.threads.virtual.enabled=true</code>.</li>
+      </ol>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="modern-java"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://openjdk.org/jeps/0" target="_blank" rel="noopener">JEP 0: JEP Index</a> (OpenJDK, consultada el 19/11/2026): una página por novedad; en esta ficha, las JEP 286 (<code>var</code>), 361 (<code>switch</code>), 378 (bloques de texto), 395 (<code>record</code>), 409 (<code>sealed</code>), 431 (colecciones secuenciadas), 440 y 441 (patrones), 444 (hilos virtuales), 456 (<code>_</code>), 467 (Markdown), 485 (<em>Gatherers</em>), 483, 514 y 515 (caché AOT), 491 (<code>synchronized</code>), 512 (ficheros compactos) y 513 (constructores flexibles).</li>
+        <li><a href="https://www.oracle.com/java/technologies/java-se-support-roadmap.html" target="_blank" rel="noopener">Oracle Java SE Support Roadmap</a> (Oracle, consultada el 19/11/2026): versiones LTS y calendario.</li>
+        <li><a href="https://www.oracle.com/news/announcement/oracle-releases-java-26-2026-03-17/" target="_blank" rel="noopener">Oracle Releases Java 26</a> (Oracle, 17/03/2026, consultada el 19/11/2026).</li>
+        <li><a href="https://www.infoq.com/news/2026/09/java27-released/" target="_blank" rel="noopener">Java 27 released</a> (InfoQ, septiembre de 2026, consultada el 19/11/2026).</li>
+        <li><a href="https://docs.spring.io/spring-boot/system-requirements.html" target="_blank" rel="noopener">Spring Boot: System Requirements</a> (Spring, consultada el 19/11/2026): Java 17 como mínimo.</li>
+        <li><a href="https://github.com/arquitechthor/kopi-chess" target="_blank" rel="noopener">Kopi Chess</a>, código fuente, ADR-012 y notas de la caché AOT (consultado el 19/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=d08c2823" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

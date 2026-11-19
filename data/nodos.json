@@ -73,7 +73,10 @@
     "area": "fundamentals",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 1
+    "prioridad": 1,
+    "relacionados": [
+      "modern-java"
+    ]
   },
   {
     "id": "concurrency",
@@ -83,7 +86,10 @@
     "area": "fundamentals",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 1
+    "prioridad": 1,
+    "relacionados": [
+      "modern-java"
+    ]
   },
   {
     "id": "jvm-memory",
@@ -107,14 +113,34 @@
   },
   {
     "id": "modern-java",
-    "nombre": "Modern Java (8-21+)",
+    "nombre": "Modern Java (8-25)",
+    "nombreEs": "Java moderno",
     "tipo": "tema",
     "padre": "java",
     "area": "fundamentals",
-    "estado": "pendiente",
+    "frase": "Records, tipos sellados, patrones e hilos virtuales: cómo ha cambiado el lenguaje.",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 1,
-    "volatil": true
+    "volatil": true,
+    "revisado": "2026-11-19",
+    "relacionados": [
+      "streams-lambdas",
+      "concurrency",
+      "functional-programming",
+      "oop",
+      "solid"
+    ],
+    "alias": [
+      "Java moderno",
+      "Novedades de Java",
+      "Java 17",
+      "Java 21",
+      "Java 25",
+      "Records",
+      "Sealed classes",
+      "Pattern matching"
+    ]
   },
   {
     "id": "programming-paradigms",
@@ -143,7 +169,8 @@
       "POO"
     ],
     "relacionados": [
-      "solid"
+      "solid",
+      "modern-java"
     ]
   },
   {
@@ -154,7 +181,10 @@
     "area": "fundamentals",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 1
+    "prioridad": 1,
+    "relacionados": [
+      "modern-java"
+    ]
   },
   {
     "id": "reactive-programming",
@@ -210,7 +240,8 @@
       "high-cohesion-low-coupling",
       "test-doubles",
       "strategy-pattern",
-      "decorator-pattern"
+      "decorator-pattern",
+      "modern-java"
     ],
     "frase": "Cinco reglas de diseño para que cada clase cambie sin arrastrar consigo al resto.",
     "alias": [

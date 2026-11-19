@@ -178,6 +178,10 @@ the page inside a 375px-wide `<iframe>` and compare `scrollWidth` with `clientWi
   must be short, in `<blockquote>` with `<cite>` and a link.
 - **Never real exam questions** (Oracle, Broadcom, Scrum.org, CNCF, HashiCorp… are under NDA); only
   original ones.
+- **Personal projects as examples, not as quiz material:** fichas include real examples from the owner's
+  projects (above all Kopi Chess, `../../kopi/kopi-chess`) whenever possible, in a "Caso real: Kopi Chess"
+  section; quiz questions avoid them and test the general concept. Topic order: "Cola desde Kopi Chess" in
+  `docs/PLAN.md` (Fase 7).
 - **Option length must not give away the answer** (new questions only; existing ones stay as they
   are): options of similar length and detail, distractors as concrete and plausible as the correct
   one, and the longest option is not the correct one in most questions of a topic.

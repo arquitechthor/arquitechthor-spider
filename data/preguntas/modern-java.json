@@ -1,0 +1,218 @@
+[
+  {
+    "id": "modern-java-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Al declarar un record, ¿qué genera el compilador por ti?",
+    "opciones": [
+      "El constructor, un método de acceso por componente, equals, hashCode y toString.",
+      "Un constructor vacío, getters y setters por componente y un método builder().",
+      "Getters con el prefijo get, un método clone() y una implementación de Serializable.",
+      "Setters encadenables, un constructor por cada componente y un método toString."
+    ],
+    "correctas": [0],
+    "explicacion": "Un record genera el constructor con todos sus componentes, un método de acceso con el nombre del componente (nombre(), sin get), equals, hashCode y toString. No tiene setters porque sus campos son final, ni constructor vacío, ni builder.",
+    "fuentes": ["https://openjdk.org/jeps/395"]
+  },
+  {
+    "id": "modern-java-002",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Se añade record Triangulo(double base, double altura) implements Figura, y Triangulo se incluye en el permits de Figura. ¿Qué pasa con este método?",
+    "codigo": "sealed interface Figura permits Circulo, Rectangulo {}\nrecord Circulo(double radio) implements Figura {}\nrecord Rectangulo(double ancho, double alto) implements Figura {}\n\nstatic double area(Figura f) {\n    return switch (f) {\n        case Circulo c    -> Math.PI * c.radio() * c.radio();\n        case Rectangulo r -> r.ancho() * r.alto();\n    };\n}",
+    "opciones": [
+      "Sigue compilando y lanza una excepción al recibir un triángulo.",
+      "Sigue compilando y devuelve 0 cuando recibe un triángulo.",
+      "Deja de compilar hasta que el switch trate también Triangulo.",
+      "Compila con un aviso, y el triángulo entra por el último case."
+    ],
+    "correctas": [2],
+    "explicacion": "Como Figura es sellada, el compilador conoce todos sus subtipos, y un switch sin default sobre ella debe cubrirlos todos. Al añadir Triangulo, el switch deja de ser exhaustivo y no compila: es justo la ventaja de no poner default. Un triángulo no puede encajar en el case de Rectangulo, porque no es un Rectangulo.",
+    "fuentes": ["https://openjdk.org/jeps/409", "https://openjdk.org/jeps/441"]
+  },
+  {
+    "id": "modern-java-003",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "¿Qué dos afirmaciones sobre var (Java 10) son ciertas? (Elige 2)",
+    "opciones": [
+      "Permite asignar después a la variable un valor de otro tipo distinto.",
+      "El tipo lo deduce el compilador y queda fijo desde ese momento.",
+      "Hace que el tipo de la variable se compruebe al ejecutar el programa.",
+      "Vale para variables locales, pero no para atributos de una clase."
+    ],
+    "correctas": [1, 3],
+    "explicacion": "var solo ahorra escribir el tipo: el compilador lo deduce de lo que se asigna y ya no cambia, así que Java sigue siendo de tipado estático y todo se comprueba al compilar. Se usa en variables locales (también en bucles y parámetros de lambdas), nunca en atributos, parámetros de métodos ni tipos de retorno.",
+    "fuentes": ["https://openjdk.org/jeps/286"]
+  },
+  {
+    "id": "modern-java-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué devuelve este código (Java 24 o posterior)?",
+    "codigo": "Stream.of(1, 2, 3, 4, 5)\n      .gather(Gatherers.windowSliding(3))\n      .toList();",
+    "opciones": [
+      "[[1, 2, 3], [4, 5]]",
+      "[[1, 2, 3], [2, 3, 4], [3, 4, 5]]",
+      "[[1, 2, 3]]",
+      "[[1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5], [5]]"
+    ],
+    "correctas": [1],
+    "explicacion": "windowSliding(3) produce ventanas de tres elementos consecutivos que avanzan de uno en uno, y solo emite ventanas completas mientras haya elementos suficientes. Partir en bloques sin solaparse, [[1, 2, 3], [4, 5]], es lo que hace windowFixed(3).",
+    "fuentes": ["https://openjdk.org/jeps/485"]
+  },
+  {
+    "id": "modern-java-005",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué lista contiene solo versiones LTS de Java?",
+    "opciones": [
+      "8, 10, 17, 22 y 25",
+      "9, 11, 16, 21 y 24",
+      "8, 11, 15, 21 y 26",
+      "8, 11, 17, 21 y 25"
+    ],
+    "correctas": [3],
+    "explicacion": "Las versiones con soporte largo son la 8, la 11, la 17, la 21 y la 25. Desde la 17 sale una cada dos años, siempre en septiembre, así que la siguiente será la 29. Las demás versiones solo reciben parches durante seis meses.",
+    "fuentes": ["https://www.oracle.com/java/technologies/java-se-support-roadmap.html"]
+  },
+  {
+    "id": "modern-java-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Quieres probar una novedad que en tu versión de Java está en preview. ¿Qué tienes que hacer?",
+    "opciones": [
+      "Compilar y ejecutar con --enable-preview, sabiendo que puede cambiar.",
+      "Instalar un JDK experimental distinto del JDK oficial de esa versión.",
+      "Añadir a Maven una dependencia que contenga las clases de la novedad.",
+      "Nada especial: está activa y ya no cambia desde que sale en preview."
+    ],
+    "correctas": [0],
+    "explicacion": "Las novedades en preview vienen en el JDK normal, pero desactivadas: hay que pasar --enable-preview a javac y a java. Son completas pero no definitivas, así que pueden cambiar o desaparecer en la versión siguiente, y el código compilado así solo se ejecuta con esa misma opción.",
+    "fuentes": ["https://openjdk.org/jeps/12"]
+  },
+  {
+    "id": "modern-java-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Desde Java 25, ¿qué se puede escribir en un constructor antes de la llamada a super(...)?",
+    "opciones": [
+      "Llamadas a métodos de instancia de la propia clase que se construye.",
+      "Validaciones de los argumentos y asignaciones a campos de la clase.",
+      "Código que pasa this como argumento al constructor de otro objeto.",
+      "Una segunda llamada a super(...) con argumentos diferentes."
+    ],
+    "correctas": [1],
+    "explicacion": "Los cuerpos de constructor flexibles permiten poner sentencias antes de super(...) o this(...): validar argumentos, preparar valores y asignar campos de la propia clase. Lo que sigue prohibido es usar el objeto a medio construir, como llamar a sus métodos o pasar this a otro sitio, y solo puede haber una llamada a super(...).",
+    "fuentes": ["https://openjdk.org/jeps/513"]
+  },
+  {
+    "id": "modern-java-008",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "Rectangulo y Circulo son los dos únicos records que implementan la interfaz sellada Figura. ¿Qué ocurre al compilar este switch?",
+    "codigo": "return switch (f) {\n    case Rectangulo r -> r.ancho() * r.alto();\n    case Rectangulo(var a, var b) when a == b -> a * a;\n    case Circulo c -> Math.PI * c.radio() * c.radio();\n};",
+    "opciones": [
+      "Compila, y los cuadrados entran por el segundo case.",
+      "Compila, pero el segundo case no se ejecuta nunca.",
+      "No compila: el primer case tapa por completo al segundo.",
+      "No compila: le falta un default al final del switch."
+    ],
+    "correctas": [2],
+    "explicacion": "Los case se prueban en orden, y el primero acepta cualquier Rectangulo, incluidos los cuadrados. El segundo no podría alcanzarse nunca, y el compilador rechaza un case dominado por otro anterior. La solución es poner primero el caso más concreto (con when) y después el general. No hace falta default, porque la jerarquía es sellada y está cubierta.",
+    "fuentes": ["https://openjdk.org/jeps/441"]
+  },
+  {
+    "id": "modern-java-009",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un servicio pasa casi todo su tiempo esperando respuestas HTTP de otros servicios. ¿Cómo se aprovechan bien los hilos virtuales?",
+    "opciones": [
+      "Creando un hilo virtual por tarea, y con un semáforo si hay un recurso escaso.",
+      "Con un pool fijo de 200 hilos virtuales que se reutilizan entre las tareas.",
+      "Reescribiendo antes las llamadas con programación reactiva para no bloquear.",
+      "Reservándolos para las tareas de cálculo intensivo, donde más rendimiento dan."
+    ],
+    "correctas": [0],
+    "explicacion": "Los hilos virtuales son baratos: se crea uno por tarea y no se agrupan en pools. Cuando uno se bloquea esperando, libera el hilo real del sistema, por eso brillan en código que espera mucho y no aportan nada en cálculo puro. Para no saturar un recurso limitado, como las conexiones a una base de datos, se usa un semáforo, no un pool de hilos.",
+    "fuentes": ["https://openjdk.org/jeps/444"]
+  },
+  {
+    "id": "modern-java-010",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Desde Java 21, ¿qué método obtiene el último elemento de una List, de un LinkedHashSet o de un Deque, el mismo en los tres?",
+    "opciones": [
+      "last()",
+      "peekEnd()",
+      "tail()",
+      "getLast()"
+    ],
+    "correctas": [3],
+    "explicacion": "Las colecciones secuenciadas (SequencedCollection) dan a toda colección con orden los mismos métodos: getFirst(), getLast(), addFirst(), addLast(), removeFirst(), removeLast() y reversed(). Antes, en una List había que escribir lista.get(lista.size() - 1).",
+    "fuentes": ["https://openjdk.org/jeps/431"]
+  },
+  {
+    "id": "modern-java-011",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué hace la caché AOT de Java 25 para que una aplicación arranque antes?",
+    "opciones": [
+      "Compila la aplicación a un ejecutable nativo que ya no necesita la JVM.",
+      "Guarda en disco las respuestas de la aplicación para no repetir trabajo.",
+      "Guarda el trabajo de arranque que hizo una ejecución de entrenamiento.",
+      "Cambia el recolector de basura por uno que nunca detiene la aplicación."
+    ],
+    "correctas": [2],
+    "explicacion": "En una ejecución de entrenamiento, la JVM guarda las clases que cargó y enlazó y los perfiles de uso de los métodos; los arranques siguientes los leen del fichero en lugar de repetir ese trabajo. La aplicación sigue ejecutándose en la JVM normal. Un ejecutable nativo sin JVM es otra técnica distinta (la de GraalVM Native Image).",
+    "fuentes": ["https://openjdk.org/jeps/483", "https://openjdk.org/jeps/514", "https://openjdk.org/jeps/515"]
+  },
+  {
+    "id": "modern-java-012",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Este es el contenido completo del fichero Hola.java. ¿Qué hace falta para ejecutarlo con Java 25?",
+    "codigo": "void main() {\n    IO.println(\"Hola\");\n}",
+    "opciones": [
+      "Envolverlo en una clase pública con un método main estático.",
+      "Lanzar java Hola.java; no hace falta ni clase ni compilar antes.",
+      "Compilarlo con --enable-preview, porque aún no es una novedad final.",
+      "Importar la clase IO al principio del fichero para usar println."
+    ],
+    "correctas": [1],
+    "explicacion": "Desde Java 25 los ficheros fuente compactos y los main de instancia son definitivos: el compilador envuelve los métodos en una clase implícita, y la clase IO del paquete java.lang no necesita import. java Hola.java compila en memoria y ejecuta, algo que existe desde Java 11.",
+    "fuentes": ["https://openjdk.org/jeps/512", "https://openjdk.org/jeps/330"]
+  },
+  {
+    "id": "modern-java-013",
+    "tipo": "ordenar",
+    "nivel": 2,
+    "enunciado": "Ordena estas novedades por la versión en que llegaron como definitivas, de la más antigua a la más reciente.",
+    "opciones": [
+      "Hilos virtuales",
+      "Lambdas y streams",
+      "Records",
+      "Cuerpos de constructor flexibles",
+      "var para variables locales"
+    ],
+    "correctas": [1, 4, 2, 0, 3],
+    "explicacion": "Lambdas y streams llegaron en Java 8 (2014), var en Java 10 (2018), los records en Java 16 (2021), los hilos virtuales en Java 21 (2023) y los cuerpos de constructor flexibles en Java 25 (2025).",
+    "fuentes": ["https://openjdk.org/jeps/286", "https://openjdk.org/jeps/395", "https://openjdk.org/jeps/444", "https://openjdk.org/jeps/513"]
+  },
+  {
+    "id": "modern-java-014",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Se crea un equipo pasando un ArrayList con dos jugadores. ¿Puede cambiar lo que devuelve jugadores() después de crearlo?",
+    "codigo": "record Equipo(String nombre, List<String> jugadores) {}\n\nvar lista = new ArrayList<>(List.of(\"Ana\", \"Luis\"));\nvar equipo = new Equipo(\"Rojos\", lista);",
+    "opciones": [
+      "No: un record copia sus listas en una lista inmutable al crearse.",
+      "No: el compilador no admite componentes de tipos modificables.",
+      "Sí: los componentes de un record se pueden reasignar con setters.",
+      "Sí: si alguien modifica la lista; se evita con List.copyOf."
+    ],
+    "correctas": [3],
+    "explicacion": "Los campos de un record son final: no se pueden reasignar, pero el objeto al que apuntan puede cambiar. Si se añade un jugador a lista, el equipo también lo ve. Para que el record sea inmutable de verdad, el constructor compacto copia la lista: jugadores = List.copyOf(jugadores).",
+    "fuentes": ["https://openjdk.org/jeps/395"]
+  }
+]
