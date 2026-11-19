@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concurrency &amp; Multithreading — Tech Spider</title>
+<meta name="description" content="Concurrencia en Java desde cero: hilos, condiciones de carrera, visibilidad, synchronized y volatile, java.util.concurrent, interrupción, hilos virtuales, concurrencia estructurada e interbloqueos, con ejemplos reales de Kopi Chess.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/concurrency.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=532e81a3">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="concurrency">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>La <strong>concurrencia</strong> es la capacidad de un programa de llevar varias tareas a la vez: atender a
+        dos usuarios, leer de la red mientras calcula, esperar a una base de datos sin quedarse parado. En Java, cada tarea
+        que avanza por su cuenta es un <strong>hilo</strong> (<code>Thread</code>), y un programa con varios es
+        <em>multihilo</em>.</p>
+      <p>No es lo mismo que el <strong>paralelismo</strong>. Concurrencia es <em>organizar</em> varias tareas que
+        progresan a la vez; paralelismo es <em>ejecutarlas</em> literalmente al mismo tiempo en varios núcleos de la CPU.
+        Un servidor web es concurrente aunque tenga un solo núcleo; ordenar un millón de números repartiéndolos entre
+        ocho núcleos es paralelo.</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <ul>
+        <li><strong>Todo servidor es concurrente.</strong> Spring Boot atiende cada petición en su propio hilo: aunque
+          no escribas ni un <code>Thread</code>, tu código se ejecuta en varios a la vez.</li>
+        <li><strong>Los fallos son los peores.</strong> Un error de concurrencia aparece una vez de cada mil, desaparece
+          al depurarlo y no se reproduce en las pruebas. Es más barato evitarlo con diseño que perseguirlo.</li>
+        <li><strong>La mayoría de los programas esperan.</strong> Una petición típica pasa casi todo su tiempo esperando
+          a la base de datos o a otro servicio. Saber esperar sin desperdiciar hilos es lo que permite atender a miles
+          de usuarios con pocos recursos, y es lo que resuelven los hilos virtuales de Java 21.</li>
+      </ul>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <ul>
+        <li><strong>Hilo de plataforma:</strong> el hilo clásico de Java, que es un hilo del sistema operativo. Es caro:
+          cada uno reserva memoria para su pila y crearlo lleva su tiempo, así que un programa tiene, como mucho, unos
+          miles.</li>
+        <li><strong>Hilo virtual:</strong> un hilo que gestiona la propia JVM (Java 21). Cuesta casi nada, y puede haber
+          millones.</li>
+        <li><strong>Bloquearse:</strong> que un hilo se quede parado esperando algo (una respuesta, un fichero, un
+          candado libre) sin avanzar.</li>
+        <li><strong>Estado compartido:</strong> datos que varios hilos pueden leer y modificar, como un atributo de un
+          objeto que usan todos. Es el origen de casi todos los problemas.</li>
+        <li><strong>Condición de carrera:</strong> un fallo cuyo resultado depende de qué hilo llega antes. El programa
+          funciona casi siempre y falla cuando el orden es otro.</li>
+        <li><strong>Sección crítica:</strong> un trozo de código que solo debe ejecutar un hilo a la vez porque toca
+          estado compartido.</li>
+        <li><strong>Seguro para hilos</strong> (<em>thread-safe</em>): una clase que se comporta bien aunque la usen
+          varios hilos a la vez sin coordinarse entre ellos.</li>
+      </ul>
+
+      <h2 id="problemas">Los tres problemas del estado compartido</h2>
+      <h3>Atomicidad: operaciones que parecen una y son tres</h3>
+      <p><code>contador++</code> parece una sola operación, pero son tres: leer el valor, sumarle uno y escribirlo. Si
+        dos hilos leen a la vez el 5, los dos escriben 6, y se ha perdido una suma.</p>
+      <pre><code>class Visitas {
+    private int total;
+    void sumar() { total++; }   // dos hilos a la vez pueden perder sumas
+}</code></pre>
+      <h3>Visibilidad: lo que un hilo escribe, otro puede no verlo</h3>
+      <p>Para ir más rápido, cada núcleo trabaja con copias en su caché, y el compilador y la CPU reordenan
+        instrucciones. Sin una instrucción que obligue a sincronizar, un hilo puede no ver nunca lo que escribió otro:</p>
+      <pre><code>private boolean parar;            // sin volatile
+
+void trabajar() {
+    while (!parar) { … }          // puede no enterarse nunca de que parar es true
+}
+void detener() { parar = true; }  // lo llama otro hilo</code></pre>
+      <h3>Orden: el modelo de memoria de Java</h3>
+      <p>El modelo de memoria de Java (JMM) define cuándo lo que escribe un hilo es visible para otro. Su idea central
+        es la relación <em>happens-before</em> («ocurre antes»): soltar un candado ocurre antes que el siguiente que lo
+        coja, escribir un campo <code>volatile</code> ocurre antes que las lecturas posteriores de ese campo, y arrancar
+        un hilo ocurre antes que todo lo que hace ese hilo. Si dos accesos no están unidos por una de estas relaciones,
+        no hay garantías.</p>
+
+      <h2 id="herramientas">Las herramientas básicas</h2>
+      <ul>
+        <li><strong><code>synchronized</code>:</strong> un método o bloque <code>synchronized</code> solo lo ejecuta un
+          hilo a la vez por objeto, y además garantiza la visibilidad: quien entra ve todo lo que hizo el anterior. Es
+          reentrante (el hilo que ya lo tiene puede volver a entrar).</li>
+        <li><strong><code>volatile</code>:</strong> garantiza que toda lectura ve la última escritura de ese campo. No
+          hace atómico <code>contador++</code>: sirve para avisos (un <code>boolean parar</code>) y para publicar un
+          objeto ya construido.</li>
+        <li><strong>Inmutabilidad:</strong> un objeto que no cambia, como un <code>record</code> con campos que no cambian,
+          se puede compartir entre hilos sin ninguna protección. Es la mejor defensa: sin escrituras no hay carreras.</li>
+        <li><strong>Confinamiento:</strong> datos que solo usa un hilo (variables locales, un objeto creado y usado
+          dentro de la misma tarea) no necesitan protección.</li>
+      </ul>
+      <pre><code>class Visitas {
+    private int total;
+    synchronized void sumar() { total++; }   // ya no se pierden sumas
+    synchronized int total() { return total; }
+}</code></pre>
+
+      <h2 id="juc">java.util.concurrent: no reinventar la rueda</h2>
+      <p>Desde Java 5, el paquete <code>java.util.concurrent</code> trae piezas probadas que casi siempre son mejores que
+        coordinar hilos a mano con <code>synchronized</code>, <code>wait</code> y <code>notify</code>:</p>
+      <ul>
+        <li><strong>Ejecutores</strong> (<code>ExecutorService</code>): reciben tareas y las reparten entre hilos;
+          <code>submit</code> devuelve un <code>Future</code> para recoger el resultado. Desde Java 19 se cierran con
+          <code>try</code>-con-recursos, que espera a que acaben las tareas.</li>
+        <li><strong><code>CompletableFuture</code>:</strong> un resultado que llegará más tarde y al que se encadenan
+          pasos (<code>thenApply</code>, <code>thenCompose</code>, <code>exceptionally</code>) sin bloquear.</li>
+        <li><strong>Variables atómicas</strong> (<code>AtomicInteger</code>, <code>AtomicReference</code>,
+          <code>LongAdder</code>): operaciones como incrementar o «cambia si sigue valiendo X» en un solo paso, sin
+          candados. <code>LongAdder</code> rinde mejor que <code>AtomicLong</code> en contadores que muchos hilos
+          incrementan a la vez.</li>
+        <li><strong>Colecciones concurrentes:</strong> <code>ConcurrentHashMap</code> (con <code>merge</code> y
+          <code>compute</code> atómicos), <code>ConcurrentLinkedQueue</code> y las <code>BlockingQueue</code>, cuyas
+          operaciones esperan si la cola está vacía (o llena): la base del patrón productor-consumidor.</li>
+        <li><strong>Candados explícitos</strong> (<code>ReentrantLock</code>, <code>ReadWriteLock</code>): como
+          <code>synchronized</code>, pero con intento con tiempo límite (<code>tryLock</code>) y varios lectores a la
+          vez.</li>
+        <li><strong>Sincronizadores:</strong> <code>Semaphore</code> (un número fijo de permisos: quien no consigue
+          uno, espera), <code>CountDownLatch</code> (esperar a que N cosas terminen) y otros.</li>
+      </ul>
+      <pre><code>Map&lt;String, Integer&gt; visitas = new ConcurrentHashMap&lt;&gt;();
+visitas.merge(pagina, 1, Integer::sum);   // sumar uno es atómico: nunca se pierde una visita</code></pre>
+
+      <h2 id="interrupcion">Interrumpir y cancelar</h2>
+      <p>En Java no se puede detener un hilo desde fuera a la fuerza: se le <strong>pide</strong> que pare con
+        <code>interrupt()</code>, y el hilo lo atiende. Si estaba esperando (<code>sleep</code>, <code>join</code>, una
+        cola), la espera termina con <code>InterruptedException</code>. Tragarse esa excepción es un error clásico: o se
+        propaga, o se vuelve a marcar el hilo como interrumpido para que el código de más arriba se entere.</p>
+      <pre><code>try {
+    var tarea = cola.take();
+    procesar(tarea);
+} catch (InterruptedException e) {
+    Thread.currentThread().interrupt();   // restaurar el aviso y salir
+    return;
+}</code></pre>
+
+      <h2 id="hilos-virtuales">Hilos virtuales (Java 21)</h2>
+      <p>Un hilo virtual corre encima de un hilo de plataforma prestado. Cuando se bloquea esperando (red, disco, una
+        cola), la JVM lo aparta y presta ese hilo de plataforma a otro hilo virtual; cuando llega lo que esperaba,
+        continúa donde estaba. Así se escribe código bloqueante sencillo, de arriba abajo, y aun así unos pocos hilos
+        reales atienden miles de tareas.</p>
+      <pre><code>try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+    for (var pedido : pedidos) {
+        executor.submit(() -&gt; enviar(pedido));   // un hilo virtual por pedido
+    }
+}   // aquí ya han terminado todos
+
+Thread.ofVirtual().name("lector").start(this::leer);   // o uno suelto</code></pre>
+      <ul>
+        <li><strong>Brillan en tareas que esperan</strong> (servicios web, acceso a datos, procesos externos). En cálculo
+          puro no ganan nada: los núcleos son los que son.</li>
+        <li><strong>No se agrupan en pools.</strong> Se crea uno por tarea. Para limitar cuántas tareas usan a la vez un
+          recurso escaso (conexiones, una API con cuota), se usa un <code>Semaphore</code>.</li>
+        <li><strong><code>synchronized</code> ya no estorba.</strong> Hasta Java 23, bloquearse dentro de un bloque
+          <code>synchronized</code> dejaba «clavado» el hilo de plataforma; desde Java 24 ya no.</li>
+        <li><strong><code>ThreadLocal</code> funciona, pero pesa.</strong> Con millones de hilos, una copia por hilo
+          gasta mucha memoria. <code>ScopedValue</code> (definitivo en Java 25) comparte un valor de solo lectura con
+          todo lo que se llama desde un bloque, sin ese coste.</li>
+        <li><strong>En Spring Boot</strong> basta con <code>spring.threads.virtual.enabled=true</code> para atender las
+          peticiones con hilos virtuales.</li>
+      </ul>
+      <p>Las novedades de cada versión de Java se cuentan en <a href="modern-java.html">Java moderno</a>.</p>
+
+      <h2 id="estructurada">Concurrencia estructurada (preview)</h2>
+      <p>Lanzar varias subtareas en paralelo con un ejecutor deja preguntas abiertas: si una falla, ¿quién cancela las
+        demás?, ¿y si el que esperaba se va? La concurrencia estructurada (<code>StructuredTaskScope</code>, en vista
+        previa en Java 25 y 26) trata las subtareas como un bloque: empiezan y terminan dentro de él, y si una falla, el
+        resto se cancela. Al salir del bloque no queda ningún hilo suelto.</p>
+      <pre><code>try (var scope = StructuredTaskScope.open()) {        // preview: --enable-preview
+    var usuario = scope.fork(() -&gt; buscarUsuario(id));
+    var pedidos = scope.fork(() -&gt; buscarPedidos(id));
+    scope.join();                                     // si una falla, cancela la otra y lanza la excepción
+    return new Resumen(usuario.get(), pedidos.get());
+}</code></pre>
+
+      <h2 id="peligros">Interbloqueos y otros peligros</h2>
+      <ul>
+        <li><strong>Interbloqueo</strong> (<em>deadlock</em>): el hilo A tiene el candado 1 y espera el 2; el hilo B
+          tiene el 2 y espera el 1. Ninguno avanza nunca. Se evita cogiendo siempre los candados en el mismo orden, o
+          con <code>tryLock</code> y tiempo límite.</li>
+        <li><strong>Inanición</strong> (<em>starvation</em>): un hilo nunca consigue el recurso porque otros se le
+          adelantan siempre. Los candados y semáforos <em>justos</em> (<code>new Semaphore(n, true)</code>) atienden por
+          orden de llegada.</li>
+        <li><strong>Bloqueo activo</strong> (<em>livelock</em>): los hilos no están parados, pero se ceden el paso unos a
+          otros sin fin y nadie progresa.</li>
+      </ul>
+
+      <h2 id="caso-real">Caso real: Kopi Chess</h2>
+      <p><a href="https://github.com/arquitechthor/kopi-chess" target="_blank" rel="noopener">Kopi Chess</a> (código
+        público, Java 25 y Spring Boot) juega y analiza partidas con Stockfish, un motor de ajedrez que es un programa
+        aparte con el que se habla por texto (protocolo UCI). Tiene casi todas las situaciones de esta ficha: esperar a un
+        proceso externo, repartir un recurso caro, trabajos en segundo plano y una conexión que hay que compartir.</p>
+
+      <h3>Leer de Stockfish: un hilo virtual y una cola</h3>
+      <p>Stockfish contesta cuando quiere y con muchas líneas. Leer su salida es bloqueante (<code>readLine</code> espera
+        hasta que llega una línea), así que cada motor tiene un hilo virtual que solo lee y deja cada línea en una
+        <code>BlockingQueue</code>. Quien espera una respuesta la saca de la cola <strong>con tiempo límite</strong>: si
+        el motor se cuelga, salta un error en lugar de esperar para siempre. Es el patrón productor-consumidor:</p>
+      <pre><code>private final BlockingQueue&lt;String&gt; lines = new LinkedBlockingQueue&lt;&gt;();
+
+private UciProcess(Process process) {
+    …
+    Thread.ofVirtual().name("uci-reader-" + process.pid()).start(this::readOutput);
+}
+
+private void readOutput() {          // productor: el hilo virtual
+    … while ((line = output.readLine()) != null) { lines.add(line); }
+}
+
+public String receive(Duration timeout) {   // consumidor: quien pregunta
+    var line = lines.poll(timeout.toNanos(), TimeUnit.NANOSECONDS);
+    if (line == null) throw new UciException("No answer from the engine within " + timeout);
+    …
+}</code></pre>
+      <p>Cuando el proceso muere, el lector mete en la cola una marca de fin para despertar a quien espere. Al capturar
+        <code>InterruptedException</code>, el código vuelve a marcar el hilo como interrumpido, como se recomienda arriba
+        (<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-adapter-stockfish/src/main/java/com/arquitechthor/kopi/adapter/stockfish/UciProcess.java" target="_blank" rel="noopener">UciProcess.java</a>).</p>
+
+      <h3>Repartir motores: un semáforo justo</h3>
+      <p>Cada Stockfish gasta CPU y memoria, así que solo puede haber unos pocos, y cada uno se presta a una sola tarea a
+        la vez. El <em>pool</em> de motores combina varias piezas de <code>java.util.concurrent</code>:</p>
+      <pre><code>private final Semaphore permits;                       // new Semaphore(size, true): justo
+private final ConcurrentLinkedQueue&lt;E&gt; idle = new ConcurrentLinkedQueue&lt;&gt;();
+private final LongAdder discarded = new LongAdder();   // motores reiniciados (una métrica)
+private volatile boolean closed;
+
+&lt;T&gt; T withEngine(Function&lt;E, T&gt; work) {
+    acquire();                     // tryAcquire con tiempo límite: error si no hay motor libre a tiempo
+    try {
+        var engine = idleOrNew();  // uno libre que siga vivo, o uno nuevo
+        … work.apply(engine) …     // si falla, el motor se descarta y se cuenta
+    } finally {
+        permits.release();         // el permiso se devuelve pase lo que pase
+    }
+}</code></pre>
+      <p>El semáforo limita cuántos motores se usan a la vez y, por ser justo, atiende las peticiones por orden de
+        llegada. La cola guarda los motores libres sin candados, <code>LongAdder</code> cuenta los reinicios y
+        <code>volatile</code> hace que todos los hilos vean a la vez que el <em>pool</em> se ha cerrado
+        (<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-adapter-stockfish/src/main/java/com/arquitechthor/kopi/adapter/stockfish/EnginePool.java" target="_blank" rel="noopener">EnginePool.java</a>).</p>
+
+      <h3>Trabajos en segundo plano: hilos virtuales que se paran bien</h3>
+      <p>El análisis de partidas se hace de fondo: unos pocos hilos virtuales cogen el siguiente trabajo de la cola (una
+        tabla de PostgreSQL) una y otra vez, y descansan un momento cuando no hay ninguno. Para parar, un aviso
+        <code>volatile</code>, una interrupción para despertar a los que duermen y una espera con tiempo límite a que
+        terminen:</p>
+      <pre><code>private volatile boolean running;
+
+public synchronized void start() {
+    running = true;
+    for (int i = 1; i &lt;= properties.workers(); i++) {
+        threads.add(Thread.ofVirtual().name("analysis-worker-" + i).start(this::work));
+    }
+}
+
+public synchronized void stop() {
+    running = false;                     // el bucle while (running) termina
+    threads.forEach(Thread::interrupt);  // y quien duerme se despierta
+    for (var thread : threads) thread.join(Duration.ofSeconds(5));
+    …
+}</code></pre>
+      <p>Un trabajo que se queda a medias sigue marcado como «en curso» y se recupera en el siguiente arranque
+        (<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-bootstrap/src/main/java/com/arquitechthor/kopi/bootstrap/AnalysisWorker.java" target="_blank" rel="noopener">AnalysisWorker.java</a>).
+        Que dos trabajadores no cojan el mismo trabajo lo garantiza la base de datos, no Java (ADR-007).</p>
+
+      <h3>Partidas online: synchronized donde se cruzan dos hilos</h3>
+      <p>Una partida contra un amigo se mantiene al día con un servidor intermedio, el relé. Dos hilos pueden tocar la
+        misma partida a la vez: el que sincroniza de fondo con el relé y el de la petición del jugador que mueve. Todos
+        los métodos que leen y cambian ese estado son <code>synchronized</code>, de modo que una jugada nunca se mezcla
+        con una sincronización a medias
+        (<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-application/src/main/java/com/arquitechthor/kopi/application/online/OnlineGames.java" target="_blank" rel="noopener">OnlineGames.java</a>).
+        Además, guardar una partida usa <em>bloqueo optimista</em>: cada partida tiene un número de versión, y si otro la
+        guardó entre medias, la segunda escritura falla en lugar de pisar a la primera.</p>
+
+      <h3>Una conexión, muchos hilos: envíos encadenados</h3>
+      <p>La conexión WebSocket con el relé solo admite un envío a la vez, pero quieren enviar varios hilos (las
+        respuestas, el latido cada cinco minutos…). Cada envío se encadena al anterior con
+        <code>CompletableFuture</code>, sin bloquear a nadie; y cada petición que llega se atiende en su propio hilo
+        virtual (pensar la jugada de un bot tarda), nunca en el hilo de la conexión:</p>
+      <pre><code>private final ExecutorService requests = Executors.newVirtualThreadPerTaskExecutor();
+private CompletableFuture&lt;?&gt; lastSend = CompletableFuture.completedFuture(null);
+
+private synchronized void send(WebSocket to, String text) {
+    lastSend = lastSend.handle((_, _) -&gt; null)               // pase lo que pase con el anterior…
+            .thenCompose(_ -&gt; to.sendText(text, true))       // …envía este cuando termine
+            .exceptionally(error -&gt; { to.abort(); return null; });
+}</code></pre>
+      <p>(<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-adapter-relay/src/main/java/com/arquitechthor/kopi/adapter/relay/RelayWebSocket.java" target="_blank" rel="noopener">RelayWebSocket.java</a>)</p>
+
+      <h3>Concurrencia estructurada, en el laboratorio</h3>
+      <p>Como está en vista previa, Kopi Chess la usa solo en su módulo de pruebas <code>kopi-labs</code>: analizar varias
+        posiciones a la vez, cada una en su hilo virtual, de forma que si una falla las demás se cancelan y no queda
+        ningún hilo suelto
+        (<a href="https://github.com/arquitechthor/kopi-chess/blob/main/backend/kopi-labs/src/main/java/com/arquitechthor/kopi/labs/structuredconcurrency/PositionBatchAnalyser.java" target="_blank" rel="noopener">PositionBatchAnalyser.java</a>).</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Creer que <code>volatile</code> hace atómico <code>contador++</code>:</strong> solo garantiza que se
+          ve el último valor. Para contar, <code>AtomicInteger</code>, <code>LongAdder</code> o
+          <code>synchronized</code>.</li>
+        <li><strong>Sincronizar la escritura y no la lectura:</strong> si el <em>getter</em> no está sincronizado, quien
+          lee puede ver un valor viejo. Los dos lados deben usar el mismo candado.</li>
+        <li><strong>Comprobar y luego actuar en dos pasos:</strong> <code>if (!mapa.containsKey(k)) mapa.put(k, v)</code>
+          no es atómico ni con un <code>ConcurrentHashMap</code>. Usa <code>putIfAbsent</code>,
+          <code>computeIfAbsent</code> o <code>merge</code>.</li>
+        <li><strong>Tragarse <code>InterruptedException</code>:</strong> con un <code>catch</code> vacío el hilo ya no
+          sabe que le pidieron parar, y el programa no se cierra bien. Restaura la marca o propaga la excepción.</li>
+        <li><strong>Esperar sin límite:</strong> <code>take()</code>, <code>join()</code> o <code>get()</code> sin tiempo
+          máximo cuelgan el hilo si el otro lado muere. En llamadas a procesos o servicios externos, pon siempre un
+          tiempo límite.</li>
+        <li><strong>Usar <em>streams</em> paralelos para esperar:</strong> <code>parallelStream()</code> reparte el trabajo
+          en un <em>pool</em> común con tantos hilos como núcleos; si las tareas esperan a la red, lo bloquean para toda
+          la aplicación. Es para cálculo, no para esperas.</li>
+        <li><strong>Hilos virtuales en un <em>pool</em> fijo:</strong> anula su ventaja. Uno por tarea y, si hay que
+          limitar, un semáforo.</li>
+        <li><strong>Compartir lo que no hace falta:</strong> antes de proteger un estado, pregúntate si puede ser
+          inmutable o local a una tarea. El estado que no se comparte no necesita candados.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="concurrency"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/" target="_blank" rel="noopener">Lesson: Concurrency</a> (The Java Tutorials, Oracle, consultada el 19/11/2026): hilos, interferencias, interrupción e interbloqueos.</li>
+        <li><a href="https://docs.oracle.com/javase/specs/jls/se25/html/jls-17.html" target="_blank" rel="noopener">Java Language Specification, capítulo 17: Threads and Locks</a> (Oracle, Java SE 25, consultada el 19/11/2026): el modelo de memoria y <em>happens-before</em>.</li>
+        <li><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/package-summary.html" target="_blank" rel="noopener">Paquete java.util.concurrent</a> (Javadoc de Java SE 25, consultada el 19/11/2026).</li>
+        <li><a href="https://docs.oracle.com/en/java/javase/25/core/virtual-threads.html" target="_blank" rel="noopener">Virtual Threads</a> (Oracle, Java SE 25, consultada el 19/11/2026).</li>
+        <li><a href="https://openjdk.org/jeps/444" target="_blank" rel="noopener">JEP 444: Virtual Threads</a>, <a href="https://openjdk.org/jeps/491" target="_blank" rel="noopener">JEP 491</a> (<code>synchronized</code> sin clavar el hilo), <a href="https://openjdk.org/jeps/506" target="_blank" rel="noopener">JEP 506</a> (<code>ScopedValue</code>) y <a href="https://openjdk.org/jeps/505" target="_blank" rel="noopener">JEP 505</a> (concurrencia estructurada, preview) (OpenJDK, consultadas el 19/11/2026).</li>
+        <li><a href="https://github.com/arquitechthor/kopi-chess" target="_blank" rel="noopener">Kopi Chess</a>, código fuente (consultado el 19/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=d08c2823" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

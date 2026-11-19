@@ -81,14 +81,29 @@
   {
     "id": "concurrency",
     "nombre": "Concurrency & Multithreading",
+    "nombreEs": "Concurrencia y multihilo",
     "tipo": "tema",
     "padre": "java",
     "area": "fundamentals",
-    "estado": "pendiente",
+    "frase": "Varias tareas a la vez sin pisarse: hilos, candados, colas y los nuevos hilos virtuales.",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 1,
     "relacionados": [
-      "modern-java"
+      "modern-java",
+      "reactive-programming",
+      "spring-webflux",
+      "isolation-levels"
+    ],
+    "revisado": "2026-11-19",
+    "alias": [
+      "Concurrencia",
+      "Multihilo",
+      "Hilos",
+      "Threads",
+      "Virtual threads",
+      "Hilos virtuales",
+      "java.util.concurrent"
     ]
   },
   {
@@ -194,7 +209,10 @@
     "area": "fundamentals",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 1
+    "prioridad": 1,
+    "relacionados": [
+      "concurrency"
+    ]
   },
   {
     "id": "software-design-principles",
@@ -1123,7 +1141,10 @@
     "area": "backend",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "concurrency"
+    ]
   },
   {
     "id": "orm-persistence",
@@ -1549,7 +1570,10 @@
     "area": "data",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "concurrency"
+    ]
   },
   {
     "id": "database-migrations",

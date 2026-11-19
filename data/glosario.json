@@ -18,6 +18,8 @@
     "JEP": { "en": "JDK Enhancement Proposal", "es": "propuesta con la que se diseña y documenta cada cambio de Java", "enlace": "modern-java" },
     "LTS": { "en": "Long-Term Support", "es": "versión con soporte de varios años; en Java, una cada dos años" },
     "AOT": { "en": "Ahead-Of-Time", "es": "trabajo hecho por adelantado, antes de ejecutar, en lugar de al arrancar" },
+    "CPU": { "en": "Central Processing Unit", "es": "procesador: la parte del ordenador que ejecuta las instrucciones" },
+    "JMM": { "en": "Java Memory Model", "es": "modelo de memoria de Java: cuándo lo que escribe un hilo es visible para otro", "enlace": "concurrency" },
     "TLS": { "en": "Transport Layer Security", "es": "protocolo que cifra las conexiones de red, como las de HTTPS" },
     "TCP": { "en": "Transmission Control Protocol", "es": "protocolo de red que entrega los datos en orden y sin pérdidas" },
     "IA": { "en": "Artificial Intelligence", "es": "inteligencia artificial", "enlace": "artificial-intelligence" },

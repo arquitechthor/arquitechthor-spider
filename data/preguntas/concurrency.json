@@ -1,0 +1,208 @@
+[
+  {
+    "id": "concurrency-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué diferencia hay entre concurrencia y paralelismo?",
+    "opciones": [
+      "La concurrencia organiza tareas que avanzan a la vez; el paralelismo las ejecuta al mismo tiempo en varios núcleos.",
+      "La concurrencia solo existe con varios núcleos; el paralelismo también funciona en una CPU con un solo núcleo.",
+      "La concurrencia usa hilos virtuales y el paralelismo usa hilos de plataforma; son las dos formas de crear hilos en Java.",
+      "Son sinónimos en Java: las dos palabras describen un programa que crea más de un hilo para hacer su trabajo."
+    ],
+    "correctas": [0],
+    "explicacion": "Concurrencia es estructurar el programa para llevar varias tareas a la vez, aunque se turnen en un solo núcleo; paralelismo es ejecutarlas literalmente al mismo tiempo en núcleos distintos. Un servidor con un núcleo es concurrente pero no paralelo. El tipo de hilo no tiene nada que ver con la distinción.",
+    "fuentes": ["https://docs.oracle.com/javase/tutorial/essential/concurrency/procthread.html"]
+  },
+  {
+    "id": "concurrency-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Dos hilos llaman a la vez a sumar() 1000 veces cada uno, y al final total vale 1987. ¿Por qué?",
+    "codigo": "class Visitas {\n    private int total;\n    void sumar() { total++; }\n}",
+    "opciones": [
+      "Porque int no puede guardar valores tan altos y se desborda.",
+      "Porque total++ es leer, sumar y escribir, y los hilos se pisan.",
+      "Porque la JVM descarta las llamadas que llegan al mismo tiempo.",
+      "Porque falta declarar total como static para que se comparta bien."
+    ],
+    "correctas": [1],
+    "explicacion": "total++ no es atómico: lee el valor, le suma uno y lo escribe. Si dos hilos leen a la vez el mismo valor, los dos escriben el mismo resultado y se pierde una suma (una condición de carrera). Se arregla con synchronized, AtomicInteger o LongAdder.",
+    "fuentes": ["https://docs.oracle.com/javase/tutorial/essential/concurrency/interfere.html"]
+  },
+  {
+    "id": "concurrency-003",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un hilo ejecuta while (!parar) { … } y otro hace parar = true. A veces el primero no termina nunca. ¿Cuál es la solución más sencilla?",
+    "codigo": "private boolean parar;\n\nvoid trabajar() { while (!parar) { hacerAlgo(); } }\nvoid detener()  { parar = true; }",
+    "opciones": [
+      "Cambiar boolean por Boolean, para que el valor se guarde como un objeto en la memoria.",
+      "Llamar a Thread.yield() dentro del bucle para que el otro hilo pueda escribir.",
+      "Declarar parar como static, para que todos los hilos compartan la misma copia.",
+      "Declarar parar como volatile, para que cada lectura vea la última escritura."
+    ],
+    "correctas": [3],
+    "explicacion": "Es un problema de visibilidad: sin sincronización, el primer hilo puede seguir leyendo su copia del valor indefinidamente. volatile crea una relación happens-before entre la escritura y las lecturas siguientes, así que el cambio se ve. static no garantiza visibilidad, y Thread.yield() o usar Boolean tampoco.",
+    "fuentes": ["https://docs.oracle.com/javase/specs/jls/se25/html/jls-17.html#jls-17.4.5"]
+  },
+  {
+    "id": "concurrency-004",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "¿Qué dos afirmaciones sobre volatile son ciertas? (Elige 2)",
+    "opciones": [
+      "Hace que contador++ sobre un campo volatile sea una operación atómica.",
+      "Garantiza que cada lectura del campo ve la última escritura de otro hilo.",
+      "Impide que dos hilos ejecuten a la vez el método que modifica ese campo.",
+      "Sirve bien para un aviso como un boolean que pide a otro hilo que pare."
+    ],
+    "correctas": [1, 3],
+    "explicacion": "volatile garantiza visibilidad y orden: la escritura ocurre antes que las lecturas posteriores. No da exclusión mutua ni hace atómicas las operaciones de varios pasos como contador++. Por eso encaja en avisos de un solo valor y no en contadores.",
+    "fuentes": ["https://docs.oracle.com/javase/specs/jls/se25/html/jls-8.html#jls-8.3.1.4"]
+  },
+  {
+    "id": "concurrency-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Varios hilos cuentan visitas por página en un ConcurrentHashMap<String, Integer>. ¿Qué código nunca pierde una visita?",
+    "opciones": [
+      "visitas.put(pagina, visitas.getOrDefault(pagina, 0) + 1);",
+      "if (!visitas.containsKey(pagina)) visitas.put(pagina, 0); visitas.put(pagina, visitas.get(pagina) + 1);",
+      "visitas.merge(pagina, 1, Integer::sum);",
+      "var actual = visitas.get(pagina); visitas.replace(pagina, actual + 1);"
+    ],
+    "correctas": [2],
+    "explicacion": "merge lee, combina y escribe en un solo paso atómico para esa clave. Las demás opciones leen en una llamada y escriben en otra: otro hilo puede escribir entre medias y una de las sumas se pierde, aunque el mapa sea concurrente. (replace sin el valor anterior, además, falla si la clave aún no existe.)",
+    "fuentes": ["https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html"]
+  },
+  {
+    "id": "concurrency-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué es lo correcto al capturar InterruptedException si el método no puede volver a lanzarla?",
+    "codigo": "try {\n    var tarea = cola.take();\n    procesar(tarea);\n} catch (InterruptedException e) {\n    // ¿qué va aquí?\n}",
+    "opciones": [
+      "Llamar a Thread.currentThread().interrupt() para restaurar la marca de interrupción.",
+      "Dejar el catch vacío: la interrupción ya ha cumplido su función al despertar el hilo.",
+      "Volver a llamar a cola.take() en un bucle hasta que llegue una tarea a la cola.",
+      "Llamar a System.exit(1), porque una interrupción siempre indica un error grave."
+    ],
+    "correctas": [0],
+    "explicacion": "La interrupción es una petición de parar. Al lanzar InterruptedException se borra la marca del hilo, así que si no se propaga hay que restaurarla con interrupt() para que el código de más arriba sepa que debe terminar. Ignorarla o reintentar sin fin hace que el hilo no pare nunca.",
+    "fuentes": ["https://docs.oracle.com/javase/tutorial/essential/concurrency/interrupt.html"]
+  },
+  {
+    "id": "concurrency-007",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿En qué tipo de aplicación aportan más los hilos virtuales de Java 21?",
+    "opciones": [
+      "En un programa que calcula números primos usando todos los núcleos.",
+      "En una aplicación de escritorio con un único usuario y muy pocas tareas.",
+      "En un servicio que pasa casi todo el tiempo esperando a otros servicios.",
+      "En un proceso por lotes que comprime ficheros de vídeo en memoria."
+    ],
+    "correctas": [2],
+    "explicacion": "Un hilo virtual que se bloquea esperando libera el hilo de plataforma para otro, así que permiten tener miles de tareas esperando con pocos recursos. En cálculo puro (primos, compresión) no ganan nada, porque el límite son los núcleos, no los hilos.",
+    "fuentes": ["https://openjdk.org/jeps/444"]
+  },
+  {
+    "id": "concurrency-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Con hilos virtuales, un servicio no debe abrir más de 20 conexiones a la vez a una API externa. ¿Cómo se limita?",
+    "opciones": [
+      "Con Executors.newFixedThreadPool(20) creado con hilos virtuales.",
+      "Con un Semaphore de 20 permisos alrededor de cada llamada a la API.",
+      "Con synchronized en el método que llama a la API externa.",
+      "Con 20 hilos virtuales creados al arrancar y reutilizados para siempre."
+    ],
+    "correctas": [1],
+    "explicacion": "Los hilos virtuales no se agrupan en pools: se crea uno por tarea. Para limitar el acceso a un recurso, se limita el recurso, no los hilos: un Semaphore con 20 permisos deja pasar a 20 llamadas y el resto espera. synchronized dejaría pasar solo una.",
+    "fuentes": ["https://docs.oracle.com/en/java/javase/25/core/virtual-threads.html"]
+  },
+  {
+    "id": "concurrency-009",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "El hilo A tiene el candado de la cuenta 1 y espera el de la cuenta 2; el hilo B tiene el de la 2 y espera el de la 1. ¿Cómo se evita?",
+    "opciones": [
+      "Dando más prioridad a uno de los dos hilos con setPriority().",
+      "Declarando volatile los saldos de las dos cuentas implicadas.",
+      "Usando hilos virtuales en lugar de hilos de plataforma.",
+      "Cogiendo los candados siempre en el mismo orden (por id)."
+    ],
+    "correctas": [3],
+    "explicacion": "Es un interbloqueo: cada hilo espera algo que tiene el otro. Si todos cogen los candados en el mismo orden (primero la cuenta de id menor), el ciclo no puede formarse. Otra opción es tryLock con tiempo límite. La prioridad, volatile o el tipo de hilo no rompen el ciclo.",
+    "fuentes": ["https://docs.oracle.com/javase/tutorial/essential/concurrency/deadlock.html"]
+  },
+  {
+    "id": "concurrency-010",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "Un método lanza dos consultas en paralelo con StructuredTaskScope (preview) y la primera falla. ¿Qué pasa con la segunda?",
+    "codigo": "try (var scope = StructuredTaskScope.open()) {\n    var usuario = scope.fork(() -> buscarUsuario(id));\n    var pedidos = scope.fork(() -> buscarPedidos(id));\n    scope.join();\n    return new Resumen(usuario.get(), pedidos.get());\n}",
+    "opciones": [
+      "Sigue hasta el final, y join() devuelve solo el resultado parcial.",
+      "Sigue en segundo plano después de que el método haya salido.",
+      "Se cancela, y join() lanza una excepción con el fallo original.",
+      "Se repite automáticamente hasta que las dos consultas acaben."
+    ],
+    "correctas": [2],
+    "explicacion": "Con la política por defecto, si una subtarea falla, el ámbito interrumpe las demás y join() lanza una excepción cuya causa es el fallo original. Al salir del try no queda ningún hilo suelto: esa es la idea de la concurrencia estructurada. No reintenta nada por su cuenta.",
+    "fuentes": ["https://openjdk.org/jeps/505"]
+  },
+  {
+    "id": "concurrency-011",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un hilo espera la respuesta de un proceso externo con cola.take(). Si el proceso se cuelga, el hilo queda bloqueado para siempre. ¿Qué cambio lo evita?",
+    "opciones": [
+      "Usar cola.poll(5, TimeUnit.SECONDS) y tratar el null como fallo.",
+      "Usar cola.peek(), que no espera y devuelve el primer elemento.",
+      "Declarar la cola como volatile para que vea antes los nuevos elementos.",
+      "Cambiar la cola por un ArrayList protegido con synchronized."
+    ],
+    "correctas": [0],
+    "explicacion": "poll con tiempo límite espera como take, pero devuelve null si no llega nada a tiempo, y el código puede tratarlo como un error. peek no espera (devuelve null enseguida si la cola está vacía), volatile no cambia cómo espera la cola, y una lista sincronizada no sabe esperar.",
+    "fuentes": ["https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/BlockingQueue.html"]
+  },
+  {
+    "id": "concurrency-012",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Por qué un objeto inmutable, como un record con campos inmutables, se puede compartir entre hilos sin sincronizar?",
+    "opciones": [
+      "Porque la JVM copia cada objeto inmutable en la pila de cada hilo.",
+      "Porque los records se guardan en una zona de memoria que es solo para ellos.",
+      "Porque el compilador añade synchronized a todos los métodos de un record.",
+      "Porque nadie lo modifica, así que no puede haber condiciones de carrera."
+    ],
+    "correctas": [3],
+    "explicacion": "Las condiciones de carrera necesitan al menos una escritura. Si el objeto no cambia después de construirse (y se publica correctamente), todos los hilos ven siempre lo mismo. Los campos final dan además la garantía de que quien recibe el objeto los ve ya inicializados. No hay copias por hilo ni métodos sincronizados ocultos.",
+    "fuentes": ["https://docs.oracle.com/javase/specs/jls/se25/html/jls-17.html#jls-17.5"]
+  },
+  {
+    "id": "concurrency-013",
+    "tipo": "emparejar",
+    "nivel": 2,
+    "enunciado": "Empareja cada necesidad con la herramienta de java.util.concurrent que la resuelve.",
+    "opciones": [
+      "Que como mucho N tareas usen un recurso a la vez",
+      "Esperar a que terminen N tareas antes de seguir",
+      "Un contador que incrementan muchos hilos a la vez",
+      "Pasar trabajo de un hilo productor a uno consumidor"
+    ],
+    "destinos": [
+      "CountDownLatch",
+      "LongAdder",
+      "ReentrantLock",
+      "BlockingQueue",
+      "Semaphore"
+    ],
+    "correctas": [4, 0, 1, 3],
+    "explicacion": "Semaphore reparte N permisos; CountDownLatch espera a que una cuenta llegue a cero; LongAdder es un contador pensado para mucha contención; BlockingQueue hace esperar al consumidor si está vacía (y al productor si está llena). ReentrantLock sobra: deja pasar a un solo hilo a la vez.",
+    "fuentes": ["https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/package-summary.html"]
+  }
+]

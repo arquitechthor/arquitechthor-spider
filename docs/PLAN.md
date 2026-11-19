@@ -140,8 +140,11 @@ funciones existentes): **es lo esperado** y lo arregla el paso 2 (que sube su c�
 - **Java moderno (2026-11-19), primer tema de la cola de Kopi Chess:** ficha `temas/modern-java.html`
   (de Java 8 a 25, una sección por novedad, caso real de Kopi Chess y caché AOT medida) con 14
   preguntas sin Kopi Chess. Sin probar en navegador en local (no se permitió levantar el servidor):
-  comprobar en producción. Siguiente: la 2 de la cola (`concurrency`).
-- **Última actualización:** 2026-11-19 (Java moderno publicado)
+  comprobar en producción.
+- **Concurrencia (2026-11-19), segundo tema de la cola:** ficha `temas/concurrency.html` con 13
+  preguntas sin Kopi Chess. Sin probar en navegador en local: comprobar en producción. Siguiente: la 3
+  de la cola (`testcontainers`).
+- **Última actualización:** 2026-11-19 (Concurrencia publicada)
 
 ---
 
@@ -442,6 +445,10 @@ directamente en `data/nodos.json` (el importador ya no se usa; con `--forzar` se
 - `modern-java`: nombre «Modern Java (8-21+)» → «Modern Java (8-25)», `nombreEs` «Java moderno», alias
   (Java 17/21/25, Records, Sealed classes, Pattern matching…). Relacionados recíprocos con
   `streams-lambdas`, `concurrency`, `functional-programming`, `oop` y `solid`. Sin nodos nuevos: 550.
+
+**2026-11-19: Concurrencia publicada** (segundo de la cola): `concurrency` con `nombreEs` «Concurrencia y
+multihilo», alias y relacionados recíprocos con `reactive-programming`, `spring-webflux` e
+`isolation-levels` (además de `modern-java`). Sin nodos nuevos.
 
 ### 4.3 Preguntas: `data/preguntas/<id>.json`
 
@@ -986,7 +993,7 @@ evalúan el concepto general (decisión del usuario, 2026-11-19).
 | # | Nodo | Qué sale de Kopi Chess |
 |---|---|---|
 | 1 ✓ | `modern-java` (2026-11-19) | Java 17→25: `record`, `sealed` + `switch` exhaustivo (`Evaluation`, `MoveKind`), patrones de registro, `_`, cuerpos de constructor flexibles (`InvalidFenException`), archivos fuente compactos (`Perft.java`), `///`, colecciones secuenciadas, caché AOT y la política de *preview* (`kopi-labs`, ADR-012) |
-| 2 | `concurrency` | hilos virtuales para leer la salida de Stockfish (`UciProcess`, `EnginePool`) y en el relé; bloqueos; *structured concurrency* en preview (`PositionBatchAnalyser`) |
+| 2 ✓ | `concurrency` (2026-11-19) | hilos virtuales para leer la salida de Stockfish (`UciProcess`, `EnginePool`) y en el relé; bloqueos; *structured concurrency* en preview (`PositionBatchAnalyser`) |
 | 3 | `testcontainers` | PostgreSQL real en los IT (`JdbcGameRepositoryIT`, `TestcontainersConfiguration`) |
 | 4 | `strategy-pattern`, `decorator-pattern`, `adapter-pattern` | ya enlazados desde SOLID: bots por nivel, `TimedBotPlayer` y métricas como decoradores, adaptadores de Stockfish y persistencia |
 | 5 | `junit-5` | `@ParameterizedTest`, `@Tag("slow")`, perft contra Stockfish y test diferencial (ADR-004) |
@@ -1066,6 +1073,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-19 | **Ficha de Concurrencia** (`concurrency`, segundo de la cola de Kopi Chess): concurrencia frente a paralelismo, vocabulario (hilo de plataforma y virtual, estado compartido, condición de carrera, sección crítica), los tres problemas (atomicidad, visibilidad, orden y JMM), `synchronized`, `volatile`, inmutabilidad y confinamiento, `java.util.concurrent` (ejecutores, `CompletableFuture`, atómicas y `LongAdder`, colecciones concurrentes, candados, `Semaphore`), interrupción, hilos virtuales (pools, JEP 491, `ScopedValue`), concurrencia estructurada (preview) e interbloqueos. Caso real de Kopi Chess: `UciProcess` (hilo virtual + `BlockingQueue` con tiempo límite), `EnginePool` (semáforo justo, `ConcurrentLinkedQueue`, `LongAdder`), `AnalysisWorker` (parada con `volatile`, interrupción y `join`), `OnlineGames` (`synchronized`, bloqueo optimista), `RelayWebSocket` (envíos encadenados con `CompletableFuture`) y `kopi-labs`. 13 preguntas sin Kopi Chess (la más larga es la correcta en 1). Glosario: CPU y JMM. Validador en verde; sin probar en navegador. |
 | 2026-11-19 | **Ficha de Java moderno** (`modern-java`, primero de la cola de Kopi Chess): vocabulario (JDK, JEP, LTS, preview), versiones que marcan época (8, 11, 17, 21, 25, y 26/27), una sección por novedad (lambdas, `var`, `switch` y bloques de texto, `record`, patrones, `sealed`, colecciones secuenciadas, hilos virtuales, *Gatherers*, `///`, constructores flexibles, ficheros compactos, caché AOT, preview), caso real de Kopi Chess (`MoveKind`, `Evaluation`, `InvalidFenException`, `windowSliding`, `SequencedMap`, `UciProcess`, `Perft.java`, caché AOT medida y `kopi-labs`/ADR-012), errores frecuentes y por dónde empezar. 14 preguntas sin Kopi Chess (la opción más larga es la correcta en 3). Glosario: FEN, JDK, JEP, LTS, AOT y TLS. Fuentes: índice de JEP, calendario de Oracle, anuncios de Java 26 y 27 (openjdk.org devolvió 403 al consultarlo automáticamente; JEP verificadas de memoria y con buscador). Validador en verde; sin probar en navegador. |
 | 2026-11-19 | El usuario revisa la Fase 3 en producción (radar, vista General y móvil): todo bien y usable. Se cierra el repaso de términos sin explicar como tarea aparte (la regla se aplica siempre). Decisión "Orden del contenido": temas sueltos de distintas áreas sacados de los proyectos personales, en lugar de completar ramas. |
 | 2026-11-17 | **Patrones GoF en el árbol** (petición del usuario): 23 temas nuevos, uno por patrón, bajo sus tres familias (ver 4.2.1). En la ficha de SOLID y en su pregunta `solid-004`, los patrones se nombran en inglés (Strategy, Decorator, Factory Method, Adapter) y Strategy y Decorator enlazan a su ficha (`tema.html?id=`, que redirige cuando se publique). Validador en verde; sin probar en navegador. |
