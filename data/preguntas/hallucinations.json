@@ -1,0 +1,173 @@
+[
+  {
+    "id": "hallucinations-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
+    "enunciado": "¿Qué es una alucinación de un LLM?",
+    "opciones": [
+      "Una respuesta que tarda más de lo normal por exceso de carga.",
+      "Una respuesta convincente pero falsa o sin apoyo en ninguna fuente.",
+      "Una respuesta que el filtro de contenido ha bloqueado por segura.",
+      "Una respuesta cortada al alcanzar el límite de tokens de salida."
+    ],
+    "correctas": [1],
+    "explicacion": "Alucinar es generar contenido plausible y seguro de sí mismo que no es cierto o no se apoya en los datos. La lentitud, un bloqueo del filtro o un corte por el límite de salida son problemas distintos.",
+    "fuentes": ["https://arxiv.org/abs/2311.05232"]
+  },
+  {
+    "id": "hallucinations-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
+    "enunciado": "¿Cuál es la causa de fondo de que los LLM alucinen?",
+    "opciones": [
+      "Generan el texto más probable, que no siempre es el verdadero.",
+      "Buscan en internet y a veces encuentran páginas equivocadas.",
+      "Su memoria se llena y pierden datos de conversaciones anteriores.",
+      "Los servidores introducen errores aleatorios en la respuesta."
+    ],
+    "correctas": [0],
+    "explicacion": "Un LLM predice la continuación más plausible token a token; si el dato no está bien representado en lo que aprendió, rellena con algo que encaja en la forma. Por sí solo no busca en internet, no guarda memoria entre conversaciones y los servidores no meten errores a propósito.",
+    "fuentes": ["https://arxiv.org/abs/2509.04664"]
+  },
+  {
+    "id": "hallucinations-003",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
+    "enunciado": "Entre las limitaciones de la IA generativa para un negocio, ¿cuál describe que la misma pregunta pueda recibir respuestas distintas?",
+    "opciones": [
+      "La alucinación.",
+      "La interpretabilidad.",
+      "La falta de determinismo.",
+      "La adaptabilidad."
+    ],
+    "correctas": [2],
+    "explicacion": "Que la salida cambie con la misma entrada es falta de determinismo, consecuencia de que el modelo muestrea entre candidatos. La alucinación es dar algo falso, la interpretabilidad es poder explicar por qué responde lo que responde, y la adaptabilidad es una ventaja, no una limitación.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "hallucinations-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Un asistente de soporte se inventa políticas de devolución que la empresa no tiene. ¿Qué medida ataca mejor la causa?",
+    "opciones": [
+      "Bajar la temperatura a 0 para que siempre responda lo mismo.",
+      "Cambiar a un modelo con una ventana de contexto más grande.",
+      "Alargar el límite de salida para que explique mejor la política.",
+      "Darle las políticas reales en el contexto y pedir que responda solo con ellas."
+    ],
+    "correctas": [3],
+    "explicacion": "El modelo no conoce las políticas de la empresa: hay que dárselas (por ejemplo con RAG) y anclar la respuesta a ellas. Con temperatura 0 alucinaría igual, solo que de forma repetible; una ventana mayor o una salida más larga no le dan los datos que le faltan.",
+    "fuentes": ["https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"]
+  },
+  {
+    "id": "hallucinations-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Un modelo resume un contrato que se le ha pasado entero y el resumen incluye una cláusula de penalización que no aparece en el documento. ¿Qué tipo de alucinación es?",
+    "opciones": [
+      "De fidelidad: se aparta de la fuente que se le dio.",
+      "De hechos: afirma algo falso sobre el mundo en general.",
+      "De formato: devuelve una estructura distinta a la pedida.",
+      "De seguridad: revela datos que debían quedar ocultos."
+    ],
+    "correctas": [0],
+    "explicacion": "Cuando el modelo tenía la fuente y aun así añade o contradice su contenido, es una alucinación de fidelidad (faithfulness). La de hechos se refiere a conocimiento general del mundo; las otras dos opciones son problemas distintos.",
+    "fuentes": ["https://arxiv.org/abs/2311.05232"]
+  },
+  {
+    "id": "hallucinations-006",
+    "tipo": "multiple",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Seguridad, cumplimiento y gobernanza de soluciones de IA",
+    "enunciado": "¿Qué técnicas ayudan a detectar o reducir alucinaciones en una aplicación? (elige tres)",
+    "opciones": [
+      "Anclar la respuesta en documentos recuperados con RAG.",
+      "Validar con código los datos de la salida antes de usarlos.",
+      "Subir la temperatura para que el modelo explore más opciones.",
+      "Puntuar la confianza y enviar a revisión humana las dudosas.",
+      "Quitar el prompt de sistema para que el modelo responda libremente."
+    ],
+    "correctas": [0, 1, 3],
+    "explicacion": "Anclar en fuentes, validar la salida y la puntuación de confianza con revisión humana son técnicas de detección y anclaje. Subir la temperatura aumenta las opciones raras, y quitar las instrucciones elimina justo lo que acota al modelo.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "hallucinations-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Un prompt pide responder sobre un manual adjunto. Cuando la respuesta no está en el manual, el modelo se la inventa. ¿Qué instrucción añadirías?",
+    "opciones": [
+      "«Responde siempre con la máxima seguridad posible».",
+      "«Si no está en el manual, di que no lo sabes».",
+      "«Usa tus conocimientos generales para completar».",
+      "«Responde en menos de cincuenta palabras siempre»."
+    ],
+    "correctas": [1],
+    "explicacion": "Dar permiso explícito para no saber elimina la presión de rellenar el hueco. Pedir seguridad o usar conocimientos generales empuja justo a inventar, y limitar la longitud no cambia de dónde sale la respuesta.",
+    "fuentes": ["https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"]
+  },
+  {
+    "id": "hallucinations-008",
+    "tipo": "unica",
+    "nivel": 3,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Seguridad, cumplimiento y gobernanza de soluciones de IA",
+    "enunciado": "Una aplicación con RAG quiere bloquear automáticamente las respuestas que no se apoyan en los documentos recuperados o que no contestan a la pregunta. ¿Qué mecanismo encaja?",
+    "opciones": [
+      "Un filtro de palabras prohibidas sobre la pregunta del usuario.",
+      "Una caché de prompts para reutilizar respuestas anteriores.",
+      "Una comprobación de anclaje que puntúa respuesta frente a fuente.",
+      "Un límite de salida más bajo para respuestas más cortas."
+    ],
+    "correctas": [2],
+    "explicacion": "La comprobación de anclaje contextual (por ejemplo, la de los guardarraíles de Amazon Bedrock) puntúa cuánto se apoya la respuesta en la fuente y cuánto responde a la pregunta, y bloquea las que no llegan al umbral. Un filtro de palabras mira la entrada, no la fidelidad; la caché reduce coste; acortar la salida no la hace más fiel.",
+    "fuentes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-contextual-grounding-check.html"]
+  },
+  {
+    "id": "hallucinations-009",
+    "tipo": "unica",
+    "nivel": 3,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
+    "enunciado": "Según el análisis de OpenAI de 2025, ¿por qué las formas habituales de evaluar a los modelos favorecen que alucinen?",
+    "opciones": [
+      "Porque premian igual decir «no lo sé» que acertar la respuesta.",
+      "Porque solo puntúan la velocidad y no el contenido de la respuesta.",
+      "Porque se evalúan siempre con temperatura alta y mucho azar.",
+      "Porque puntúan igual «no lo sé» que fallar, y adivinar compensa."
+    ],
+    "correctas": [3],
+    "explicacion": "Si una prueba da 0 puntos tanto a la abstención como al error, adivinar tiene más valor esperado que reconocer la duda, igual que en un examen tipo test sin penalización. Por eso los modelos aprenden a responder con seguridad aunque no sepan. Las demás opciones no describen ese incentivo.",
+    "fuentes": ["https://arxiv.org/abs/2509.04664"]
+  },
+  {
+    "id": "hallucinations-010",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Directrices para una IA responsable",
+    "enunciado": "Una aseguradora quiere usar un LLM para proponer si se acepta o rechaza cada reclamación. ¿Qué diseño reduce mejor el riesgo de una alucinación?",
+    "opciones": [
+      "Que el modelo proponga con sus fuentes y una persona decida.",
+      "Que el modelo decida solo y avise si duda de su respuesta.",
+      "Que el modelo decida dos veces y se use la respuesta más larga.",
+      "Que el modelo decida con temperatura 0 para ser imparcial."
+    ],
+    "correctas": [0],
+    "explicacion": "Con decisiones de alto impacto, el modelo propone con evidencias comprobables y una persona decide (humano en el bucle). Un modelo que decide solo puede equivocarse sin saberlo, la respuesta más larga no es la más fiable y la temperatura 0 no da imparcialidad ni veracidad.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  }
+]

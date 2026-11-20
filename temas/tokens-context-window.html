@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tokens y ventana de contexto — Tech Spider</title>
+<meta name="description" content="Los tokens son las piezas de texto con las que lee y escribe un LLM; la ventana de contexto es cuántos caben en una petición, sumando entrada y respuesta.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/tokens-context-window.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=532e81a3">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="tokens-context-window">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>Un <a href="llms.html">LLM</a> no lee letras ni palabras: lee <a class="concepto" data-concepto="token">tokens</a>,
+        trozos de texto de tamaño variable. Una palabra corta y frecuente suele ser un token; una larga o rara se parte en
+        varios; un espacio, una coma o un salto de línea también cuentan. El modelo recibe la entrada como una lista de
+        tokens y escribe la respuesta de token en token.</p>
+      <p>La <strong>ventana de contexto</strong> (<em>context window</em>) es el número máximo de tokens que el modelo puede
+        tener delante en una sola petición. Es su memoria de trabajo: lo que no está dentro de la ventana, para el modelo,
+        no existe. Y es un límite <strong>compartido</strong>: entrada y respuesta salen del mismo cupo.</p>
+      <p>Las dos ideas importan porque casi todo se mide en tokens: lo que cabe en una petición, lo que tarda la respuesta
+        y lo que se paga.</p>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <ul>
+        <li><strong>Tokenizador</strong> (<em>tokenizer</em>)<strong>:</strong> la pieza que parte el texto en tokens y
+          traduce cada uno a un número. Cada familia de modelos tiene el suyo, así que el mismo texto no ocupa lo mismo en
+          todos.</li>
+        <li><strong>Vocabulario:</strong> la lista cerrada de tokens que conoce un tokenizador, normalmente decenas o cientos
+          de miles. Cualquier texto se puede escribir combinando piezas de esa lista.</li>
+        <li><strong>Prompt:</strong> todo lo que se envía al modelo en una petición: instrucciones, historial de la
+          conversación, documentos y la pregunta.</li>
+        <li><strong>Inferencia:</strong> usar un modelo ya entrenado para obtener una respuesta (lo opuesto a entrenarlo).
+          Cada llamada a la API de un modelo es una inferencia.</li>
+      </ul>
+
+      <h2 id="troceado">Cómo se trocea el texto</h2>
+      <p>Los tokenizadores actuales aprenden sus piezas de enormes cantidades de texto: las secuencias que aparecen mucho se
+        quedan como un solo token y las raras se componen con trozos. Por eso el reparto depende del idioma y del tipo de
+        texto:</p>
+      <ul>
+        <li>En inglés, una referencia muy citada es que un token equivale a unos 4 caracteres, o unas tres cuartas partes de
+          una palabra.</li>
+        <li>En español y en otros idiomas con menos peso en los datos de entrenamiento, la misma idea suele necesitar
+          <strong>más tokens</strong>: las palabras se parten más.</li>
+        <li>El código, los números largos, los identificadores aleatorios y los emojis gastan muchos tokens para lo que
+          parecen.</li>
+      </ul>
+      <p>Una consecuencia curiosa: como el modelo ve trozos y no letras, le cuestan tareas que a una persona le parecen
+        triviales, como contar las letras de una palabra o escribirla al revés.</p>
+      <p>Para saber cuánto ocupa un texto de verdad no hay que estimar: los proveedores ofrecen herramientas o endpoints para
+        contar tokens con el tokenizador de cada modelo, y todas las respuestas de la API informan de los tokens de entrada
+        y de salida que se han consumido.</p>
+
+      <h2 id="ventana">La ventana de contexto: qué ocupa sitio</h2>
+      <p>En una aplicación real, la ventana no la llena solo la pregunta del usuario. Todo esto ocupa tokens en
+        <strong>cada</strong> petición:</p>
+      <ul>
+        <li>El <a href="../tema.html?id=system-prompt">prompt de sistema</a>: las instrucciones fijas de la aplicación.</li>
+        <li>El historial: un chat parece recordar la conversación, pero en realidad la aplicación reenvía los mensajes
+          anteriores en cada turno. Cuanto más larga la conversación, más tokens por petición.</li>
+        <li>Los documentos o datos que se añaden para que el modelo responda con ellos (por ejemplo con
+          <a href="rag.html">RAG</a>).</li>
+        <li>Las definiciones de las herramientas que puede usar un <a href="ai-agents.html">agente</a> y los resultados que
+          estas devuelven.</li>
+        <li>La respuesta, incluido el texto de razonamiento de los <a href="reasoning-models.html">modelos que razonan</a>,
+          que también se cobra y también ocupa ventana.</li>
+      </ul>
+      <p>Si la suma no cabe, la API rechaza la petición o la respuesta se corta. Las ventanas han crecido muchísimo (de unos
+        pocos miles de tokens en los primeros modelos de chat a cientos de miles o incluso millones en los actuales), pero
+        el tamaño exacto cambia con cada modelo: consúltalo en su documentación.</p>
+      <p>Que quepa no significa que se use bien. Los estudios sobre contextos largos encontraron que los modelos aprovechan
+        mejor la información situada al principio y al final que la que queda enterrada en medio (el efecto «perdido en el
+        medio», <em>lost in the middle</em>). Elegir qué entra en la ventana, y en qué orden, es el oficio de la
+        <a href="../tema.html?id=context-engineering">ingeniería de contexto</a>.</p>
+
+      <h2 id="longitud">Longitud de entrada y de salida</h2>
+      <p>Además de la ventana, cada petición lleva un límite de salida: el número máximo de tokens que puede generar la
+        respuesta (<code>max_tokens</code> o un nombre parecido según la API). Hay que entender bien lo que hace:</p>
+      <ul>
+        <li><strong>Corta, no resume.</strong> Si el modelo llega al límite, la respuesta se queda a medias, aunque estuviera
+          a mitad de una frase o de un JSON. La API lo indica con el motivo de parada (por ejemplo,
+          <code>stop_reason: "max_tokens"</code>); conviene comprobarlo siempre.</li>
+        <li><strong>No hace al modelo más conciso.</strong> Para respuestas cortas hay que pedirlo en el prompt («responde en
+          dos frases»); el límite solo es la red de seguridad.</li>
+        <li><strong>Influye en el tiempo.</strong> El modelo escribe los tokens uno detrás de otro, así que una respuesta
+          larga tarda más. Leer la entrada es mucho más rápido que generar la salida, pero una entrada enorme también
+          retrasa el primer token.</li>
+      </ul>
+
+      <h2 id="precio">Precio por tokens</h2>
+      <p>Los modelos que se usan como servicio se cobran por tokens, normalmente con un precio por millón:</p>
+      <ul>
+        <li><strong>Entrada y salida tienen precios distintos.</strong> Los tokens de salida suelen costar varias veces más
+          que los de entrada, porque generarlos exige más cálculo.</li>
+        <li><strong>Modelos grandes, tokens caros.</strong> Dentro de una misma familia, el modelo más capaz puede costar un
+          orden de magnitud más por token que el pequeño (ver <a href="model-selection.html">selección de modelo</a>).</li>
+        <li><strong>Lo que se repite se paga cada vez,</strong> salvo que se use la
+          <a href="../tema.html?id=prompt-caching">caché de prompts</a>: el proveedor guarda el principio de un prompt que
+          no cambia (instrucciones largas, un documento fijo) y cobra mucho menos al reutilizarlo.</li>
+      </ul>
+      <p>Una cuenta rápida: un asistente con 2.000 tokens de instrucciones, 3.000 de historial y documentos, y respuestas de
+        500 tokens consume 5.500 tokens por pregunta. Con 100.000 preguntas al mes son 550 millones de tokens, y las
+        instrucciones fijas suponen más de un tercio. De ahí sale el ahorro de recortar instrucciones, limitar el historial
+        o cachear el principio del prompt.</p>
+      <p>Hay otra forma de pago, la capacidad reservada (<em>provisioned throughput</em>): se paga por tener una cantidad de
+        capacidad del modelo dedicada durante un tiempo, se use o no. Compensa con un volumen alto y estable, o cuando se
+        necesita un rendimiento garantizado.</p>
+
+      <h2 id="no-cabe">Cuando el texto no cabe</h2>
+      <ul>
+        <li><strong>Trocear</strong> (<a href="../tema.html?id=chunking"><em>chunking</em></a>)<strong>:</strong> partir los
+          documentos en fragmentos y enviar solo los relevantes para cada pregunta. Es la base de <a href="rag.html">RAG</a>.</li>
+        <li><strong>Resumir el historial:</strong> sustituir los mensajes antiguos de una conversación por un resumen.</li>
+        <li><strong>Procesar por partes:</strong> resumir cada capítulo por separado y después resumir los resúmenes.</li>
+        <li><strong>Usar un modelo con más ventana,</strong> sabiendo que cuesta más y que una ventana enorme no garantiza que
+          el modelo atienda a todo por igual.</li>
+      </ul>
+
+      <h2 id="caso-real">Caso real: Prompt Quest</h2>
+      <p>En <a href="https://arquitechthor.github.io/#prompt-quest" target="_blank" rel="noopener">Prompt Quest</a>, el juego
+        de agentes del autor de esta web, un LLM en Amazon Bedrock traduce la estrategia que escribe cada jugador a una
+        política en JSON. Ahí se ven tres decisiones de tokens:</p>
+      <ul>
+        <li><strong>Límites distintos por tarea:</strong> la compilación de la estrategia tiene un límite de 2.000 tokens de
+          salida (el JSON tiene varias reglas) y la crónica de la partida, solo 400 (son dos o tres frases).</li>
+        <li><strong>Caché del principio fijo:</strong> el prompt de sistema, largo e igual para todos los jugadores (reglas,
+          clases, elementos y objetos del juego), va marcado para la caché de prompts; solo cambia la parte final, con la
+          estrategia de cada uno.</li>
+        <li><strong>Una llamada por estrategia, no por turno:</strong> el modelo compila la estrategia una vez y un motor sin
+          IA juega la partida. Con 16 agentes y 50 turnos, eso son 16 llamadas en vez de cientos, y los tokens consumidos
+          dejan de depender de la duración de la partida.</li>
+      </ul>
+      <p>Además, cada compilación registra en los logs los tokens consumidos que devuelve la API (<code>usage</code>): sin
+        medir no se puede estimar el coste.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Contar palabras en vez de tokens:</strong> los límites y los precios van en tokens, y en español la
+          diferencia es grande. Cuenta con la herramienta del proveedor.</li>
+        <li><strong>Creer que el modelo recuerda la conversación:</strong> no guarda nada entre peticiones; la aplicación
+          reenvía el historial, y cada turno sale más caro que el anterior.</li>
+        <li><strong>Usar <code>max_tokens</code> para acortar respuestas:</strong> las corta a medias. La brevedad se pide en
+          el prompt.</li>
+        <li><strong>No comprobar el motivo de parada:</strong> una respuesta truncada puede parecer completa, o romper el
+          JSON que espera tu código.</li>
+        <li><strong>Meter todo en la ventana «porque cabe»:</strong> más contexto cuesta más, tarda más y puede distraer al
+          modelo. Mejor seleccionar lo relevante.</li>
+        <li><strong>Olvidar los tokens ocultos:</strong> las definiciones de herramientas, los resultados de las llamadas y el
+          razonamiento interno también ocupan ventana y se cobran.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="tokens-context-window"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them" target="_blank" rel="noopener">What are tokens and how to count them?</a> (OpenAI, consultada el 20/11/2026).</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/context-windows" target="_blank" rel="noopener">Context windows</a> (documentación de Anthropic, consultada el 20/11/2026).</li>
+        <li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html" target="_blank" rel="noopener">Prompt caching for faster model inference</a> (documentación de Amazon Bedrock, consultada el 20/11/2026).</li>
+        <li><a href="https://arxiv.org/abs/2307.03172" target="_blank" rel="noopener">Lost in the Middle: How Language Models Use Long Contexts</a> (Liu et al., 2023, consultada el 20/11/2026).</li>
+        <li><a href="https://developers.google.com/machine-learning/glossary#token" target="_blank" rel="noopener">Machine Learning Glossary: token</a> (Google, consultada el 20/11/2026).</li>
+        <li><a href="https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html" target="_blank" rel="noopener">AWS Certified AI Practitioner (AIF-C01) exam guide</a> (AWS, versión 1.2, consultada el 20/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=d08c2823" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

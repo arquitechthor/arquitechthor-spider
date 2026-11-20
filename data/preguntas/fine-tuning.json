@@ -1,0 +1,173 @@
+[
+  {
+    "id": "fine-tuning-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "¿Qué diferencia al fine-tuning de la ingeniería de prompts?",
+    "opciones": [
+      "El fine-tuning cambia los pesos del modelo; el prompt solo cambia la entrada.",
+      "El fine-tuning se repite en cada petición; el prompt se escribe una sola vez.",
+      "El fine-tuning solo sirve para imágenes; el prompt, solo para texto.",
+      "El fine-tuning no necesita datos; el prompt necesita miles de ejemplos."
+    ],
+    "correctas": [0],
+    "explicacion": "El fine-tuning sigue entrenando el modelo y modifica sus parámetros; el resultado es un modelo nuevo. La ingeniería de prompts no toca el modelo, solo lo que se le envía. El fine-tuning se hace una vez antes de usar el modelo, sirve para cualquier modalidad y necesita datos de ejemplo.",
+    "fuentes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html"]
+  },
+  {
+    "id": "fine-tuning-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Ordenadas de menor a mayor coste habitual, ¿qué secuencia de formas de adaptar un modelo es la correcta?",
+    "opciones": [
+      "Fine-tuning, ingeniería de prompts, RAG, preentrenamiento desde cero.",
+      "Ingeniería de prompts, RAG, fine-tuning, preentrenamiento desde cero.",
+      "RAG, preentrenamiento desde cero, ingeniería de prompts, fine-tuning.",
+      "Preentrenamiento desde cero, fine-tuning, RAG, ingeniería de prompts."
+    ],
+    "correctas": [1],
+    "explicacion": "Cambiar el prompt es lo más barato; RAG añade el coste de indexar y guardar vectores; el fine-tuning exige datos etiquetados, entrenamiento y alojar el modelo; preentrenar desde cero es con diferencia lo más caro.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "fine-tuning-003",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Una farmacéutica tiene millones de documentos técnicos sin etiquetar y quiere que el modelo domine el vocabulario de su sector. ¿Qué técnica encaja?",
+    "opciones": [
+      "Ajuste por instrucciones con pares de pregunta y respuesta.",
+      "Destilación hacia un modelo más pequeño y más barato.",
+      "Ejemplos few-shot en el prompt de cada petición.",
+      "Preentrenamiento continuo con los documentos del sector."
+    ],
+    "correctas": [3],
+    "explicacion": "El preentrenamiento continuo usa grandes cantidades de texto sin etiquetar de un dominio para que el modelo aprenda su vocabulario y conocimiento de fondo. El ajuste por instrucciones necesita ejemplos etiquetados, la destilación reduce tamaño y coste, y los ejemplos en el prompt no enseñan un dominio entero.",
+    "fuentes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html"]
+  },
+  {
+    "id": "fine-tuning-004",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Un equipo entrena un modelo con 2.000 pares de instrucción y respuesta deseada para que siga siempre el formato de sus fichas de producto. ¿Qué está haciendo?",
+    "opciones": [
+      "Preentrenamiento desde cero.",
+      "Ajuste por instrucciones.",
+      "Generación aumentada (RAG).",
+      "Aprendizaje no supervisado."
+    ],
+    "correctas": [1],
+    "explicacion": "Entrenar con pares de instrucción y respuesta deseada es ajuste por instrucciones (instruction tuning), un tipo de fine-tuning. No crea un modelo desde cero, no recupera documentos en cada petición y usa datos etiquetados, así que no es aprendizaje no supervisado.",
+    "fuentes": ["https://arxiv.org/abs/2203.02155"]
+  },
+  {
+    "id": "fine-tuning-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Una empresa usa un modelo grande para clasificar millones de correos al día y el coste se dispara. Quiere un modelo más barato que se acerque a la calidad del grande en esa tarea. ¿Qué técnica encaja?",
+    "opciones": [
+      "Destilación: entrenar un modelo pequeño con las respuestas del grande.",
+      "Preentrenamiento continuo del modelo grande con los correos del año.",
+      "RAG con los correos ya clasificados como base de conocimiento.",
+      "Subir la temperatura para que el modelo grande responda antes."
+    ],
+    "correctas": [0],
+    "explicacion": "En la destilación, un modelo profesor genera respuestas y con ellas se entrena un alumno más pequeño, que en esa tarea concreta se acerca al profesor con mucho menos coste por petición. El preentrenamiento continuo no abarata el modelo, RAG no reduce su tamaño y la temperatura no influye en la velocidad ni en el precio.",
+    "fuentes": ["https://arxiv.org/abs/1503.02531"]
+  },
+  {
+    "id": "fine-tuning-006",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "¿En qué consiste el RLHF?",
+    "opciones": [
+      "En que el modelo se corrige solo comparando su salida con internet.",
+      "En recuperar documentos que han revisado expertos humanos antes de responder.",
+      "En ajustar el modelo con las preferencias de personas entre respuestas.",
+      "En entrenar desde cero con textos escritos solo por personas."
+    ],
+    "correctas": [2],
+    "explicacion": "En el RLHF, personas comparan respuestas del modelo y eligen la mejor; con esas preferencias se ajusta el modelo para que responda como prefieren. No consulta internet, no es recuperación de documentos y parte de un modelo ya entrenado.",
+    "fuentes": ["https://arxiv.org/abs/2203.02155"]
+  },
+  {
+    "id": "fine-tuning-007",
+    "tipo": "multiple",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "¿Qué características deben tener los datos para un fine-tuning? (elige tres)",
+    "opciones": [
+      "Curados y revisados para no enseñar errores.",
+      "Representativos de los casos reales, incluidos los difíciles.",
+      "Lo más numerosos posible aunque tengan mucho ruido.",
+      "Sin datos personales ni secretos que no deban salir.",
+      "Todos muy parecidos entre sí para que aprenda un patrón."
+    ],
+    "correctas": [0, 1, 3],
+    "explicacion": "La calidad pesa más que la cantidad: datos curados, representativos y gobernados (sin datos personales ni secretos, que podrían salir en una respuesta). Muchos datos con ruido enseñan el ruido, y ejemplos demasiado parecidos hacen que el modelo copie detalles en vez de aprender la tarea.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "fine-tuning-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Tras un fine-tuning, el modelo acierta casi siempre con los ejemplos de entrenamiento pero falla con correos reales que no había visto. ¿Qué ha pasado?",
+    "opciones": [
+      "Infraajuste: el modelo no ha aprendido lo suficiente.",
+      "Sobreajuste: ha memorizado los ejemplos de entrenamiento.",
+      "Olvido catastrófico de la tarea que se le enseñaba.",
+      "Alucinación causada por una temperatura demasiado alta."
+    ],
+    "correctas": [1],
+    "explicacion": "Acertar con lo visto y fallar con lo nuevo es sobreajuste: memoriza en vez de generalizar, típico con pocos datos o demasiado entrenamiento. El infraajuste fallaría también con los de entrenamiento; el olvido catastrófico afecta a capacidades previas, no a la tarea nueva; y la temperatura no explica esa diferencia.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "fine-tuning-009",
+    "tipo": "unica",
+    "nivel": 3,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Un banco quiere un asistente que conteste con los tipos de interés vigentes, que cambian cada pocos días, y que además cite la fuente de cada dato. ¿Por qué el fine-tuning no es la solución adecuada?",
+    "opciones": [
+      "Porque los modelos ajustados no pueden responder en lenguaje natural.",
+      "Porque el fine-tuning solo admite datos de texto, no tablas de cifras.",
+      "Porque los modelos ajustados no se pueden usar en el sector bancario.",
+      "Porque lo aprendido queda fijo hasta reentrenar y no se puede citar."
+    ],
+    "correctas": [3],
+    "explicacion": "Lo que se aprende en el fine-tuning queda en los pesos hasta el siguiente entrenamiento, y el modelo no sabe de qué ejemplo sale cada dato. Para datos que cambian y que hay que citar, la herramienta es RAG. Las demás opciones son falsas: un modelo ajustado sigue respondiendo en lenguaje natural, admite ejemplos con cifras y no tiene prohibido ningún sector.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "fine-tuning-010",
+    "tipo": "unica",
+    "nivel": 3,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Un equipo duda entre poner 20 ejemplos en cada prompt o hacer un fine-tuning con esos mismos casos ampliados a 3.000. Tendrá millones de peticiones al mes. ¿Qué argumento de coste es correcto?",
+    "opciones": [
+      "Los ejemplos en el prompt son gratis porque no cambian el modelo.",
+      "El fine-tuning abarata cada petición pero cuesta entrenar y alojar.",
+      "Los dos enfoques cuestan lo mismo porque usan los mismos ejemplos.",
+      "El fine-tuning siempre sale más caro, sea cual sea el volumen."
+    ],
+    "correctas": [1],
+    "explicacion": "Los ejemplos en el prompt (aprendizaje dentro del contexto) se pagan como tokens de entrada en cada petición, lo que con millones de peticiones suma mucho. El fine-tuning paga entrenamiento y alojamiento del modelo propio, pero permite prompts más cortos. Cuál compensa depende del volumen; ninguno es gratis.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  }
+]

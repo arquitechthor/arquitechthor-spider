@@ -66,7 +66,17 @@
     "SRE": { "en": "Site Reliability Engineering", "es": "ingeniería de fiabilidad: aplicar ingeniería de software a las operaciones, enfoque nacido en Google" },
     "DORA": { "leer": "dora", "en": "DevOps Research and Assessment", "es": "programa de investigación (hoy en Google) que mide el rendimiento de los equipos de entrega de software" },
     "BSL": { "en": "Business Source License", "es": "licencia de código visible que prohíbe ciertos usos comerciales; no se considera de código abierto" },
-    "MPL": { "en": "Mozilla Public License", "es": "licencia de código abierto de Mozilla" }
+    "MPL": { "en": "Mozilla Public License", "es": "licencia de código abierto de Mozilla" },
+    "AUC": { "en": "Area Under the Curve", "es": "área bajo la curva ROC: lo bien que un clasificador separa las dos clases en todos los umbrales", "enlace": "model-evaluation-metrics" },
+    "BLEU": { "leer": "blu", "en": "Bilingual Evaluation Understudy", "es": "métrica que compara una traducción automática con traducciones de referencia, palabra a palabra", "enlace": "model-evaluation-metrics" },
+    "FM": { "en": "Foundation Model", "es": "modelo fundacional: modelo grande entrenado con datos generales que sirve de base para muchas tareas" },
+    "LoRA": { "leer": "lora", "en": "Low-Rank Adaptation", "es": "forma barata de fine-tuning que entrena unas matrices pequeñas añadidas y deja el modelo original congelado", "enlace": "fine-tuning" },
+    "MAE": { "en": "Mean Absolute Error", "es": "error absoluto medio: cuánto se equivoca de media un modelo que predice números", "enlace": "model-evaluation-metrics" },
+    "OWASP": { "leer": "ouasp", "en": "Open Worldwide Application Security Project", "es": "fundación abierta que publica guías y listas de riesgos de seguridad de aplicaciones", "enlace": "owasp-top-10" },
+    "PEFT": { "en": "Parameter-Efficient Fine-Tuning", "es": "fine-tuning que solo entrena unas pocas piezas añadidas al modelo, no todos sus pesos", "enlace": "fine-tuning" },
+    "RMSE": { "en": "Root Mean Square Error", "es": "raíz del error cuadrático medio: error medio de una predicción numérica que castiga más los errores grandes", "enlace": "model-evaluation-metrics" },
+    "ROI": { "en": "Return on Investment", "es": "retorno de la inversión: lo que se gana en relación con lo que se ha invertido" },
+    "ROUGE": { "leer": "ruch", "en": "Recall-Oriented Understudy for Gisting Evaluation", "es": "métrica que mide cuánto de un resumen de referencia aparece en el resumen generado", "enlace": "model-evaluation-metrics" }
   },
   "conceptos": [
     {

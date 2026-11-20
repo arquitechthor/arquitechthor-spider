@@ -6761,15 +6761,24 @@
   {
     "id": "tokens-context-window",
     "nombre": "Tokens & Context Window",
+    "nombreEs": "Tokens y ventana de contexto",
     "tipo": "tema",
     "padre": "llms",
     "area": "ai",
-    "estado": "pendiente",
+    "frase": "Las piezas en que se parte el texto y el límite de lo que el modelo lee de una vez.",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
-      "sampling-parameters"
+      "sampling-parameters",
+      "prompt-caching"
+    ],
+    "revisado": "2026-11-20",
+    "alias": [
+      "Token",
+      "Ventana de contexto",
+      "max_tokens"
     ]
   },
   {
@@ -6813,27 +6822,48 @@
   {
     "id": "hallucinations",
     "nombre": "Hallucinations",
+    "nombreEs": "Alucinaciones",
     "tipo": "tema",
     "padre": "llms",
     "area": "ai",
-    "estado": "pendiente",
+    "frase": "Respuestas que suenan seguras pero son falsas, y cómo anclar el modelo a sus fuentes.",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
-      "sampling-parameters"
+      "sampling-parameters",
+      "responsible-ai",
+      "rag"
+    ],
+    "revisado": "2026-11-20",
+    "alias": [
+      "Alucinación",
+      "Grounding",
+      "Anclaje"
     ]
   },
   {
     "id": "model-selection",
     "nombre": "Model Selection (quality, cost, latency)",
+    "nombreEs": "Selección de modelo",
     "tipo": "tema",
     "padre": "llms",
     "area": "ai",
-    "estado": "pendiente",
+    "frase": "Elegir el LLM más barato y rápido que hace bien cada tarea, midiendo con casos propios.",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
-    "volatil": true
+    "volatil": true,
+    "relacionados": [
+      "model-evaluation-metrics",
+      "reasoning-models",
+      "llm-cost-latency"
+    ],
+    "revisado": "2026-11-20",
+    "alias": [
+      "Elegir modelo"
+    ]
   },
   {
     "id": "reasoning-models",
@@ -6849,19 +6879,34 @@
     "volatil": true,
     "revisado": "2026-11-06",
     "relacionados": [
-      "sampling-parameters"
+      "sampling-parameters",
+      "model-selection"
     ]
   },
   {
     "id": "prompt-engineering",
     "nombre": "Prompt Engineering",
+    "nombreEs": "Ingeniería de prompts",
     "tipo": "tema",
     "padre": "artificial-intelligence",
     "area": "ai",
-    "estado": "pendiente",
+    "frase": "Escribir las instrucciones de un LLM para lograr respuestas útiles y repetibles.",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
-    "volatil": true
+    "volatil": true,
+    "relacionados": [
+      "prompt-injection",
+      "system-prompt"
+    ],
+    "revisado": "2026-11-20",
+    "alias": [
+      "Zero-shot",
+      "Few-shot",
+      "Chain-of-thought",
+      "Cadena de pensamiento",
+      "Prompt negativo"
+    ]
   },
   {
     "id": "system-prompt",
@@ -6872,7 +6917,10 @@
     "estado": "pendiente",
     "evaluable": true,
     "prioridad": 2,
-    "volatil": true
+    "volatil": true,
+    "relacionados": [
+      "prompt-engineering"
+    ]
   },
   {
     "id": "few-shot-prompting",
@@ -6899,16 +6947,26 @@
   {
     "id": "rag",
     "nombre": "RAG",
+    "nombreEs": "Generación aumentada por recuperación",
     "tipo": "tema",
     "padre": "artificial-intelligence",
     "area": "ai",
-    "estado": "pendiente",
+    "frase": "Buscar los documentos relevantes y dárselos al modelo para que responda con ellos.",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
       "fine-tuning",
-      "spring-ai"
+      "spring-ai",
+      "model-evaluation-metrics",
+      "hallucinations",
+      "embeddings"
+    ],
+    "revisado": "2026-11-20",
+    "alias": [
+      "Retrieval-Augmented Generation",
+      "Knowledge Bases"
     ]
   },
   {
@@ -6950,15 +7008,56 @@
   {
     "id": "fine-tuning",
     "nombre": "Fine-Tuning",
+    "nombreEs": "Ajuste fino",
     "tipo": "tema",
     "padre": "artificial-intelligence",
     "area": "ai",
-    "estado": "pendiente",
+    "frase": "Seguir entrenando un modelo con ejemplos propios para especializarlo en una tarea.",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
       "rag"
+    ],
+    "revisado": "2026-11-20",
+    "alias": [
+      "Ajuste fino",
+      "Instruction tuning",
+      "Destilación",
+      "LoRA",
+      "PEFT",
+      "Preentrenamiento continuo"
+    ]
+  },
+  {
+    "id": "model-evaluation-metrics",
+    "nombre": "Model Evaluation Metrics",
+    "nombreEs": "Métricas de evaluación de modelos",
+    "tipo": "tema",
+    "padre": "artificial-intelligence",
+    "area": "ai",
+    "frase": "Exactitud, precisión, F1, ROUGE o BLEU: números para saber si un sistema de IA acierta.",
+    "estado": "publicado",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "evals",
+      "model-selection",
+      "rag"
+    ],
+    "revisado": "2026-11-20",
+    "alias": [
+      "Accuracy",
+      "Precision",
+      "Recall",
+      "F1",
+      "ROUGE",
+      "BLEU",
+      "BERTScore",
+      "LLM-as-a-judge",
+      "Matriz de confusión"
     ]
   },
   {
@@ -7180,7 +7279,8 @@
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
-      "caching"
+      "caching",
+      "tokens-context-window"
     ]
   },
   {
@@ -7209,7 +7309,8 @@
     "volatil": true,
     "relacionados": [
       "semantic-hybrid-search",
-      "vector-databases"
+      "vector-databases",
+      "rag"
     ]
   },
   {
@@ -7339,7 +7440,8 @@
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
-      "sampling-parameters"
+      "sampling-parameters",
+      "model-evaluation-metrics"
     ]
   },
   {
@@ -7366,7 +7468,10 @@
     "estado": "pendiente",
     "evaluable": true,
     "prioridad": 2,
-    "volatil": true
+    "volatil": true,
+    "relacionados": [
+      "model-selection"
+    ]
   },
   {
     "id": "ai-security-governance",
@@ -7386,7 +7491,10 @@
     "estado": "pendiente",
     "evaluable": true,
     "prioridad": 2,
-    "volatil": true
+    "volatil": true,
+    "relacionados": [
+      "prompt-engineering"
+    ]
   },
   {
     "id": "owasp-llm-top-10",
@@ -7436,7 +7544,37 @@
     "estado": "pendiente",
     "evaluable": true,
     "prioridad": 2,
-    "volatil": true
+    "volatil": true,
+    "relacionados": [
+      "responsible-ai"
+    ]
+  },
+  {
+    "id": "responsible-ai",
+    "nombre": "Responsible AI",
+    "nombreEs": "IA responsable",
+    "tipo": "tema",
+    "padre": "ai-security-governance",
+    "area": "ai",
+    "frase": "Sistemas de IA justos, veraces, seguros y explicables, con personas que los supervisan.",
+    "estado": "publicado",
+    "evaluable": true,
+    "prioridad": 2,
+    "volatil": true,
+    "relacionados": [
+      "guardrails",
+      "eu-ai-act",
+      "hallucinations"
+    ],
+    "revisado": "2026-11-20",
+    "alias": [
+      "Responsible AI",
+      "Equidad",
+      "Explicabilidad",
+      "Model cards",
+      "Fichas de modelo",
+      "Sesgo"
+    ]
   },
   {
     "id": "eu-ai-act",
@@ -7450,6 +7588,9 @@
     "volatil": true,
     "alias": [
       "Reglamento europeo de IA"
+    ],
+    "relacionados": [
+      "responsible-ai"
     ]
   }
 ]

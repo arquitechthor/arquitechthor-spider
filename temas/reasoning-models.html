@@ -59,7 +59,7 @@
         modelo que razona acierta bastante más que uno que contesta al momento. También son la base de muchos
         <a href="ai-agents.html">agentes</a>, que tienen que decidir qué paso dar a continuación.</p>
       <p>A cambio, cada respuesta tarda más y cuesta más: el razonamiento se cobra como texto generado. Para un ingeniero
-        es una decisión más de <a href="../tema.html?id=model-selection">elección de modelo</a>: cuánta calidad necesita la
+        es una decisión más de <a href="model-selection.html">elección de modelo</a>: cuánta calidad necesita la
         tarea y cuánto tiempo y dinero se puede gastar en ella.</p>
 
       <h2 id="como-funcionan">Cómo funcionan</h2>
@@ -80,7 +80,7 @@
       <h2 id="conceptos">Conceptos clave</h2>
       <ul>
         <li><strong>Tokens de razonamiento:</strong> los que el modelo genera al pensar, antes de la respuesta. Ocupan sitio
-          en la <a href="../tema.html?id=tokens-context-window">ventana de contexto</a> (cuánto texto puede tener en cuenta a
+          en la <a href="tokens-context-window.html">ventana de contexto</a> (cuánto texto puede tener en cuenta a
           la vez) y se facturan como tokens de salida, aunque no los muestres al usuario.</li>
         <li><strong>Presupuesto o esfuerzo:</strong> el control que da la API sobre cuánto puede pensar el modelo. Según el
           proveedor es un número máximo de tokens de razonamiento o un nivel de esfuerzo (bajo, medio, alto…). Más esfuerzo
@@ -135,7 +135,7 @@
         <li><strong>Olvidar que el razonamiento se cobra:</strong> aunque no se vea, se factura como salida y puede
           multiplicar el coste de cada petición.</li>
         <li><strong>Tomar el razonamiento como la verdad:</strong> no garantiza que la respuesta sea correcta ni que explique
-          por qué la dio; el modelo también puede <a href="../tema.html?id=hallucinations">alucinar</a> razonando.</li>
+          por qué la dio; el modelo también puede <a href="hallucinations.html">alucinar</a> razonando.</li>
         <li><strong>Prompts de cadena de pensamiento heredados:</strong> instrucciones largas sobre cómo razonar, pensadas
           para modelos sin razonamiento, a menudo sobran o estorban.</li>
       </ul>

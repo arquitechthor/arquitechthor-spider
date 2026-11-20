@@ -1,0 +1,173 @@
+[
+  {
+    "id": "model-selection-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Un chatbot de atención al cliente necesita responder en menos de un segundo a preguntas sencillas, con millones de conversaciones al mes. ¿Qué tipo de modelo encaja mejor?",
+    "opciones": [
+      "El modelo más grande disponible, con razonamiento activado.",
+      "Un modelo pequeño y rápido de una familia actual.",
+      "Un modelo de difusión especializado en imágenes.",
+      "Un modelo preentrenado desde cero por la empresa."
+    ],
+    "correctas": [1],
+    "explicacion": "Para preguntas sencillas con mucho volumen y latencia baja, un modelo pequeño suele bastar y cuesta y tarda mucho menos. El más grande con razonamiento es lento y caro, un modelo de difusión genera imágenes y preentrenar uno propio es desproporcionado.",
+    "fuentes": ["https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"]
+  },
+  {
+    "id": "model-selection-002",
+    "tipo": "multiple",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "¿Qué criterios hay que considerar al elegir un modelo fundacional? (elige tres)",
+    "opciones": [
+      "La latencia de la respuesta.",
+      "El coste por token de entrada y de salida.",
+      "La modalidad: texto, imagen, audio o vídeo.",
+      "El número de seguidores del proveedor en redes sociales.",
+      "El color del logotipo del modelo."
+    ],
+    "correctas": [0, 1, 2],
+    "explicacion": "Latencia, coste y modalidad están entre los criterios clave, junto con idiomas, longitud de entrada y salida, tamaño, personalización, caché de prompts y cumplimiento. La popularidad en redes y el logotipo no dicen nada sobre si el modelo sirve para la tarea.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "model-selection-003",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Un modelo encabeza una comparativa pública muy conocida. ¿Cuál es la mejor forma de decidir si sirve para una aplicación concreta?",
+    "opciones": [
+      "Adoptarlo directamente, porque la comparativa ya lo ha medido.",
+      "Elegir el segundo de la lista, que suele ser más barato.",
+      "Evaluarlo con un conjunto de casos reales de la propia tarea.",
+      "Preguntar al propio modelo si es adecuado para la tarea."
+    ],
+    "correctas": [2],
+    "explicacion": "Las comparativas públicas miden tareas genéricas y a veces los modelos ya han visto sus preguntas al entrenarse; sirven para preseleccionar, no para decidir. La decisión se toma con casos reales y la respuesta esperada. El puesto en la lista no indica el precio y el modelo no puede evaluarse a sí mismo de forma fiable.",
+    "fuentes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html"]
+  },
+  {
+    "id": "model-selection-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Una aplicación recibe preguntas de dificultad muy variada. ¿Qué diseño reduce el coste sin perder calidad en las difíciles?",
+    "opciones": [
+      "Usar siempre el modelo más grande para no fallar ninguna.",
+      "Usar siempre el modelo más pequeño y aceptar los fallos.",
+      "Alternar los modelos por turnos, una petición cada uno.",
+      "Enrutar las fáciles a un modelo pequeño y las difíciles a uno grande."
+    ],
+    "correctas": [3],
+    "explicacion": "El enrutado (o la cascada: probar con el pequeño y repetir con el grande si la respuesta no pasa una comprobación) paga el modelo caro solo cuando hace falta. Usar siempre uno de los extremos sacrifica coste o calidad, y alternar por turnos no tiene en cuenta la dificultad.",
+    "fuentes": ["https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"]
+  },
+  {
+    "id": "model-selection-005",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
+    "enunciado": "Un equipo necesita analizar fotos de facturas y extraer sus datos en texto. ¿Qué característica del modelo es imprescindible?",
+    "opciones": [
+      "Que sea multimodal y acepte imágenes como entrada.",
+      "Que tenga el mayor número de parámetros del mercado.",
+      "Que admita fine-tuning con preentrenamiento continuo.",
+      "Que permita temperaturas superiores a 1."
+    ],
+    "correctas": [0],
+    "explicacion": "Si la entrada es una imagen, el modelo tiene que aceptar esa modalidad. El tamaño, la posibilidad de personalizarlo o el rango de temperatura no sirven de nada si no puede leer la foto.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "model-selection-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
+    "enunciado": "Por normativa, los datos de una empresa no pueden salir de su propia infraestructura y quiere ajustar el modelo a fondo. ¿Qué opción encaja?",
+    "opciones": [
+      "Un servicio de chat gratuito de uso general.",
+      "La API pública del modelo más popular.",
+      "Un modelo abierto alojado en su infraestructura.",
+      "Cualquier modelo, si se baja la temperatura."
+    ],
+    "correctas": [2],
+    "explicacion": "Un modelo de pesos abiertos alojado por la empresa mantiene los datos en su infraestructura y permite ajustarlo a fondo, a cambio de gestionar las GPU y revisar su licencia. Un chat gratuito o una API externa envían los datos fuera, y la temperatura no tiene nada que ver con dónde se procesan.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "model-selection-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "En una aplicación de chat, los usuarios se quejan de que «tarda en empezar a contestar». ¿Qué medida de latencia hay que mirar?",
+    "opciones": [
+      "El tiempo total de entrenamiento del modelo.",
+      "El tamaño de la ventana de contexto del modelo.",
+      "El número de parámetros que tiene el modelo.",
+      "El tiempo hasta que llega el primer token."
+    ],
+    "correctas": [3],
+    "explicacion": "La sensación de «tarda en empezar» la da el tiempo hasta el primer token; la velocidad de generación pesa después. El tiempo de entrenamiento no afecta al uso, y la ventana o los parámetros influyen, pero no son la medida en sí.",
+    "fuentes": ["https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"]
+  },
+  {
+    "id": "model-selection-008",
+    "tipo": "unica",
+    "nivel": 3,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "El modelo A cuesta la mitad por token que el B. En las pruebas, A necesita prompts tres veces más largos para igualar la calidad de B y falla el doble, lo que obliga a reintentar. ¿Qué conclusión es correcta?",
+    "opciones": [
+      "A es más barato, porque su precio por token es la mitad.",
+      "B es más caro siempre, porque cobra más por cada token.",
+      "Hay que comparar el coste por tarea resuelta, no el precio por token.",
+      "Da igual el coste, porque los dos alcanzan la misma calidad."
+    ],
+    "correctas": [2],
+    "explicacion": "Con el triple de tokens por petición y más reintentos, el modelo «barato» puede salir más caro por tarea resuelta. Lo que importa es el coste por interacción o tarea completada, una métrica de negocio, no el precio unitario.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "model-selection-009",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Directrices para una IA responsable",
+    "enunciado": "Dos modelos dan la misma calidad en una tarea; uno es mucho más pequeño. Además de por coste, ¿por qué es más responsable elegir el pequeño?",
+    "opciones": [
+      "Porque consume menos energía por respuesta.",
+      "Porque nunca tiene sesgos en sus respuestas.",
+      "Porque no necesita ninguna evaluación previa.",
+      "Porque sus respuestas son siempre explicables."
+    ],
+    "correctas": [0],
+    "explicacion": "La sostenibilidad forma parte de elegir un modelo de forma responsable: con la misma calidad, uno más pequeño gasta menos energía. Ser pequeño no lo libra de sesgos, no evita evaluarlo y no lo hace explicable por sí solo.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "model-selection-010",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Todas las peticiones de una aplicación empiezan con 10.000 tokens de instrucciones idénticas. Al comparar dos modelos de calidad parecida, ¿qué característica puede abaratar mucho el uso?",
+    "opciones": [
+      "Que admita un rango de temperatura más amplio.",
+      "Que el proveedor ofrezca caché de prompts.",
+      "Que tenga más idiomas en su entrenamiento.",
+      "Que permita respuestas de salida más largas."
+    ],
+    "correctas": [1],
+    "explicacion": "Con un prefijo largo e idéntico, la caché de prompts cobra mucho menos al reutilizarlo, por eso aparece entre los criterios de selección. El rango de temperatura, los idiomas o una salida más larga no reducen el coste de esas instrucciones.",
+    "fuentes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html"]
+  }
+]

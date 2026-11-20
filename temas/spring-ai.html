@@ -86,7 +86,7 @@
           <a href="../tema.html?id=vector-databases">bases vectoriales</a> (PGVector, Qdrant, Redis, Milvus, Elasticsearch…)
           para guardarlos y buscar los más parecidos, con filtros por metadatos.</li>
         <li><strong>ETL de documentos:</strong> lectores (PDF, texto, JSON…), troceado y carga en el <code>VectorStore</code>:
-          el paso previo de cualquier <a href="../tema.html?id=rag">RAG</a>.</li>
+          el paso previo de cualquier <a href="rag.html">RAG</a>.</li>
         <li><strong>MCP:</strong> cliente para usar herramientas de servidores MCP y servidor para ofrecer las de tu aplicación
           a otros agentes. En la 2.x forma parte del núcleo y se apoya en el
           <a href="../tema.html?id=mcp-java-sdk">SDK oficial de MCP para Java</a>. Las herramientas de un servidor MCP no se
@@ -142,7 +142,7 @@ Ticket t = chat.prompt().user(correo).call().entity(Ticket.class);</code></pre>
       <ul>
         <li><strong>Creer que el modelo recuerda la conversación:</strong> sin <code>ChatMemory</code> cada petición empieza de
           cero. Y con ella, limita cuántos mensajes se envían: cada uno se paga en tokens y ocupa
-          <a href="../tema.html?id=tokens-context-window">ventana de contexto</a> (el texto máximo que el modelo atiende a la
+          <a href="tokens-context-window.html">ventana de contexto</a> (el texto máximo que el modelo atiende a la
           vez).</li>
         <li><strong>Fiarse a ciegas de <code>entity()</code>:</strong> el objeto puede llegar con campos vacíos o valores
           absurdos. Valídalo como cualquier entrada externa y decide qué hacer si falla.</li>

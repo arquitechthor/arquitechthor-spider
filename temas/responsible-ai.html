@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IA responsable — Tech Spider</title>
+<meta name="description" content="Diseñar y usar sistemas de IA justos, seguros, veraces, transparentes y explicables: sesgos en los datos, riesgos legales, fichas de modelo y supervisión humana.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/responsible-ai.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=532e81a3">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="responsible-ai">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>La <strong>IA responsable</strong> es el conjunto de prácticas para que un sistema de IA haga lo que debe sin causar
+        daños: que trate a todas las personas con justicia, que no dé información falsa o peligrosa, que se pueda entender
+        por qué decide lo que decide y que alguien responda de él. No es una herramienta ni una capa que se añade al final:
+        son decisiones que se toman en cada fase, desde elegir los datos hasta vigilar el sistema en producción.</p>
+      <p>Importa por tres motivos: un modelo con sesgos o que inventa puede hacer daño real a personas; ese daño se convierte
+        en riesgos legales y en pérdida de confianza de los clientes; y la normativa (como el
+        <a href="../tema.html?id=eu-ai-act">reglamento europeo de IA</a>) ya exige muchas de estas prácticas.</p>
+
+      <h2 id="dimensiones">Las dimensiones</h2>
+      <p>Cada organización las agrupa a su manera; estas son las que más se repiten:</p>
+      <ul>
+        <li><strong>Equidad</strong> (<em>fairness</em>)<strong>:</strong> que el sistema no perjudique a grupos de personas
+          por su sexo, origen, edad u otras características. El problema de fondo es el
+          <a class="concepto" data-concepto="sesgo">sesgo</a>: un error sistemático que favorece o perjudica siempre a los
+          mismos.</li>
+        <li><strong>Inclusión:</strong> que funcione bien para todos los usuarios previstos, también los que hablan otro
+          idioma o tienen una discapacidad.</li>
+        <li><strong>Robustez:</strong> que se comporte de forma fiable ante entradas inesperadas, ruidosas o maliciosas.</li>
+        <li><strong>Seguridad</strong> (<em>safety</em>)<strong>:</strong> que no produzca contenido dañino (instrucciones
+          peligrosas, contenido tóxico) ni acciones con consecuencias graves sin control.</li>
+        <li><strong>Veracidad:</strong> que lo que diga sea cierto y se apoye en datos, sin
+          <a href="hallucinations.html">alucinaciones</a>.</li>
+        <li><strong>Transparencia:</strong> que se sepa que hay una IA, con qué datos se entrenó, para qué sirve y cuáles son
+          sus límites.</li>
+        <li><strong>Explicabilidad:</strong> que se pueda entender por qué ha tomado una decisión concreta.</li>
+        <li><strong>Privacidad y gobierno:</strong> que proteja los datos personales y que haya responsables, políticas y
+          revisiones.</li>
+      </ul>
+
+      <h2 id="sesgos">Sesgos: de dónde salen</h2>
+      <p>Un modelo aprende de sus datos, así que hereda sus defectos. Si un modelo de selección de personal se entrena con
+        diez años de contrataciones de una empresa que apenas contrataba mujeres en ingeniería, aprenderá que ser mujer es
+        una señal negativa, aunque nadie se lo haya pedido. Fuentes típicas:</p>
+      <ul>
+        <li><strong>Datos poco representativos:</strong> un grupo aparece poco (un reconocimiento facial entrenado casi solo
+          con caras de piel clara falla más con las oscuras).</li>
+        <li><strong>Datos históricos con prejuicios:</strong> los datos reflejan decisiones pasadas injustas.</li>
+        <li><strong>Etiquetas de mala calidad:</strong> las personas que etiquetaron los datos lo hicieron de forma
+          incoherente o con sus propios prejuicios.</li>
+        <li><strong>Variables que delatan otras:</strong> quitar el sexo de los datos no basta si el código postal o el
+          historial lo delatan indirectamente.</li>
+      </ul>
+      <p>Por eso los datos deben ser <strong>diversos, equilibrados y curados</strong>, de fuentes revisadas. Y el problema
+        técnico de <a class="concepto" data-concepto="sesgo">sesgo</a> y <a class="concepto" data-concepto="varianza">varianza</a>
+        también cuenta: un modelo demasiado simple (infraajuste) puede fallar más con los grupos minoritarios, y uno que
+        memoriza (sobreajuste) puede reproducir rarezas de los datos.</p>
+      <p>Para detectarlos:</p>
+      <ul>
+        <li><strong>Análisis por subgrupos:</strong> medir las métricas (ver <a href="model-evaluation-metrics.html">métricas
+          de evaluación</a>) por separado para cada grupo. Un 95 % de acierto global puede esconder un 70 % en un grupo.</li>
+        <li><strong>Revisar la calidad de las etiquetas.</strong></li>
+        <li><strong>Auditorías humanas</strong> periódicas del comportamiento del sistema.</li>
+        <li><strong>Vigilancia en producción:</strong> los datos cambian con el tiempo y un modelo justo hoy puede dejar de
+          serlo.</li>
+      </ul>
+
+      <h2 id="explicabilidad">Transparencia y explicabilidad</h2>
+      <p>Hay modelos <strong>interpretables por naturaleza</strong>: una regresión lineal o un árbol de decisión pequeño
+        dejan ver qué variables pesan y cómo. Y hay modelos de <strong>caja negra</strong>: una red neuronal profunda o un
+        <a href="llms.html">LLM</a> tienen miles de millones de parámetros y no hay forma directa de leer por qué responden lo
+        que responden. Existen técnicas que estiman qué variables influyeron en una predicción concreta, pero son
+        aproximaciones.</p>
+      <p>Esto obliga a un <strong>compromiso entre rendimiento e interpretabilidad</strong>: el modelo más potente suele ser
+        el menos explicable. Si una decisión afecta a derechos de las personas (conceder un crédito, filtrar candidatos) o la
+        normativa exige explicarla, puede ser mejor un modelo algo menos preciso pero explicable. También hay un compromiso
+        entre seguridad y transparencia: publicar todos los detalles de un modelo ayuda a auditarlo, pero puede facilitar
+        que alguien lo ataque.</p>
+      <p>Herramientas de transparencia:</p>
+      <ul>
+        <li><strong>Fichas de modelo</strong> (<em>model cards</em>)<strong>:</strong> un documento que acompaña a un modelo
+          y explica para qué sirve y para qué no, con qué datos se entrenó, cómo se evaluó (también por subgrupos) y qué
+          limitaciones conocidas tiene. Las propusieron investigadores de Google en 2018.</li>
+        <li><strong>Modelos y datos abiertos, con su licencia:</strong> poder inspeccionar los pesos, los datos o al menos su
+          descripción facilita auditar.</li>
+        <li><strong>Trazabilidad de los datos:</strong> saber de dónde sale cada dato y quién lo ha tocado (linaje y
+          catálogo de datos).</li>
+      </ul>
+
+      <h2 id="diseno">Diseño centrado en las personas</h2>
+      <ul>
+        <li><strong>Decir que es una IA</strong> y qué puede y qué no puede hacer.</li>
+        <li><strong>Explicar la decisión</strong> en términos que entienda quien la recibe («se ha denegado porque…»).</li>
+        <li><strong>Dejar opinar y corregir:</strong> mecanismos para que el usuario marque una respuesta como mala o pida
+          revisión.</li>
+        <li><strong>Supervisión humana</strong> (<a href="../tema.html?id=human-in-the-loop">humano en el bucle</a>) en las
+          decisiones de alto impacto: la IA propone y una persona decide.</li>
+      </ul>
+
+      <h2 id="riesgos-legales">Riesgos legales de la IA generativa</h2>
+      <ul>
+        <li><strong>Propiedad intelectual:</strong> reclamaciones porque un contenido generado se parece demasiado a una obra
+          protegida, o por los datos con los que se entrenó el modelo.</li>
+        <li><strong>Resultados sesgados:</strong> discriminación en decisiones automatizadas.</li>
+        <li><strong>Alucinaciones:</strong> información falsa dada a un cliente con apariencia oficial.</li>
+        <li><strong>Riesgos para el usuario final:</strong> consejos peligrosos, contenido inapropiado, decisiones que le
+          perjudican.</li>
+        <li><strong>Pérdida de confianza:</strong> un solo incidente público puede dañar la reputación de la marca.</li>
+      </ul>
+      <p>Y una dimensión que a menudo se olvida: la <strong>sostenibilidad</strong>. Entrenar y usar modelos grandes consume
+        mucha energía, así que elegir el modelo más pequeño que hace bien la tarea (ver
+        <a href="model-selection.html">selección de modelo</a>) también es una práctica responsable.</p>
+
+      <h2 id="en-aws">Así se hace en AWS</h2>
+      <p>En <a href="https://arquitechthor.github.io/aws-cert-study/servicios/bedrock.html">Amazon Bedrock</a>, los
+        <a href="../tema.html?id=guardrails">guardarraíles</a> (Guardrails) filtran contenido dañino, temas prohibidos y
+        datos personales, y comprueban el anclaje de las respuestas en sus fuentes; Model Evaluation compara modelos también
+        en robustez y toxicidad. En <a href="https://arquitechthor.github.io/aws-cert-study/servicios/sagemaker-ai.html">Amazon
+        SageMaker AI</a>, las Model Cards documentan cada modelo y otras herramientas ayudan a detectar sesgos, explicar
+        predicciones, vigilar el modelo en producción y añadir revisión humana.</p>
+
+      <h2 id="caso-real">Caso real: Prompt Quest</h2>
+      <p><a href="https://arquitechthor.github.io/#prompt-quest" target="_blank" rel="noopener">Prompt Quest</a>, el juego de
+        agentes del autor de esta web, se usa en eventos con público, y aplica varias de estas prácticas a pequeña
+        escala:</p>
+      <ul>
+        <li><strong>Seguridad del contenido:</strong> el modelo indica si el nombre que pone cada jugador a su agente es
+          ofensivo o inapropiado para un evento corporativo, antes de mostrarlo en la pantalla grande.</li>
+        <li><strong>Veracidad:</strong> la crónica de cada partida se escribe solo con los hechos de esa partida.</li>
+        <li><strong>Transparencia:</strong> cuando parte de la estrategia no se puede cumplir o es un intento de manipulación,
+          el jugador recibe un aviso que lo explica. Y una página «cómo se hizo» cuenta qué hizo la IA y qué decidieron las
+          personas en el desarrollo del proyecto.</li>
+        <li><strong>Control humano:</strong> la consola de administración permite vigilar agentes, compilaciones y partidas
+          durante el evento.</li>
+      </ul>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Dejarlo para el final:</strong> un sesgo en los datos no se arregla con un filtro en la salida.</li>
+        <li><strong>Creer que quitar una variable sensible elimina el sesgo:</strong> otras variables la delatan.</li>
+        <li><strong>Medir solo la métrica global:</strong> analiza por subgrupos.</li>
+        <li><strong>Usar una caja negra donde la ley o el usuario exigen explicaciones.</strong></li>
+        <li><strong>Automatizar del todo decisiones de alto impacto</strong> sin revisión humana ni forma de reclamar.</li>
+        <li><strong>No documentar:</strong> sin ficha de modelo ni trazabilidad de los datos, nadie puede auditar el
+          sistema.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="responsible-ai"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://aws.amazon.com/ai/responsible-ai/" target="_blank" rel="noopener">Responsible AI</a> (AWS, consultada el 20/11/2026).</li>
+        <li><a href="https://arxiv.org/abs/1810.03993" target="_blank" rel="noopener">Model Cards for Model Reporting</a> (Mitchell et al., 2018, consultada el 20/11/2026).</li>
+        <li><a href="https://docs.aws.amazon.com/sagemaker/latest/dg/model-cards.html" target="_blank" rel="noopener">Amazon SageMaker Model Cards</a> (documentación de AWS, consultada el 20/11/2026).</li>
+        <li><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener">AI Risk Management Framework</a> (NIST, consultada el 20/11/2026).</li>
+        <li><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj" target="_blank" rel="noopener">Reglamento (UE) 2024/1689 de inteligencia artificial</a> (EUR-Lex, consultada el 20/11/2026).</li>
+        <li><a href="https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html" target="_blank" rel="noopener">AWS Certified AI Practitioner (AIF-C01) exam guide</a> (AWS, versión 1.2, consultada el 20/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=d08c2823" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

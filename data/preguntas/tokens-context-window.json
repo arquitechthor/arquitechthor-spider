@@ -1,0 +1,173 @@
+[
+  {
+    "id": "tokens-context-window-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
+    "enunciado": "¿Qué es un token para un LLM?",
+    "opciones": [
+      "Una credencial que autoriza cada llamada a la API del modelo.",
+      "Un trozo de texto, como una palabra o parte de ella, con el que lee y escribe.",
+      "Una frase completa que el modelo procesa entera como una unidad de significado.",
+      "Un parámetro del modelo que se ajusta durante el entrenamiento."
+    ],
+    "correctas": [1],
+    "explicacion": "El tokenizador parte el texto en piezas de tamaño variable (palabras cortas, trozos de palabras largas, signos) y el modelo trabaja con ellas. No es una credencial (aunque la palabra «token» se use también para eso en seguridad), ni una frase, ni un parámetro aprendido.",
+    "fuentes": ["https://developers.google.com/machine-learning/glossary#token"]
+  },
+  {
+    "id": "tokens-context-window-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
+    "enunciado": "Un modelo tiene una ventana de contexto de 200.000 tokens. ¿Qué significa?",
+    "opciones": [
+      "Que puede generar como máximo 200.000 tokens por día de uso.",
+      "Que recuerda los últimos 200.000 tokens de todas las conversaciones del usuario.",
+      "Que entrada y respuesta de una petición suman como mucho 200.000 tokens.",
+      "Que se entrenó con un conjunto de datos de 200.000 tokens."
+    ],
+    "correctas": [2],
+    "explicacion": "La ventana es el máximo de tokens que el modelo puede tener delante en una petición, y lo comparten la entrada (instrucciones, historial, documentos) y la salida. No es un cupo diario, ni una memoria entre conversaciones (el modelo no guarda nada entre peticiones), ni el tamaño de sus datos de entrenamiento.",
+    "fuentes": ["https://platform.claude.com/docs/en/build-with-claude/context-windows"]
+  },
+  {
+    "id": "tokens-context-window-003",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
+    "enunciado": "En un chatbot, cada pregunta nueva de una conversación larga cuesta más que la anterior. ¿Por qué?",
+    "opciones": [
+      "Porque el proveedor sube el precio por token a partir de cierto uso.",
+      "Porque la aplicación reenvía el historial completo en cada petición.",
+      "Porque el modelo reentrena sus pesos con cada mensaje que recibe.",
+      "Porque las respuestas se alargan a medida que avanza la conversación."
+    ],
+    "correctas": [1],
+    "explicacion": "El modelo no recuerda nada entre peticiones: para que «recuerde», la aplicación vuelve a enviar los mensajes anteriores, así que los tokens de entrada crecen con cada turno. El modelo no se reentrena al chatear, y las respuestas no tienen por qué alargarse.",
+    "fuentes": ["https://platform.claude.com/docs/en/build-with-claude/context-windows"]
+  },
+  {
+    "id": "tokens-context-window-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Una aplicación fija un límite de salida de 300 tokens para obtener resúmenes breves, pero algunos llegan cortados a mitad de frase. ¿Qué cambio lo resuelve mejor?",
+    "opciones": [
+      "Bajar el límite a 150 tokens para que el modelo resuma con más fuerza.",
+      "Pedir la longitud deseada en el prompt y dejar el límite como red de seguridad.",
+      "Subir la temperatura para que el modelo elija palabras más cortas.",
+      "Cambiar a un modelo con una ventana de contexto más grande."
+    ],
+    "correctas": [1],
+    "explicacion": "El límite de salida no hace al modelo más conciso: solo corta cuando se alcanza. La brevedad se pide en las instrucciones y el límite queda por encima, para casos anómalos. Bajarlo cortaría más; la temperatura no controla la longitud; y la ventana más grande no cambia el límite de salida que fija la aplicación.",
+    "fuentes": ["https://platform.claude.com/docs/en/build-with-claude/context-windows"]
+  },
+  {
+    "id": "tokens-context-window-005",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
+    "enunciado": "En el precio habitual de los modelos por tokens, ¿qué suele ser cierto?",
+    "opciones": [
+      "Los tokens de entrada cuestan más porque el modelo los lee varias veces.",
+      "Los tokens de salida cuestan más porque generarlos exige más cálculo.",
+      "Entrada y salida tienen el mismo precio en todos los proveedores.",
+      "Solo se cobran los tokens de salida; la entrada es gratuita."
+    ],
+    "correctas": [1],
+    "explicacion": "Los proveedores cobran por separado entrada y salida, y la salida suele ser varias veces más cara: cada token se genera de uno en uno. La entrada también se paga, por eso importa recortar instrucciones e historial.",
+    "fuentes": ["https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them"]
+  },
+  {
+    "id": "tokens-context-window-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Todas las peticiones de un asistente empiezan con las mismas 8.000 palabras de instrucciones y normativa interna. ¿Qué técnica reduce más el coste de esa parte repetida?",
+    "opciones": [
+      "Caché de prompts para el principio fijo de cada petición.",
+      "Fine-tuning semanal con el texto de la normativa interna.",
+      "Subir el límite de salida para agrupar varias respuestas.",
+      "Enviar las instrucciones al final del prompt en vez de al principio."
+    ],
+    "correctas": [0],
+    "explicacion": "La caché de prompts guarda el prefijo que no cambia y lo cobra mucho más barato al reutilizarlo. El fine-tuning cuesta entrenar y obliga a repetirlo cada vez que cambia la normativa; el límite de salida no afecta a la entrada; y mover el texto al final rompe el prefijo común que la caché necesita.",
+    "fuentes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html"]
+  },
+  {
+    "id": "tokens-context-window-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
+    "enunciado": "El mismo texto en español ocupa más tokens que su traducción al inglés con el mismo modelo. ¿Cuál es la causa más probable?",
+    "opciones": [
+      "El tokenizador elimina las palabras repetidas solo en inglés.",
+      "El español se procesa siempre carácter a carácter, sin agrupar letras en piezas.",
+      "Los acentos se cobran como tokens adicionales de puntuación.",
+      "El tokenizador aprendió más piezas frecuentes del inglés que del español."
+    ],
+    "correctas": [3],
+    "explicacion": "Los tokenizadores aprenden sus piezas de los datos de entrenamiento; si hay más texto en inglés, sus secuencias frecuentes se quedan como un token y las del español se parten más. No van carácter a carácter, ni eliminan repeticiones, ni existe un recargo por acentos.",
+    "fuentes": ["https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them"]
+  },
+  {
+    "id": "tokens-context-window-008",
+    "tipo": "multiple",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
+    "enunciado": "Un agente responde preguntas usando herramientas. ¿Qué elementos ocupan sitio en su ventana de contexto? (elige tres)",
+    "opciones": [
+      "Las definiciones de las herramientas que puede usar.",
+      "Los pesos del modelo cargados en la memoria de la GPU.",
+      "Los resultados que devuelven las herramientas.",
+      "El prompt de sistema con las instrucciones del agente.",
+      "Las conversaciones de otros usuarios con el mismo agente."
+    ],
+    "correctas": [0, 2, 3],
+    "explicacion": "La ventana la llenan los tokens de la petición: instrucciones, definiciones de herramientas, sus resultados, historial y respuesta. Los pesos del modelo no son tokens de la petición, y las conversaciones de otros usuarios no se envían (ni deben enviarse).",
+    "fuentes": ["https://platform.claude.com/docs/en/build-with-claude/context-windows"]
+  },
+  {
+    "id": "tokens-context-window-009",
+    "tipo": "unica",
+    "nivel": 3,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Un equipo mete en el prompt un contrato de 300 páginas que cabe en la ventana del modelo. Las respuestas aciertan con las cláusulas del principio y del final, pero fallan a menudo con las del medio. ¿Qué mejora es la más indicada?",
+    "opciones": [
+      "Repetir el contrato completo dos veces seguidas en el mismo prompt.",
+      "Recuperar solo los fragmentos relevantes de cada pregunta y enviarlos.",
+      "Subir la temperatura para que el modelo explore más partes del texto.",
+      "Quitar el prompt de sistema para que quede más sitio al contrato."
+    ],
+    "correctas": [1],
+    "explicacion": "Los modelos tienden a aprovechar peor la información enterrada en mitad de un contexto muy largo («perdido en el medio»). Enviar solo los fragmentos relevantes (troceado y recuperación, como en RAG) pone lo importante delante. Repetir el texto duplica el coste, la temperatura no cambia a qué atiende el modelo y quitar las instrucciones empeora la respuesta.",
+    "fuentes": ["https://arxiv.org/abs/2307.03172"]
+  },
+  {
+    "id": "tokens-context-window-010",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
+    "enunciado": "Una aplicación procesa cada día un volumen alto y estable de peticiones y necesita un rendimiento garantizado del modelo. ¿Qué forma de pago encaja mejor?",
+    "opciones": [
+      "Pago por tokens bajo demanda, sin ningún compromiso.",
+      "Pago por número de usuarios registrados en la aplicación cada mes.",
+      "Capacidad reservada del modelo durante un periodo de tiempo.",
+      "Pago por cada respuesta, sea cual sea su longitud."
+    ],
+    "correctas": [2],
+    "explicacion": "La capacidad reservada (provisioned throughput) da una capacidad dedicada que se paga por tiempo, se use o no; compensa con carga alta y estable o cuando hace falta rendimiento garantizado. El pago bajo demanda por tokens encaja mejor con carga variable; las otras dos no son modelos de precio habituales de los modelos.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  }
+]

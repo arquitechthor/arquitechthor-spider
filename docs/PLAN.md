@@ -144,7 +144,18 @@ funciones existentes): **es lo esperado** y lo arregla el paso 2 (que sube su c�
 - **Concurrencia (2026-11-19), segundo tema de la cola:** ficha `temas/concurrency.html` con 13
   preguntas sin Kopi Chess. Sin probar en navegador en local: comprobar en producción. Siguiente: la 3
   de la cola (`testcontainers`).
-- **Última actualización:** 2026-11-19 (Concurrencia publicada)
+- **Temas de AIF-C01 para Apuntes AWS (2026-11-20, pedido por el usuario):** primer paso del plan conjunto
+  con aws-cert-study (su `PLAN.md`, "AIF-C01, conceptos en Tech Spider"). Publicadas 8 fichas del área IA
+  con 83 preguntas, todas con `"certificaciones": ["AIF-C01"]` y `"dominio"` (nombres en español de
+  `aws-cert-study/data/certificaciones.json`): `tokens-context-window`, `prompt-engineering`,
+  `hallucinations`, `rag`, `fine-tuning`, `model-selection` y dos nodos nuevos, `model-evaluation-metrics`
+  (bajo `artificial-intelligence`) y `responsible-ai` (bajo `ai-security-governance`). Contenido
+  alineado con la guía del examen v1.2 (29/10/2026). Casos reales de Prompt Quest y Kopi (no hay IA en Kopi
+  Chess). Sin probar en navegador (no se permitió levantar el servidor): comprobar en producción.
+  **Siguiente:** marcar con AIF-C01 las preguntas útiles de las fichas de IA ya publicadas (paso 3 del plan
+  conjunto) y, en aws-cert-study, leer estas preguntas desde su simulacro. Después, vuelve la cola de
+  Kopi Chess por la 3 (`testcontainers`).
+- **Última actualización:** 2026-11-20 (temas de AIF-C01 publicados)
 
 ---
 
@@ -449,6 +460,20 @@ directamente en `data/nodos.json` (el importador ya no se usa; con `--forzar` se
 **2026-11-19: Concurrencia publicada** (segundo de la cola): `concurrency` con `nombreEs` «Concurrencia y
 multihilo», alias y relacionados recíprocos con `reactive-programming`, `spring-webflux` e
 `isolation-levels` (además de `modern-java`). Sin nodos nuevos.
+
+**2026-11-20: temas de AIF-C01 publicados** (plan conjunto con aws-cert-study):
+- Publicados con `nombreEs`, frase, alias y `revisado`: `tokens-context-window` («Tokens y ventana de
+  contexto»), `prompt-engineering` («Ingeniería de prompts»), `hallucinations` («Alucinaciones»), `rag`
+  («Generación aumentada por recuperación»), `fine-tuning` («Ajuste fino») y `model-selection` («Selección de
+  modelo»).
+- Nodos nuevos: `model-evaluation-metrics` («Model Evaluation Metrics», tema bajo `artificial-intelligence`,
+  tras `fine-tuning`: métricas de clasificación, regresión, IA generativa y negocio; `evals` sigue siendo la
+  práctica de LLMOps) y `responsible-ai` («Responsible AI», tema bajo `ai-security-governance`, tras
+  `guardrails`). 552 nodos.
+- Relacionados recíprocos nuevos: métricas ↔ `evals`, `model-selection`, `rag`; IA responsable ↔
+  `guardrails`, `eu-ai-act`, `hallucinations`; `hallucinations` ↔ `rag`; `prompt-engineering` ↔
+  `prompt-injection`, `system-prompt`; `tokens-context-window` ↔ `prompt-caching`; `model-selection` ↔
+  `reasoning-models`, `llm-cost-latency`; `rag` ↔ `embeddings`.
 
 ### 4.3 Preguntas: `data/preguntas/<id>.json`
 
@@ -1073,6 +1098,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-20 | **Temas de AIF-C01** (paso 1 del plan conjunto con aws-cert-study, pedido por el usuario): 8 fichas del área IA alineadas con la guía de AIF-C01 v1.2: tokens y ventana de contexto (precio por tokens, longitud de entrada y salida, capacidad reservada), ingeniería de prompts (partes, zero/one/few-shot, cadena de pensamiento, plantillas, prompts negativos, versionado; riesgos: inyección, jailbreak, exposición, envenenamiento), alucinaciones (causas, tipos, anclaje, comprobación de anclaje, puntuación de confianza), RAG (ingesta, consulta, búsqueda híbrida, reordenación, evaluación, bases vectoriales de AWS), fine-tuning (instrucciones, dominio, preentrenamiento continuo, RLHF, destilación, PEFT/LoRA, tabla de costes frente a prompt y RAG, datos), selección de modelo (criterios, tamaños, enrutado y cascada, abierto frente a gestionado), métricas de evaluación (nuevo: matriz de confusión, exactitud, precisión, exhaustividad, F1, AUC, MAE, RMSE, ROUGE, BLEU, BERTScore, LLM como juez, benchmarks, negocio) e IA responsable (nuevo: dimensiones, sesgos y análisis por subgrupos, explicabilidad, fichas de modelo, riesgos legales, sostenibilidad). Casos reales de Prompt Quest (prompt de sistema del compilador, delimitadores e inyección, JSON Schema, Haiku con esfuerzo bajo, caché del prompt, límites de salida, crónica anclada en hechos) y Kopi (preguntas de repaso generadas desde el apunte). 83 preguntas con `certificaciones` y `dominio` (la más larga es la correcta en 26 de 74 de respuesta única). Glosario: AUC, BLEU, FM, LoRA, MAE, OWASP, PEFT, RMSE, ROI y ROUGE. 12 enlaces de fichas existentes pasan de «Próximamente» a la ficha publicada. Fuentes comprobadas (todas responden salvo la ayuda de OpenAI, que bloquea clientes automáticos). Validador en verde; sin probar en navegador. |
 | 2026-11-19 | **Ficha de Concurrencia** (`concurrency`, segundo de la cola de Kopi Chess): concurrencia frente a paralelismo, vocabulario (hilo de plataforma y virtual, estado compartido, condición de carrera, sección crítica), los tres problemas (atomicidad, visibilidad, orden y JMM), `synchronized`, `volatile`, inmutabilidad y confinamiento, `java.util.concurrent` (ejecutores, `CompletableFuture`, atómicas y `LongAdder`, colecciones concurrentes, candados, `Semaphore`), interrupción, hilos virtuales (pools, JEP 491, `ScopedValue`), concurrencia estructurada (preview) e interbloqueos. Caso real de Kopi Chess: `UciProcess` (hilo virtual + `BlockingQueue` con tiempo límite), `EnginePool` (semáforo justo, `ConcurrentLinkedQueue`, `LongAdder`), `AnalysisWorker` (parada con `volatile`, interrupción y `join`), `OnlineGames` (`synchronized`, bloqueo optimista), `RelayWebSocket` (envíos encadenados con `CompletableFuture`) y `kopi-labs`. 13 preguntas sin Kopi Chess (la más larga es la correcta en 1). Glosario: CPU y JMM. Validador en verde; sin probar en navegador. |
 | 2026-11-19 | **Ficha de Java moderno** (`modern-java`, primero de la cola de Kopi Chess): vocabulario (JDK, JEP, LTS, preview), versiones que marcan época (8, 11, 17, 21, 25, y 26/27), una sección por novedad (lambdas, `var`, `switch` y bloques de texto, `record`, patrones, `sealed`, colecciones secuenciadas, hilos virtuales, *Gatherers*, `///`, constructores flexibles, ficheros compactos, caché AOT, preview), caso real de Kopi Chess (`MoveKind`, `Evaluation`, `InvalidFenException`, `windowSliding`, `SequencedMap`, `UciProcess`, `Perft.java`, caché AOT medida y `kopi-labs`/ADR-012), errores frecuentes y por dónde empezar. 14 preguntas sin Kopi Chess (la opción más larga es la correcta en 3). Glosario: FEN, JDK, JEP, LTS, AOT y TLS. Fuentes: índice de JEP, calendario de Oracle, anuncios de Java 26 y 27 (openjdk.org devolvió 403 al consultarlo automáticamente; JEP verificadas de memoria y con buscador). Validador en verde; sin probar en navegador. |
 | 2026-11-19 | El usuario revisa la Fase 3 en producción (radar, vista General y móvil): todo bien y usable. Se cierra el repaso de términos sin explicar como tarea aparte (la regla se aplica siempre). Decisión "Orden del contenido": temas sueltos de distintas áreas sacados de los proyectos personales, en lugar de completar ramas. |

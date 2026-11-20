@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Selección de modelo (calidad, coste y latencia) — Tech Spider</title>
+<meta name="description" content="Cómo elegir el modelo de IA de cada función: calidad, coste, latencia, modalidad, idiomas, ventana de contexto, personalización y cumplimiento, medidos con tus propios casos.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/model-selection.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=532e81a3">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="model-selection">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>Elegir modelo es decidir qué <a href="llms.html">LLM</a> o modelo fundacional usa cada función de una aplicación.
+        Hay decenas de opciones, de varios proveedores y de varios tamaños, y ninguna es la mejor para todo: el modelo más
+        capaz es también el más caro y el más lento, y el más barato puede quedarse corto en tareas difíciles.</p>
+      <p>Por eso la pregunta no es «¿cuál es el mejor modelo?», sino «¿cuál es el más barato y rápido que hace
+        <strong>esta</strong> tarea lo bastante bien?». Y se responde midiendo con casos propios, no con titulares.</p>
+
+      <h2 id="criterios">Los criterios</h2>
+      <ul>
+        <li><strong>Calidad para tu tarea:</strong> si acierta lo suficiente en lo que necesitas (extraer datos, razonar,
+          programar, escribir en un tono). Un modelo puede ser excelente programando y mediocre resumiendo.</li>
+        <li><strong>Coste:</strong> precio por millón de <a href="tokens-context-window.html">tokens</a> de entrada y de
+          salida. Entre el modelo pequeño y el grande de una misma familia puede haber un orden de magnitud.</li>
+        <li><strong>Latencia:</strong> cuánto tarda la respuesta. Se mide con el tiempo hasta el primer token (lo que el
+          usuario espera antes de ver algo) y la velocidad de generación. Un chat necesita respuesta inmediata; un informe
+          nocturno, no.</li>
+        <li><strong>Modalidad:</strong> qué entra y qué sale: solo texto, imágenes, audio, vídeo. Un modelo multimodal entiende
+          varias; un modelo de difusión genera imágenes.</li>
+        <li><strong>Idiomas:</strong> no todos rinden igual en español o en otros idiomas que en inglés. Si tus usuarios
+          escriben en catalán o en italiano, pruébalo.</li>
+        <li><strong>Longitud de entrada y salida:</strong> el tamaño de la <a href="tokens-context-window.html">ventana de
+          contexto</a> y el máximo de salida. Analizar un contrato de 300 páginas exige una ventana grande.</li>
+        <li><strong>Tamaño y complejidad del modelo:</strong> más parámetros suele significar más capacidad, pero también más
+          coste, más latencia y más infraestructura si lo alojas tú.</li>
+        <li><strong>Personalización:</strong> si admite <a href="fine-tuning.html">fine-tuning</a> o destilación, por si el
+          prompt se queda corto.</li>
+        <li><strong>Caché de prompts:</strong> si el proveedor ofrece <a href="../tema.html?id=prompt-caching">caché</a> para
+          el principio fijo de los prompts, una aplicación con instrucciones largas paga mucho menos.</li>
+        <li><strong>Cumplimiento y licencia:</strong> en qué región se procesan los datos, si el proveedor los usa para
+          entrenar, qué permite la licencia de un modelo abierto y qué exige tu normativa.</li>
+        <li><strong>Sostenibilidad:</strong> un modelo más grande consume más energía por respuesta. Elegir el pequeño cuando
+          basta también es una decisión de <a href="responsible-ai.html">IA responsable</a>.</li>
+      </ul>
+
+      <h2 id="tamanos">Grande, mediano o pequeño</h2>
+      <p>Casi todos los proveedores ofrecen familias con varios tamaños. Una orientación general:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Tamaño</th><th>Puntos fuertes</th><th>Usos típicos</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Pequeño</td><td>Barato, rápido</td><td>Clasificar, extraer datos, rutas de un agente, respuestas cortas en tiempo real, mucho volumen</td></tr>
+            <tr><td>Mediano</td><td>Equilibrio</td><td>Asistentes generales, RAG, la mayoría de tareas de empresa</td></tr>
+            <tr><td>Grande o con <a href="reasoning-models.html">razonamiento</a></td><td>Máxima capacidad</td><td>Problemas de varios pasos, código complejo, análisis delicados, poco volumen</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>No hace falta un solo modelo para toda la aplicación. Dos patrones habituales:</p>
+      <ul>
+        <li><strong>Enrutado:</strong> un modelo pequeño (o una regla) clasifica la petición y la envía al modelo adecuado:
+          las fáciles al pequeño, las difíciles al grande.</li>
+        <li><strong>Cascada:</strong> se intenta con el pequeño y, si su respuesta no pasa una comprobación, se repite con el
+          grande.</li>
+      </ul>
+
+      <h2 id="abiertos">Modelo gestionado o modelo abierto</h2>
+      <ul>
+        <li><strong>Servicio gestionado por API</strong> (el proveedor aloja el modelo)<strong>:</strong> sin
+          infraestructura, se paga por uso y siempre está actualizado. A cambio, dependes del proveedor y de sus
+          condiciones.</li>
+        <li><strong>Modelo abierto alojado por ti</strong> (pesos descargables)<strong>:</strong> control total, los datos no
+          salen de tu infraestructura y se puede ajustar a fondo. A cambio, pagas y gestionas las GPU, el escalado y las
+          actualizaciones. Revisa siempre la licencia: «abierto» no siempre significa uso comercial libre.</li>
+      </ul>
+
+      <h2 id="como-elegir">Cómo elegir en la práctica</h2>
+      <ol>
+        <li><strong>Define qué es «bien»</strong> para la tarea: qué precisión hace falta, qué latencia máxima, qué
+          presupuesto por petición.</li>
+        <li><strong>Prepara un conjunto de casos reales</strong> con la respuesta esperada (<a href="../tema.html?id=evals">evaluaciones</a>),
+          incluidos los difíciles.</li>
+        <li><strong>Usa las comparativas públicas solo para preseleccionar.</strong> Los <em>benchmarks</em> (conjuntos de
+          prueba estándar con los que se comparan los modelos) miden tareas genéricas y a veces los modelos ya los han visto
+          en su entrenamiento; no sustituyen a tus casos.</li>
+        <li><strong>Prueba de menor a mayor:</strong> empieza por el modelo pequeño y sube solo si no llega.</li>
+        <li><strong>Mide calidad, coste y latencia juntos</strong> y con las métricas de negocio que importan (coste por
+          interacción, tareas completadas, satisfacción; ver <a href="model-evaluation-metrics.html">métricas de
+          evaluación</a>).</li>
+        <li><strong>Deja el modelo configurable</strong> y vuelve a evaluar cuando salgan versiones nuevas: los modelos se
+          renuevan cada pocos meses y los antiguos se retiran.</li>
+      </ol>
+      <p>Para la evaluación, servicios como Model Evaluation de
+        <a href="https://arquitechthor.github.io/aws-cert-study/servicios/bedrock.html">Amazon Bedrock</a> comparan varios
+        modelos con tus datos, con métricas automáticas, con otro LLM como juez o con revisores humanos.</p>
+
+      <h2 id="caso-real">Caso real: Prompt Quest y Kopi</h2>
+      <p>Los dos proyectos del autor de esta web que usan IA eligieron el modelo pequeño de su familia (Claude Haiku en
+        Amazon Bedrock), y por razones claras:</p>
+      <ul>
+        <li><strong>Prompt Quest</strong> compila la estrategia de cada jugador mientras este espera para jugar: la
+          latencia importa más que la sofisticación, y la tarea está muy acotada (traducir un texto a reglas con un esquema
+          fijo). Además pide el esfuerzo de razonamiento más bajo (<code>effort: "low"</code>), porque pensar más no mejora
+          esta tarea y sí la hace más lenta y cara. El identificador del modelo es configurable para poder cambiarlo de
+          región o de versión sin tocar código, y el proyecto tiene un script que compila prompts de ejemplo contra Bedrock y
+          mide la latencia real.</li>
+        <li><strong>Kopi</strong> genera preguntas de repaso a partir de un apunte: una tarea de transformar un texto que se
+          le da, sin razonamiento profundo, donde un modelo pequeño basta y cada generación cuesta muy poco.</li>
+      </ul>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Elegir por la comparativa de moda:</strong> el primer puesto en un benchmark general no dice nada de tu
+          tarea. Mide con tus casos.</li>
+        <li><strong>Usar el modelo más grande para todo:</strong> paga más y espera más en tareas que uno pequeño hace igual
+          de bien.</li>
+        <li><strong>Mirar solo el precio por token:</strong> un modelo barato que necesita prompts el doble de largos o falla
+          y obliga a reintentar puede salir más caro.</li>
+        <li><strong>Olvidar la latencia:</strong> un modelo con razonamiento puede tardar decenas de segundos; en un chat eso
+          se nota.</li>
+        <li><strong>Dejar el nombre del modelo escrito en el código:</strong> los modelos se retiran. Hazlo configurable y
+          vuelve a evaluar.</li>
+        <li><strong>Ignorar dónde se procesan los datos:</strong> la región y las condiciones del proveedor pueden decidir la
+          elección antes que la calidad.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="model-selection"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html" target="_blank" rel="noopener">Evaluate the performance of Amazon Bedrock resources</a> (documentación de Amazon Bedrock, consultada el 20/11/2026).</li>
+        <li><a href="https://platform.claude.com/docs/en/about-claude/models/choosing-a-model" target="_blank" rel="noopener">Choosing the right model</a> (documentación de Anthropic, consultada el 20/11/2026).</li>
+        <li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html" target="_blank" rel="noopener">Prompt caching for faster model inference</a> (documentación de Amazon Bedrock, consultada el 20/11/2026).</li>
+        <li><a href="https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html" target="_blank" rel="noopener">AWS Certified AI Practitioner (AIF-C01) exam guide</a> (AWS, versión 1.2, consultada el 20/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=d08c2823" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

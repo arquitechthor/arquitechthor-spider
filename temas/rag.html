@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG (generación aumentada por recuperación) — Tech Spider</title>
+<meta name="description" content="Cómo dar a un LLM los documentos de tu empresa en cada pregunta: trocear, convertir en vectores, buscar los fragmentos relevantes y responder con ellos, sin reentrenar el modelo.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/rag.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=532e81a3">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="rag">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>RAG es una forma de construir aplicaciones con <a href="llms.html">LLM</a> en la que, antes de que el modelo
+        responda, se <strong>buscan</strong> los fragmentos de documentos relevantes para la pregunta y se le
+        <strong>añaden al prompt</strong>. El modelo responde apoyándose en esos fragmentos, no solo en lo que aprendió al
+        entrenarse.</p>
+      <p>El nombre lo describe en tres pasos: recuperar (<em>retrieval</em>) la información, aumentar (<em>augmented</em>)
+        el prompt con ella y generar (<em>generation</em>) la respuesta. Lo propusieron Lewis y otros en 2020, y hoy es la
+        forma más habitual de que un asistente responda con información propia de una empresa.</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Un LLM tiene dos límites que RAG resuelve sin tocar el modelo:</p>
+      <ul>
+        <li><strong>No conoce tus datos:</strong> ni tus manuales, ni tus contratos, ni tu catálogo. Y lo que sabe se quedó
+          en su fecha de corte.</li>
+        <li><strong>Rellena huecos inventando:</strong> sin datos, tiende a <a href="hallucinations.html">alucinar</a>. Con
+          los fragmentos correctos delante, la respuesta se ancla a ellos y además se puede citar la fuente.</li>
+      </ul>
+      <p>Frente a la alternativa de enseñarle esos datos con <a href="fine-tuning.html">fine-tuning</a>, RAG tiene ventajas
+        claras para el conocimiento que cambia: actualizar es tan fácil como reindexar un documento (sin reentrenar), se
+        puede respetar quién tiene permiso para ver cada documento, y cada respuesta puede decir de dónde sale.</p>
+      <p>Usos típicos: asistentes sobre la documentación interna, soporte al cliente con las políticas vigentes, búsqueda en
+        bases de conocimiento, preguntas sobre contratos o normativa.</p>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <ul>
+        <li><strong><a href="../tema.html?id=embeddings">Embedding</a>:</strong> una lista de cientos o miles de números que
+          representa el significado de un texto. La calcula un modelo especializado. Dos textos que dicen lo mismo con
+          palabras distintas («¿cuánto tarda el envío?» y «plazo de entrega») tienen embeddings parecidos.</li>
+        <li><strong>Vector:</strong> en este contexto, otra forma de llamar a esa lista de números. Pensado como un punto en
+          un espacio de muchas dimensiones, los textos de significado parecido quedan cerca.</li>
+        <li><strong>Similitud:</strong> lo cerca que están dos vectores. La medida más usada es la similitud del coseno.</li>
+        <li><strong><a href="../tema.html?id=vector-databases">Base de datos vectorial</a>:</strong> un almacén que guarda
+          vectores y encuentra rápido los más cercanos a uno dado, aunque haya millones.</li>
+        <li><strong>Fragmento</strong> (<em>chunk</em>)<strong>:</strong> un trozo de documento, de un párrafo a unas pocas
+          páginas, que se indexa y se recupera como unidad.</li>
+      </ul>
+
+      <h2 id="como-funciona">Cómo funciona</h2>
+      <p>Hay dos fases. La primera se hace una vez (y de nuevo cuando cambian los documentos); la segunda, en cada
+        pregunta.</p>
+      <p><strong>1. Ingesta (preparar los documentos):</strong></p>
+      <ol>
+        <li><strong>Extraer</strong> el texto de los documentos (PDF, páginas web, wikis, tickets).</li>
+        <li><strong>Trocear</strong> (<a href="../tema.html?id=chunking"><em>chunking</em></a>) en fragmentos. Hace falta
+          porque un documento entero no cabe o no conviene meterlo en la <a href="tokens-context-window.html">ventana de
+          contexto</a>, y porque un fragmento pequeño y centrado en un tema se encuentra mejor. Se suele dejar un poco de
+          solapamiento entre fragmentos para no cortar una idea por la mitad.</li>
+        <li><strong>Calcular el embedding</strong> de cada fragmento.</li>
+        <li><strong>Guardarlo</strong> en la base de datos vectorial junto con el texto y metadatos (documento de origen,
+          fecha, departamento, permisos).</li>
+      </ol>
+      <p><strong>2. Consulta (en cada pregunta):</strong></p>
+      <ol>
+        <li>Calcular el embedding de la pregunta con el <strong>mismo</strong> modelo de embeddings.</li>
+        <li><strong>Buscar</strong> los fragmentos más cercanos (los 3, 5 o 10 más parecidos), filtrando por metadatos si
+          hace falta (solo documentos que este usuario puede ver).</li>
+        <li><strong>Aumentar</strong> el prompt: instrucciones + fragmentos recuperados + pregunta. Por ejemplo, «responde
+          solo con estos fragmentos y cita de cuál sale cada dato; si no está, dilo».</li>
+        <li><strong>Generar</strong> la respuesta con el LLM.</li>
+      </ol>
+
+      <h2 id="mejoras">Mejoras habituales</h2>
+      <ul>
+        <li><strong><a href="../tema.html?id=semantic-hybrid-search">Búsqueda híbrida</a>:</strong> combinar la búsqueda por
+          significado (vectores) con la búsqueda por palabras clave de toda la vida. La semántica entiende sinónimos; la de
+          palabras clave acierta con códigos de producto, nombres propios y siglas exactas.</li>
+        <li><strong><a href="../tema.html?id=reranking">Reordenación</a> (<em>reranking</em>):</strong> recuperar más
+          candidatos de los necesarios (por ejemplo 50) y pasar un segundo modelo, más preciso y más lento, que los ordena
+          por relevancia real para quedarse con los mejores.</li>
+        <li><strong>Buen troceado:</strong> respetar la estructura del documento (secciones, párrafos, tablas) en vez de
+          cortar cada N caracteres. Un mal troceado es la causa más común de un RAG que no encuentra lo que sí está.</li>
+        <li><strong>Metadatos y filtros:</strong> fechas, versiones y permisos para no responder con un documento obsoleto o
+          que el usuario no debería ver.</li>
+      </ul>
+
+      <h2 id="evaluar">Cómo se evalúa un RAG</h2>
+      <p>Un RAG puede fallar en dos sitios, y hay que medirlos por separado:</p>
+      <ul>
+        <li><strong>La recuperación:</strong> ¿han llegado al prompt los fragmentos que contenían la respuesta? Si no, el
+          mejor modelo del mundo no puede acertar.</li>
+        <li><strong>La generación:</strong> con los fragmentos correctos delante, ¿la respuesta es fiel a ellos (no añade nada
+          que no esté, ver alucinaciones de fidelidad) y responde a la pregunta?</li>
+      </ul>
+      <p>Se hace con un conjunto de preguntas con su respuesta y su documento esperados, y con métricas como las de
+        <a href="model-evaluation-metrics.html">métricas de evaluación</a> (incluido usar un LLM como juez).</p>
+
+      <h2 id="en-aws">Así se monta en AWS</h2>
+      <p>En AWS, las Knowledge Bases de <a href="https://arquitechthor.github.io/aws-cert-study/servicios/bedrock.html">Amazon
+        Bedrock</a> gestionan todo el flujo: leen los documentos de S3 (u otras fuentes), los trocean, calculan los
+        embeddings, los guardan y hacen la recuperación. Para guardar los vectores se puede elegir, entre otros,
+        <a href="https://arquitechthor.github.io/aws-cert-study/servicios/opensearch-service.html">Amazon OpenSearch Service</a>,
+        <a href="https://arquitechthor.github.io/aws-cert-study/servicios/aurora.html">Amazon Aurora</a> o
+        <a href="https://arquitechthor.github.io/aws-cert-study/servicios/rds.html">Amazon RDS</a> para PostgreSQL (con la
+        extensión <a href="../tema.html?id=pgvector">pgvector</a>) y
+        <a href="https://arquitechthor.github.io/aws-cert-study/servicios/neptune.html">Amazon Neptune</a>.</p>
+
+      <h2 id="caso-real">Caso real: Kopi, el mismo principio sin búsqueda</h2>
+      <p>Kopi, la aplicación de notas del autor de esta web, genera preguntas de repaso para cada apunte con Claude Haiku en
+        Amazon Bedrock. No es un RAG completo, porque no hay que buscar nada: el usuario está en un apunte concreto y ese
+        texto se envía tal cual al modelo, que escribe las preguntas a partir de él. Pero aplica la misma idea de fondo que
+        RAG: <strong>darle al modelo la fuente en el momento de la petición</strong> en vez de confiar en lo que sabe o de
+        entrenarlo con los apuntes. Si un apunte cambia, las preguntas nuevas salen del texto nuevo sin tocar el modelo.</p>
+      <p>La búsqueda (la «R» de RAG) solo hace falta cuando la fuente no se sabe de antemano: un asistente que respondiera
+        preguntas sobre <em>todos</em> los apuntes tendría que encontrar primero los relevantes.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Trocear mal:</strong> fragmentos demasiado grandes diluyen el tema; demasiado pequeños pierden el
+          contexto. Pruébalo con preguntas reales.</li>
+        <li><strong>Mezclar modelos de embeddings:</strong> la pregunta y los documentos se tienen que convertir con el mismo
+          modelo; si lo cambias, hay que recalcular todo el índice.</li>
+        <li><strong>Evaluar solo la respuesta final:</strong> sin medir la recuperación no sabrás si el fallo está en la
+          búsqueda o en el modelo.</li>
+        <li><strong>Olvidar los permisos:</strong> si todos los documentos están en el mismo índice sin filtros, el asistente
+          puede responder a un usuario con un documento que no debería ver.</li>
+        <li><strong>Usar RAG para cambiar el estilo o el formato:</strong> RAG aporta conocimiento. Para que el modelo
+          escriba de cierta forma basta un buen prompt o, si no alcanza, fine-tuning.</li>
+        <li><strong>Creer que elimina las alucinaciones:</strong> las reduce mucho, pero el modelo puede desviarse de la
+          fuente. Pide citas y mide la fidelidad.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="rag"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://arxiv.org/abs/2005.11401" target="_blank" rel="noopener">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</a> (Lewis et al., 2020, consultada el 20/11/2026).</li>
+        <li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html" target="_blank" rel="noopener">Retrieve data and generate AI responses with Amazon Bedrock Knowledge Bases</a> (documentación de Amazon Bedrock, consultada el 20/11/2026).</li>
+        <li><a href="https://aws.amazon.com/what-is/retrieval-augmented-generation/" target="_blank" rel="noopener">What is RAG?</a> (AWS, consultada el 20/11/2026).</li>
+        <li><a href="https://developers.google.com/machine-learning/crash-course/embeddings" target="_blank" rel="noopener">Embeddings</a> (Machine Learning Crash Course, Google, consultada el 20/11/2026).</li>
+        <li><a href="https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html" target="_blank" rel="noopener">AWS Certified AI Practitioner (AIF-C01) exam guide</a> (AWS, versión 1.2, consultada el 20/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=d08c2823" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

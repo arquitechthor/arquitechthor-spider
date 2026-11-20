@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alucinaciones — Tech Spider</title>
+<meta name="description" content="Por qué un LLM da respuestas falsas con total seguridad, qué tipos hay y cómo se reducen: anclaje en fuentes, permiso para no saber, validación de la salida y revisión humana.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/hallucinations.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=532e81a3">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="hallucinations">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>Una <strong>alucinación</strong> es una respuesta de un <a href="llms.html">LLM</a> que suena convincente pero es
+        falsa o no se apoya en nada: una cita que no existe, una función de una librería inventada, una cifra equivocada, una
+        política de la empresa que nadie escribió. Lo peligroso no es el error en sí, sino que llega con el mismo tono seguro
+        que una respuesta correcta.</p>
+      <p>No es un fallo raro que se arregle con un parche: es una consecuencia de cómo funcionan estos modelos. Es una de las
+        principales desventajas de la <a href="generative-ai.html">IA generativa</a> para resolver problemas de negocio, junto
+        con su falta de determinismo (la misma pregunta puede dar respuestas distintas) y lo difícil que es explicar por qué
+        ha respondido lo que ha respondido.</p>
+
+      <h2 id="por-que-pasa">Por qué pasa</h2>
+      <ul>
+        <li><strong>Predice texto probable, no consulta hechos.</strong> Un LLM escribe la continuación más plausible de lo que
+          tiene delante, token a token (ver <a href="tokens-context-window.html">tokens</a>). Plausible no es lo mismo que
+          verdadero. Cuando el dato no está bien representado en lo que aprendió, rellena el hueco con algo que encaja en la
+          forma.</li>
+        <li><strong>Su conocimiento tiene fecha y huecos.</strong> Aprendió de textos hasta una fecha de corte y no sabe nada
+          de tu empresa, de tus documentos internos ni de lo que pasó ayer, salvo que se lo des en el prompt.</li>
+        <li><strong>Se le ha premiado por contestar.</strong> Un análisis de OpenAI de 2025 lo compara con un examen tipo test:
+          si las pruebas puntúan igual «no lo sé» que una respuesta equivocada, a un modelo le compensa adivinar. Muchos
+          entrenamientos y comparativas han favorecido, sin querer, la respuesta segura frente a la duda honesta.</li>
+        <li><strong>La pregunta empuja.</strong> Una pregunta que da por hecho algo falso («¿en qué año ganó X el premio
+          Y?») invita al modelo a seguirle la corriente.</li>
+      </ul>
+
+      <h2 id="tipos">Tipos</h2>
+      <ul>
+        <li><strong>De hechos</strong> (<em>factuality</em>)<strong>:</strong> afirma algo falso sobre el mundo. Un
+          paper que no existe, una ley mal citada, un dato histórico erróneo.</li>
+        <li><strong>De fidelidad</strong> (<em>faithfulness</em>)<strong>:</strong> no respeta lo que le diste. Le pasas un
+          contrato y el resumen incluye una cláusula que no está, o contradice al documento. Es la que más importa en
+          <a href="rag.html">RAG</a>: el modelo tenía la fuente correcta y aun así se desvió.</li>
+      </ul>
+
+      <h2 id="como-reducirlas">Cómo reducirlas</h2>
+      <p>No se pueden eliminar del todo, así que se trabaja por capas:</p>
+      <ul>
+        <li><strong>Anclar las respuestas en fuentes</strong> (<em>grounding</em>)<strong>:</strong> darle al modelo los
+          datos con los que debe responder, por ejemplo recuperándolos con <a href="rag.html">RAG</a>, y pedirle que responda
+          solo con ellos. Es la medida más eficaz cuando la respuesta depende de información concreta.</li>
+        <li><strong>Darle permiso para no saber:</strong> decir explícitamente «si la respuesta no está en el texto, di que no
+          lo sabes». Sin esa salida, el modelo tiende a rellenar.</li>
+        <li><strong>Pedir citas:</strong> que indique de qué fragmento sale cada afirmación. Así se puede comprobar, y una
+          afirmación sin cita es sospechosa.</li>
+        <li><strong>Validar la salida:</strong> comprobar con código lo que se pueda comprobar (que el producto existe en el
+          catálogo, que la fecha es válida, que el código compila) antes de mostrarlo o usarlo.</li>
+        <li><strong>Comprobación de anclaje automática:</strong> algunos servicios puntúan cuánto se apoya una respuesta en la
+          fuente y cuánto responde a la pregunta, y bloquean las que no llegan a un umbral. Es el caso de la comprobación de
+          anclaje contextual de los <a href="../tema.html?id=guardrails">guardarraíles</a> de
+          <a href="https://arquitechthor.github.io/aws-cert-study/servicios/bedrock.html">Amazon Bedrock</a>.</li>
+        <li><strong>Puntuación de confianza:</strong> estimar lo segura que es una respuesta (por ejemplo, preguntando varias
+          veces y viendo si coinciden, o con la puntuación de anclaje) y mandar a revisión humana las dudosas.</li>
+        <li><strong>Revisión humana donde el error cuesta caro:</strong> en decisiones médicas, legales o financieras, el
+          modelo propone y una persona decide (<a href="../tema.html?id=human-in-the-loop">humano en el bucle</a>).</li>
+        <li><strong>Medir:</strong> un conjunto de preguntas con respuesta conocida (<a href="../tema.html?id=evals">evaluaciones</a>)
+          dice si un cambio de prompt o de modelo reduce o aumenta las alucinaciones.</li>
+      </ul>
+      <p>Lo que <strong>no</strong> las arregla: bajar la <a class="concepto" data-concepto="temperatura">temperatura</a>. Con
+        temperatura 0 el modelo elige siempre la palabra más probable, y la más probable puede ser falsa: alucina igual, solo
+        que de forma más repetible (ver <a href="sampling-parameters.html">parámetros de muestreo</a>).</p>
+
+      <h2 id="riesgo-negocio">El riesgo para el negocio</h2>
+      <p>Una alucinación en un producto no es solo un dato erróneo. Puede ser una promesa a un cliente que la empresa no puede
+        cumplir, una recomendación peligrosa, una cita falsa en un escrito judicial o código con una dependencia inventada
+        que alguien puede registrar con malas intenciones. De ahí salen riesgos legales y pérdida de confianza de los
+        clientes, y por eso las alucinaciones aparecen también en la <a href="responsible-ai.html">IA responsable</a> y en la
+        gobernanza de la IA.</p>
+
+      <h2 id="caso-real">Casos reales: Kopi y Prompt Quest</h2>
+      <p>Los dos proyectos del autor de esta web que usan un LLM aplican la misma idea: el modelo trabaja solo con los datos
+        que se le dan, y lo que devuelve se trata con desconfianza.</p>
+      <ul>
+        <li><strong>Kopi</strong> genera preguntas de repaso para cada apunte con Claude Haiku en Amazon Bedrock. El modelo
+          recibe el texto del apunte y escribe las preguntas a partir de él, no de lo que «sepa» del tema. Así las
+          preguntas se pueden comprobar contra la fuente, y quien escribe el apunte puede revisarlas y editarlas antes de
+          guardarlas.</li>
+        <li><strong>Prompt Quest</strong> narra cada partida con una crónica de dos o tres frases. El prompt de sistema
+          dice «usa SOLO los hechos proporcionados; no inventes acciones ni motivos», y los hechos se le pasan como JSON
+          extraído de la partida. Si el modelo falla o tarda, se usa una plantilla sin IA.</li>
+      </ul>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Fiarse del tono:</strong> la seguridad con la que escribe un LLM no dice nada sobre si acierta.</li>
+        <li><strong>Creer que la temperatura 0 lo hace exacto:</strong> lo hace repetible, no verdadero.</li>
+        <li><strong>Pedirle datos que no puede saber</strong> (precios de hoy, documentos internos, normativa reciente) sin
+          dárselos en el contexto.</li>
+        <li><strong>Pensar que RAG las elimina:</strong> las reduce mucho, pero el modelo puede desviarse de la fuente o la
+          recuperación puede traer el documento equivocado. Hay que medir las dos cosas.</li>
+        <li><strong>Usar la salida sin validar:</strong> enlaces, nombres de funciones, referencias y cifras se comprueban
+          antes de usarlos.</li>
+        <li><strong>Pedirle al mismo modelo que confirme su respuesta como única prueba:</strong> puede reafirmarse en el
+          error. Contrasta con la fuente o con otra comprobación independiente.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="hallucinations"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://arxiv.org/abs/2509.04664" target="_blank" rel="noopener">Why Language Models Hallucinate</a> (Kalai et al., OpenAI, 2025, consultada el 20/11/2026).</li>
+        <li><a href="https://arxiv.org/abs/2311.05232" target="_blank" rel="noopener">A Survey on Hallucination in Large Language Models</a> (Huang et al., 2023, consultada el 20/11/2026).</li>
+        <li><a href="https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations" target="_blank" rel="noopener">Reduce hallucinations</a> (documentación de Anthropic, consultada el 20/11/2026).</li>
+        <li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-contextual-grounding-check.html" target="_blank" rel="noopener">Use contextual grounding check to filter hallucinations in responses</a> (documentación de Amazon Bedrock, consultada el 20/11/2026).</li>
+        <li><a href="https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html" target="_blank" rel="noopener">AWS Certified AI Practitioner (AIF-C01) exam guide</a> (AWS, versión 1.2, consultada el 20/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=d08c2823" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

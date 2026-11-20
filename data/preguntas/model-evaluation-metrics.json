@@ -1,0 +1,190 @@
+[
+  {
+    "id": "model-evaluation-metrics-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
+    "enunciado": "Solo el 1 % de las transacciones de un banco son fraude. Un modelo que dice siempre «normal» tiene un 99 % de exactitud. ¿Qué conclusión es correcta?",
+    "opciones": [
+      "Es un buen modelo, porque acierta en casi todos los casos.",
+      "La exactitud engaña aquí: no detecta ni un fraude.",
+      "Hay que subir la temperatura para que detecte fraudes.",
+      "El modelo está sobreajustado a los datos de prueba."
+    ],
+    "correctas": [1],
+    "explicacion": "Con clases muy desequilibradas, la exactitud premia predecir siempre la clase mayoritaria. Ese modelo tiene exhaustividad 0 para el fraude: no sirve. Hay que mirar precisión, exhaustividad y F1. La temperatura no existe en este tipo de modelo y no hay indicios de sobreajuste.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall"]
+  },
+  {
+    "id": "model-evaluation-metrics-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
+    "enunciado": "En un modelo que detecta tumores en radiografías, lo más grave es que un tumor real pase desapercibido. ¿Qué métrica hay que vigilar sobre todo?",
+    "opciones": [
+      "La exhaustividad (recall).",
+      "La precisión (precision).",
+      "El error cuadrático medio.",
+      "La puntuación BLEU."
+    ],
+    "correctas": [0],
+    "explicacion": "La exhaustividad mide qué parte de los casos reales detecta el modelo; un tumor que se escapa es un falso negativo, que la baja. La precisión mide las falsas alarmas, el error cuadrático medio es para regresión y BLEU, para traducción.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall"]
+  },
+  {
+    "id": "model-evaluation-metrics-003",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
+    "enunciado": "Un filtro antispam manda a la carpeta de spam muchos correos legítimos de clientes. ¿Qué métrica está fallando?",
+    "opciones": [
+      "La exhaustividad, porque se escapa mucho spam.",
+      "El R², porque explica poca variación.",
+      "La precisión, porque marca como spam correos buenos.",
+      "ROUGE, porque el resumen es incompleto."
+    ],
+    "correctas": [2],
+    "explicacion": "La precisión es, de lo que el modelo marca como spam, qué parte lo es; los correos legítimos marcados son falsos positivos, que la bajan. La exhaustividad hablaría del spam que se escapa, R² es de regresión y ROUGE, de resúmenes.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall"]
+  },
+  {
+    "id": "model-evaluation-metrics-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
+    "enunciado": "¿Qué resume la puntuación F1?",
+    "opciones": [
+      "La velocidad del modelo en una sola cifra.",
+      "El equilibrio entre precisión y exhaustividad.",
+      "El porcentaje de aciertos sobre el total.",
+      "La distancia media entre predicción y valor real."
+    ],
+    "correctas": [1],
+    "explicacion": "F1 es la media armónica de precisión y exhaustividad: solo es alta si las dos lo son, por eso es útil con clases desequilibradas. El porcentaje de aciertos es la exactitud, la distancia media es una métrica de regresión y la velocidad no es una métrica de calidad.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall"]
+  },
+  {
+    "id": "model-evaluation-metrics-005",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Un equipo quiere medir automáticamente la calidad de los resúmenes que genera un modelo, comparándolos con resúmenes escritos por personas. ¿Qué métrica es la clásica para esto?",
+    "opciones": [
+      "BLEU.",
+      "F1.",
+      "RMSE.",
+      "ROUGE."
+    ],
+    "correctas": [3],
+    "explicacion": "ROUGE cuenta cuánto de la referencia aparece en la salida (orientada a la exhaustividad) y es la clásica para resúmenes. BLEU es la clásica para traducción, F1 para clasificación y RMSE para regresión.",
+    "fuentes": ["https://aclanthology.org/W04-1013/"]
+  },
+  {
+    "id": "model-evaluation-metrics-006",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "¿Para qué tarea se creó originalmente la métrica BLEU?",
+    "opciones": [
+      "Para la traducción automática.",
+      "Para la detección de fraude.",
+      "Para la predicción de precios.",
+      "Para la clasificación de imágenes."
+    ],
+    "correctas": [0],
+    "explicacion": "BLEU compara las secuencias de palabras de una traducción automática con traducciones de referencia, con una penalización por salidas demasiado cortas. Las otras tareas se miden con métricas de clasificación o de regresión.",
+    "fuentes": ["https://aclanthology.org/P02-1040/"]
+  },
+  {
+    "id": "model-evaluation-metrics-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Un modelo responde «el automóvil es veloz» y la referencia dice «el coche es rápido». ¿Qué métrica valorará mejor que significan lo mismo?",
+    "opciones": [
+      "BLEU, porque cuenta las palabras que coinciden.",
+      "ROUGE, porque mide la secuencia común más larga.",
+      "BERTScore, porque compara el significado con embeddings.",
+      "La exactitud, porque comprueba si el texto es idéntico."
+    ],
+    "correctas": [2],
+    "explicacion": "BERTScore compara representaciones del significado (embeddings), así que reconoce sinónimos. BLEU y ROUGE se basan en coincidencias de palabras y castigarían esta respuesta correcta; la exactitud exigiría el mismo texto.",
+    "fuentes": ["https://arxiv.org/abs/1904.09675"]
+  },
+  {
+    "id": "model-evaluation-metrics-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Un equipo necesita valorar la utilidad y el tono de 20.000 respuestas de un asistente, algo que las métricas de palabras no captan, y no tiene presupuesto para revisarlas todas a mano. ¿Qué enfoque encaja?",
+    "opciones": [
+      "Calcular BLEU sobre todas las respuestas del asistente.",
+      "Usar un LLM como juez y contrastarlo con una muestra humana.",
+      "Medir la exactitud de las respuestas frente a una referencia.",
+      "Revisar solo las diez primeras respuestas y extrapolar."
+    ],
+    "correctas": [1],
+    "explicacion": "Un LLM como juez puntúa miles de respuestas según criterios escritos como utilidad o tono; como tiene sesgos, se valida con revisiones humanas de una muestra. BLEU y la exactitud miden coincidencia con una referencia, no utilidad ni tono, y diez respuestas no son una muestra representativa.",
+    "fuentes": ["https://arxiv.org/abs/2306.05685"]
+  },
+  {
+    "id": "model-evaluation-metrics-009",
+    "tipo": "multiple",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "¿Qué métricas sirven para saber si un asistente con IA cumple los objetivos del negocio? (elige tres)",
+    "opciones": [
+      "Tasa de tareas completadas sin pasar a una persona.",
+      "Coste por interacción.",
+      "Satisfacción de los usuarios.",
+      "Número de parámetros del modelo.",
+      "Tamaño de la ventana de contexto."
+    ],
+    "correctas": [0, 1, 2],
+    "explicacion": "Las tareas completadas, el coste por interacción y la satisfacción de los usuarios dicen si el asistente aporta valor. El número de parámetros y la ventana de contexto son características técnicas del modelo, no resultados de negocio.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "model-evaluation-metrics-010",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
+    "enunciado": "Un modelo predice el precio de viviendas. Un error de 200.000 € en una casa es mucho peor que varios errores de 5.000 €. ¿Qué métrica refleja mejor esa preocupación?",
+    "opciones": [
+      "La precisión, porque cuenta las falsas alarmas.",
+      "La puntuación F1, porque equilibra dos métricas.",
+      "El error absoluto medio, porque trata igual cada euro.",
+      "El RMSE, porque castiga más los errores grandes."
+    ],
+    "correctas": [3],
+    "explicacion": "El RMSE eleva los errores al cuadrado antes de promediar, así que un error grande pesa mucho más. El error absoluto medio trata igual todos los euros de error; precisión y F1 son métricas de clasificación, no de regresión.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall"]
+  },
+  {
+    "id": "model-evaluation-metrics-011",
+    "tipo": "unica",
+    "nivel": 3,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Un modelo encabeza los benchmarks públicos de conocimiento general, pero en las pruebas internas de una aseguradora, con sus propios expedientes, rinde peor que otro modelo más modesto. ¿Qué explicación es la más razonable?",
+    "opciones": [
+      "Los benchmarks miden tareas genéricas que no representan los expedientes.",
+      "Las pruebas internas están mal, porque los benchmarks son más fiables.",
+      "El modelo modesto ha hecho trampa al ver antes los expedientes internos.",
+      "Los benchmarks solo sirven para modelos de imagen, no de texto."
+    ],
+    "correctas": [0],
+    "explicacion": "Un benchmark público mide tareas generales (y a veces el modelo ya vio sus preguntas al entrenarse); no garantiza el rendimiento en un caso concreto. Para decidir mandan las pruebas con datos propios. Nada indica que las pruebas internas estén mal o que haya trampa, y hay benchmarks de texto.",
+    "fuentes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html"]
+  }
+]

@@ -1,0 +1,173 @@
+[
+  {
+    "id": "responsible-ai-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Directrices para una IA responsable",
+    "enunciado": "Un modelo de selección de personal entrenado con contrataciones históricas puntúa peor a las candidatas mujeres. ¿Cuál es la causa más probable?",
+    "opciones": [
+      "La temperatura del modelo es demasiado alta.",
+      "Los datos históricos reflejan decisiones sesgadas.",
+      "La ventana de contexto es demasiado pequeña.",
+      "El modelo no tiene suficientes parámetros."
+    ],
+    "correctas": [1],
+    "explicacion": "El modelo aprende de sus datos; si las contrataciones pasadas fueron injustas, reproduce ese sesgo. La temperatura, la ventana de contexto o el tamaño del modelo no explican un perjuicio sistemático a un grupo.",
+    "fuentes": ["https://aws.amazon.com/ai/responsible-ai/"]
+  },
+  {
+    "id": "responsible-ai-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Directrices para una IA responsable",
+    "enunciado": "¿Qué es una ficha de modelo (model card)?",
+    "opciones": [
+      "La factura mensual del uso de un modelo en la nube.",
+      "La lista de prompts aprobados para usar con un modelo.",
+      "Un documento con usos previstos, datos, evaluación y límites del modelo.",
+      "El fichero que contiene los pesos entrenados del modelo."
+    ],
+    "correctas": [2],
+    "explicacion": "Una ficha de modelo explica para qué sirve y para qué no, con qué datos se entrenó, cómo se evaluó (también por subgrupos) y sus limitaciones conocidas. Es una herramienta de transparencia, como las Model Cards de SageMaker AI.",
+    "fuentes": ["https://arxiv.org/abs/1810.03993"]
+  },
+  {
+    "id": "responsible-ai-003",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Directrices para una IA responsable",
+    "enunciado": "Un modelo de aprobación de préstamos tiene un 94 % de acierto global. ¿Qué comprobación ayuda más a detectar si es injusto con algún grupo?",
+    "opciones": [
+      "Repetir la evaluación global con más datos del mismo tipo.",
+      "Medir el acierto por separado en cada grupo de personas.",
+      "Comprobar que el modelo responde siempre en menos de un segundo.",
+      "Pedir al propio modelo que confirme que es imparcial."
+    ],
+    "correctas": [1],
+    "explicacion": "El análisis por subgrupos puede revelar que el 94 % global esconde un acierto mucho menor en un grupo concreto. Más datos de lo mismo no cambia la métrica global, la latencia no mide justicia y el modelo no puede certificar su propia imparcialidad.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "responsible-ai-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Directrices para una IA responsable",
+    "enunciado": "Un banco elimina la variable «sexo» de sus datos para que su modelo no discrimine, pero el sesgo sigue. ¿Por qué?",
+    "opciones": [
+      "Porque el modelo recuerda la variable de entrenamientos anteriores.",
+      "Porque la ley obliga a mantener esa variable en los datos.",
+      "Porque otras variables pueden delatarla de forma indirecta.",
+      "Porque eliminar variables siempre empeora la exactitud."
+    ],
+    "correctas": [2],
+    "explicacion": "Variables como el tipo de empleo, el historial o incluso el código postal pueden estar correlacionadas con la variable sensible, y el modelo la reconstruye de forma indirecta. Por eso hay que medir los resultados por grupos, no solo quitar columnas.",
+    "fuentes": ["https://aws.amazon.com/ai/responsible-ai/"]
+  },
+  {
+    "id": "responsible-ai-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Directrices para una IA responsable",
+    "enunciado": "Un regulador exige que una aseguradora pueda explicar a cada cliente por qué se le ha subido la prima. ¿Qué opción encaja mejor?",
+    "opciones": [
+      "Un modelo interpretable, aunque sea algo menos preciso.",
+      "La red neuronal más profunda disponible, por su precisión.",
+      "Un LLM que genere una explicación convincente a posteriori.",
+      "Un modelo de caja negra con una temperatura muy baja."
+    ],
+    "correctas": [0],
+    "explicacion": "Cuando la explicación es obligatoria, un modelo interpretable (como un árbol de decisión o una regresión) permite justificar cada decisión, a cambio de algo de rendimiento. Una explicación generada a posteriori puede no reflejar la causa real, y la temperatura no hace explicable una caja negra.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "responsible-ai-006",
+    "tipo": "multiple",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Directrices para una IA responsable",
+    "enunciado": "¿Qué características deben tener los datos de entrenamiento para reducir sesgos? (elige tres)",
+    "opciones": [
+      "Diversos e inclusivos con todos los usuarios previstos.",
+      "Equilibrados entre los distintos grupos.",
+      "Procedentes de fuentes curadas y revisadas.",
+      "Recogidos de un solo grupo para que sean coherentes.",
+      "Sin revisar, para no introducir opiniones humanas."
+    ],
+    "correctas": [0, 1, 2],
+    "explicacion": "Datos diversos, equilibrados y de fuentes curadas reducen el riesgo de que el modelo perjudique a un grupo. Recoger datos de un solo grupo es justo lo que crea el sesgo, y no revisarlos deja pasar errores y prejuicios.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "responsible-ai-007",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Directrices para una IA responsable",
+    "enunciado": "Un generador de imágenes crea un logotipo casi idéntico al de una marca conocida y la empresa lo usa. ¿Qué riesgo legal de la IA generativa se materializa?",
+    "opciones": [
+      "Una alucinación en una respuesta de texto.",
+      "Un sesgo contra un grupo demográfico.",
+      "Una fuga de datos personales del usuario.",
+      "Una infracción de propiedad intelectual."
+    ],
+    "correctas": [3],
+    "explicacion": "Usar un contenido generado que reproduce una obra o marca protegida puede dar lugar a reclamaciones de propiedad intelectual. No es una alucinación de texto, ni un sesgo demográfico, ni una fuga de datos personales.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "responsible-ai-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Directrices para una IA responsable",
+    "enunciado": "Un asistente de atención al cliente no debe hablar de asesoramiento de inversión y debe ocultar números de tarjeta. ¿Qué herramienta de AWS está pensada para ello?",
+    "opciones": [
+      "Amazon Bedrock Guardrails.",
+      "Amazon Bedrock Knowledge Bases.",
+      "AWS Cost Explorer.",
+      "Amazon CloudFront."
+    ],
+    "correctas": [0],
+    "explicacion": "Los guardarraíles de Bedrock permiten denegar temas, filtrar contenido dañino y detectar u ocultar información sensible en entradas y salidas. Knowledge Bases sirve para RAG, Cost Explorer para analizar costes y CloudFront para distribuir contenido.",
+    "fuentes": ["https://aws.amazon.com/ai/responsible-ai/"]
+  },
+  {
+    "id": "responsible-ai-009",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Directrices para una IA responsable",
+    "enunciado": "Según los principios de diseño centrado en las personas para una IA explicable, ¿qué debería ofrecer una aplicación que deniega solicitudes con ayuda de un modelo?",
+    "opciones": [
+      "Ocultar que interviene una IA para no generar desconfianza.",
+      "Mostrar los pesos del modelo para que el usuario los revise.",
+      "Explicar el motivo de la decisión y una forma de pedir revisión.",
+      "Responder siempre con el mismo texto para evitar polémicas."
+    ],
+    "correctas": [2],
+    "explicacion": "La transparencia de la decisión y los mecanismos para que el usuario opine o reclame son principios del diseño centrado en las personas. Ocultar la IA va contra la transparencia, los pesos no son una explicación comprensible y un texto fijo no explica nada.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "responsible-ai-010",
+    "tipo": "unica",
+    "nivel": 3,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Directrices para una IA responsable",
+    "enunciado": "Un modelo de diagnóstico mejora un 3 % su precisión al pasar de un modelo interpretable a una red neuronal profunda, pero los médicos ya no pueden ver por qué decide. ¿Qué describe mejor la situación?",
+    "opciones": [
+      "Un sobreajuste que hay que corregir con más datos de entrenamiento.",
+      "Un compromiso entre rendimiento e interpretabilidad que hay que decidir.",
+      "Un problema de latencia que se resuelve con un modelo más pequeño.",
+      "Una alucinación del modelo que se elimina con un guardarraíl."
+    ],
+    "correctas": [1],
+    "explicacion": "El modelo más potente suele ser el menos explicable; elegir entre ganar precisión o poder justificar cada decisión es un compromiso que depende del riesgo, de la normativa y de quién usa el resultado. No hay indicio de sobreajuste, de latencia ni de alucinación.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  }
+]

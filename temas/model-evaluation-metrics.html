@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Métricas de evaluación de modelos — Tech Spider</title>
+<meta name="description" content="Cómo se mide si un modelo funciona: exactitud, precisión, exhaustividad y F1 en clasificación; ROUGE, BLEU, BERTScore y LLM como juez en IA generativa; y las métricas de negocio.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/model-evaluation-metrics.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=532e81a3">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="model-evaluation-metrics">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>Una <strong>métrica de evaluación</strong> es un número que resume lo bien que hace un modelo su trabajo. Sin métricas
+        no se puede saber si un modelo sirve, si es mejor que otro o si un cambio lo ha mejorado o empeorado.</p>
+      <p>No hay una métrica universal: depende del tipo de tarea. Un modelo de <a href="machine-learning.html">aprendizaje
+        automático</a> que clasifica (spam o no spam) se mide de una forma; uno que predice un número (el precio de una casa),
+        de otra; y uno de <a href="generative-ai.html">IA generativa</a> que escribe texto libre, de otra muy distinta, porque
+        no hay una única respuesta correcta. Y por encima de todas están las métricas de negocio, que dicen si el modelo
+        aporta valor.</p>
+
+      <h2 id="clasificacion">Clasificación: la matriz de confusión</h2>
+      <p>Imagina un modelo que detecta transacciones fraudulentas. Cada predicción cae en una de cuatro casillas:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>El modelo dice «fraude»</th><th>El modelo dice «normal»</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>Era fraude</th><td><strong>Verdadero positivo</strong> (VP): lo pilla</td><td><strong>Falso negativo</strong> (FN): se le escapa</td></tr>
+            <tr><th>Era normal</th><td><strong>Falso positivo</strong> (FP): falsa alarma</td><td><strong>Verdadero negativo</strong> (VN): bien descartado</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Esa tabla es la <strong>matriz de confusión</strong>, y de ella salen las métricas principales:</p>
+      <ul>
+        <li><strong>Exactitud</strong> (<em>accuracy</em>)<strong>:</strong> qué parte del total acierta. (VP + VN) / total.
+          Es la más intuitiva y la más engañosa: si solo el 1 % de las transacciones son fraude, un modelo que dice siempre
+          «normal» tiene un 99 % de exactitud y no sirve para nada.</li>
+        <li><strong>Precisión</strong> (<em>precision</em>)<strong>:</strong> de lo que el modelo marca como fraude, qué
+          parte lo es. VP / (VP + FP). Importa cuando una falsa alarma cuesta caro (bloquear la tarjeta de un buen
+          cliente).</li>
+        <li><strong>Exhaustividad o sensibilidad</strong> (<em>recall</em>)<strong>:</strong> de todos los fraudes reales,
+          qué parte detecta. VP / (VP + FN). Importa cuando lo que se escapa cuesta caro (un fraude, un tumor no
+          detectado).</li>
+        <li><strong>Puntuación F1</strong> (<em>F1 score</em>)<strong>:</strong> la media armónica de precisión y
+          exhaustividad, en un solo número. Solo es alta si las dos lo son. Es la métrica de referencia cuando las clases
+          están desequilibradas.</li>
+      </ul>
+      <p>Precisión y exhaustividad tiran en direcciones opuestas: si el modelo marca más casos como fraude, detecta más
+        (sube la exhaustividad) pero da más falsas alarmas (baja la precisión). El punto de equilibrio lo decide el negocio,
+        según qué error es más caro. Otra métrica habitual, el <strong>AUC</strong>, resume lo bien que el modelo separa las
+        dos clases en todos los umbrales posibles, sin tener que elegir uno.</p>
+
+      <h2 id="regresion">Regresión: cuánto se equivoca</h2>
+      <p>Cuando el modelo predice un número (<a class="concepto" data-concepto="regresion">regresión</a>), se mide la
+        distancia entre lo predicho y lo real:</p>
+      <ul>
+        <li><strong>MAE:</strong> el error absoluto medio, cuánto se equivoca de media, en las mismas unidades
+          que lo que predice («se equivoca en 12.000 € de media»).</li>
+        <li><strong>RMSE:</strong> la raíz del error cuadrático medio; parecido, pero castiga más los errores
+          grandes. Útil cuando un error enorme es mucho peor que varios pequeños.</li>
+        <li><strong>R²:</strong> qué parte de la variación de los datos explica el modelo, de 0 a 1.</li>
+      </ul>
+
+      <h2 id="generativa">IA generativa: cuando no hay una única respuesta</h2>
+      <p>Un resumen o una traducción pueden estar bien escritos de muchas formas. Por eso estas métricas comparan la salida
+        con una o varias <strong>respuestas de referencia</strong> escritas por personas, o la valoran con otro criterio:</p>
+      <ul>
+        <li><strong>ROUGE:</strong> cuenta cuántas palabras o secuencias de palabras de la referencia aparecen en la salida.
+          Está orientada a la <strong>exhaustividad</strong> (¿ha recogido lo que debía?) y es la clásica para
+          <strong>resúmenes</strong>. ROUGE-N mira secuencias de N palabras; ROUGE-L, la secuencia común más larga.</li>
+        <li><strong>BLEU:</strong> mide qué parte de las secuencias de palabras de la salida aparecen en la referencia, con
+          una penalización si la salida es demasiado corta. Está orientada a la <strong>precisión</strong> y es la clásica
+          para <strong>traducción automática</strong>.</li>
+        <li><strong>BERTScore:</strong> en vez de exigir las mismas palabras, compara el significado usando
+          <a href="../tema.html?id=embeddings">embeddings</a> (listas de números que representan el significado). Así
+          puntúa bien «el coche es rápido» frente a «el automóvil es veloz», que ROUGE y BLEU castigarían.</li>
+        <li><strong>LLM como juez</strong> (<em>LLM-as-a-judge</em>)<strong>:</strong> otro modelo, normalmente más capaz,
+          puntúa cada respuesta según unos criterios escritos (exactitud, fidelidad a la fuente, utilidad, tono). Escala a
+          miles de casos y valora cosas que las métricas de palabras no ven, pero tiene sesgos (por ejemplo, tiende a
+          preferir respuestas largas) y conviene contrastarlo con revisiones humanas.</li>
+        <li><strong>Evaluación humana:</strong> personas valoran o comparan respuestas. Es la más fiable para aspectos
+          subjetivos, y también la más cara y lenta.</li>
+        <li><strong>Conjuntos de prueba estándar</strong> (<em>benchmarks</em>)<strong>:</strong> baterías públicas de
+          preguntas para comparar modelos en conocimiento general, razonamiento o código. Sirven para preseleccionar
+          (ver <a href="model-selection.html">selección de modelo</a>), no para decidir sobre tu caso.</li>
+      </ul>
+      <p>Para aplicaciones completas se evalúa cada pieza: en <a href="rag.html">RAG</a>, si la recuperación trae los
+        fragmentos correctos y si la respuesta es fiel a ellos; en un <a href="ai-agents.html">agente</a>, si completa la
+        tarea y con cuántos pasos. En la práctica, todo esto se organiza con un conjunto fijo de casos con la respuesta
+        esperada (<a href="../tema.html?id=evals">evaluaciones</a>) que se vuelve a pasar con cada cambio.</p>
+
+      <h2 id="negocio">Métricas de negocio</h2>
+      <p>Un modelo con un F1 excelente puede no aportar nada si no mueve lo que le importa a la empresa. Por eso se miden
+        también:</p>
+      <ul>
+        <li><strong>Eficacia:</strong> tasa de tareas completadas, conversaciones resueltas sin pasar a una persona, tiempo
+          ahorrado, productividad.</li>
+        <li><strong>Usuarios:</strong> satisfacción, uso y participación, opiniones (los pulgares arriba y abajo de un
+          chat).</li>
+        <li><strong>Dinero:</strong> coste por interacción o por usuario, costes de desarrollo, tasa de conversión, ingreso
+          medio por usuario, valor del cliente a lo largo del tiempo y ROI.</li>
+      </ul>
+
+      <h2 id="en-aws">Así se hace en AWS</h2>
+      <p>Model Evaluation de <a href="https://arquitechthor.github.io/aws-cert-study/servicios/bedrock.html">Amazon
+        Bedrock</a> evalúa modelos y bases de conocimiento con métricas automáticas, con un LLM como juez o con revisores
+        humanos, sobre conjuntos de prueba propios o predefinidos.
+        <a href="https://arquitechthor.github.io/aws-cert-study/servicios/sagemaker-ai.html">Amazon SageMaker AI</a> calcula
+        las métricas clásicas al entrenar y vigila el modelo en producción.</p>
+
+      <h2 id="caso-real">Caso real: medir antes de opinar</h2>
+      <p>En los proyectos del autor de esta web, la idea de medir con datos y no a ojo aparece aunque no haya un modelo de
+        clasificación de por medio. <a href="https://arquitechthor.github.io/#prompt-quest" target="_blank" rel="noopener">Prompt
+        Quest</a> tiene pruebas que comprueban que el prompt del jugador cambia de verdad el comportamiento de su agente y que
+        los intentos de inyección se detectan, y un simulador que juega 2.000 partidas para medir el equilibrio entre
+        clases, elementos y estrategias. Es la misma lógica que una evaluación de modelos: un conjunto fijo de casos que se
+        vuelve a pasar con cada cambio para ver si mejora o empeora.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Fiarse de la exactitud con clases desequilibradas:</strong> con un 1 % de casos positivos, el 99 % de
+          exactitud es gratis. Mira precisión, exhaustividad y F1.</li>
+        <li><strong>Elegir la métrica sin pensar en el coste del error:</strong> en detección de enfermedades importa no
+          dejar escapar casos (exhaustividad); en filtros que bloquean a clientes, no dar falsas alarmas (precisión).</li>
+        <li><strong>Tomar ROUGE o BLEU como verdad absoluta:</strong> premian coincidir en palabras, no tener razón. Una
+          respuesta correcta con otras palabras puntúa bajo.</li>
+        <li><strong>Usar un LLM como juez sin comprobarlo:</strong> valida una muestra con personas antes de fiarte de sus
+          notas.</li>
+        <li><strong>Evaluar con los mismos datos del entrenamiento:</strong> el modelo parece mejor de lo que es. Usa datos
+          que no haya visto.</li>
+        <li><strong>Olvidar el negocio:</strong> una métrica técnica que mejora mientras la satisfacción o el coste por
+          interacción empeoran no es una mejora.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="model-evaluation-metrics"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall" target="_blank" rel="noopener">Classification: Accuracy, recall, precision, and related metrics</a> (Machine Learning Crash Course, Google, consultada el 20/11/2026).</li>
+        <li><a href="https://aclanthology.org/W04-1013/" target="_blank" rel="noopener">ROUGE: A Package for Automatic Evaluation of Summaries</a> (Lin, 2004, consultada el 20/11/2026).</li>
+        <li><a href="https://aclanthology.org/P02-1040/" target="_blank" rel="noopener">BLEU: a Method for Automatic Evaluation of Machine Translation</a> (Papineni et al., 2002, consultada el 20/11/2026).</li>
+        <li><a href="https://arxiv.org/abs/1904.09675" target="_blank" rel="noopener">BERTScore: Evaluating Text Generation with BERT</a> (Zhang et al., 2019, consultada el 20/11/2026).</li>
+        <li><a href="https://arxiv.org/abs/2306.05685" target="_blank" rel="noopener">Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena</a> (Zheng et al., 2023, consultada el 20/11/2026).</li>
+        <li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html" target="_blank" rel="noopener">Evaluate the performance of Amazon Bedrock resources</a> (documentación de Amazon Bedrock, consultada el 20/11/2026).</li>
+        <li><a href="https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html" target="_blank" rel="noopener">AWS Certified AI Practitioner (AIF-C01) exam guide</a> (AWS, versión 1.2, consultada el 20/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=d08c2823" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

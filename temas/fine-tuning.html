@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fine-tuning (ajuste fino) — Tech Spider</title>
+<meta name="description" content="Seguir entrenando un modelo ya entrenado con tus propios ejemplos para especializarlo, y cuándo compensa frente a un buen prompt, RAG, la destilación o el preentrenamiento continuo.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/fine-tuning.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=532e81a3">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="fine-tuning">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>El <strong>fine-tuning</strong> (ajuste fino) consiste en tomar un modelo ya entrenado y <strong>seguir
+        entrenándolo</strong> con un conjunto de datos propio, más pequeño y especializado. Cambia los
+        <a class="concepto" data-concepto="parametros">parámetros</a> del modelo (los números que aprendió), así que el
+        resultado es un modelo nuevo, adaptado a tu tarea, que ya no necesita que se lo expliques todo en cada prompt.</p>
+      <p>Es un caso de <strong>aprendizaje por transferencia</strong> (<em>transfer learning</em>): se aprovecha lo que el
+        modelo ya sabe del lenguaje en general y solo se le enseña lo específico. Por eso basta con cientos o miles de
+        ejemplos, en vez de los billones de <a href="tokens-context-window.html">tokens</a> del entrenamiento original.</p>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <ul>
+        <li><strong>Modelo fundacional</strong> (<em>foundation model</em>, en inglés se abrevia FM)<strong>:</strong> un modelo grande entrenado
+          con enormes cantidades de datos generales que sirve de base para muchas tareas distintas. Los
+          <a href="llms.html">LLM</a> son el ejemplo más conocido.</li>
+        <li><strong>Preentrenamiento</strong> (<em>pre-training</em>)<strong>:</strong> el primer entrenamiento, el que crea
+          el modelo fundacional desde cero. Cuesta millones y solo lo hacen unos pocos laboratorios.</li>
+        <li><strong>Datos etiquetados:</strong> ejemplos que incluyen la respuesta correcta (una pregunta con la respuesta que
+          se espera). Sin etiquetar: texto suelto, sin respuesta asociada.</li>
+        <li><strong>Pesos:</strong> otro nombre de los parámetros del modelo.</li>
+      </ul>
+
+      <h2 id="tipos">Formas de adaptar un modelo entrenando</h2>
+      <ul>
+        <li><strong>Ajuste por instrucciones</strong> (<em>instruction tuning</em>)<strong>:</strong> fine-tuning con pares
+          de instrucción y respuesta deseada («resume este informe» → el resumen bueno). Es lo que convierte un modelo que
+          solo completa texto en uno que sigue órdenes, y la forma habitual de enseñarle una tarea, un formato o un tono.</li>
+        <li><strong>Adaptación a un dominio:</strong> especializar el modelo en un campo (medicina, derecho, el vocabulario
+          de un sector) para que entienda su jerga y sus convenciones.</li>
+        <li><strong>Preentrenamiento continuo</strong> (<em>continued pre-training</em>)<strong>:</strong> seguir
+          entrenando con grandes cantidades de texto <strong>sin etiquetar</strong> de un dominio (todos los manuales técnicos
+          de una industria, por ejemplo). Aporta conocimiento y vocabulario de fondo; no enseña una tarea concreta.</li>
+        <li><strong>RLHF:</strong> personas comparan varias respuestas del modelo y eligen la mejor; con esas preferencias se
+          ajusta el modelo para que responda más como prefieren. Es una de las técnicas con las que los laboratorios hacen
+          que sus modelos sean útiles y seguros.</li>
+        <li><strong>Destilación</strong> (<em>distillation</em>)<strong>:</strong> un modelo grande (el «profesor») genera
+          respuestas y con ellas se entrena uno pequeño (el «alumno») para que lo imite en una tarea concreta. El alumno es
+          más barato y rápido de usar y, en esa tarea, se acerca mucho al profesor.</li>
+      </ul>
+      <p>Hay además una variante técnica que conviene conocer: <strong>PEFT</strong>. En vez de modificar todos los pesos, se congela el modelo y se entrenan unas pocas piezas añadidas. La más
+        conocida es LoRA, que entrena matrices pequeñas junto a las originales: cuesta una fracción y el resultado ocupa
+        muy poco.</p>
+
+      <h2 id="cuando">Cuándo compensa (y cuándo no)</h2>
+      <p>La regla práctica es ir de lo barato a lo caro y no subir un escalón hasta que el anterior se quede corto:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Enfoque</th><th>Qué cambia</th><th>Coste</th><th>Úsalo para</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><a href="prompt-engineering.html">Ingeniería de prompts</a> y ejemplos en el prompt</td><td>Solo el texto que envías</td><td>El más bajo</td><td>Casi todo, como primer paso</td></tr>
+            <tr><td><a href="rag.html">RAG</a></td><td>Los datos que recibe en cada petición</td><td>Bajo a medio: indexar y guardar vectores</td><td>Conocimiento propio o que cambia</td></tr>
+            <tr><td>Fine-tuning</td><td>Los pesos, con ejemplos etiquetados</td><td>Medio: datos, entrenamiento y alojar el modelo</td><td>Tarea, formato o tono que el prompt no consigue</td></tr>
+            <tr><td>Destilación</td><td>Un modelo pequeño que imita a uno grande</td><td>Medio al crearlo; ahorra en cada uso</td><td>Mucho volumen de una tarea concreta</td></tr>
+            <tr><td>Preentrenamiento continuo</td><td>Los pesos, con mucho texto sin etiquetar</td><td>Alto</td><td>Un dominio con lenguaje muy propio</td></tr>
+            <tr><td>Preentrenar desde cero</td><td>Todo: un modelo nuevo</td><td>Altísimo</td><td>Casi nunca fuera de los grandes laboratorios</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>El aprendizaje dentro del contexto (<em>in-context learning</em>), dar ejemplos en el prompt, no entrena nada: el
+        coste está en los tokens que añades a cada petición. El fine-tuning invierte al revés: paga una vez por entrenar
+        (y por alojar el modelo propio) y luego los prompts son más cortos.</p>
+      <p>Para lo que <strong>no</strong> sirve bien: meterle datos que cambian. Lo aprendido queda fijo en los pesos hasta el
+        siguiente entrenamiento, no se puede citar de dónde sale y no se puede restringir por usuario. Para eso, RAG. Los
+        dos se combinan: un modelo ajustado para el estilo y RAG para los datos.</p>
+
+      <h2 id="datos">Preparar los datos</h2>
+      <p>La calidad del modelo ajustado depende sobre todo de los datos, más que de la técnica:</p>
+      <ul>
+        <li><strong>Curados:</strong> revisados a mano, sin errores ni respuestas que no quieras que imite. El modelo aprende
+          también lo malo.</li>
+        <li><strong>Representativos:</strong> que cubran los casos reales, incluidos los difíciles y los poco frecuentes, y
+          variados para que no aprenda un solo patrón.</li>
+        <li><strong>Bien etiquetados:</strong> con la respuesta que de verdad quieres, escrita de forma coherente.</li>
+        <li><strong>Del tamaño justo:</strong> para un ajuste por instrucciones se empieza con cientos o pocos miles de
+          ejemplos buenos; mil ejemplos excelentes valen más que cien mil mediocres.</li>
+        <li><strong>Con gobierno:</strong> saber de dónde sale cada dato, con qué permiso se usa, y quitar datos personales o
+          confidenciales que no deban acabar dentro del modelo.</li>
+      </ul>
+      <p>Y antes de entrenar, separa un conjunto de prueba que el modelo no vea, para medir si el ajuste mejora de verdad
+        respecto al modelo base con un buen prompt.</p>
+
+      <h2 id="riesgos">Riesgos</h2>
+      <ul>
+        <li><strong>Olvido catastrófico:</strong> al especializarse, el modelo puede empeorar en cosas que antes hacía bien.
+          Hay que probar también tareas generales.</li>
+        <li><strong>Sobreajuste</strong> (<em>overfitting</em>)<strong>:</strong> con pocos datos o demasiado entrenamiento,
+          memoriza los ejemplos en vez de aprender el patrón, y falla con casos nuevos.</li>
+        <li><strong>Coste de mantenimiento:</strong> cuando sale una versión mejor del modelo base, el ajuste hay que
+          repetirlo.</li>
+        <li><strong>Fugas:</strong> lo que entra en el entrenamiento puede salir en una respuesta. Nada de secretos ni datos
+          personales en el conjunto.</li>
+      </ul>
+
+      <h2 id="en-aws">Así se hace en AWS</h2>
+      <p><a href="https://arquitechthor.github.io/aws-cert-study/servicios/bedrock.html">Amazon Bedrock</a> permite
+        personalizar algunos de sus modelos con fine-tuning, preentrenamiento continuo y destilación sin gestionar
+        servidores: se suben los datos a S3 y Bedrock entrena una copia privada del modelo. Para un control total del
+        entrenamiento está <a href="https://arquitechthor.github.io/aws-cert-study/servicios/sagemaker-ai.html">Amazon
+        SageMaker AI</a>, y SageMaker JumpStart ofrece modelos abiertos listos para ajustar.</p>
+
+      <h2 id="caso-real">Caso real: por qué Prompt Quest no usa fine-tuning</h2>
+      <p>En <a href="https://arquitechthor.github.io/#prompt-quest" target="_blank" rel="noopener">Prompt Quest</a>, el juego
+        de agentes del autor de esta web, un LLM traduce la estrategia de cada jugador a reglas en JSON. Podría pensarse en
+        ajustar un modelo con miles de ejemplos de estrategia y reglas, pero no hizo falta. Las reglas del juego (clases,
+        elementos, objetos y acciones) van en el prompt de sistema, generadas desde el propio código del motor; el formato se
+        garantiza con un JSON Schema; y el código valida el resultado. Así, cuando cambia el equilibrio del juego (más vida
+        para una clase, un objeto nuevo), el prompt se actualiza solo y no hay que reentrenar nada: el escalón de prompt bien
+        diseñado era suficiente.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Empezar por el fine-tuning:</strong> casi siempre un buen prompt, con ejemplos y RAG si hacen falta
+          datos, resuelve el problema antes y más barato.</li>
+        <li><strong>Usarlo para que el modelo «se sepa» los documentos:</strong> para conocimiento que cambia o que hay que
+          citar, RAG.</li>
+        <li><strong>Pocos datos o de mala calidad:</strong> el modelo aprende los errores y las rarezas del conjunto.</li>
+        <li><strong>No medir contra el modelo base:</strong> sin un conjunto de prueba aparte no sabes si el ajuste ha
+          mejorado algo.</li>
+        <li><strong>Confundir preentrenamiento continuo con fine-tuning:</strong> el primero usa texto sin etiquetar para
+          aprender un dominio; el segundo, ejemplos etiquetados para una tarea.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="fine-tuning"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html" target="_blank" rel="noopener">Customize your model to improve its performance for your use case</a> (documentación de Amazon Bedrock, consultada el 20/11/2026).</li>
+        <li><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">LoRA: Low-Rank Adaptation of Large Language Models</a> (Hu et al., 2021, consultada el 20/11/2026).</li>
+        <li><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">Training language models to follow instructions with human feedback</a> (Ouyang et al., 2022, consultada el 20/11/2026).</li>
+        <li><a href="https://arxiv.org/abs/1503.02531" target="_blank" rel="noopener">Distilling the Knowledge in a Neural Network</a> (Hinton et al., 2015, consultada el 20/11/2026).</li>
+        <li><a href="https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html" target="_blank" rel="noopener">AWS Certified AI Practitioner (AIF-C01) exam guide</a> (AWS, versión 1.2, consultada el 20/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=d08c2823" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

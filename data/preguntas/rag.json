@@ -1,0 +1,190 @@
+[
+  {
+    "id": "rag-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "¿Qué hace una aplicación con RAG antes de que el modelo genere la respuesta?",
+    "opciones": [
+      "Reentrena el modelo con los documentos más recientes de la empresa.",
+      "Busca fragmentos relevantes para la pregunta y los añade al prompt.",
+      "Traduce la pregunta al inglés para que el modelo la entienda mejor.",
+      "Divide la pregunta en varias y las envía a modelos distintos."
+    ],
+    "correctas": [1],
+    "explicacion": "RAG recupera información relevante (normalmente de una base de datos vectorial) y la añade al prompt, para que el modelo responda con ella. No reentrena el modelo; esa es la gran diferencia con el fine-tuning.",
+    "fuentes": ["https://arxiv.org/abs/2005.11401"]
+  },
+  {
+    "id": "rag-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Un asistente debe responder con las políticas internas de una empresa, que cambian cada semana. ¿Qué enfoque es el más adecuado?",
+    "opciones": [
+      "Fine-tuning del modelo cada vez que cambie una de las políticas.",
+      "Preentrenar un modelo propio con todas las políticas.",
+      "RAG sobre una base de conocimiento con las políticas vigentes.",
+      "Subir la temperatura para que el modelo se adapte mejor."
+    ],
+    "correctas": [2],
+    "explicacion": "Con RAG basta con reindexar el documento cambiado: no hay entrenamiento y la respuesta puede citar la política. El fine-tuning semanal es caro y lento, preentrenar un modelo propio es desproporcionado y la temperatura no aporta conocimiento.",
+    "fuentes": ["https://aws.amazon.com/what-is/retrieval-augmented-generation/"]
+  },
+  {
+    "id": "rag-003",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
+    "enunciado": "¿Qué es un embedding en el contexto de RAG?",
+    "opciones": [
+      "Una lista de números que representa el significado de un texto.",
+      "Un resumen corto del documento escrito por el propio modelo.",
+      "Un índice alfabético con las palabras clave de cada documento.",
+      "Una copia cifrada del documento para guardarlo de forma segura."
+    ],
+    "correctas": [0],
+    "explicacion": "Un embedding es un vector numérico que calcula un modelo especializado; textos de significado parecido tienen vectores cercanos, y eso permite buscar por significado. No es un resumen, ni un índice de palabras clave, ni una copia cifrada.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course/embeddings"]
+  },
+  {
+    "id": "rag-004",
+    "tipo": "unica",
+    "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
+    "enunciado": "¿Por qué se trocean (chunking) los documentos antes de indexarlos en un RAG?",
+    "opciones": [
+      "Porque las bases de datos vectoriales no aceptan textos con más de una frase.",
+      "Porque así el modelo de embeddings se entrena más rápido con ellos.",
+      "Porque trocear cifra cada parte y protege los datos sensibles del texto.",
+      "Porque fragmentos centrados se encuentran mejor y caben en el contexto."
+    ],
+    "correctas": [3],
+    "explicacion": "Un fragmento pequeño y centrado en un tema da un embedding más preciso y se recupera mejor, y solo se envía al modelo lo relevante, sin llenar la ventana de contexto. Trocear no entrena nada ni cifra nada, y las bases vectoriales admiten textos de más de una frase.",
+    "fuentes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"]
+  },
+  {
+    "id": "rag-005",
+    "tipo": "multiple",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "¿Qué servicios de AWS se pueden usar para guardar embeddings en una base de datos vectorial? (elige tres)",
+    "opciones": [
+      "Amazon OpenSearch Service.",
+      "Amazon Aurora con PostgreSQL.",
+      "Amazon Neptune.",
+      "Amazon SQS.",
+      "AWS Step Functions."
+    ],
+    "correctas": [0, 1, 2],
+    "explicacion": "OpenSearch Service, Aurora y RDS para PostgreSQL (con pgvector) y Neptune pueden guardar vectores y buscar los más cercanos, y se integran con las Knowledge Bases de Bedrock. SQS es una cola de mensajes y Step Functions orquesta flujos; ninguno guarda ni busca vectores.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "rag-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Un RAG responde mal a preguntas con códigos de producto exactos, como «XK-2041», aunque los documentos los contienen. ¿Qué mejora es la más indicada?",
+    "opciones": [
+      "Subir la temperatura del modelo generador.",
+      "Cambiar a un LLM con más parámetros.",
+      "Búsqueda híbrida: vectores más palabras clave.",
+      "Quitar los metadatos de los fragmentos."
+    ],
+    "correctas": [2],
+    "explicacion": "La búsqueda por significado no distingue bien identificadores exactos; combinarla con la búsqueda por palabras clave recupera los fragmentos que contienen el código. Si el fragmento no llega al prompt, ni la temperatura ni un modelo mayor lo arreglan, y quitar metadatos empeora el filtrado.",
+    "fuentes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"]
+  },
+  {
+    "id": "rag-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Al evaluar un RAG, las respuestas son malas. Al revisar, los fragmentos que llegan al prompt no contienen la información necesaria. ¿Dónde está el problema?",
+    "opciones": [
+      "En la recuperación: hay que revisar troceado, embeddings o búsqueda.",
+      "En la generación: hay que cambiar a un LLM más capaz, aunque sea más caro.",
+      "En el límite de salida: hay que dejar que el modelo escriba más.",
+      "En la temperatura: hay que bajarla para respuestas más exactas."
+    ],
+    "correctas": [0],
+    "explicacion": "Si el contexto recuperado no tiene la respuesta, el fallo está en la recuperación y ningún modelo generador puede compensarlo. Por eso se miden por separado la recuperación y la fidelidad de la generación.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  },
+  {
+    "id": "rag-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Seguridad, cumplimiento y gobernanza de soluciones de IA",
+    "enunciado": "Un asistente con RAG sobre documentos de toda la empresa muestra a un empleado datos de nóminas de otros departamentos. ¿Qué falta en el diseño?",
+    "opciones": [
+      "Un modelo de embeddings con más dimensiones.",
+      "Filtrar la búsqueda por los permisos de cada usuario.",
+      "Un troceado con más solapamiento entre fragmentos.",
+      "Una ventana de contexto más grande en el modelo."
+    ],
+    "correctas": [1],
+    "explicacion": "La recuperación debe respetar quién puede ver cada documento, por ejemplo con metadatos de permisos y filtros en la búsqueda. Las demás opciones afectan a la calidad de la recuperación, no al control de acceso.",
+    "fuentes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"]
+  },
+  {
+    "id": "rag-009",
+    "tipo": "ordenar",
+    "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Ordena los pasos que sigue un RAG para contestar una pregunta, con los documentos ya indexados.",
+    "opciones": [
+      "Añadir los fragmentos recuperados al prompt.",
+      "Calcular el embedding de la pregunta.",
+      "Generar la respuesta con el LLM.",
+      "Buscar los fragmentos más cercanos en la base vectorial."
+    ],
+    "correctas": [1, 3, 0, 2],
+    "explicacion": "Primero la pregunta se convierte en vector con el mismo modelo que los documentos; con ese vector se buscan los fragmentos más cercanos; se añaden al prompt junto con las instrucciones; y el LLM genera la respuesta apoyándose en ellos.",
+    "fuentes": ["https://aws.amazon.com/what-is/retrieval-augmented-generation/"]
+  },
+  {
+    "id": "rag-010",
+    "tipo": "unica",
+    "nivel": 3,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Un equipo cambia el modelo de embeddings de su RAG por otro mejor, pero solo lo usa para las preguntas nuevas. La calidad de la búsqueda se hunde. ¿Por qué?",
+    "opciones": [
+      "Porque el modelo nuevo necesita una base de datos vectorial distinta.",
+      "Porque los modelos de embeddings nuevos no admiten textos en español.",
+      "Porque la ventana de contexto del LLM se ha quedado pequeña de golpe.",
+      "Porque pregunta y documentos se comparan con vectores incompatibles."
+    ],
+    "correctas": [3],
+    "explicacion": "Cada modelo de embeddings coloca los textos en su propio espacio; comparar la pregunta convertida con un modelo y los documentos convertidos con otro no tiene sentido. Al cambiar de modelo hay que recalcular los embeddings de todo el índice. No obliga a cambiar de base de datos ni afecta a la ventana del LLM.",
+    "fuentes": ["https://developers.google.com/machine-learning/crash-course/embeddings"]
+  },
+  {
+    "id": "rag-011",
+    "tipo": "unica",
+    "nivel": 3,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
+    "enunciado": "Una empresa quiere que su modelo escriba con el tono y el formato de sus informes, y las respuestas no dependen de datos que cambien. Un buen prompt con ejemplos no ha bastado. ¿Qué tiene más sentido?",
+    "opciones": [
+      "Fine-tuning con informes de ejemplo.",
+      "RAG con los informes como fuente.",
+      "Una base vectorial más rápida.",
+      "Subir la temperatura del modelo."
+    ],
+    "correctas": [0],
+    "explicacion": "RAG aporta conocimiento en cada petición; para fijar un estilo y un formato que el prompt no consigue, la herramienta es el fine-tuning con ejemplos del resultado deseado. Una base vectorial más rápida no cambia el estilo y la temperatura solo cambia lo arriesgado de cada elección.",
+    "fuentes": ["https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html"]
+  }
+]
