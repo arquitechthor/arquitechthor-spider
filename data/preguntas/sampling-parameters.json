@@ -3,6 +3,8 @@
     "id": "sampling-parameters-001",
     "tipo": "unica",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
     "enunciado": "¿Qué controlan los parámetros de muestreo de un LLM?",
     "opciones": [
       "Cuántos datos de entrenamiento usa el modelo al responder.",
@@ -18,6 +20,8 @@
     "id": "sampling-parameters-002",
     "tipo": "unica",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
     "enunciado": "Bajas la temperatura de 1 a 0,2. ¿Qué cambia en las probabilidades de los candidatos?",
     "opciones": [
       "Todos los candidatos pasan a tener la misma probabilidad.",
@@ -63,6 +67,8 @@
     "id": "sampling-parameters-005",
     "tipo": "unica",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
     "enunciado": "Tienes que extraer fecha e importe de facturas y guardarlos en una base de datos. ¿Qué ajuste de muestreo es el más razonable en un modelo que lo permita?",
     "opciones": [
       "Temperatura alta, para que el modelo explore formatos de fecha.",
@@ -78,6 +84,8 @@
     "id": "sampling-parameters-006",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
     "enunciado": "Un compañero dice: «con temperatura 0 el modelo ya no puede inventarse datos». ¿Qué le contestas?",
     "opciones": [
       "Es cierto: con temperatura 0 solo se usan hechos verificados.",
@@ -93,6 +101,8 @@
     "id": "sampling-parameters-007",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "Lanzas la misma petición dos veces con temperatura 0 y las respuestas difieren en una palabra. ¿Cuál es la explicación más probable?",
     "opciones": [
       "El modelo aprendió algo nuevo entre la primera petición y la segunda.",
@@ -138,6 +148,8 @@
     "id": "sampling-parameters-010",
     "tipo": "unica",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
     "enunciado": "¿Cuál de estos ajustes de una petición NO es un parámetro de muestreo?",
     "opciones": [
       "La temperatura de la petición.",

@@ -3,6 +3,8 @@
     "id": "generative-ai-001",
     "tipo": "unica",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "¿Qué distingue a un modelo de IA generativa de un modelo de ML clásico?",
     "opciones": [
       "Que el generativo crea contenido nuevo (texto, imágenes, audio, código) en lugar de solo clasificar o predecir un valor.",
@@ -18,6 +20,8 @@
     "id": "generative-ai-002",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "¿Qué es un modelo fundacional?",
     "opciones": [
       "Un modelo pequeño entrenado para una única tarea concreta.",
@@ -33,6 +37,8 @@
     "id": "generative-ai-003",
     "tipo": "unica",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "¿Por qué la misma petición a un modelo generativo puede dar respuestas distintas?",
     "opciones": [
       "Porque el modelo se reentrena entre una petición y otra.",
@@ -48,6 +54,8 @@
     "id": "generative-ai-004",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "¿Qué es una alucinación en IA generativa y qué la mitiga mejor?",
     "opciones": [
       "Un fallo de hardware; se evita con mejores GPU.",
@@ -63,6 +71,8 @@
     "id": "generative-ai-005",
     "tipo": "multiple",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "¿Qué tipos de contenido puede producir la IA generativa? Elige 3.",
     "opciones": ["Código fuente", "Imágenes", "Voz sintética", "Garantías legales de que la respuesta es correcta"],
     "correctas": [0, 1, 2],
@@ -73,6 +83,8 @@
     "id": "generative-ai-006",
     "tipo": "unica",
     "nivel": 3,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "Un servicio necesita devolver el saldo exacto de una cuenta. Alguien propone pedírselo a un LLM con el historial de movimientos en el prompt. ¿Qué es lo correcto?",
     "opciones": [
       "Hacerlo así: el LLM sumará mejor que el código.",
@@ -88,6 +100,8 @@
     "id": "generative-ai-007",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "¿Qué técnica se usa sobre todo para generar imágenes a partir de una descripción?",
     "opciones": [
       "Modelos de difusión, que parten de ruido y lo van limpiando hasta formar una imagen acorde a la descripción.",
@@ -103,6 +117,8 @@
     "id": "generative-ai-008",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "¿En qué se diferencia la IA agéntica de la IA generativa «a secas»?",
     "opciones": [
       "En nada: son sinónimos.",
@@ -118,6 +134,8 @@
     "id": "generative-ai-009",
     "tipo": "multiple",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Seguridad, cumplimiento y gobernanza de soluciones de IA",
     "enunciado": "Vas a integrar un modelo generativo de un proveedor externo en una aplicación con datos de clientes. ¿Qué precauciones son necesarias? Elige 2.",
     "opciones": [
       "Revisar qué datos se envían en el prompt y con qué condiciones los trata el proveedor.",

@@ -3,6 +3,8 @@
     "id": "deep-learning-001",
     "tipo": "unica",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "¿A qué se refiere «profundo» en deep learning?",
     "opciones": [
       "A que el modelo entiende el significado profundo de las cosas.",
@@ -18,6 +20,8 @@
     "id": "deep-learning-002",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "¿Cuál es la gran diferencia práctica entre el deep learning y el ML clásico?",
     "opciones": [
       "El deep learning no necesita datos.",
@@ -97,6 +101,8 @@
     "id": "deep-learning-007",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "¿Qué ventaja del Transformer frente a las RNN permitió entrenar modelos de lenguaje mucho más grandes?",
     "opciones": [
       "Que no necesita datos de entrenamiento.",
@@ -112,6 +118,8 @@
     "id": "deep-learning-008",
     "tipo": "unica",
     "nivel": 3,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "Tienes una tabla de 3.000 filas con 12 columnas numéricas para predecir el consumo eléctrico. ¿Qué es más razonable probar primero?",
     "opciones": [
       "Una red neuronal profunda de cientos de capas.",
@@ -127,6 +135,8 @@
     "id": "deep-learning-009",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "Una red aprende a representar textos como vectores, de forma que textos parecidos quedan cerca. ¿Cómo se llaman esos vectores?",
     "opciones": [
       "Embeddings",

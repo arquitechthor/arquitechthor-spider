@@ -33,6 +33,8 @@
     "id": "reasoning-models-003",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "Tu proveedor no te muestra el razonamiento del modelo, solo la respuesta. ¿Qué pasa con esos tokens de razonamiento?",
     "opciones": [
       "Se facturan como tokens de salida aunque no los veas.",
@@ -66,6 +68,8 @@
     "id": "reasoning-models-005",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
     "enunciado": "¿En cuál de estas tareas compensa menos usar un modelo con razonamiento alto?",
     "opciones": [
       "Depurar un fallo que aparece al combinar tres servicios distintos.",
@@ -96,6 +100,8 @@
     "id": "reasoning-models-007",
     "tipo": "unica",
     "nivel": 3,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Directrices para una IA responsable",
     "enunciado": "Un equipo quiere usar el razonamiento que devuelve el modelo como explicación oficial de cada decisión ante auditoría. ¿Qué problema tiene?",
     "opciones": [
       "El razonamiento solo se genera en inglés y no sirve como documento.",

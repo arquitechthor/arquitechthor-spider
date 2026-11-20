@@ -3,6 +3,8 @@
     "id": "ai-agents-001",
     "tipo": "unica",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Aplicaciones de los modelos fundacionales",
     "enunciado": "¿Qué distingue a un agente de IA de un chat que responde preguntas?",
     "opciones": [
       "Que el agente usa un modelo más grande.",
@@ -18,6 +20,8 @@
     "id": "ai-agents-002",
     "tipo": "unica",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "¿Qué es la IA agéntica?",
     "opciones": [
       "Una marca comercial de un modelo concreto.",
@@ -33,6 +37,8 @@
     "id": "ai-agents-003",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "Un agente decide consultar el tiempo con la herramienta get_weather. ¿Quién ejecuta realmente esa consulta?",
     "opciones": [
       "El modelo, que tiene acceso directo a internet.",
@@ -48,6 +54,8 @@
     "id": "ai-agents-004",
     "tipo": "multiple",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "¿Qué necesita el modelo para saber cuándo y cómo usar una herramienta? Elige 3.",
     "opciones": [
       "Un nombre claro.",
@@ -63,6 +71,8 @@
     "id": "ai-agents-005",
     "tipo": "ordenar",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "Ordena una vuelta del bucle de un agente.",
     "opciones": [
       "Observar el resultado de la acción.",
@@ -78,6 +88,8 @@
     "id": "ai-agents-006",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "¿Qué diferencia un flujo de trabajo (workflow) de un agente?",
     "opciones": [
       "En el flujo de trabajo los pasos están fijados en el código; en el agente los decide el modelo en cada vuelta.",
@@ -93,6 +105,8 @@
     "id": "ai-agents-007",
     "tipo": "unica",
     "nivel": 3,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "Hay que clasificar cada ticket de soporte en tres colas y redactar una respuesta con una plantilla distinta por cola. Los pasos son siempre los mismos. ¿Qué diseño es más adecuado?",
     "opciones": [
       "Un sistema multiagente con un orquestador y un agente por cola.",
@@ -108,6 +122,8 @@
     "id": "ai-agents-008",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "En un sistema multiagente, ¿qué hace la orquestación?",
     "opciones": [
       "Ejecuta las herramientas en lugar de la aplicación.",
@@ -123,6 +139,8 @@
     "id": "ai-agents-009",
     "tipo": "multiple",
     "nivel": 3,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Seguridad, cumplimiento y gobernanza de soluciones de IA",
     "enunciado": "Vas a dar a un agente acceso a la API de pagos de tu empresa. ¿Qué medidas son imprescindibles? Elige 3.",
     "opciones": [
       "Darle solo los permisos que necesita para su tarea (mínimo privilegio).",
@@ -138,6 +156,8 @@
     "id": "ai-agents-010",
     "tipo": "emparejar",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA generativa",
     "enunciado": "Empareja cada componente de un agente con su función.",
     "opciones": ["Modelo", "Herramientas", "Bucle", "Memoria"],
     "destinos": [

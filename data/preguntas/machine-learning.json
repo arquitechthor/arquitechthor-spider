@@ -3,6 +3,8 @@
     "id": "machine-learning-001",
     "tipo": "unica",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "¿Qué cambia en el trabajo del programador cuando un problema se resuelve con ML en lugar de con reglas?",
     "opciones": [
       "Nada: sigue escribiendo cada condición a mano.",
@@ -18,6 +20,8 @@
     "id": "machine-learning-002",
     "tipo": "unica",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "En el contexto del ML, ¿qué es un modelo?",
     "opciones": [
       "La base de datos donde se guardan los ejemplos de entrenamiento.",
@@ -33,6 +37,8 @@
     "id": "machine-learning-003",
     "tipo": "emparejar",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "Empareja cada tipo de aprendizaje con un problema típico.",
     "opciones": [
       "Supervisado",
@@ -54,6 +60,8 @@
     "id": "machine-learning-004",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "Un modelo acierta el 99 % con los datos de entrenamiento pero solo el 60 % con datos nuevos. ¿Qué le pasa?",
     "opciones": [
       "Está bien entrenado: lo que importa es el resultado con los datos de entrenamiento.",
@@ -69,6 +77,8 @@
     "id": "machine-learning-005",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "¿Para qué se reserva una parte de los datos como conjunto de prueba y no se usa durante el entrenamiento ni para elegir modelo?",
     "opciones": [
       "Para tener una copia de seguridad por si se pierden los datos.",
@@ -99,6 +109,8 @@
     "id": "machine-learning-007",
     "tipo": "ordenar",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "Ordena los pasos de un proyecto de ML.",
     "opciones": [
       "Medir el modelo elegido una sola vez con los datos de prueba.",
@@ -115,6 +127,8 @@
     "id": "machine-learning-008",
     "tipo": "multiple",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "¿Qué afirmaciones sobre entrenamiento e inferencia son correctas? Elige 2.",
     "opciones": [
       "Entrenar es caro y se hace pocas veces; inferir es barato y se hace en cada petición.",
@@ -130,6 +144,8 @@
     "id": "machine-learning-009",
     "tipo": "unica",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "Hay que validar que un código postal tenga cinco dígitos. ¿Tiene sentido usar ML?",
     "opciones": [
       "Sí: el ML siempre es más fiable que una regla.",
@@ -175,6 +191,8 @@
     "id": "machine-learning-012",
     "tipo": "emparejar",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "Empareja cada problema con su tipo.",
     "opciones": [
       "Estimar el precio de venta de un piso.",
@@ -209,6 +227,8 @@
     "id": "machine-learning-014",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "Un modelo comete muchos errores con los datos de entrenamiento y casi los mismos con los de validación. ¿Qué es lo más probable?",
     "opciones": [
       "Sobreajuste: varianza alta.",
@@ -224,6 +244,8 @@
     "id": "machine-learning-015",
     "tipo": "multiple",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "Un modelo acierta casi todo en entrenamiento y bastante menos en validación. ¿Qué medidas ayudan? Elige 2.",
     "opciones": [
       "Conseguir más datos de entrenamiento.",
@@ -239,6 +261,8 @@
     "id": "machine-learning-016",
     "tipo": "emparejar",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "La palabra \"sesgo\" (bias) tiene varios sentidos en IA. Empareja cada frase con el suyo.",
     "opciones": [
       "\"El modelo concede menos préstamos a un barrio porque los datos históricos ya lo hacían.\"",
@@ -258,6 +282,8 @@
     "id": "machine-learning-017",
     "tipo": "multiple",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "¿Cuáles de estos son datos no estructurados? Elige 2.",
     "opciones": [
       "Una tabla de pedidos con fecha, cliente e importe.",

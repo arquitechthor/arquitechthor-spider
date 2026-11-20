@@ -3,6 +3,8 @@
     "id": "artificial-intelligence-001",
     "tipo": "unica",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "¿Qué relación hay entre IA, ML, deep learning e IA generativa?",
     "opciones": [
       "Son cuatro nombres para la misma tecnología.",
@@ -48,6 +50,8 @@
     "id": "artificial-intelligence-004",
     "tipo": "multiple",
     "nivel": 1,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "¿Cuáles de estos sistemas son ejemplos de IA? Elige 3.",
     "opciones": [
       "Un detector de fraude en pagos con tarjeta entrenado con transacciones históricas.",
@@ -78,6 +82,8 @@
     "id": "artificial-intelligence-006",
     "tipo": "emparejar",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "Empareja cada término con lo que añade respecto al anterior.",
     "opciones": ["IA", "ML", "Deep learning", "IA generativa"],
     "destinos": [
@@ -94,6 +100,8 @@
     "id": "artificial-intelligence-007",
     "tipo": "unica",
     "nivel": 2,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "Tu equipo tiene que marcar transacciones sospechosas a partir de unas pocas columnas numéricas y debe poder explicar cada decisión al auditor. Alguien propone un LLM porque «es IA». ¿Qué responderías?",
     "opciones": [
       "Que es la mejor opción: los LLM son siempre más precisos que cualquier otro modelo.",
@@ -109,6 +117,8 @@
     "id": "artificial-intelligence-008",
     "tipo": "unica",
     "nivel": 3,
+    "certificaciones": ["AIF-C01"],
+    "dominio": "Fundamentos de IA y ML",
     "enunciado": "Un compañero afirma: «nuestro clasificador de incidencias aprende solo con el uso, así que mejorará cada semana». El modelo se entrenó una vez y se desplegó. ¿Qué es lo más probable?",
     "opciones": [
       "Que tenga razón: todos los modelos de IA se actualizan solos al usarse.",
