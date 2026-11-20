@@ -158,8 +158,11 @@ funciones existentes): **es lo esperado** y lo arregla el paso 2 (que sube su c�
   de AIF-C01: IA y ML 30, IA generativa 39, aplicaciones 55, IA responsable 13, seguridad 9.
   **Paso 4 hecho el mismo día:** el simulacro de AIF-C01 de aws-cert-study lee en solo lectura estas
   preguntas desde los temas que lista su `data/spider.json`. **Si se etiqueta con AIF-C01 un tema nuevo,
-  hay que añadirlo a ese fichero.** **Siguiente:** el menú "Conceptos" › "AIF-C01" en aws-cert-study (paso
-  5). Después, vuelve la cola de Kopi Chess por la 3 (`testcontainers`).
+  hay que añadirlo a ese fichero.** **Paso 5 hecho el mismo día:** aws-cert-study tiene la página
+  "Conceptos › AIF-C01" (`conceptos-aif-c01.html`), que enlaza a estas fichas con su nombre, frase y número de
+  preguntas: **si se publica, renombra o etiqueta un tema de IA para AIF-C01, ejecutar allí
+  `python scripts/generar_conceptos.py --escribir`.** Plan conjunto de AIF-C01 completo.
+  **Siguiente:** vuelve la cola de Kopi Chess por la 3 (`testcontainers`).
 - **Última actualización:** 2026-11-20 (temas de AIF-C01 publicados y preguntas etiquetadas)
 
 ---
