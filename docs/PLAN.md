@@ -156,8 +156,10 @@ funciones existentes): **es lo esperado** y lo arregla el paso 2 (que sube su c�
   dominio (IA, ML, DL, IA generativa, LLMs, agentes, razonamiento y muestreo; se dejan fuera Spring AI, IA
   simbólica, la definición de la OCDE y los detalles internos de las redes). Tech Spider tiene 146 preguntas
   de AIF-C01: IA y ML 30, IA generativa 39, aplicaciones 55, IA responsable 13, seguridad 9.
-  **Siguiente:** en aws-cert-study, leer estas preguntas desde su simulacro (paso 4 del plan conjunto).
-  Después, vuelve la cola de Kopi Chess por la 3 (`testcontainers`).
+  **Paso 4 hecho el mismo día:** el simulacro de AIF-C01 de aws-cert-study lee en solo lectura estas
+  preguntas desde los temas que lista su `data/spider.json`. **Si se etiqueta con AIF-C01 un tema nuevo,
+  hay que añadirlo a ese fichero.** **Siguiente:** el menú "Conceptos" › "AIF-C01" en aws-cert-study (paso
+  5). Después, vuelve la cola de Kopi Chess por la 3 (`testcontainers`).
 - **Última actualización:** 2026-11-20 (temas de AIF-C01 publicados y preguntas etiquetadas)
 
 ---
