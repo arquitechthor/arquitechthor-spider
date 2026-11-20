@@ -729,7 +729,10 @@
     "area": "testing",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 1
+    "prioridad": 1,
+    "relacionados": [
+      "testcontainers"
+    ]
   },
   {
     "id": "component-testing",
@@ -879,9 +882,20 @@
     "tipo": "tema",
     "padre": "java-testing-ecosystem",
     "area": "testing",
-    "estado": "pendiente",
+    "frase": "Bases de datos y servicios reales en Docker para cada prueba, que se tiran al acabar.",
+    "estado": "publicado",
     "evaluable": true,
-    "prioridad": 1
+    "prioridad": 1,
+    "relacionados": [
+      "integration-testing",
+      "docker"
+    ],
+    "revisado": "2026-11-20",
+    "alias": [
+      "Contenedores de prueba",
+      "PostgreSQLContainer",
+      "@ServiceConnection"
+    ]
   },
   {
     "id": "wiremock",
@@ -1670,6 +1684,33 @@
     "prioridad": 2
   },
   {
+    "id": "c4-model",
+    "nombre": "C4 Model",
+    "nombreEs": "Modelo C4",
+    "tipo": "tema",
+    "padre": "architecture",
+    "area": "architecture",
+    "accesos": [
+      "collaboration"
+    ],
+    "frase": "Dibujar la arquitectura en cuatro niveles de zoom, del contexto general hasta el código.",
+    "estado": "publicado",
+    "evaluable": true,
+    "prioridad": 1,
+    "relacionados": [
+      "hexagonal-architecture",
+      "technical-documentation"
+    ],
+    "revisado": "2026-11-20",
+    "alias": [
+      "C4",
+      "Diagramas C4",
+      "Structurizr",
+      "Diagrama de contexto",
+      "Diagrama de contenedores"
+    ]
+  },
+  {
     "id": "architectural-styles",
     "nombre": "Architectural Styles",
     "nombreEs": "Estilos arquitectónicos",
@@ -1736,7 +1777,8 @@
       "dependency-injection",
       "solid",
       "test-doubles",
-      "ddd"
+      "ddd",
+      "c4-model"
     ],
     "revisado": "2026-11-13",
     "audio": true
@@ -2286,7 +2328,10 @@
     "area": "devops",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "testcontainers"
+    ]
   },
   {
     "id": "docker-compose",
@@ -6492,7 +6537,10 @@
     "area": "professional",
     "estado": "pendiente",
     "evaluable": false,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "c4-model"
+    ]
   },
   {
     "id": "knowledge-sharing",

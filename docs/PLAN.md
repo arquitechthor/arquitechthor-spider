@@ -162,8 +162,15 @@ funciones existentes): **es lo esperado** y lo arregla el paso 2 (que sube su c�
   "Conceptos › AIF-C01" (`conceptos-aif-c01.html`), que enlaza a estas fichas con su nombre, frase y número de
   preguntas: **si se publica, renombra o etiqueta un tema de IA para AIF-C01, ejecutar allí
   `python scripts/generar_conceptos.py --escribir`.** Plan conjunto de AIF-C01 completo.
-  **Siguiente:** vuelve la cola de Kopi Chess por la 3 (`testcontainers`).
-- **Última actualización:** 2026-11-20 (temas de AIF-C01 publicados y preguntas etiquetadas)
+  Después volvió la cola de Kopi Chess: la 3 (`testcontainers`) se publicó el mismo día.
+- **Modelo C4 (2026-11-20, pedido por el usuario):** nodo nuevo `c4-model` (tema directo del área de
+  arquitectura, con acceso desde `collaboration`) con ficha y 11 preguntas; caso real: Kopi Chess traducido
+  a los cuatro niveles. Sin probar en navegador: comprobar en producción.
+- **Testcontainers (2026-11-20), tercer tema de la cola de Kopi Chess:** ficha `temas/testcontainers.html`
+  con 11 preguntas sin Kopi Chess; primera ficha publicada del área Testing. Sin probar en navegador:
+  comprobar en producción. **Siguiente:** la 4 de la cola (`strategy-pattern`, `decorator-pattern`,
+  `adapter-pattern`).
+- **Última actualización:** 2026-11-20 (temas de AIF-C01, modelo C4 y Testcontainers)
 
 ---
 
@@ -482,6 +489,14 @@ multihilo», alias y relacionados recíprocos con `reactive-programming`, `sprin
   `guardrails`, `eu-ai-act`, `hallucinations`; `hallucinations` ↔ `rag`; `prompt-engineering` ↔
   `prompt-injection`, `system-prompt`; `tokens-context-window` ↔ `prompt-caching`; `model-selection` ↔
   `reasoning-models`, `llm-cost-latency`; `rag` ↔ `embeddings`.
+
+**2026-11-20: Modelo C4** (pedido por el usuario): nodo nuevo `c4-model` («C4 Model», `nombreEs` «Modelo C4»),
+tema directo del área `architecture` (delante de `architectural-styles`), con acceso desde `collaboration`
+(junto a `technical-documentation`), `prioridad` 1, relacionados recíprocos con `hexagonal-architecture` y
+`technical-documentation`. 553 nodos.
+
+**2026-11-20: Testcontainers publicado** (tercero de la cola de Kopi Chess): `testcontainers` con frase, alias y
+relacionados recíprocos con `integration-testing` y `docker`. Sin nodos nuevos.
 
 ### 4.3 Preguntas: `data/preguntas/<id>.json`
 
@@ -1027,7 +1042,7 @@ evalúan el concepto general (decisión del usuario, 2026-11-19).
 |---|---|---|
 | 1 ✓ | `modern-java` (2026-11-19) | Java 17→25: `record`, `sealed` + `switch` exhaustivo (`Evaluation`, `MoveKind`), patrones de registro, `_`, cuerpos de constructor flexibles (`InvalidFenException`), archivos fuente compactos (`Perft.java`), `///`, colecciones secuenciadas, caché AOT y la política de *preview* (`kopi-labs`, ADR-012) |
 | 2 ✓ | `concurrency` (2026-11-19) | hilos virtuales para leer la salida de Stockfish (`UciProcess`, `EnginePool`) y en el relé; bloqueos; *structured concurrency* en preview (`PositionBatchAnalyser`) |
-| 3 | `testcontainers` | PostgreSQL real en los IT (`JdbcGameRepositoryIT`, `TestcontainersConfiguration`) |
+| 3 ✓ | `testcontainers` (2026-11-20) | PostgreSQL real en los IT (`JdbcGameRepositoryIT`, `TestcontainersConfiguration`) |
 | 4 | `strategy-pattern`, `decorator-pattern`, `adapter-pattern` | ya enlazados desde SOLID: bots por nivel, `TimedBotPlayer` y métricas como decoradores, adaptadores de Stockfish y persistencia |
 | 5 | `junit-5` | `@ParameterizedTest`, `@Tag("slow")`, perft contra Stockfish y test diferencial (ADR-004) |
 | 6 | `jdbc` | `JdbcClient` sin JPA (ADR-003), bloqueo optimista de `GameRepository` |
@@ -1106,6 +1121,8 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-20 | **Ficha de Testcontainers** (`testcontainers`, tercero de la cola de Kopi Chess): vocabulario (prueba de integración, imagen y contenedor, desechable, doble de prueba), por qué frente a bases compartidas o H2, cómo funciona (espera, puerto aleatorio, Ryuk, módulos y `GenericContainer`), ciclo de vida (por prueba, por clase, singleton, bean de Spring, modo reutilizable experimental), ejemplos de JUnit 5 y de Spring Boot con `@ServiceConnection`, uso al desarrollar, Failsafe y `*IT`, y la 2.x (fin de JUnit 4, módulos `testcontainers-*`, paquetes nuevos). Caso real de Kopi Chess: `TestcontainersConfiguration` compartida por las pruebas de extremo a extremo y `TestKopiApplication`, imagen fijada igual que `compose.yaml`, `JdbcGameRepositoryIT` con una mini aplicación (adaptador, JDBC y Flyway), bloqueo optimista, restricciones de la tabla, `SKIP LOCKED` en `JdbcAnalysisJobQueueIT` y la CI. 11 preguntas sin Kopi Chess (la más larga es la correcta en 2 de 10). Glosario: CI. Validador en verde; sin probar en navegador. |
+| 2026-11-20 | **Ficha del modelo C4** (pedida por el usuario; no existía nodo): qué es y de dónde sale (Simon Brown, 2006–2011), las piezas (persona, sistema, contenedor que no es Docker, componente, código), los cuatro niveles con público y recomendación oficial (bastan contexto y contenedores), los complementarios (panorama, dinámico, despliegue), las reglas de notación, modelar frente a dibujar (Structurizr DSL con ejemplo, C4-PlantUML, Mermaid) y errores frecuentes. Caso real: Kopi Chess en C4 (Stockfish y backend Kopi como sistemas externos; aplicación web, PostgreSQL y app Android como contenedores; los módulos Maven como grupos de componentes, no contenedores; diagrama dinámico de «juegas una jugada»). 11 preguntas sin Kopi Chess (la más larga es la correcta en 2 de 10). Glosario: DSL, HTTPS, JAR y UML. Fuentes de c4model.com leídas con el agente web (la página se monta con JavaScript). Validador en verde; sin probar en navegador. |
 | 2026-11-20 | **Preguntas de IA etiquetadas para AIF-C01** (paso 3 del plan conjunto): 63 preguntas de 8 fichas ya publicadas con `"certificaciones": ["AIF-C01"]` y `"dominio"` según las tareas de la guía v1.2 (artificial-intelligence 5, machine-learning 13, deep-learning 5, generative-ai 9, llms 12, ai-agents 10, reasoning-models 3, sampling-parameters 6). Sin etiquetar: Spring AI, IA simbólica, definición de la OCDE, retropropagación, activaciones, pérdida, hiperparámetros y variantes del Transformer. Total en Tech Spider: 146 (IA y ML 30, IA generativa 39, aplicaciones 55, IA responsable 13, seguridad 9). Validador en verde. |
 | 2026-11-20 | **Temas de AIF-C01** (paso 1 del plan conjunto con aws-cert-study, pedido por el usuario): 8 fichas del área IA alineadas con la guía de AIF-C01 v1.2: tokens y ventana de contexto (precio por tokens, longitud de entrada y salida, capacidad reservada), ingeniería de prompts (partes, zero/one/few-shot, cadena de pensamiento, plantillas, prompts negativos, versionado; riesgos: inyección, jailbreak, exposición, envenenamiento), alucinaciones (causas, tipos, anclaje, comprobación de anclaje, puntuación de confianza), RAG (ingesta, consulta, búsqueda híbrida, reordenación, evaluación, bases vectoriales de AWS), fine-tuning (instrucciones, dominio, preentrenamiento continuo, RLHF, destilación, PEFT/LoRA, tabla de costes frente a prompt y RAG, datos), selección de modelo (criterios, tamaños, enrutado y cascada, abierto frente a gestionado), métricas de evaluación (nuevo: matriz de confusión, exactitud, precisión, exhaustividad, F1, AUC, MAE, RMSE, ROUGE, BLEU, BERTScore, LLM como juez, benchmarks, negocio) e IA responsable (nuevo: dimensiones, sesgos y análisis por subgrupos, explicabilidad, fichas de modelo, riesgos legales, sostenibilidad). Casos reales de Prompt Quest (prompt de sistema del compilador, delimitadores e inyección, JSON Schema, Haiku con esfuerzo bajo, caché del prompt, límites de salida, crónica anclada en hechos) y Kopi (preguntas de repaso generadas desde el apunte). 83 preguntas con `certificaciones` y `dominio` (la más larga es la correcta en 26 de 74 de respuesta única). Glosario: AUC, BLEU, FM, LoRA, MAE, OWASP, PEFT, RMSE, ROI y ROUGE. 12 enlaces de fichas existentes pasan de «Próximamente» a la ficha publicada. Fuentes comprobadas (todas responden salvo la ayuda de OpenAI, que bloquea clientes automáticos). Validador en verde; sin probar en navegador. |
 | 2026-11-19 | **Ficha de Concurrencia** (`concurrency`, segundo de la cola de Kopi Chess): concurrencia frente a paralelismo, vocabulario (hilo de plataforma y virtual, estado compartido, condición de carrera, sección crítica), los tres problemas (atomicidad, visibilidad, orden y JMM), `synchronized`, `volatile`, inmutabilidad y confinamiento, `java.util.concurrent` (ejecutores, `CompletableFuture`, atómicas y `LongAdder`, colecciones concurrentes, candados, `Semaphore`), interrupción, hilos virtuales (pools, JEP 491, `ScopedValue`), concurrencia estructurada (preview) e interbloqueos. Caso real de Kopi Chess: `UciProcess` (hilo virtual + `BlockingQueue` con tiempo límite), `EnginePool` (semáforo justo, `ConcurrentLinkedQueue`, `LongAdder`), `AnalysisWorker` (parada con `volatile`, interrupción y `join`), `OnlineGames` (`synchronized`, bloqueo optimista), `RelayWebSocket` (envíos encadenados con `CompletableFuture`) y `kopi-labs`. 13 preguntas sin Kopi Chess (la más larga es la correcta en 1). Glosario: CPU y JMM. Validador en verde; sin probar en navegador. |

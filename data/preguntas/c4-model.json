@@ -1,0 +1,168 @@
+[
+  {
+    "id": "c4-model-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué representan las cuatro «C» del modelo C4?",
+    "opciones": [
+      "Cuatro niveles de zoom: contexto, contenedores, componentes y código.",
+      "Cuatro principios de diseño: claridad, cohesión, coherencia y corrección.",
+      "Cuatro fases: concepción, construcción, comprobación y cierre.",
+      "Cuatro vistas: clases, casos de uso, colaboración y capas."
+    ],
+    "correctas": [0],
+    "explicacion": "C4 describe un sistema con cuatro niveles de detalle, de lo general a lo concreto: Context, Containers, Components y Code. No son principios de diseño, ni fases de un proyecto, ni las vistas de UML.",
+    "fuentes": ["https://c4model.com/diagrams"]
+  },
+  {
+    "id": "c4-model-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "En el modelo C4, ¿qué es un contenedor?",
+    "opciones": [
+      "Una imagen de Docker con todo lo que necesita un servicio para arrancar.",
+      "Un paquete de código, como un JAR o un módulo de Maven.",
+      "Una aplicación o almacén de datos que se ejecuta por separado.",
+      "Un grupo de clases relacionadas detrás de una interfaz común."
+    ],
+    "correctas": [2],
+    "explicacion": "En C4, un contenedor es algo que tiene que estar en marcha para que el sistema funcione: una aplicación web, una app móvil, una función serverless, una base de datos. No tiene relación con Docker. Un JAR o un módulo no se ejecutan solos, y un grupo de clases tras una interfaz es un componente.",
+    "fuentes": ["https://c4model.com/abstractions"]
+  },
+  {
+    "id": "c4-model-003",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Hay que explicar a la dirección de la empresa qué hace un sistema, quién lo usa y con qué otros sistemas se integra. ¿Qué diagrama C4 encaja?",
+    "opciones": [
+      "El diagrama de código, con las clases principales.",
+      "El diagrama de componentes de la aplicación web.",
+      "El diagrama de despliegue con los servidores.",
+      "El diagrama de contexto del sistema."
+    ],
+    "correctas": [3],
+    "explicacion": "El diagrama de contexto muestra el sistema como una sola caja, las personas que lo usan y los sistemas externos con los que habla; está pensado para cualquier público, también no técnico. Los de código y componentes son para desarrolladores, y el de despliegue habla de infraestructura.",
+    "fuentes": ["https://c4model.com/diagrams/system-context"]
+  },
+  {
+    "id": "c4-model-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Según la recomendación oficial del modelo C4, ¿qué diagramas bastan para la mayoría de equipos?",
+    "opciones": [
+      "Los cuatro niveles, siempre completos y actualizados.",
+      "Contexto y contenedores; el resto solo si aporta valor.",
+      "Componentes y código, que son los que usa el equipo a diario.",
+      "Solo el de código, generado por el entorno de desarrollo."
+    ],
+    "correctas": [1],
+    "explicacion": "La documentación de C4 dice que no hacen falta los cuatro niveles: contexto y contenedores suelen bastar. Los componentes se dibujan si un contenedor lo merece, y el código casi nunca a mano, porque el entorno de desarrollo lo genera.",
+    "fuentes": ["https://c4model.com/diagrams"]
+  },
+  {
+    "id": "c4-model-005",
+    "tipo": "multiple",
+    "nivel": 1,
+    "enunciado": "En el diagrama de contenedores de una tienda online, ¿cuáles de estos elementos son contenedores? (elige tres)",
+    "opciones": [
+      "La aplicación web en Spring Boot que sirve el catálogo.",
+      "La base de datos PostgreSQL con productos y pedidos.",
+      "La app móvil con la que compran los clientes.",
+      "La clase PedidoService que calcula el total.",
+      "El proveedor externo de pagos con tarjeta."
+    ],
+    "correctas": [0, 1, 2],
+    "explicacion": "La aplicación web, la base de datos y la app móvil son aplicaciones o almacenes de datos del sistema que se ejecutan por separado. PedidoService es código (dentro de un componente), y el proveedor de pagos es un sistema software externo.",
+    "fuentes": ["https://c4model.com/abstractions"]
+  },
+  {
+    "id": "c4-model-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un diagrama tiene cajas sin título y flechas con la palabra «usa». ¿Qué mejora recomienda el modelo C4 para las flechas?",
+    "opciones": [
+      "Quitar las etiquetas para que el diagrama quede más limpio.",
+      "Pintar cada flecha de un color distinto según su importancia.",
+      "Usar flechas en los dos sentidos para no repetir relaciones.",
+      "Etiquetar qué viaja por cada una y, entre contenedores, el protocolo."
+    ],
+    "correctas": [3],
+    "explicacion": "C4 pide que cada línea sea una relación en un solo sentido con una etiqueta concreta (mejor «envía pedidos a» que «usa») y, entre contenedores, la tecnología o protocolo. Quitar etiquetas o usar colores sin leyenda empeora el diagrama, y las flechas bidireccionales mezclan dos relaciones.",
+    "fuentes": ["https://c4model.com/diagrams/notation"]
+  },
+  {
+    "id": "c4-model-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Una aplicación Java está dividida en seis módulos de Maven que se empaquetan en un único JAR ejecutable. ¿Cómo se representan esos módulos en C4?",
+    "opciones": [
+      "Como seis contenedores, uno por módulo de Maven.",
+      "Como seis sistemas software que se comunican entre sí.",
+      "Como agrupaciones de componentes dentro de un contenedor.",
+      "Como seis nodos distintos del diagrama de despliegue."
+    ],
+    "correctas": [2],
+    "explicacion": "Un contenedor es lo que se ejecuta por separado: aquí, la aplicación que sale del JAR. Los módulos no se ejecutan solos, así que agrupan componentes dentro de ese contenedor. No son sistemas aparte ni nodos de despliegue.",
+    "fuentes": ["https://c4model.com/faq"]
+  },
+  {
+    "id": "c4-model-008",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Por qué el modelo C4 desaconseja dibujar a mano el diagrama de código?",
+    "opciones": [
+      "Porque el entorno de desarrollo lo genera y a mano se queda viejo enseguida.",
+      "Porque C4 prohíbe mostrar clases e interfaces en cualquier tipo de diagrama.",
+      "Porque solo los arquitectos tienen permiso para ver ese nivel de detalle.",
+      "Porque el diagrama de código sustituye al de contexto y lo hace inútil."
+    ],
+    "correctas": [0],
+    "explicacion": "El nivel de código es opcional: los entornos de desarrollo lo muestran al momento y un dibujo manual deja de coincidir con el código en cuanto este cambia. Si se hace, mejor generado y solo para piezas importantes. C4 no lo prohíbe y no sustituye a ningún otro nivel.",
+    "fuentes": ["https://c4model.com/diagrams/code"]
+  },
+  {
+    "id": "c4-model-009",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Hay que mostrar en qué servicios de la nube y en qué entornos (pruebas, producción) se ejecuta cada aplicación de un sistema. ¿Qué diagrama encaja?",
+    "opciones": [
+      "El diagrama de contenedores.",
+      "El diagrama de contexto.",
+      "El diagrama dinámico.",
+      "El diagrama de despliegue."
+    ],
+    "correctas": [3],
+    "explicacion": "El diagrama de despliegue, uno de los complementarios de C4, muestra dónde se ejecuta cada contenedor. El de contenedores dice qué aplicaciones hay y cómo se comunican, pero no dónde se despliegan; el de contexto es aún más general; y el dinámico muestra los pasos de un caso concreto.",
+    "fuentes": ["https://c4model.com/diagrams"]
+  },
+  {
+    "id": "c4-model-010",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un equipo mantiene diez diagramas C4 del mismo sistema en una herramienta de dibujo, y al renombrar un servicio tiene que tocarlos uno a uno. ¿Qué enfoque lo evita?",
+    "opciones": [
+      "Dibujar un solo diagrama gigante con todos los niveles juntos.",
+      "Modelar los elementos una vez en texto y generar las vistas.",
+      "Exportar los diagramas como imágenes y no volver a tocarlos.",
+      "Eliminar los nombres de las cajas y usar solo colores."
+    ],
+    "correctas": [1],
+    "explicacion": "Con una herramienta de modelado (por ejemplo Structurizr, con su DSL), los elementos y relaciones se describen una vez y cada diagrama es una vista del modelo, así que un cambio se refleja en todas. Mezclar niveles en un diagrama, congelar imágenes o quitar nombres empeora la documentación.",
+    "fuentes": ["https://docs.structurizr.com/dsl"]
+  },
+  {
+    "id": "c4-model-011",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué notación obliga a usar el modelo C4?",
+    "opciones": [
+      "UML, con sus formas y estereotipos estándar.",
+      "ArchiMate, para encajar con la arquitectura empresarial.",
+      "Ninguna concreta: pide título, leyenda y elementos explicados.",
+      "La de Structurizr, la única herramienta que admite sus cuatro niveles."
+    ],
+    "correctas": [2],
+    "explicacion": "C4 es independiente de la notación y de la herramienta: se puede dibujar con cajas simples, con UML o con ArchiMate, siempre que cada diagrama tenga título, leyenda y elementos con su tipo, descripción y tecnología. Structurizr es una opción entre varias (PlantUML, Mermaid, una pizarra).",
+    "fuentes": ["https://c4model.com/diagrams/notation"]
+  }
+]

@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modelo C4 — Tech Spider</title>
+<meta name="description" content="Una forma de dibujar la arquitectura de un sistema software con cuatro niveles de zoom (contexto, contenedores, componentes y código), sin notación obligatoria y entendible por todo el equipo.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/c4-model.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=532e81a3">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="c4-model">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>El <strong>modelo C4</strong> es una forma de describir y dibujar la arquitectura de un sistema software como si fuera
+        un mapa con <strong>cuatro niveles de zoom</strong>: desde la vista más general (quién usa el sistema y con qué otros
+        sistemas habla) hasta el detalle del código. El nombre viene de esos cuatro niveles: <em>Context</em>,
+        <em>Containers</em>, <em>Components</em> y <em>Code</em>.</p>
+      <p>Lo creó Simon Brown a partir de su experiencia enseñando arquitectura a equipos; sus ideas se fueron formando entre
+        2006 y 2009 y el nombre «C4» se usa desde 2011. No es una notación como UML ni exige ninguna herramienta: es un
+        <strong>conjunto pequeño de conceptos</strong> (persona, sistema, contenedor, componente) y unas pocas reglas para que
+        los diagramas se entiendan sin que su autor los explique.</p>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Casi todos los equipos dibujan su arquitectura en una pizarra: cajas y flechas. El problema es que cada uno las
+        dibuja a su manera, mezclando niveles (un servidor junto a una clase junto a un equipo de personas), sin decir qué es
+        cada caja ni qué significa cada flecha. Un mes después, nadie, ni su autor, sabe leer el dibujo.</p>
+      <p>C4 resuelve eso con dos ideas sencillas: <strong>un diagrama, un nivel de detalle</strong> (como no se mezclan en un
+        mismo mapa el país y las calles de un barrio), y <strong>un vocabulario común</strong> para las cajas. Así sirve a
+        públicos distintos: el diagrama de contexto lo entiende alguien de negocio; el de componentes, quien va a tocar el
+        código. Se usa mucho para documentar sistemas, incorporar a gente nueva a un equipo y acompañar decisiones de
+        arquitectura (por ejemplo, los ADR).</p>
+
+      <h2 id="abstracciones">Las piezas: de qué está hecho un sistema</h2>
+      <ul>
+        <li><strong>Persona:</strong> alguien que usa el sistema: un usuario, un rol, un tipo de cliente.</li>
+        <li><strong>Sistema software:</strong> lo que entrega valor a esas personas, normalmente lo que construye y mantiene
+          un equipo. Los sistemas ajenos con los que se integra (una pasarela de pago, un proveedor de correo) también son
+          sistemas software, marcados como externos.</li>
+        <li><strong>Contenedor:</strong> una aplicación o un almacén de datos que tiene que estar en marcha para que el sistema
+          funcione. <strong>No tiene nada que ver con Docker</strong>: el nombre se eligió antes de que Docker existiera, y la
+          propia documentación lo aclara de entrada. Son contenedores una aplicación web en el servidor, una aplicación de
+          una sola página que corre en el navegador, una app móvil, un programa de escritorio, una función serverless, un
+          proceso por lotes, un esquema de base de datos o un almacén de ficheros. Es la <strong>unidad que se despliega y se
+          ejecuta</strong> por separado.</li>
+        <li><strong>Componente:</strong> un grupo de funcionalidad relacionada detrás de una interfaz bien definida, dentro de
+          un contenedor. Un componente <strong>no se despliega solo</strong>: va dentro de su contenedor.</li>
+        <li><strong>Código:</strong> las clases, interfaces, funciones o tablas con las que se implementa un componente.</li>
+      </ul>
+      <p>Cada nivel se compone del siguiente: un sistema tiene uno o varios contenedores, un contenedor tiene componentes y
+        un componente se implementa con código. Un error típico es llamar contenedor a un JAR o a un módulo de código: no se
+        ejecutan solos, así que son, como mucho, una forma de agrupar componentes.</p>
+
+      <h2 id="niveles">Los cuatro diagramas</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Nivel</th><th>Muestra</th><th>Para quién</th><th>¿Hay que hacerlo?</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1. Contexto del sistema</td><td>El sistema como una sola caja, las personas que lo usan y los sistemas externos con los que habla</td><td>Todo el mundo, también perfiles no técnicos</td><td>Sí</td></tr>
+            <tr><td>2. Contenedores</td><td>Las aplicaciones y almacenes de datos del sistema, su tecnología y cómo se comunican</td><td>Perfiles técnicos, dentro y fuera del equipo</td><td>Sí</td></tr>
+            <tr><td>3. Componentes</td><td>Las piezas de un contenedor concreto y sus responsabilidades</td><td>Arquitectos y desarrolladores</td><td>Solo si aporta</td></tr>
+            <tr><td>4. Código</td><td>Las clases o tablas de un componente</td><td>Desarrolladores</td><td>Casi nunca a mano</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>La recomendación oficial es clara: <strong>para la mayoría de equipos bastan los dos primeros</strong>. El de
+        componentes se hace cuando un contenedor es complejo y merece explicarse. El de código suele sobrar, porque cualquier
+        entorno de desarrollo lo genera al momento y un dibujo hecho a mano se queda viejo enseguida; si se hace, mejor
+        generado automáticamente y solo para las piezas más importantes.</p>
+      <p>Además de los cuatro niveles hay tres <strong>diagramas complementarios</strong>:</p>
+      <ul>
+        <li><strong>Panorama de sistemas</strong> (<em>system landscape</em>)<strong>:</strong> todos los sistemas de una
+          organización y cómo se relacionan, como un contexto sin centro.</li>
+        <li><strong>Dinámico:</strong> cómo colaboran los elementos en un caso concreto, con los pasos numerados (por ejemplo,
+          «el usuario inicia sesión»).</li>
+        <li><strong>Despliegue:</strong> en qué máquinas, servicios en la nube o entornos se ejecuta cada contenedor.</li>
+      </ul>
+
+      <h2 id="notacion">Reglas para que un diagrama se entienda solo</h2>
+      <p>C4 no impone formas ni colores, pero sí unas pocas reglas de notación:</p>
+      <ul>
+        <li><strong>Título con tipo y alcance:</strong> «Diagrama de contenedores de Tienda online», no solo «Arquitectura».</li>
+        <li><strong>Leyenda:</strong> qué significa cada forma, color, borde discontinuo o tipo de línea.</li>
+        <li><strong>Cada caja dice qué es:</strong> su tipo (persona, sistema, contenedor, componente), una frase corta con su
+          responsabilidad y, en contenedores y componentes, su tecnología («Aplicación web, Java y Spring Boot»).</li>
+        <li><strong>Cada flecha es una relación en un solo sentido y lleva una etiqueta</strong> que diga qué pasa por ella:
+          «envía pedidos a», «lee y escribe pedidos en», mejor que un vago «usa». Entre contenedores, también el protocolo
+          (HTTPS, JDBC, una cola de mensajes).</li>
+        <li><strong>Siglas explicadas</strong> y colores consistentes, pensando en la impresión en blanco y negro y en quien no
+          distingue bien los colores.</li>
+      </ul>
+
+      <h2 id="herramientas">Cómo se dibuja</h2>
+      <p>Vale cualquier herramienta de dibujo, incluso una pizarra. Pero cuando hay varios diagramas del mismo sistema,
+        compensa <strong>modelar en lugar de dibujar</strong>: se describe una vez qué elementos hay y cómo se relacionan, y
+        las vistas se generan a partir de ese modelo, siempre coherentes entre sí. Es la idea de los «diagramas como código»,
+        que además se guardan en git junto al resto del proyecto:</p>
+      <ul>
+        <li><strong>Structurizr:</strong> la herramienta del propio autor de C4, con un DSL (un pequeño lenguaje de texto)
+          para describir el modelo y sus vistas.</li>
+        <li><strong>C4-PlantUML:</strong> una biblioteca para PlantUML con las formas de C4.</li>
+        <li><strong>Mermaid:</strong> admite diagramas C4 en su sintaxis, aunque los marca como experimentales.</li>
+      </ul>
+      <p>Un ejemplo mínimo en el DSL de Structurizr, con un sistema y dos contenedores:</p>
+      <pre><code>workspace {
+    model {
+        cliente = person "Cliente"
+        tienda = softwareSystem "Tienda online" {
+            web = container "Aplicación web" "Catálogo y pedidos" "Java, Spring Boot"
+            bd = container "Base de datos" "Productos y pedidos" "PostgreSQL"
+        }
+        cliente -> web "Compra en" "HTTPS"
+        web -> bd "Lee y escribe en" "JDBC"
+    }
+    views {
+        systemContext tienda { include * }
+        container tienda { include * }
+    }
+}</code></pre>
+
+      <h2 id="caso-real">Caso real: Kopi Chess en C4</h2>
+      <p><a href="https://github.com/arquitechthor/kopi-chess" target="_blank" rel="noopener">Kopi Chess</a>, la aplicación
+        de ajedrez del autor de esta web, documenta su arquitectura con un dibujo de anillos (la <a href="hexagonal-architecture.html">arquitectura hexagonal</a>) y
+        con ADR, no con C4. Traducida a los cuatro niveles, queda así:</p>
+      <p><strong>1. Contexto.</strong> Una persona juega al ajedrez en su PC con Kopi Chess. El sistema habla con dos
+        sistemas externos: <strong>Stockfish</strong>, el motor de ajedrez que analiza las posiciones y juega los niveles
+        fuertes, y el <strong>backend de Kopi</strong> en AWS, con la cuenta Kopi y el relé que lleva las jugadas de las
+        partidas en línea. Stockfish va en el mismo PC, pero es software de otros: en C4 se dibuja como sistema externo, no
+        como parte de Kopi Chess.</p>
+      <pre><code>[Jugador] --juega partidas en--> [Kopi Chess]
+[Kopi Chess] --pide análisis y jugadas a (UCI)--> [Stockfish]          (externo)
+[Kopi Chess] --envía y recibe jugadas en línea (HTTPS)--> [Backend Kopi] (externo)</code></pre>
+      <p><strong>2. Contenedores.</strong> Dentro de Kopi Chess hay tres: la <strong>aplicación web</strong> (Java 25 y
+        Spring Boot, con las páginas y la API REST, que solo atiende a su propio equipo), la <strong>base de datos</strong>
+        PostgreSQL, con las partidas y la cola de análisis, y la <strong>app Android</strong>, que es un cliente remoto: no
+        sabe ajedrez y habla con la aplicación del PC a través del relé.</p>
+      <pre><code>[Navegador del jugador] --HTTP en localhost--> [Aplicación web: Java 25, Spring Boot]
+[Aplicación web] --lee y escribe partidas (JDBC)--> [Base de datos: PostgreSQL]
+[App Android] --manda jugadas por el relé (HTTPS)--> [Backend Kopi] --las reenvía a--> [Aplicación web]</code></pre>
+      <p><strong>3. Componentes de la aplicación web.</strong> Aquí aparecen los módulos Maven: el dominio (reglas, partida,
+        análisis), los casos de uso con sus puertos y los adaptadores de entrada (web, REST, remoto) y de salida
+        (persistencia, Stockfish, bots propios, libro de aperturas, relé). Ojo: los módulos Maven <strong>no son
+        contenedores</strong>, porque todos acaban en la misma aplicación que se ejecuta; son grupos de componentes. El
+        dibujo de anillos de Kopi Chess es, en el fondo, un diagrama de componentes (ver también <a href="clean-architecture.html">arquitectura limpia</a>).</p>
+      <p><strong>4. Código.</strong> Clases como <code>Game</code>, <code>Position</code> o <code>PlayMove</code>. No hace
+        falta dibujarlas: el entorno de desarrollo las muestra.</p>
+      <p>Y un <strong>diagrama dinámico</strong> saldría de su recorrido «juegas una jugada»: el navegador envía la jugada al
+        controlador web, este llama al caso de uso <code>PlayMove</code>, que aplica la jugada en el dominio, pide la
+        respuesta al bot (propio o Stockfish) y guarda la partida en PostgreSQL.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Confundir contenedor con contenedor de Docker:</strong> en C4 es cualquier aplicación o almacén de datos
+          que se ejecuta por separado, se despliegue como se despliegue.</li>
+        <li><strong>Mezclar niveles en un diagrama:</strong> clases junto a sistemas externos, o servidores junto a
+          componentes. Un diagrama, un nivel.</li>
+        <li><strong>Flechas sin etiqueta o con «usa»:</strong> no dicen nada. Di qué viaja y por qué protocolo.</li>
+        <li><strong>Cajas sin tipo ni tecnología:</strong> «Servicio de pedidos» puede ser un contenedor o un componente;
+          dilo.</li>
+        <li><strong>Dibujar los cuatro niveles de todo:</strong> la mayoría de equipos solo necesita contexto y
+          contenedores. El nivel de código hecho a mano envejece en semanas.</li>
+        <li><strong>Diagramas que nadie actualiza:</strong> guárdalos junto al código (mejor como texto) y revísalos cuando
+          cambie la arquitectura.</li>
+        <li><strong>Mezclar C4 con el despliegue:</strong> el diagrama de contenedores no dice en qué servidor va cada cosa;
+          para eso está el de despliegue.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="c4-model"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://c4model.com/" target="_blank" rel="noopener">The C4 model for visualising software architecture</a> (Simon Brown, consultada el 20/11/2026).</li>
+        <li><a href="https://c4model.com/abstractions" target="_blank" rel="noopener">Abstractions</a> (c4model.com: persona, sistema, contenedor, componente y código, consultada el 20/11/2026).</li>
+        <li><a href="https://c4model.com/diagrams" target="_blank" rel="noopener">Diagrams</a> (c4model.com: los cuatro niveles y los complementarios, consultada el 20/11/2026).</li>
+        <li><a href="https://c4model.com/diagrams/notation" target="_blank" rel="noopener">Notation</a> (c4model.com, consultada el 20/11/2026).</li>
+        <li><a href="https://c4model.com/faq" target="_blank" rel="noopener">FAQ</a> (c4model.com: historia, escalado y herramientas, consultada el 20/11/2026).</li>
+        <li><a href="https://docs.structurizr.com/dsl" target="_blank" rel="noopener">Structurizr DSL</a> (documentación de Structurizr, consultada el 20/11/2026).</li>
+        <li><a href="https://github.com/plantuml-stdlib/C4-PlantUML" target="_blank" rel="noopener">C4-PlantUML</a> (GitHub, consultada el 20/11/2026).</li>
+        <li><a href="https://mermaid.js.org/syntax/c4.html" target="_blank" rel="noopener">C4 Diagrams</a> (documentación de Mermaid, consultada el 20/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=d08c2823" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+[
+  {
+    "id": "testcontainers-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué hace Testcontainers en una prueba de integración?",
+    "opciones": [
+      "Simula la base de datos en memoria con el mismo dialecto SQL.",
+      "Arranca un servicio real en un contenedor y lo tira al terminar.",
+      "Graba las respuestas de la base de datos y las reproduce después.",
+      "Despliega la aplicación completa en un clúster de Kubernetes."
+    ],
+    "correctas": [1],
+    "explicacion": "Testcontainers arranca desde la prueba un contenedor Docker con el servicio real (PostgreSQL, Kafka…), espera a que esté listo y lo elimina al acabar. No simula nada en memoria, no graba respuestas y no despliega en Kubernetes.",
+    "fuentes": ["https://java.testcontainers.org/"]
+  },
+  {
+    "id": "testcontainers-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Un equipo prueba su repositorio con H2 en memoria y todo pasa, pero en producción, con PostgreSQL, una consulta falla. ¿Qué ventaja le daría Testcontainers?",
+    "opciones": [
+      "Que las pruebas no necesiten ninguna herramienta instalada.",
+      "Que las pruebas se ejecuten más rápido que con H2 en memoria.",
+      "Probar contra el mismo motor y versión que en producción.",
+      "Generar automáticamente las consultas que faltan en el código."
+    ],
+    "correctas": [2],
+    "explicacion": "H2 no es PostgreSQL: su SQL, tipos, restricciones y bloqueos difieren. Testcontainers usa el motor real con la versión de producción. A cambio necesita Docker (o un entorno compatible) y es más lento que H2; no genera código.",
+    "fuentes": ["https://java.testcontainers.org/modules/databases/postgres/"]
+  },
+  {
+    "id": "testcontainers-003",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué necesita la máquina que ejecuta pruebas con Testcontainers?",
+    "opciones": [
+      "Una instalación local de cada servicio que se va a probar.",
+      "Una conexión a la base de datos compartida del equipo.",
+      "Acceso de administrador al servidor de producción.",
+      "Docker o un entorno compatible en funcionamiento."
+    ],
+    "correctas": [3],
+    "explicacion": "Testcontainers crea los contenedores a través de Docker (o de un entorno compatible), así que es su único requisito; los servicios vienen en las imágenes. No usa bases de datos compartidas ni toca producción.",
+    "fuentes": ["https://java.testcontainers.org/supported_docker_environment/"]
+  },
+  {
+    "id": "testcontainers-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Una prueba configura la aplicación para conectarse a localhost:5432, pero falla al conectar con el contenedor de PostgreSQL. ¿Cuál es la causa más probable?",
+    "opciones": [
+      "Testcontainers publica el servicio en un puerto aleatorio del equipo.",
+      "PostgreSQL dentro de un contenedor no acepta conexiones por JDBC.",
+      "Testcontainers cierra el contenedor antes de que empiece la prueba.",
+      "El puerto 5432 está reservado para Docker y no se puede usar."
+    ],
+    "correctas": [0],
+    "explicacion": "Para no chocar con otros servicios, Testcontainers asigna un puerto libre al azar; hay que pedírselo al contenedor (getMappedPort, getJdbcUrl) o dejar que @ServiceConnection configure la conexión. Las demás afirmaciones son falsas.",
+    "fuentes": ["https://java.testcontainers.org/features/networking/"]
+  },
+  {
+    "id": "testcontainers-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "En una aplicación Spring Boot, ¿qué consigue anotar el contenedor de la base de datos con @ServiceConnection?",
+    "opciones": [
+      "Que el contenedor se reutilice entre ejecuciones de la CI.",
+      "Que Spring configure solo la conexión con el contenedor.",
+      "Que las migraciones de Flyway se salten durante las pruebas.",
+      "Que la base de datos se cree en memoria en vez de en Docker."
+    ],
+    "correctas": [1],
+    "explicacion": "@ServiceConnection hace que Spring Boot obtenga del contenedor los datos de conexión (URL, usuario, contraseña) y configure la aplicación con ellos, sin escribirlos en ningún sitio. No reutiliza contenedores entre ejecuciones, no desactiva Flyway y no cambia a una base en memoria.",
+    "fuentes": ["https://docs.spring.io/spring-boot/reference/testing/testcontainers.html"]
+  },
+  {
+    "id": "testcontainers-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Una batería de pruebas de integración tarda mucho porque cada método arranca su propio contenedor de PostgreSQL. ¿Qué cambio reduce más el tiempo?",
+    "opciones": [
+      "Pasar a la etiqueta latest para usar la imagen más ligera.",
+      "Ejecutar cada prueba en un hilo distinto sin cambiar nada más.",
+      "Compartir el contenedor y limpiar los datos entre pruebas.",
+      "Subir la memoria de Docker para que arranque más deprisa."
+    ],
+    "correctas": [2],
+    "explicacion": "Arrancar un contenedor cuesta segundos; compartirlo por clase (campo static con @Container) o por ejecución, borrando los datos al empezar cada prueba, elimina casi todo ese coste. latest no acelera y hace las pruebas imprevisibles, y ni los hilos ni la memoria evitan los arranques repetidos.",
+    "fuentes": ["https://testcontainers.com/guides/testcontainers-container-lifecycle/"]
+  },
+  {
+    "id": "testcontainers-007",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Por qué conviene fijar una versión concreta de la imagen, como postgres:18.6, en lugar de postgres:latest?",
+    "opciones": [
+      "Porque Testcontainers no admite la etiqueta latest en ninguna imagen.",
+      "Porque las imágenes con versión fija se descargan sin conexión.",
+      "Porque latest siempre apunta a una versión beta todavía inestable.",
+      "Para probar con la versión de producción y no cambiar sin aviso."
+    ],
+    "correctas": [3],
+    "explicacion": "Con latest, la versión probada cambia sola cuando se publica una nueva y deja de coincidir con producción, así que las pruebas pueden empezar a fallar o a pasar sin motivo en el código. Testcontainers sí admite latest, la descarga necesita red igualmente y latest no tiene por qué ser una beta.",
+    "fuentes": ["https://java.testcontainers.org/modules/databases/postgres/"]
+  },
+  {
+    "id": "testcontainers-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "El proceso de pruebas se cae de golpe y no llega a parar sus contenedores. ¿Qué evita que se queden encendidos para siempre?",
+    "opciones": [
+      "Ryuk, un contenedor vigilante que borra lo que creó Testcontainers.",
+      "JUnit, que reinicia Docker al detectar un fallo en la ejecución.",
+      "Maven, que borra todos los contenedores al empezar cada build.",
+      "Nada: hay que borrarlos siempre a mano después de cada fallo."
+    ],
+    "correctas": [0],
+    "explicacion": "Testcontainers arranca un pequeño contenedor, Ryuk, que vigila la sesión y elimina los contenedores, redes y volúmenes que creó cuando el proceso termina, aunque sea de forma abrupta. JUnit y Maven no gestionan Docker.",
+    "fuentes": ["https://java.testcontainers.org/features/configuration/"]
+  },
+  {
+    "id": "testcontainers-009",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "¿Qué cambios trajo Testcontainers 2.0 para Java? (elige tres)",
+    "opciones": [
+      "Se eliminó el soporte de JUnit 4.",
+      "Los módulos llevan el prefijo testcontainers-, como testcontainers-postgresql.",
+      "Las clases de contenedor pasan a paquetes como org.testcontainers.postgresql.",
+      "Dejó de necesitar Docker para arrancar los servicios.",
+      "Sustituyó los contenedores por bases de datos en memoria."
+    ],
+    "correctas": [0, 1, 2],
+    "explicacion": "La 2.0 (octubre de 2025) quitó JUnit 4, renombró los módulos con el prefijo testcontainers- y movió las clases a org.testcontainers.<módulo>. Sigue necesitando Docker o un entorno compatible y sigue usando servicios reales en contenedores.",
+    "fuentes": ["https://github.com/testcontainers/testcontainers-java/releases/tag/2.0.0"]
+  },
+  {
+    "id": "testcontainers-010",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un proyecto Maven quiere que quien no tenga Docker pueda pasar las pruebas unitarias, y que las de integración con Testcontainers se ejecuten aparte. ¿Qué convención encaja?",
+    "opciones": [
+      "Ponerlas en otro repositorio y ejecutarlas a mano cuando haga falta.",
+      "Nombrarlas *IT y que las ejecute Failsafe en la fase verify.",
+      "Marcarlas con @Disabled y activarlas solo en la máquina de la CI.",
+      "Mezclarlas con las unitarias y tolerar que fallen sin Docker."
+    ],
+    "correctas": [1],
+    "explicacion": "Por convención, Surefire ejecuta las pruebas unitarias en la fase test y Failsafe las de integración (*IT) en verify, así que cada grupo se puede lanzar por separado. Otro repositorio, @Disabled o tolerar fallos son formas de perder pruebas.",
+    "fuentes": ["https://java.testcontainers.org/quickstart/junit_5_quickstart/"]
+  },
+  {
+    "id": "testcontainers-011",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "Una cola de trabajos reparte tareas entre varios workers con SELECT … FOR UPDATE SKIP LOCKED en PostgreSQL. Hay que comprobar que un worker se salta la fila que otro tiene bloqueada en vez de esperarla. ¿Qué prueba es la adecuada?",
+    "opciones": [
+      "Una prueba unitaria con el repositorio de la cola sustituido por un mock.",
+      "Una prueba con H2 en memoria, que arranca mucho más deprisa en la CI.",
+      "Una prueba de integración con PostgreSQL real en un contenedor.",
+      "Una revisión manual de la consulta SQL sin ejecutar ninguna prueba."
+    ],
+    "correctas": [2],
+    "explicacion": "El comportamiento de bloqueo de filas depende del motor: solo un PostgreSQL real demuestra que SKIP LOCKED salta la fila bloqueada. Un mock no ejecuta SQL, H2 no reproduce fielmente los bloqueos de PostgreSQL, y una revisión sin ejecutar no comprueba nada.",
+    "fuentes": ["https://java.testcontainers.org/modules/databases/postgres/"]
+  }
+]

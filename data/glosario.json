@@ -76,7 +76,12 @@
     "PEFT": { "en": "Parameter-Efficient Fine-Tuning", "es": "fine-tuning que solo entrena unas pocas piezas añadidas al modelo, no todos sus pesos", "enlace": "fine-tuning" },
     "RMSE": { "en": "Root Mean Square Error", "es": "raíz del error cuadrático medio: error medio de una predicción numérica que castiga más los errores grandes", "enlace": "model-evaluation-metrics" },
     "ROI": { "en": "Return on Investment", "es": "retorno de la inversión: lo que se gana en relación con lo que se ha invertido" },
-    "ROUGE": { "leer": "ruch", "en": "Recall-Oriented Understudy for Gisting Evaluation", "es": "métrica que mide cuánto de un resumen de referencia aparece en el resumen generado", "enlace": "model-evaluation-metrics" }
+    "ROUGE": { "leer": "ruch", "en": "Recall-Oriented Understudy for Gisting Evaluation", "es": "métrica que mide cuánto de un resumen de referencia aparece en el resumen generado", "enlace": "model-evaluation-metrics" },
+    "DSL": { "en": "Domain-Specific Language", "es": "lenguaje pequeño pensado para un solo tipo de problema" },
+    "HTTPS": { "en": "Hypertext Transfer Protocol Secure", "es": "HTTP cifrado con TLS" },
+    "JAR": { "leer": "yar", "en": "Java ARchive", "es": "fichero que empaqueta clases y recursos de Java; puede ser ejecutable" },
+    "UML": { "en": "Unified Modeling Language", "es": "notación estándar para diagramas de software: clases, secuencia, casos de uso…" },
+    "CI": { "en": "Continuous Integration", "es": "integración continua: cada cambio se compila y se prueba automáticamente" }
   },
   "conceptos": [
     {

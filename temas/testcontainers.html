@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Testcontainers — Tech Spider</title>
+<meta name="description" content="Biblioteca para que las pruebas de integración arranquen servicios reales y desechables (PostgreSQL, Kafka, Redis…) en contenedores Docker, y los tiren al terminar.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/testcontainers.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=532e81a3">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="testcontainers">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p><strong>Testcontainers</strong> es una biblioteca que permite a una prueba automática <strong>arrancar un servicio
+        de verdad en un contenedor</strong> (una base de datos PostgreSQL, un broker de Kafka, un Redis, un servidor de correo
+        falso), usarlo durante la prueba y tirarlo al terminar. Todo desde el propio código de la prueba: sin instalar nada
+        a mano y sin compartir una base de datos con el resto del equipo.</p>
+      <p>Existe para muchos lenguajes (Java, Go, .NET, Node.js, Python…); esta ficha se centra en la versión de Java, que es
+        la original. La línea actual es la <strong>2.x</strong>: la 2.0, de octubre de 2025, quitó el soporte de JUnit 4 y
+        renombró los módulos (más abajo, en «En la práctica»).</p>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <ul>
+        <li><strong><a href="../tema.html?id=integration-testing">Prueba de integración</a>:</strong> la que comprueba que tu
+          código funciona junto a otra pieza real (una base de datos, otro servicio), no aislado con sustitutos.</li>
+        <li><strong><a href="../tema.html?id=docker">Docker</a> e imagen:</strong> una imagen es un paquete con un programa y
+          todo lo que necesita para ejecutarse (por ejemplo, <code>postgres:18</code>). Un contenedor es una imagen en
+          marcha, aislada del resto del equipo. Docker es la herramienta más conocida para crearlos.</li>
+        <li><strong>Desechable:</strong> que se crea limpio para las pruebas y se destruye al acabar, sin dejar datos ni
+          procesos por ahí.</li>
+        <li><strong><a href="../tema.html?id=test-doubles">Doble de prueba</a>:</strong> un sustituto falso de una dependencia
+          (un repositorio en memoria, un mock). Útil para pruebas unitarias, pero no comprueba la pieza real.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Antes de Testcontainers, las pruebas de integración solían elegir entre dos males:</p>
+      <ul>
+        <li><strong>Una base de datos compartida</strong> (la de desarrollo o una de pruebas): las pruebas de una persona
+          pisaban los datos de otra, fallaban o pasaban según el día, y en la CI había que montarla aparte.</li>
+        <li><strong>Una base de datos en memoria</strong> como H2 en lugar de la real: arranca rápido, pero <strong>no es
+          PostgreSQL</strong>. Su SQL, sus tipos, sus restricciones y su forma de bloquear filas son distintos, así que una
+          prueba puede pasar con H2 y el código fallar en producción, o al revés.</li>
+      </ul>
+      <p>Testcontainers da lo mejor de los dos: <strong>el mismo motor y la misma versión que en producción</strong>, pero
+        limpio y aislado en cada ejecución, en el portátil de cualquiera y en la CI, con el único requisito de tener Docker
+        (o un entorno compatible) funcionando. Por eso se ha convertido en la forma habitual de probar contra servicios
+        reales en Java, y Spring Boot lo integra de serie.</p>
+
+      <h2 id="como-funciona">Cómo funciona</h2>
+      <ol>
+        <li>La prueba declara el contenedor que necesita, con su imagen y versión.</li>
+        <li>Testcontainers habla con Docker, descarga la imagen si no la tiene y arranca el contenedor.</li>
+        <li><strong>Espera a que esté listo</strong> (por ejemplo, a que PostgreSQL acepte conexiones), con una estrategia de
+          espera que cada módulo trae configurada.</li>
+        <li>Publica el puerto del servicio en un <strong>puerto aleatorio</strong> del equipo, para que no choque con nada que
+          ya esté en marcha. La prueba pregunta la dirección real (<code>getHost()</code>, <code>getMappedPort()</code>
+          o, en bases de datos, <code>getJdbcUrl()</code>).</li>
+        <li>Al terminar, para el contenedor. Y por si el proceso de pruebas muere de golpe, un pequeño contenedor vigilante
+          (<strong>Ryuk</strong>) borra todo lo que Testcontainers creó.</li>
+      </ol>
+      <p>Hay <strong>módulos</strong> listos para los servicios más comunes (PostgreSQL, MySQL, MongoDB, Kafka, Redis,
+        LocalStack para simular servicios de AWS…) y un <code>GenericContainer</code> para cualquier otra imagen.</p>
+
+      <h2 id="ciclo-de-vida">Cuánto vive cada contenedor</h2>
+      <p>Arrancar un contenedor cuesta unos segundos, así que decidir cuántas veces se arranca es lo que más influye en el
+        tiempo de las pruebas:</p>
+      <ul>
+        <li><strong>Uno por prueba:</strong> máximo aislamiento, muy lento. Casi nunca compensa.</li>
+        <li><strong>Uno por clase de pruebas:</strong> con JUnit 5, la anotación <code>@Testcontainers</code> en la clase y
+          <code>@Container</code> en un campo <code>static</code>. Lo habitual en pruebas sencillas.</li>
+        <li><strong>Uno para toda la ejecución</strong> (patrón <em>singleton</em>): se arranca una vez y lo comparten todas
+          las clases. Es lo más rápido; a cambio, cada prueba debe dejar los datos como los encontró (o borrar las tablas al
+          empezar).</li>
+      </ul>
+      <p>Con Spring Boot hay una cuarta forma, muy cómoda: declarar el contenedor como un <em>bean</em> de una configuración
+        de pruebas. Spring lo arranca con el contexto de la aplicación y, como reutiliza ese contexto entre clases de prueba
+        con la misma configuración, el contenedor también se reutiliza.</p>
+      <p>Existe además el modo «reutilizable» (los contenedores sobreviven entre ejecuciones para acelerar el desarrollo
+        local), pero es experimental y está pensado solo para el equipo de cada desarrollador, no para la CI.</p>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>Una prueba de JUnit 5 sin Spring, con PostgreSQL. Las dependencias de Maven son
+        <code>org.testcontainers:testcontainers-junit-jupiter</code> y
+        <code>org.testcontainers:testcontainers-postgresql</code> (desde la 2.0 todos los módulos llevan el prefijo
+        <code>testcontainers-</code>, y la clase está en el paquete <code>org.testcontainers.postgresql</code>):</p>
+      <pre><code>@Testcontainers
+class ClientesRepositoryIT {
+
+    @Container
+    static PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:18-alpine");
+
+    @Test
+    void guardaYRecuperaUnCliente() throws Exception {
+        try (var conexion = DriverManager.getConnection(
+                postgres.getJdbcUrl(), postgres.getUsername(), postgres.getPassword())) {
+            // crear la tabla, insertar, consultar y comprobar
+        }
+    }
+}</code></pre>
+      <p>Con <strong>Spring Boot</strong> es aún más corto. La anotación <code>@ServiceConnection</code> hace que Spring
+        configure solo la conexión de la aplicación con el contenedor: no hay que escribir URL, usuario ni contraseña en
+        ningún sitio. (Antes de que existiera había que copiar esos datos a mano con <code>@DynamicPropertySource</code>.)</p>
+      <pre><code>@TestConfiguration(proxyBeanMethods = false)
+class ContenedoresDePrueba {
+
+    @Bean
+    @ServiceConnection
+    PostgreSQLContainer postgres() {
+        return new PostgreSQLContainer("postgres:18-alpine");
+    }
+}</code></pre>
+      <p>Spring Boot permite además usar esa misma configuración para <strong>desarrollar</strong>: una clase con un
+        <code>main</code> en la carpeta de pruebas arranca la aplicación con
+        <code>SpringApplication.from(MiAplicacion::main).with(ContenedoresDePrueba.class)</code>, y la base de datos aparece
+        sola al ejecutarla desde el entorno de desarrollo.</p>
+      <p>Por convención, las pruebas de integración se nombran <code>*IT</code> y las ejecuta en Maven el plugin
+        <strong>Failsafe</strong> (en la fase <code>verify</code>), separadas de las unitarias, que ejecuta Surefire. Así,
+        quien no tiene Docker puede seguir pasando las unitarias.</p>
+
+      <h2 id="caso-real">Caso real: Kopi Chess</h2>
+      <p><a href="https://github.com/arquitechthor/kopi-chess" target="_blank" rel="noopener">Kopi Chess</a> guarda sus
+        partidas en PostgreSQL con SQL escrito a mano (sin JPA) y prueba ese adaptador contra un PostgreSQL real con
+        Testcontainers 2.x en Spring Boot 4. Su guía para contribuir lo dice claro: hace falta JDK 25 y Docker, porque las
+        pruebas de integración usan Testcontainers.</p>
+      <ul>
+        <li><strong>Una configuración, dos usos:</strong> <code>TestcontainersConfiguration</code> declara el contenedor de
+          PostgreSQL como <em>bean</em> con <code>@ServiceConnection</code>. La usan las pruebas de extremo a extremo
+          (<code>GameApiIT</code>, <code>AnalysisIT</code>) y también <code>TestKopiApplication</code>, que arranca la
+          aplicación para desarrollar sin ficheros de Compose ni bases de datos manuales: solo con Docker en marcha.</li>
+        <li><strong>La misma imagen que en producción:</strong> la versión de PostgreSQL está fijada
+          (<code>postgres:18.6-alpine3.24</code>) y un comentario recuerda mantenerla igual que en
+          <code>compose.yaml</code>, el fichero con el que se ejecuta la aplicación.</li>
+        <li><strong>Solo lo necesario:</strong> <code>JdbcGameRepositoryIT</code> no arranca toda la aplicación. Monta una
+          mini aplicación con el adaptador de persistencia, la autoconfiguración de JDBC y Flyway (que aplica las migraciones
+          del esquema) y el contenedor. Cada prueba empieza borrando las tablas.</li>
+        <li><strong>Lo que solo se puede probar con el motor real:</strong> que una actualización con una versión antigua se
+          rechace (el bloqueo optimista de la partida), que la propia tabla rechace una partida con un final imposible
+          gracias a sus restricciones, y que la cola de análisis con <code>FOR UPDATE SKIP LOCKED</code> haga que un worker
+          se salte el trabajo que tiene otro en vez de esperarlo (<code>JdbcAnalysisJobQueueIT</code>). Nada de eso se
+          comportaría igual con una base de datos en memoria.</li>
+        <li><strong>En la CI:</strong> GitHub Actions ejecuta <code>./mvnw verify</code>, que pasa unitarias, integración y
+          extremo a extremo; los ejecutores de GitHub ya traen Docker.</li>
+      </ul>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Usar la etiqueta <code>latest</code>:</strong> las pruebas cambian solas cuando sale una versión nueva.
+          Fija la misma versión que en producción.</li>
+        <li><strong>Un contenedor por prueba:</strong> multiplica el tiempo. Compártelo por clase o por ejecución y limpia los
+          datos entre pruebas.</li>
+        <li><strong>Pruebas que dependen del orden:</strong> con un contenedor compartido, los datos de una prueba no pueden
+          condicionar a otra. Borra o crea lo que necesites al empezar cada una.</li>
+        <li><strong>Puertos fijos en la configuración:</strong> el puerto del equipo es aleatorio; pregúntalo al contenedor o
+          deja que <code>@ServiceConnection</code> lo resuelva.</li>
+        <li><strong>Usarlo para todo:</strong> la lógica de negocio se prueba mejor con pruebas unitarias y dobles, en
+          milisegundos. Testcontainers es para los adaptadores que hablan con el servicio real.</li>
+        <li><strong>Olvidar que la CI necesita Docker:</strong> sin él, las pruebas fallan al arrancar. Sepáralas con Failsafe
+          para poder ejecutar las unitarias en cualquier sitio.</li>
+        <li><strong>Copiar ejemplos de la 1.x en la 2.x:</strong> los nombres de las dependencias y los paquetes cambiaron, y
+          JUnit 4 ya no está soportado.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="testcontainers"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://java.testcontainers.org/" target="_blank" rel="noopener">Testcontainers for Java</a> (documentación oficial, consultada el 20/11/2026).</li>
+        <li><a href="https://java.testcontainers.org/test_framework_integration/junit_5/" target="_blank" rel="noopener">Jupiter / JUnit 5</a> (Testcontainers: <code>@Testcontainers</code>, <code>@Container</code> y contenedores compartidos, consultada el 20/11/2026).</li>
+        <li><a href="https://java.testcontainers.org/features/networking/" target="_blank" rel="noopener">Networking and communicating with containers</a> (Testcontainers: puertos aleatorios, consultada el 20/11/2026).</li>
+        <li><a href="https://testcontainers.com/guides/testcontainers-container-lifecycle/" target="_blank" rel="noopener">Testcontainers container lifecycle management using JUnit 5</a> (guía oficial, consultada el 20/11/2026).</li>
+        <li><a href="https://github.com/testcontainers/testcontainers-java/releases/tag/2.0.0" target="_blank" rel="noopener">Testcontainers 2.0.0</a> (notas de la versión: módulos y paquetes nuevos, fin de JUnit 4, consultada el 20/11/2026).</li>
+        <li><a href="https://docs.spring.io/spring-boot/reference/testing/testcontainers.html" target="_blank" rel="noopener">Testcontainers</a> (documentación de Spring Boot: <code>@ServiceConnection</code> y contenedores como beans, consultada el 20/11/2026).</li>
+        <li><a href="https://docs.spring.io/spring-boot/reference/features/dev-services.html" target="_blank" rel="noopener">Development-time Services</a> (documentación de Spring Boot: Testcontainers al desarrollar, consultada el 20/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=010a227e" defer></script>
+<script src="../assets/cuenta.js?v=d08c2823" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=b2f5149e" defer></script>
+</body>
+</html>
