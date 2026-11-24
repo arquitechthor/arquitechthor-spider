@@ -4523,7 +4523,8 @@
     "externo": {
       "sitio": "aws-cert-study",
       "id": "sagemaker-ai",
-      "url": "../aws-cert-study/servicios/sagemaker-ai.html"
+      "url": "../aws-cert-study/servicios/sagemaker-ai.html",
+      "audio": true
     }
   },
   {
