@@ -32,7 +32,7 @@ en los dos repos.
 | Fichas | 20 publicadas (`temas/*.html`, unas 23 000 palabras con marcado) y las que vayan saliendo | `temas/` |
 | Preguntas | 11 cuestionarios | `data/preguntas/` |
 | Rama AWS | 177 servicios generados desde aws-cert-study | `scripts/importar_aws.py` |
-| Voces | Lectura con Web Speech API y 4 resúmenes en audio de Kopi | `assets/lectura.js`, `assets/audio-kopi.js` |
+| Voces | Lectura con Web Speech API y resúmenes en audio de Kopi | `assets/lectura.js`, `assets/audio-kopi.js` |
 
 `docs/tecnologias.md` y `docs/PLAN.md` son documentos internos y no se traducen.
 
@@ -223,7 +223,7 @@ Las de `CLAUDE.md` valen en los tres idiomas, con estos ajustes:
 ### Fase 4: voces
 - [ ] **4.1** `lectura.js` multiidioma (4.1), en este repo y en aws-cert-study.
 - [ ] **4.2** `"audio"` como lista de idiomas, filtro y 🎧 por idioma (4.2).
-- [ ] **4.3** Audios en inglés e italiano de las 4 fichas que ya lo tienen en español, cuando el
+- [ ] **4.3** Audios en inglés e italiano de las fichas que ya lo tienen en español, cuando el
   usuario los genere.
 
 ### Fase 5: mantenimiento
