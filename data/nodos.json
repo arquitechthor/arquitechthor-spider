@@ -6737,7 +6737,8 @@
     "alias": [
       "IA",
       "AI"
-    ]
+    ],
+    "audio": true
   },
   {
     "id": "machine-learning",
