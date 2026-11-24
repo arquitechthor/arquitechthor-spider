@@ -27,10 +27,10 @@ en los dos repos.
 |---|---|---|
 | Textos de la interfaz | Todos los mensajes escritos en el JS (mapa, panel, filtros, quiz, lectura, cuenta…) | `assets/*.js` |
 | Páginas fijas | Portada, glosario, evaluación, ficha genérica, cuenta, aviso legal | `*.html` de la raíz |
-| Árbol | 527 nodos: `nombre`, `nombreCorto`, `frase` (y `alias` cuando haga falta) | `data/nodos.json` |
+| Árbol | Todos los nodos: `nombre`, `nombreCorto`, `frase` (y `alias` cuando haga falta) | `data/nodos.json` |
 | Glosario | Siglas (glosa y `leer`) y conceptos (definición) | `data/glosario.json` |
-| Fichas | 20 publicadas (`temas/*.html`, unas 23 000 palabras con marcado) y las que vayan saliendo | `temas/` |
-| Preguntas | 11 cuestionarios | `data/preguntas/` |
+| Fichas | Las publicadas (`temas/*.html`) y las que vayan saliendo | `temas/` |
+| Preguntas | Un cuestionario por ficha evaluable | `data/preguntas/` |
 | Rama AWS | 177 servicios generados desde aws-cert-study | `scripts/importar_aws.py` |
 | Voces | Lectura con Web Speech API y resúmenes en audio de Kopi | `assets/lectura.js`, `assets/audio-kopi.js` |
 
@@ -215,7 +215,7 @@ Las de `CLAUDE.md` valen en los tres idiomas, con estos ajustes:
 
 ### Fase 3: fichas y preguntas
 - [ ] **3.1** Plantillas de ficha en `plantillas/en/` y `plantillas/it/`.
-- [ ] **3.2** Las 20 fichas publicadas, en inglés e italiano, con sus 11 cuestionarios (por lotes,
+- [ ] **3.2** Las fichas publicadas, en inglés e italiano, con sus cuestionarios (por lotes,
   publicando cada lote).
 - [ ] **3.3** Desde que acabe la 3.2: cada ficha nueva se publica en los tres idiomas a la vez (paso
   añadido al flujo de la Fase 7 de `docs/PLAN.md`).
