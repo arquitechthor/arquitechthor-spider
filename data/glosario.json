@@ -13,6 +13,7 @@
     "ISP": { "en": "Interface Segregation Principle", "es": "principio de segregación de interfaces: ningún cliente depende de métodos que no usa", "enlace": "solid" },
     "DIP": { "en": "Dependency Inversion Principle", "es": "principio de inversión de dependencias: el negocio y los detalles dependen de abstracciones, no unos de otros", "enlace": "solid" },
     "UCI": { "en": "Universal Chess Interface", "es": "protocolo de texto con el que un programa habla con un motor de ajedrez como Stockfish" },
+    "NNUE": { "en": "Efficiently Updatable Neural Network", "es": "red neuronal pequeña que Stockfish usa para evaluar posiciones, pensada para ir rápida en CPU" },
     "FEN": { "en": "Forsyth-Edwards Notation", "es": "notación que describe una posición de ajedrez en una línea de texto" },
     "JDK": { "en": "Java Development Kit", "es": "kit de desarrollo de Java: compilador, máquina virtual y librerías", "enlace": "java" },
     "JEP": { "en": "JDK Enhancement Proposal", "es": "propuesta con la que se diseña y documenta cada cambio de Java", "enlace": "modern-java" },

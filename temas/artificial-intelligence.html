@@ -60,7 +60,7 @@
         <table>
           <thead><tr><th>Término</th><th>Qué añade</th><th>Ejemplo</th></tr></thead>
           <tbody>
-            <tr><td>IA</td><td>Cualquier sistema que imita una capacidad inteligente, aprenda o no.</td><td>Un motor de ajedrez con reglas y búsqueda.</td></tr>
+            <tr><td>IA</td><td>Cualquier sistema que imita una capacidad inteligente, aprenda o no.</td><td>Un motor de ajedrez clásico, con reglas y búsqueda.</td></tr>
             <tr><td><a href="machine-learning.html">ML</a></td><td>El sistema <strong>aprende de datos</strong> en lugar de seguir reglas escritas.</td><td>Un filtro de spam entrenado con correos etiquetados.</td></tr>
             <tr><td><a href="deep-learning.html">Deep learning</a></td><td>Aprende con <strong>redes neuronales de muchas capas</strong>, que descubren solas qué rasgos importan.</td><td>Reconocimiento de caras o de voz.</td></tr>
             <tr><td><a href="generative-ai.html">IA generativa</a></td><td>Modelos de deep learning que <strong>crean contenido nuevo</strong> en vez de solo clasificar o predecir.</td><td>Un LLM que redacta un correo.</td></tr>
@@ -91,6 +91,34 @@
         se diseñaron o entrenaron, aunque los LLM cubran un abanico sorprendentemente amplio. La <strong>IA general</strong>
         (capaz de aprender y razonar en cualquier dominio como una persona) es un objetivo de investigación y un tema de
         debate, no un producto.</p>
+
+      <h2 id="caso-real">Caso real: Kopi Chess</h2>
+      <p><a href="https://github.com/arquitechthor/kopi-chess" target="_blank" rel="noopener">Kopi Chess</a> (código
+        público) juega y analiza partidas de ajedrez, y tiene a la vez IA simbólica pura y un sistema híbrido. Todo motor
+        de ajedrez tiene dos piezas: una <strong>búsqueda</strong>, que explora el árbol de jugadas posibles («si yo juego
+        esto, él puede responder aquello…»), y una <strong>evaluación</strong>, que dice lo buena que es una posición sin
+        seguir jugando, en centésimas de peón.</p>
+      <ul>
+        <li><strong>Los bots flojos son IA simbólica pura.</strong> <code>PAWN</code> elige una jugada legal al azar, con
+          más peso para capturas, jaques y coronaciones, según una tabla de pesos escrita a mano. <code>KNIGHT</code> mira
+          dos medias jugadas por delante (la suya y la respuesta del rival) con alfa-beta (una búsqueda que descarta las ramas que ya no pueden mejorar el
+          resultado) y evalúa con reglas que también están en el código: el material más unos puntos por casilla (los
+          caballos quieren el centro, el rey quiere estar enrocado…). Nada se ha aprendido de datos: cada decisión sale de
+          una regla que alguien puede leer y cambiar.</li>
+        <li><strong>Los bots fuertes y el análisis usan Stockfish 19, que es híbrido.</strong> Su búsqueda sigue siendo
+          simbólica: las reglas del ajedrez y una búsqueda alfa-beta mucho más profunda y afinada que la de
+          <code>KNIGHT</code>. Pero su evaluación es <strong>aprendida</strong>: desde la versión 12 (2020) usa una red
+          neuronal llamada NNUE, entrenada con miles de millones de posiciones ya evaluadas, y desde la 16 (2023) ya no le queda
+          evaluación escrita a mano. Es ML, aunque no el deep learning de la tabla: la red es pequeña y poco profunda a
+          propósito, para evaluar millones de posiciones por segundo.</li>
+        <li><strong>Encima vuelve a haber reglas.</strong> Kopi Chess habla con Stockfish por UCI y clasifica cada jugada
+          con umbrales fijos sobre la probabilidad de ganar que se pierde: menos de 0,1 es buena, de 0,1 a 0,2 imprecisión,
+          de 0,2 a 0,3 error y 0,3 o más error grave.</li>
+      </ul>
+      <p>Así que a la pregunta «¿Stockfish es IA simbólica o basada en datos?» la respuesta es: <strong>las dos</strong>.
+        Hasta 2020 era el ejemplo de manual de IA simbólica (el «motor de ajedrez clásico» de la tabla); hoy busca con
+        reglas y evalúa con lo que aprendió de datos. El motor de ajedrez que sí es deep learning de principio a fin es
+        Leela Chess Zero, heredero de AlphaZero: una red grande que aprendió jugando contra sí misma.</p>
 
       <h2 id="errores">Errores frecuentes</h2>
       <ul>
