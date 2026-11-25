@@ -759,3 +759,10 @@ footer { padding: 36px 0; border-top: 1px solid var(--border); }
 .audio-recurso audio[hidden] { display: none; }
 .audio-recurso .audio-aviso { margin: 8px 0 0; font-size: 13.5px; color: var(--amber); }
 .audio-recurso .audio-aviso:empty { display: none; }
+.imagen-recurso { margin: 16px 0 20px; }
+.imagen-recurso img {
+  display: block; width: 100%; height: auto; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--surface);
+}
+.imagen-recurso figcaption { margin-top: 8px; font-size: 13.5px; color: var(--text-faint); }
+.nota-ia { margin-top: 24px; font-size: 13.5px; }

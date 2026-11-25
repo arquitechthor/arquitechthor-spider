@@ -113,6 +113,12 @@ no third-party requests).
   1 h, renewed on error). Audios never go in the repo. Before adding one, check the resource with `curl` on that
   URL (`tipo` must be `AUDIO` and `title`/`originalName` must match the topic). The map panel shows a 🎧 badge
   and the Estado filter has "Con resumen en audio"; the validator checks the ficha has the block and the script.
+- **Images in fichas** (unlike audios, they live in the repo): optimized WebP (~1200 px wide, a few hundred KB at
+  most; `ffmpeg -i in.png -vf scale=1200:-1:flags=lanczos -c:v libwebp -quality 80 out.webp`) in
+  `assets/imagenes/<ficha>-<what>.webp`, inside `<figure class="imagen-recurso" data-sin-lectura>` with
+  `<img loading="lazy" width height alt>` and a `<figcaption>` (copy it from `temas/artificial-intelligence.html`).
+  If any image is AI-generated, end the article (after "Fuentes") with
+  `<p class="nota-ia text-faint" data-sin-lectura>Esta ficha tiene imágenes generadas con inteligencia artificial.</p>`.
 - Passing a ficha's quiz at 100 % marks it as read (`SpiderPreguntas.registrar`, only if it was not
   read yet); quizzes passed before that rule are migrated once per browser in `datos.js`
   (`spider.leidasPorCuestionario` flag), so unmarking a ficha later is respected.
