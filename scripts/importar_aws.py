@@ -45,6 +45,13 @@ IDS_BLOQUE = {
     'frontend-web-movil': 'aws-frontend-web-mobile',
 }
 
+# Nombre en español del bloque cuando el de aws-cert-study (el de la consola de AWS) se queda sin traducir.
+# Aquí se traduce como el resto de bloques (docs/PLAN.md, "Idioma") y para que no parezca otra cosa que el
+# tema `machine-learning` ("Aprendizaje automático"), con el que está enlazado en `relacionados`.
+NOMBRE_ES_BLOQUE = {
+    'machine-learning': 'Aprendizaje automático',
+}
+
 # Prioridad de los servicios nuevos (los que ya estaban conservan la suya: 1, "lo esencial").
 PRIORIDAD_NUEVOS = 3
 
@@ -104,7 +111,7 @@ def generar(nodos, servicios, categorias):
             continue
         bid = BLOQUES_EXISTENTES.get(c['id']) or IDS_BLOQUE.get(c['id']) or f'aws-{slug(c["nombreEn"])}'
         bloque_de[c['id']] = bid
-        b = {'id': bid, 'nombre': c['nombreEn'], 'nombreEs': c['nombre'], 'tipo': 'bloque', 'padre': BLOQUE_AWS,
+        b = {'id': bid, 'nombre': c['nombreEn'], 'nombreEs': NOMBRE_ES_BLOQUE.get(c['id'], c['nombre']), 'tipo': 'bloque', 'padre': BLOQUE_AWS,
              'area': AREA}
         previo = por_id.get(bid)
         if previo:

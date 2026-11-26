@@ -2318,7 +2318,10 @@
     "tipo": "bloque",
     "padre": "devops",
     "area": "devops",
-    "frase": "Empaquetar una aplicación con todo lo que necesita para ejecutarse usando Docker."
+    "frase": "Empaquetar una aplicación con todo lo que necesita para ejecutarse usando Docker.",
+    "relacionados": [
+      "aws-containers"
+    ]
   },
   {
     "id": "docker",
@@ -2657,7 +2660,10 @@
     "nombreEs": "Contenedores",
     "tipo": "bloque",
     "padre": "aws",
-    "area": "cloud"
+    "area": "cloud",
+    "relacionados": [
+      "containers"
+    ]
   },
   {
     "id": "aws-customer-enablement",
@@ -2710,10 +2716,13 @@
   {
     "id": "aws-machine-learning",
     "nombre": "Machine Learning",
-    "nombreEs": "Machine learning",
+    "nombreEs": "Aprendizaje automático",
     "tipo": "bloque",
     "padre": "aws",
-    "area": "cloud"
+    "area": "cloud",
+    "relacionados": [
+      "machine-learning"
+    ]
   },
   {
     "id": "aws-operations",
@@ -6756,7 +6765,11 @@
     "revisado": "2026-11-03",
     "alias": [
       "ML"
-    ]
+    ],
+    "relacionados": [
+      "aws-machine-learning"
+    ],
+    "audio": true
   },
   {
     "id": "deep-learning",

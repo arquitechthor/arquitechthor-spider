@@ -498,6 +498,12 @@ tema directo del área `architecture` (delante de `architectural-styles`), con a
 **2026-11-20: Testcontainers publicado** (tercero de la cola de Kopi Chess): `testcontainers` con frase, alias y
 relacionados recíprocos con `integration-testing` y `docker`. Sin nodos nuevos.
 
+**2026-11-26: Aprendizaje automático: tema y categoría de AWS** (el usuario confundía las dos fichas): el bloque
+`aws-machine-learning` pasa de «Machine learning» (el nombre de aws-cert-study, sin traducir) a `nombreEs`
+«Aprendizaje automático», como los demás bloques; `importar_aws.py` lo conserva con `NOMBRE_ES_BLOQUE`, sin tocar
+aws-cert-study. Relacionados recíprocos `machine-learning` ↔ `aws-machine-learning` y, por coherencia,
+`containers` ↔ `aws-containers`. Sin nodos nuevos.
+
 ### 4.3 Preguntas: `data/preguntas/<id>.json`
 
 Formato de `aws-cert-study` sin cambios en lo común, para copiar `preguntas.js` tal cual:
@@ -1121,6 +1127,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-26 | **Aprendizaje automático: tema frente a categoría de AWS y resumen en audio** (petición del usuario): el bloque `aws-machine-learning` se llama ahora «Aprendizaje automático (*Machine Learning*)» como el tema `machine-learning`, y los dos se enlazan con relacionados recíprocos; igual con `containers` ↔ `aws-containers` (ver 4.2.1). `importar_aws.py` gana `NOMBRE_ES_BLOQUE` para que la traducción sobreviva a la importación (`--comprobar` en verde). Resumen en audio en `temas/machine-learning.html`: recurso público de Kopi `6cb97ab6-facb-4eb4-83bd-8e9b70a93cef` (AUDIO, «Machine Learning», `Machine_Learning.m4a`, comprobado en la API pública) antes de "Qué es", con `assets/audio-kopi.js` y `"audio": true`. Validador en verde; sin probar en navegador. |
 | 2026-11-25 | **Caso real de Kopi Chess en la ficha de inteligencia artificial** (petición del usuario, a raíz de «¿Stockfish es IA simbólica o basada en datos?»): búsqueda frente a evaluación; `PAWN` y `KNIGHT` como IA simbólica pura (pesos y evaluación escritos a mano, alfa-beta a dos medias jugadas); Stockfish 19 como híbrido (búsqueda simbólica, evaluación NNUE aprendida desde la 12 y sin evaluación manual desde la 16; ML pero no deep learning); clasificación de jugadas por umbrales; Leela Chess Zero como motor de deep learning. El ejemplo de IA de la tabla pasa a «motor de ajedrez clásico». Glosario: NNUE. `revisado` 2026-11-25. Validador en verde. |
 | 2026-11-25 | **Imagen en la ficha de inteligencia artificial** (petición del usuario): muñecas rusas con IA, ML, deep learning e IA generativa (original: recurso de Kopi `52170b85-0107-48f5-b693-762f4a3f4bfd`, PNG de 2,2 MB) tras la tabla de "IA, ML, deep learning e IA generativa". Primero se sirvió desde Kopi; el usuario decidió tenerla en el repo: `assets/imagenes/artificial-intelligence-jerarquia.webp` (1200×800, 127 KB, convertida con ffmpeg), `<img loading="lazy">` en `<figure class="imagen-recurso">`, y al final de la ficha la nota «Esta ficha tiene imágenes generadas con inteligencia artificial.» (`.nota-ia`). Regla en `CLAUDE.md`: imágenes optimizadas en el repo, audios desde Kopi. Validador en verde. |
 | 2026-11-24 | **Resumen en audio en la ficha de inteligencia artificial** (petición del usuario): recurso público de Kopi `b6424a92-828e-4280-b8c2-ce9e55cf2668` (AUDIO, «Inteligencia Artificial», `Inteligencia_artificial.m4a`, comprobado en la API pública) antes de "Qué es" en `temas/artificial-intelligence.html`, con `assets/audio-kopi.js`, y `"audio": true` en `nodos.json`. Validador en verde; sin probar en navegador. |
