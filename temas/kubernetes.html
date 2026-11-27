@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kubernetes — Tech Spider</title>
+<meta name="description" content="Sistema que ejecuta contenedores en un clúster y los mantiene en el estado descrito: pods, Deployments, Services, configuración, sondas y GitOps.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/kubernetes.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=4b40b594">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="../cola.html">Cola</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="kubernetes">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p><strong>Kubernetes</strong> es un sistema para <strong>ejecutar aplicaciones en contenedores sobre un grupo de
+        máquinas</strong> (un clúster) y mantenerlas como tú has descrito: cuántas copias, con qué imagen, con qué
+        configuración y cómo se llega a ellas. Si un contenedor muere, lo reinicia; si una máquina cae, mueve su trabajo a
+        otra; si despliegas una versión nueva, sustituye las copias poco a poco.</p>
+      <p>Lo creó Google a partir de su experiencia interna, se publicó como software libre en 2014 y hoy lo mantiene la
+        Cloud Native Computing Foundation. Se suele abreviar <strong>k8s</strong> (una k, ocho letras y una s). Todos los
+        grandes proveedores lo ofrecen gestionado: Amazon EKS, Google GKE y Azure AKS.</p>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <ul>
+        <li><strong>Contenedor e imagen:</strong> una imagen es un paquete con la aplicación y todo lo que necesita; un
+          contenedor es esa imagen en marcha, aislada. Ver <a href="../tema.html?id=docker">Docker</a>.</li>
+        <li><strong>Declarativo:</strong> no das órdenes («arranca tres copias»), describes el estado deseado («quiero tres
+          copias») en un fichero YAML, y Kubernetes trabaja continuamente para que la realidad coincida.</li>
+        <li><strong>Nodo:</strong> cada máquina (física o virtual) del clúster donde se ejecutan los contenedores.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Con unos pocos servicios se puede desplegar a mano en servidores. Con decenas de
+        <a href="../tema.html?id=microservices-architecture">microservicios</a>, varios entornos y despliegues diarios, hace
+        falta algo que decida dónde corre cada cosa, la reinicie si falla, la escale con la carga y despliegue sin cortar el
+        servicio. Kubernetes se ha convertido en el estándar para eso. Aunque como desarrollador no administres el clúster,
+        tu servicio vive en él: entender sus piezas es lo que te permite leer por qué no arranca, por qué se reinicia o por
+        qué no recibe tráfico.</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>Pod:</strong> la unidad mínima: uno o varios contenedores que comparten red y almacenamiento. Los pods son
+          efímeros; no se crean a mano, los crea un controlador.</li>
+        <li><strong>Deployment:</strong> describe una aplicación sin estado: imagen, número de réplicas y estrategia de
+          actualización. Por debajo usa un ReplicaSet, que mantiene el número de pods. Al cambiar la imagen, hace una
+          <strong>actualización progresiva</strong> y permite volver atrás.</li>
+        <li><strong>Service:</strong> un nombre y una dirección estables para un grupo de pods (que cambian de IP al
+          reiniciarse). Reparte el tráfico entre ellos.</li>
+        <li><strong>Ingress y Gateway API:</strong> reglas para que el tráfico de fuera del clúster (por dominio y ruta) llegue
+          al Service correcto. Gateway API es la evolución más moderna.</li>
+        <li><strong>ConfigMap y Secret:</strong> configuración separada de la imagen, que el pod recibe como variables de
+          entorno o ficheros. Los Secret son para contraseñas y claves (y conviene cifrarlos o traerlos de un gestor de
+          secretos externo).</li>
+        <li><strong>Namespace:</strong> una partición lógica del clúster (por equipo o por entorno) con sus propios nombres,
+          permisos y cuotas.</li>
+        <li><strong>Sondas (<em>probes</em>):</strong> <em>liveness</em> (¿está vivo? si no, se reinicia), <em>readiness</em>
+          (¿puede recibir tráfico? si no, se saca del Service) y <em>startup</em> (da tiempo a aplicaciones que tardan en
+          arrancar).</li>
+        <li><strong>Requests y limits:</strong> la CPU y memoria que el pod reserva y el máximo que puede usar. Pasarse del
+          límite de memoria mata el contenedor (<code>OOMKilled</code>).</li>
+        <li><strong>Job y CronJob:</strong> tareas que se ejecutan hasta terminar, una vez o con un horario (como un
+          <em>cron</em>), por ejemplo una sincronización nocturna.</li>
+        <li><strong>HorizontalPodAutoscaler:</strong> sube o baja el número de réplicas según el uso de CPU u otras
+          métricas.</li>
+      </ul>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>Un Deployment mínimo de un servicio Java, con dos réplicas, sondas y límites:</p>
+      <pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogo
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: catalogo }
+  template:
+    metadata:
+      labels: { app: catalogo }
+    spec:
+      containers:
+        - name: catalogo
+          image: registro.ejemplo.com/catalogo:1.4.2
+          ports: [{ containerPort: 8080 }]
+          envFrom: [{ configMapRef: { name: catalogo-config } }]
+          readinessProbe: { httpGet: { path: /q/health/ready, port: 8080 } }
+          livenessProbe:  { httpGet: { path: /q/health/live,  port: 8080 } }
+          resources:
+            requests: { cpu: 250m, memory: 512Mi }
+            limits:   { memory: 768Mi }</code></pre>
+      <p>Los comandos de <code>kubectl</code> que más se usan para investigar un servicio:</p>
+      <pre><code>kubectl get pods -n mi-equipo                  # estado y reinicios
+kubectl describe pod catalogo-7d9f-abcde        # eventos: imagen no encontrada, sonda fallida, OOMKilled
+kubectl logs catalogo-7d9f-abcde --previous     # logs del contenedor que acaba de morir
+kubectl rollout history deployment/catalogo     # versiones desplegadas
+kubectl rollout undo deployment/catalogo        # volver a la anterior</code></pre>
+      <p>En muchas empresas nadie aplica estos ficheros a mano: se usa <strong>GitOps</strong>. Los manifiestos viven en un
+        repositorio y una herramienta como <strong>Argo CD</strong> o Flux sincroniza el clúster con lo que hay en Git. Para
+        desplegar, se cambia el repositorio (por ejemplo, la etiqueta de la imagen). Los manifiestos suelen generarse con
+        <a href="../tema.html?id=helm">Helm</a> o <a href="../tema.html?id=kustomize">Kustomize</a> para no repetirlos por
+        entorno.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Etiqueta <code>latest</code> en la imagen:</strong> no sabes qué versión corre y un reinicio puede
+          traer otra. Usa versiones o el resumen (<em>digest</em>) de la imagen.</li>
+        <li><strong>Sin sonda de readiness:</strong> el pod recibe tráfico antes de estar listo y los primeros usuarios
+          reciben errores en cada despliegue.</li>
+        <li><strong>Liveness que depende de otros servicios:</strong> si la base de datos cae, Kubernetes reinicia todos tus
+          pods en bucle y no arregla nada. La liveness solo comprueba el propio proceso.</li>
+        <li><strong>Límite de memoria por debajo de lo que usa la JVM:</strong> el contenedor muere con
+          <code>OOMKilled</code>. Ajusta el límite y la memoria máxima de la JVM a la vez.</li>
+        <li><strong>Cambios a mano en un clúster con GitOps:</strong> la herramienta los deshace en la siguiente
+          sincronización. Cambia el repositorio.</li>
+        <li><strong>Despliegues que se pisan:</strong> si dos ramas o dos procesos actualizan el mismo Deployment, gana el
+          último y el entorno deja de tener lo que creías. Antes de probar, comprueba qué imagen corre de verdad
+          (<code>kubectl get deployment -o wide</code>).</li>
+        <li><strong>Secretos en un ConfigMap o en la imagen:</strong> cualquiera con acceso los lee. Usa Secret o un gestor
+          de secretos.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="kubernetes"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://kubernetes.io/docs/concepts/overview/" target="_blank" rel="noopener">Overview</a> (documentación de Kubernetes, consultada el 27/11/2026).</li>
+        <li><a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/" target="_blank" rel="noopener">Deployments</a> (documentación de Kubernetes, consultada el 27/11/2026).</li>
+        <li><a href="https://kubernetes.io/docs/concepts/services-networking/service/" target="_blank" rel="noopener">Service</a> (documentación de Kubernetes, consultada el 27/11/2026).</li>
+        <li><a href="https://kubernetes.io/docs/concepts/configuration/configmap/" target="_blank" rel="noopener">ConfigMaps</a> (documentación de Kubernetes, consultada el 27/11/2026).</li>
+        <li><a href="https://kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/" target="_blank" rel="noopener">Liveness, Readiness, and Startup Probes</a> (documentación de Kubernetes, consultada el 27/11/2026).</li>
+        <li><a href="https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/" target="_blank" rel="noopener">CronJob</a> (documentación de Kubernetes, consultada el 27/11/2026).</li>
+        <li><a href="https://argo-cd.readthedocs.io/en/stable/" target="_blank" rel="noopener">Argo CD</a> (documentación oficial: GitOps, consultada el 27/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=e24f3b1d" defer></script>
+<script src="../assets/cuenta.js?v=c2bd2d97" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=c65bfe9f" defer></script>
+</body>
+</html>

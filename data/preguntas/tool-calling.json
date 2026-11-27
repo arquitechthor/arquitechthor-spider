@@ -1,0 +1,160 @@
+[
+  {
+    "id": "tool-calling-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "En el tool calling, ¿quién ejecuta la herramienta?",
+    "opciones": [
+      "El proveedor, en un entorno aislado suyo.",
+      "El navegador del usuario que hizo la pregunta.",
+      "El propio modelo, dentro de su servidor.",
+      "La aplicación, cuando el modelo lo pide."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "El modelo solo devuelve el nombre de la herramienta y los argumentos. La aplicación la ejecuta y le devuelve el resultado en la siguiente llamada.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+    ]
+  },
+  {
+    "id": "tool-calling-002",
+    "tipo": "ordenar",
+    "nivel": 2,
+    "enunciado": "Ordena los pasos del bucle de herramientas.",
+    "opciones": [
+      "La aplicación vuelve a llamar al modelo con el resultado.",
+      "La aplicación valida los argumentos y ejecuta la herramienta.",
+      "El modelo da la respuesta final.",
+      "La aplicación envía el mensaje y la lista de herramientas.",
+      "El modelo responde con una petición de herramienta."
+    ],
+    "correctas": [
+      3,
+      4,
+      1,
+      0,
+      2
+    ],
+    "explicacion": "Es el ciclo básico de cualquier agente: petición, solicitud de herramienta, ejecución en la aplicación, nueva llamada con el resultado, y repetir hasta la respuesta final.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+    ]
+  },
+  {
+    "id": "tool-calling-003",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué ve el modelo de cada herramienta?",
+    "opciones": [
+      "Su nombre, su descripción y el esquema de sus parámetros.",
+      "Un ejemplo de ejecución real con datos de producción.",
+      "Solo su nombre, sin ninguna otra información adicional.",
+      "El código fuente completo del método que la implementa."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "La definición de una herramienta es nombre, descripción y esquema JSON de parámetros. Por eso la descripción decide si el modelo la usa bien.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+    ]
+  },
+  {
+    "id": "tool-calling-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Una herramienta devuelve el catálogo completo, de miles de nodos, en cada llamada. ¿Cuál es el principal problema?",
+    "opciones": [
+      "Las herramientas solo pueden devolver texto plano corto.",
+      "El modelo no puede leer listas de más de cien elementos.",
+      "El proveedor bloquea las respuestas de más de un megabyte.",
+      "Gasta muchos tokens, tarda más y empeora la precisión."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "Todo lo que devuelve una herramienta entra en el contexto: se paga en tokens, alarga la respuesta y diluye la información relevante. Es mejor buscar en código y devolver solo las coincidencias.",
+    "fuentes": [
+      "https://www.anthropic.com/engineering/writing-tools-for-agents"
+    ]
+  },
+  {
+    "id": "tool-calling-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un agente recibe como argumento de una herramienta el id del cliente. ¿Qué es lo más seguro?",
+    "opciones": [
+      "Usar el id que la aplicación ya conoce por la sesión o la ruta.",
+      "Aceptarlo si tiene el formato numérico esperado.",
+      "Confiar en el id porque lo ha generado el modelo.",
+      "Pedir al modelo que repita el id dos veces y compararlos."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "Los argumentos los genera el modelo y pueden estar equivocados o manipulados. Lo que la aplicación ya sabe de forma fiable no debe venir del modelo.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+    ]
+  },
+  {
+    "id": "tool-calling-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "La herramienta falla porque la categoría pedida no existe. ¿Qué conviene devolver?",
+    "opciones": [
+      "Una excepción sin capturar, para que el bucle se detenga y el usuario vea el fallo real.",
+      "Una lista vacía sin explicación para no gastar tokens.",
+      "Un mensaje que el modelo entienda, como «no existe la categoría 123».",
+      "La traza completa de la excepción con todo su detalle."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "Un resultado de error comprensible permite al modelo corregirse o preguntar al usuario. Una excepción corta el flujo y una lista vacía sin contexto se malinterpreta.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+    ]
+  },
+  {
+    "id": "tool-calling-007",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "¿Qué dos medidas reducen el riesgo de que un agente haga algo indebido? (elige dos)",
+    "opciones": [
+      "Dar al agente todos los permisos para que no falle.",
+      "Pedir confirmación humana antes de acciones con efectos.",
+      "Limitar el número máximo de pasos del bucle.",
+      "Ocultar al modelo las descripciones de las herramientas."
+    ],
+    "correctas": [
+      1,
+      2
+    ],
+    "explicacion": "La confirmación humana y un límite de pasos acotan los daños. Dar todos los permisos amplía el riesgo y ocultar las descripciones solo hace que use peor las herramientas.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+    ]
+  },
+  {
+    "id": "tool-calling-008",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "Las instrucciones dicen que un dato se compruebe siempre con una herramienta. ¿Basta con eso?",
+    "opciones": [
+      "Sí, siempre que la herramienta tenga una descripción larga.",
+      "No: hay que llamar a la herramienta antes de llamar al modelo.",
+      "Sí: los modelos actuales siempre siguen las instrucciones de sistema.",
+      "No: el modelo puede no llamarla; conviene comprobarlo también en código."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "Las instrucciones aumentan la probabilidad, pero no garantizan nada. Si una comprobación es obligatoria, se repite en código sobre el resultado final.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+    ]
+  }
+]

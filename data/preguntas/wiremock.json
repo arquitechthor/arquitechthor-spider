@@ -1,0 +1,155 @@
+[
+  {
+    "id": "wiremock-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué es WireMock?",
+    "opciones": [
+      "Un balanceador de carga para microservicios.",
+      "Una biblioteca para crear mocks de clases.",
+      "Un generador de clientes HTTP a partir de OpenAPI.",
+      "Un servidor HTTP falso para pruebas."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "WireMock arranca un servidor que responde a las peticiones según los stubs que definas. Los mocks de clases son cosa de Mockito.",
+    "fuentes": [
+      "https://wiremock.org/docs/"
+    ]
+  },
+  {
+    "id": "wiremock-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué prueba WireMock que un mock de Mockito del cliente no prueba?",
+    "opciones": [
+      "El rendimiento de la API real en producción.",
+      "La lógica de negocio que usa el resultado del cliente para decidir qué guardar y qué devolver.",
+      "La URL, las cabeceras, el JSON y el manejo de errores del cliente real.",
+      "Que el proveedor real cumple su contrato publicado."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "Con Mockito, el cliente ni siquiera se ejecuta. Con WireMock se ejecuta el cliente HTTP de verdad contra un servidor local. No comprueba el proveedor real: para eso están las pruebas de contrato.",
+    "fuentes": [
+      "https://wiremock.org/docs/"
+    ]
+  },
+  {
+    "id": "wiremock-003",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué hace la anotación @WireMockTest de JUnit 5?",
+    "opciones": [
+      "Sustituye todos los beans HTTP por mocks de Mockito.",
+      "Graba las respuestas de la API real durante la prueba.",
+      "Despliega WireMock en un contenedor de Kubernetes.",
+      "Arranca un servidor WireMock por clase en un puerto libre."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "@WireMockTest gestiona el ciclo de vida del servidor y lo expone con WireMockRuntimeInfo (URL base y puerto).",
+    "fuentes": [
+      "https://wiremock.org/docs/junit-jupiter/"
+    ]
+  },
+  {
+    "id": "wiremock-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Cómo se prueba con WireMock que el cliente maneja bien un tiempo de espera?",
+    "opciones": [
+      "Con una respuesta con retraso mayor que el tiempo de espera del cliente.",
+      "Desactivando la red del equipo durante la prueba.",
+      "Parando el servidor WireMock a mitad de la prueba.",
+      "Configurando el stub para que devuelva un estado 408 Request Timeout en todas las peticiones."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "withFixedDelay (o un retraso aleatorio) simula una respuesta lenta, así se comprueba que el cliente corta y convierte el fallo en un error controlado.",
+    "fuentes": [
+      "https://wiremock.org/docs/simulating-faults/"
+    ]
+  },
+  {
+    "id": "wiremock-005",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "¿Qué dos cosas puede comprobar un stub de WireMock antes de responder? (elige dos)",
+    "opciones": [
+      "La versión de JUnit que ejecuta la prueba.",
+      "El nombre de la clase Java que llama.",
+      "Las cabeceras, como Authorization.",
+      "Los parámetros de consulta de la URL."
+    ],
+    "correctas": [
+      2,
+      3
+    ],
+    "explicacion": "La coincidencia se basa en lo que llega por HTTP: método, URL, parámetros, cabeceras y cuerpo. WireMock no sabe qué clase ni qué framework de pruebas hizo la petición.",
+    "fuentes": [
+      "https://wiremock.org/docs/request-matching/"
+    ]
+  },
+  {
+    "id": "wiremock-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Para qué sirven los escenarios de WireMock?",
+    "opciones": [
+      "Para describir pruebas en lenguaje natural.",
+      "Para que las respuestas cambien según las peticiones anteriores.",
+      "Para agrupar pruebas de JUnit por funcionalidad.",
+      "Para repartir las pruebas entre varios servidores WireMock que se ejecutan en paralelo."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "Los escenarios dan estado a los stubs: por ejemplo, que la primera petición falle y la segunda vaya bien, ideal para probar reintentos.",
+    "fuentes": [
+      "https://wiremock.org/docs/stateful-behaviour/"
+    ]
+  },
+  {
+    "id": "wiremock-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Una prueba usa get(anyUrl()) en todos los stubs. ¿Qué riesgo tiene?",
+    "opciones": [
+      "WireMock rechaza las peticiones que no tienen ruta exacta.",
+      "Solo funciona con peticiones de tipo POST.",
+      "Pasa aunque el cliente envíe la ruta o los parámetros mal.",
+      "La prueba tarda más porque compara todas las URL."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "Una coincidencia tan laxa responde a cualquier petición, así que no detecta errores en la URL o los parámetros. Conviene ajustar ruta, parámetros y cabeceras importantes.",
+    "fuentes": [
+      "https://wiremock.org/docs/request-matching/"
+    ]
+  },
+  {
+    "id": "wiremock-008",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Por qué no conviene fijar el puerto de WireMock (por ejemplo, 8080) en las pruebas?",
+    "opciones": [
+      "Puede chocar con otro proceso, sobre todo en la integración continua.",
+      "Java no permite abrir el puerto 8080 en pruebas.",
+      "WireMock solo puede escuchar en puertos superiores a 50000.",
+      "Los puertos fijos desactivan la verificación de peticiones y las coincidencias por cabecera."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "Otro servicio o una ejecución en paralelo pueden estar usando ese puerto. Con el puerto dinámico, WireMock elige uno libre y la prueba pregunta cuál es.",
+    "fuentes": [
+      "https://wiremock.org/docs/junit-jupiter/"
+    ]
+  }
+]

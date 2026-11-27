@@ -1,0 +1,155 @@
+[
+  {
+    "id": "evals-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué es un golden dataset en el contexto de las evals?",
+    "opciones": [
+      "Un conjunto de casos con la respuesta esperada, revisado por personas.",
+      "Un registro de todas las conversaciones reales de producción.",
+      "El conjunto de datos público con el que el proveedor entrenó y ajustó el modelo.",
+      "Una base de datos con las respuestas más caras del modelo."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "Es el conjunto de referencia: entradas con su salida esperada o sus criterios, revisado por personas, contra el que se mide cada versión.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+    ]
+  },
+  {
+    "id": "evals-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Por qué conviene ejecutar cada caso de una eval varias veces?",
+    "opciones": [
+      "Porque el modelo aprende de las ejecuciones anteriores.",
+      "Para medir si el acierto es reproducible y no fruto del azar.",
+      "Para que la caché del proveedor devuelva la misma respuesta.",
+      "Porque el proveedor cobra menos a partir de la tercera llamada."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "Con temperatura mayor que cero, la misma entrada puede dar respuestas distintas. Repetir mide la estabilidad. El modelo no aprende entre llamadas.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+    ]
+  },
+  {
+    "id": "evals-003",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Para una salida cerrada, como un código de una lista fija, ¿qué comprobación es la más adecuada?",
+    "opciones": [
+      "Una encuesta a los usuarios.",
+      "Comparación exacta por código.",
+      "Medir la longitud de la respuesta.",
+      "Un LLM que actúe como juez."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "Si la respuesta correcta es un valor concreto, la comparación exacta es barata, rápida y objetiva. El LLM como juez se reserva para respuestas abiertas.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+    ]
+  },
+  {
+    "id": "evals-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Por qué conviene contar por separado «valor inventado» y «no encontrado»?",
+    "opciones": [
+      "Porque inventar un valor suele ser más grave que no dar ninguno.",
+      "Porque el proveedor solo factura los valores inventados.",
+      "Porque los valores inventados no se pueden detectar en código.",
+      "Porque «no encontrado» siempre es un fallo del proveedor."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "No todos los errores pesan igual: un valor inventado puede aplicar una decisión equivocada, mientras que «no encontrado» suele llevar a pedir aclaración. Separarlos permite fijar umbrales distintos.",
+    "fuentes": [
+      "https://hamel.dev/blog/posts/evals/"
+    ]
+  },
+  {
+    "id": "evals-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Ajustas el prompt mirando siempre los mismos 30 casos hasta acertarlos todos. ¿Qué riesgo hay?",
+    "opciones": [
+      "Que los casos dejen de ser válidos como JSON.",
+      "Sobreajustar el prompt a esos casos sin mejorar en los demás.",
+      "Que el modelo memorice los casos y los filtre a otros clientes.",
+      "Agotar el límite de tokens del proveedor para todo el mes."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "Igual que en aprendizaje automático, optimizar contra el mismo conjunto da una medida optimista. Conviene reservar casos que no se miran al ajustar.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+    ]
+  },
+  {
+    "id": "evals-006",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "¿Qué dos tipos de casos no deberían faltar en un conjunto de evaluación? (elige dos)",
+    "opciones": [
+      "Solo los ejemplos que aparecen en la documentación.",
+      "Casos repetidos con exactamente la misma frase.",
+      "Casos sin respuesta posible, donde no se debe inventar.",
+      "Casos ambiguos donde lo correcto es pedir aclaración."
+    ],
+    "correctas": [
+      2,
+      3
+    ],
+    "explicacion": "Los fallos se concentran en lo ambiguo y en lo que no tiene respuesta. Los ejemplos de documentación suelen ser los fáciles, y repetir la misma frase no amplía la cobertura (eso son repeticiones, no casos).",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+    ]
+  },
+  {
+    "id": "evals-007",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Durante una eval, varias peticiones fallan con un 502 del proveedor. ¿Cómo se cuentan?",
+    "opciones": [
+      "No se cuentan y se borran del conjunto de casos.",
+      "Aparte, como fallos de plataforma, no como errores del prompt.",
+      "Como errores del prompt, igual que cualquier respuesta mala.",
+      "Como aciertos, porque el prompt no tuvo la culpa."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "Un 502 o un filtro de contenido no dicen nada de la calidad del prompt, pero sí del servicio. Separarlos evita conclusiones falsas sobre el prompt sin esconder el problema de plataforma.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+    ]
+  },
+  {
+    "id": "evals-008",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Por qué no se suelen ejecutar las evals con modelo real en cada compilación?",
+    "opciones": [
+      "Porque solo se pueden ejecutar desde un navegador.",
+      "Porque cuestan dinero, tardan y no son deterministas.",
+      "Porque sustituyen a las pruebas unitarias y las hacen innecesarias.",
+      "Porque los proveedores prohíben su uso en integración continua."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "Llamar a un modelo real cuesta dinero y tiempo, y su resultado varía. Se ejecutan a mano o en un trabajo aparte; las pruebas unitarias siguen usando dobles del modelo.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+    ]
+  }
+]

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evals & Golden Datasets — Tech Spider</title>
+<meta name="description" content="Cómo medir con un conjunto de casos de referencia si una aplicación con modelos de lenguaje hace bien su trabajo, y cómo usarlo para mejorarla sin romper nada.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/evals.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=4b40b594">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="../cola.html">Cola</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="evals">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>Una <strong>eval</strong> (evaluación) es una prueba repetible que mide <strong>cómo de bien hace su trabajo una
+        aplicación con LLM</strong>: se le pasa un conjunto de casos con la respuesta esperada y se cuenta cuántos acierta.
+        El conjunto de casos de referencia, revisado por personas, se llama <strong><em>golden dataset</em></strong>
+        (conjunto dorado).</p>
+      <p>Es el equivalente a las pruebas automáticas del software tradicional, adaptado a un componente que no es
+        determinista: la misma pregunta puede recibir respuestas distintas, así que no basta con «pasa o no pasa» una
+        vez; se mide un porcentaje.</p>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <ul>
+        <li><strong>Caso:</strong> una entrada (la frase del usuario y su contexto) más lo esperado (la respuesta correcta,
+          o los criterios que debe cumplir).</li>
+        <li><strong>Umbral:</strong> el porcentaje mínimo de aciertos acordado para dar por buena una versión (por ejemplo,
+          90 % de aciertos y ningún valor inventado).</li>
+        <li><strong>Regresión:</strong> cuando un cambio (en el prompt, el modelo o el código) empeora casos que antes
+          funcionaban.</li>
+        <li><strong><a class="concepto" data-concepto="temperatura">Temperatura</a>:</strong> el parámetro que controla
+          cuánto azar hay al elegir cada palabra. Con valores altos, las respuestas varían más entre ejecuciones (ver
+          <a href="sampling-parameters.html">parámetros de muestreo</a>).</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Sin evals, mejorar un prompt es ir a ciegas: arreglas el ejemplo que te han reportado y rompes otros tres sin
+        enterarte. Con un conjunto fijo de casos, cada cambio se mide antes de desplegarse, se comparan modelos con
+        números (cuál acierta más, cuál es más barato o más rápido) y se puede decir con datos si una funcionalidad de IA
+        está lista. Muchos equipos lo resumen así: la eval es la especificación de lo que el sistema debe hacer.</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>Tipos de comprobación:</strong>
+          <ul>
+            <li><em>Exacta o por código</em>: para salidas cerradas (una categoría, un código, un JSON). Barata y
+              objetiva; úsala siempre que se pueda.</li>
+            <li><em>Por reglas</em>: comprobar propiedades (que no invente campos, que el JSON sea válido, que la respuesta
+              no pase de cierta longitud).</li>
+            <li><em>LLM como juez</em>: otro modelo puntúa respuestas abiertas (¿es amable? ¿responde a lo pedido?) con una
+              rúbrica. Útil, pero hay que comprobar de vez en cuando que el juez coincide con una persona.</li>
+            <li><em>Revisión humana</em>: la referencia final, cara; se usa para construir el conjunto y calibrar al juez.</li>
+          </ul>
+        </li>
+        <li><strong>Cobertura del conjunto:</strong> al menos un caso por cada valor posible de la salida, más casos
+          ambiguos, casos sin respuesta, varias respuestas a la vez y frases en los idiomas que usan los usuarios.</li>
+        <li><strong>Repeticiones:</strong> ejecutar cada caso varias veces (por ejemplo, 3) para medir la
+          <strong>reproducibilidad</strong>: un caso que acierta 2 de 3 veces es un problema aunque «haya pasado».</li>
+        <li><strong>Métricas separadas:</strong> no todos los errores pesan igual. Inventar un valor que no existe es peor
+          que no encontrar ninguno; cuéntalos por separado. Para clasificación sirven
+          <a href="model-evaluation-metrics.html">precisión y exhaustividad</a>.</li>
+        <li><strong>No sobreajustar:</strong> si ajustas el prompt mirando siempre los mismos casos, acabas aprobando el
+          examen y no la asignatura. Reserva una parte del conjunto que no mires al ajustar.</li>
+        <li><strong>Offline y online:</strong> offline es el conjunto fijo antes de desplegar; online es medir en
+          producción (respuestas valoradas por usuarios, muestras revisadas, trazas). Los fallos reales de producción son
+          la mejor fuente de casos nuevos.</li>
+      </ul>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>Un conjunto de casos puede ser un simple fichero versionado junto al código:</p>
+      <pre><code>[
+  { "id": "C01", "entrada": "vestidos de mujer",          "esperado": { "estado": "OK", "codigos": ["M"] } },
+  { "id": "C02", "entrada": "ropa para niños",            "esperado": { "estado": "AMBIGUO" } },
+  { "id": "C03", "entrada": "camisetas de hombre y mujer", "esperado": { "estado": "OK", "codigos": ["H", "M"] } },
+  { "id": "C04", "entrada": "todo el catálogo",           "esperado": { "estado": "NO_ENCONTRADO" } }
+]</code></pre>
+      <p>Y un ejecutor que lo recorre, llama al sistema real (no a un mock), compara y resume:</p>
+      <pre><code>casos: 40   repeticiones: 3   aciertos: 112/120 (93,3 %)
+inventados: 0   inestables (no 3/3): C02, C17   tiempo medio: 2,1 s</code></pre>
+      <p>El resultado se guarda con la versión del prompt y del modelo, para poder comparar antes y después de cada
+        cambio. Las evals que llaman a un modelo real cuestan dinero y tardan, así que no suelen ir en cada compilación:
+        se ejecutan a mano o en un trabajo aparte de la integración continua, y las pruebas unitarias normales siguen usando
+        dobles del modelo.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Probar a mano con cuatro frases:</strong> da sensación de que funciona y no mide nada. Diez minutos
+          escribiendo casos ahorran días de discusiones.</li>
+        <li><strong>Solo casos fáciles:</strong> los fallos están en lo ambiguo, lo incompleto y lo raro. Inclúyelos a
+          propósito.</li>
+        <li><strong>Una sola ejecución:</strong> con temperatura mayor que cero, un acierto puede ser suerte. Repite.</li>
+        <li><strong>Umbral sin acordar:</strong> sin un número decidido antes, cualquier resultado se puede defender.
+          Acuérdalo con quien pide la funcionalidad.</li>
+        <li><strong>Mezclar fallos de plataforma con fallos del modelo:</strong> un error 502 o un filtro de contenido no
+          dicen nada de la calidad del prompt. Cuéntalos aparte.</li>
+        <li><strong>Conjunto que no evoluciona:</strong> cada error real reportado debería convertirse en un caso nuevo.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="evals"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://platform.claude.com/docs/en/test-and-evaluate/develop-tests" target="_blank" rel="noopener">Create strong empirical evaluations</a> (documentación de Anthropic, consultada el 27/11/2026).</li>
+        <li><a href="https://platform.claude.com/docs/en/test-and-evaluate/define-success" target="_blank" rel="noopener">Define your success criteria</a> (documentación de Anthropic, consultada el 27/11/2026).</li>
+        <li><a href="https://platform.openai.com/docs/guides/evals" target="_blank" rel="noopener">Working with evals</a> (documentación de OpenAI, consultada el 27/11/2026).</li>
+        <li><a href="https://hamel.dev/blog/posts/evals/" target="_blank" rel="noopener">Your AI Product Needs Evals</a> (Hamel Husain, consultada el 27/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=e24f3b1d" defer></script>
+<script src="../assets/cuenta.js?v=c2bd2d97" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=c65bfe9f" defer></script>
+</body>
+</html>

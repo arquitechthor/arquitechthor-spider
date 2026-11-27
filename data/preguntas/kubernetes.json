@@ -1,0 +1,155 @@
+[
+  {
+    "id": "kubernetes-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué recurso de Kubernetes se usa normalmente para desplegar una aplicación sin estado con varias réplicas?",
+    "opciones": [
+      "ConfigMap",
+      "Namespace",
+      "CronJob",
+      "Deployment"
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "Un Deployment define la imagen, el número de réplicas y la estrategia de actualización. ConfigMap guarda configuración, Namespace agrupa recursos y CronJob ejecuta tareas programadas.",
+    "fuentes": [
+      "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/"
+    ]
+  },
+  {
+    "id": "kubernetes-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Para qué sirve un Service?",
+    "opciones": [
+      "Para dar un nombre y una dirección estables a un grupo de pods.",
+      "Para guardar contraseñas cifradas que usan los contenedores.",
+      "Para limitar la memoria que puede usar cada contenedor.",
+      "Para programar tareas que se ejecutan cada cierto tiempo."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "Los pods cambian de dirección al recrearse. El Service da un punto de acceso estable y reparte el tráfico entre los pods que coinciden con su selector.",
+    "fuentes": [
+      "https://kubernetes.io/docs/concepts/services-networking/service/"
+    ]
+  },
+  {
+    "id": "kubernetes-003",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué ocurre cuando falla la sonda de readiness de un pod?",
+    "opciones": [
+      "Deja de recibir tráfico del Service hasta que vuelva a estar listo.",
+      "El nodo donde corre el pod se marca como averiado y sus pods se mueven a otro nodo.",
+      "El Deployment vuelve a la versión anterior.",
+      "Kubernetes reinicia inmediatamente el contenedor."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "Readiness decide si el pod recibe tráfico; liveness decide si se reinicia. Un fallo de readiness solo lo saca del reparto.",
+    "fuentes": [
+      "https://kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/"
+    ]
+  },
+  {
+    "id": "kubernetes-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un pod aparece con el estado OOMKilled. ¿Qué ha pasado?",
+    "opciones": [
+      "La sonda de liveness ha fallado tres veces seguidas.",
+      "El pod no tiene permisos para leer su Secret.",
+      "El contenedor superó su límite de memoria y se terminó.",
+      "La imagen del contenedor no existe en el registro."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "OOMKilled significa que el contenedor pasó de su límite de memoria. Hay que revisar ese límite y la memoria máxima que usa la JVM.",
+    "fuentes": [
+      "https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/"
+    ]
+  },
+  {
+    "id": "kubernetes-005",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "¿Por qué no conviene que la sonda de liveness compruebe la base de datos?",
+    "opciones": [
+      "Kubernetes ignora las sondas que tardan más de un segundo y las da por superadas siempre.",
+      "Las sondas de liveness no pueden abrir conexiones de red.",
+      "La base de datos bloquea las conexiones de las sondas.",
+      "Si cae la base de datos, se reinician todos los pods sin arreglar nada."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "Liveness debe responder si el propio proceso está bien. Si depende de algo externo, un fallo ajeno provoca reinicios en cadena.",
+    "fuentes": [
+      "https://kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/"
+    ]
+  },
+  {
+    "id": "kubernetes-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "En un clúster gestionado con GitOps (Argo CD, por ejemplo), alguien cambia un Deployment a mano con kubectl. ¿Qué pasa?",
+    "opciones": [
+      "El cambio se mantiene hasta el siguiente reinicio del nodo.",
+      "La herramienta lo devuelve a lo que dice el repositorio.",
+      "Argo CD bloquea el comando kubectl y no lo aplica.",
+      "El cambio se guarda solo en el repositorio de Git."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "En GitOps, el repositorio es la fuente de verdad y la herramienta sincroniza el clúster con él, deshaciendo los cambios manuales (con la sincronización automática activada).",
+    "fuentes": [
+      "https://argo-cd.readthedocs.io/en/stable/"
+    ]
+  },
+  {
+    "id": "kubernetes-007",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "¿Qué dos recursos sirven para dar configuración a un pod sin meterla en la imagen? (elige dos)",
+    "opciones": [
+      "Secret",
+      "Ingress",
+      "ReplicaSet",
+      "ConfigMap"
+    ],
+    "correctas": [
+      0,
+      3
+    ],
+    "explicacion": "ConfigMap (configuración normal) y Secret (datos sensibles) llegan al pod como variables de entorno o ficheros. ReplicaSet mantiene réplicas e Ingress enruta tráfico externo.",
+    "fuentes": [
+      "https://kubernetes.io/docs/concepts/configuration/configmap/"
+    ]
+  },
+  {
+    "id": "kubernetes-008",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué comando ayuda más a ver por qué un pod no arranca (imagen no encontrada, sonda fallida…)?",
+    "opciones": [
+      "kubectl config get-contexts --output name",
+      "kubectl get nodes",
+      "kubectl version",
+      "kubectl describe pod <nombre>"
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "describe muestra los eventos del pod: errores al descargar la imagen, sondas fallidas, reinicios o falta de recursos.",
+    "fuentes": [
+      "https://kubernetes.io/docs/reference/kubectl/"
+    ]
+  }
+]

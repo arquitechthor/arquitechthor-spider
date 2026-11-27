@@ -1,0 +1,155 @@
+[
+  {
+    "id": "kafka-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué ocurre con un evento de Kafka cuando un consumidor lo lee?",
+    "opciones": [
+      "Se borra en cuanto el consumidor confirma la lectura.",
+      "Se mueve a un topic de eventos ya leídos.",
+      "Se marca como leído y ningún otro consumidor lo ve.",
+      "Se conserva hasta que lo borra la política de retención."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "Kafka es un registro: leer no borra. Cada consumidor guarda su offset y los eventos se eliminan por tiempo o tamaño (o compactación).",
+    "fuentes": [
+      "https://kafka.apache.org/intro"
+    ]
+  },
+  {
+    "id": "kafka-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué garantiza Kafka respecto al orden de los eventos?",
+    "opciones": [
+      "El orden dentro de cada partición.",
+      "El orden global en todo el topic.",
+      "El orden por hora de creación en el productor.",
+      "Ningún orden: los eventos llegan al azar."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "El orden se garantiza por partición. Por eso los eventos que deben ir en orden comparten clave, y la misma clave va a la misma partición.",
+    "fuentes": [
+      "https://kafka.apache.org/intro"
+    ]
+  },
+  {
+    "id": "kafka-003",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un topic tiene 4 particiones y arrancas 6 instancias del mismo grupo de consumidores. ¿Qué pasa?",
+    "opciones": [
+      "Las seis instancias se reparten cada partición a partes iguales.",
+      "Cada evento lo procesan las seis instancias.",
+      "Kafka crea dos particiones nuevas automáticamente.",
+      "Dos instancias se quedan sin partición y no consumen."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "Dentro de un grupo, cada partición la lee una sola instancia. Con más instancias que particiones, las sobrantes quedan ociosas.",
+    "fuentes": [
+      "https://kafka.apache.org/documentation/"
+    ]
+  },
+  {
+    "id": "kafka-004",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué es el offset?",
+    "opciones": [
+      "La posición de un evento dentro de su partición.",
+      "El retraso en milisegundos de un consumidor.",
+      "El número de réplicas de cada partición.",
+      "El tamaño máximo de un evento en bytes."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "El offset identifica la posición de cada evento en su partición. El consumidor guarda el último procesado para continuar tras reiniciarse.",
+    "fuentes": [
+      "https://kafka.apache.org/intro"
+    ]
+  },
+  {
+    "id": "kafka-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Con la entrega «al menos una vez», ¿qué debe cumplir el consumidor?",
+    "opciones": [
+      "Leer solo de una partición por instancia.",
+      "Guardar el offset antes de procesar cada evento, para no leerlo nunca dos veces.",
+      "Ser idempotente, porque un evento puede llegar repetido.",
+      "Confirmar cada evento al productor por HTTP."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "Si el consumidor procesa y cae antes de guardar el offset, volverá a leer el evento. Procesarlo dos veces no debe cambiar el resultado. Guardar el offset antes de procesar arriesga perder eventos.",
+    "fuentes": [
+      "https://kafka.apache.org/documentation/"
+    ]
+  },
+  {
+    "id": "kafka-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué cambió en Kafka 4.0 respecto a la coordinación del clúster?",
+    "opciones": [
+      "Usa una base de datos relacional para los metadatos.",
+      "Necesita ZooKeeper en todos los brokers.",
+      "Delega la coordinación en Kubernetes.",
+      "Funciona solo con KRaft, sin ZooKeeper."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "Kafka 4.0 eliminó ZooKeeper: el propio clúster gestiona sus metadatos con el protocolo KRaft.",
+    "fuentes": [
+      "https://kafka.apache.org/documentation/#kraft"
+    ]
+  },
+  {
+    "id": "kafka-007",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "¿Qué dos casos encajan mejor con Kafka que con una cola simple? (elige dos)",
+    "opciones": [
+      "Necesidad de releer eventos pasados.",
+      "Varios sistemas que leen el mismo flujo de eventos.",
+      "Enviar un correo de bienvenida de vez en cuando.",
+      "Repartir tareas sueltas entre unos pocos trabajadores."
+    ],
+    "correctas": [
+      0,
+      1
+    ],
+    "explicacion": "Kafka destaca cuando muchos consumidores leen el mismo flujo y cuando hay que releer historial. Para repartir tareas sueltas o un volumen bajo, una cola es más sencilla.",
+    "fuentes": [
+      "https://kafka.apache.org/uses"
+    ]
+  },
+  {
+    "id": "kafka-008",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "Un servicio guarda un pedido en su base de datos y luego publica el evento en Kafka, pero a veces la publicación falla. ¿Qué patrón lo resuelve?",
+    "opciones": [
+      "Singleton: usar un único productor para todo el servicio.",
+      "Outbox: guardar el evento en la misma transacción y publicarlo después.",
+      "Circuit breaker: dejar de publicar cuando Kafka falla.",
+      "Compactación: conservar en el topic solo el último evento de cada pedido para no duplicarlo."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "Con el patrón outbox, el evento se guarda en una tabla en la misma transacción que el pedido, y un proceso aparte lo publica. Así no quedan desincronizados.",
+    "fuentes": [
+      "https://microservices.io/patterns/data/transactional-outbox.html"
+    ]
+  }
+]

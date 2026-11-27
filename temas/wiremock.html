@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WireMock — Tech Spider</title>
+<meta name="description" content="Servidor HTTP falso para pruebas: simula la API de un tercero (respuestas, errores y retrasos) para probar tu cliente de verdad sin depender del servicio real.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/wiremock.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=4b40b594">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="../cola.html">Cola</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="wiremock">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p><strong>WireMock</strong> es un <strong>servidor HTTP falso</strong> para pruebas: arranca en un puerto local y
+        responde a las peticiones como tú le digas («a <code>GET /categories?page=0</code> responde 200 con este JSON»,
+        «a la tercera petición, tarda 5 segundos»). Tu código cree que habla con la API real, pero habla con WireMock.</p>
+      <p>Es software libre, está escrito en Java y la línea actual es la <strong>3.x</strong> (con el grupo de Maven
+        <code>org.wiremock</code>). También funciona como programa independiente o en un contenedor, para usarlo desde
+        cualquier lenguaje.</p>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <ul>
+        <li><strong><em>Stub</em>:</strong> una respuesta preparada para una petición concreta. En WireMock, una regla
+          «si llega esto, responde esto».</li>
+        <li><strong><a href="../tema.html?id=test-doubles">Doble de prueba</a>:</strong> cualquier sustituto falso de una
+          dependencia. Un mock de Mockito sustituye un objeto Java; WireMock sustituye un servidor entero.</li>
+        <li><strong><a href="../tema.html?id=integration-testing">Prueba de integración</a>:</strong> la que prueba tu código
+          junto con piezas reales: aquí, el cliente HTTP de verdad, la serialización JSON y la gestión de errores.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Casi todos los servicios llaman a otras APIs: la de un proveedor, la de un cliente, la de otro equipo. Probar ese
+        código contra la API real es lento, frágil (depende de la red, de las credenciales y de los datos de ese día) y a
+        veces imposible (no puedes pedirle a un tercero que te devuelva un 503 cuando quieras). Sustituir el cliente por un
+        mock de Mockito es rápido, pero no prueba lo que más falla: la URL, los parámetros, las cabeceras, la conversión del
+        JSON y qué pasa con un error o un tiempo de espera. WireMock prueba todo eso sin depender del tercero.</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>Coincidencia de peticiones:</strong> un stub se aplica según método, URL o ruta (exacta o por
+          expresión regular), parámetros de consulta, cabeceras y cuerpo (incluido JSON parcial o JSONPath).</li>
+        <li><strong>Respuestas:</strong> estado, cabeceras y cuerpo (en línea o desde un fichero en
+          <code>__files</code>), con plantillas para reutilizar datos de la petición.</li>
+        <li><strong>Fallos simulados:</strong> retrasos fijos o aleatorios (<code>withFixedDelay</code>), conexiones
+          cortadas, respuestas vacías o basura. Es la forma de probar tiempos de espera y errores de red.</li>
+        <li><strong>Verificación:</strong> comprobar después qué peticiones llegaron
+          (<code>verify(getRequestedFor(...))</code>), por ejemplo que se envió la cabecera de autenticación o que no se
+          llamó a la API cuando no tocaba.</li>
+        <li><strong>Escenarios:</strong> respuestas con estado: la primera petición falla y la segunda va bien, para probar
+          reintentos.</li>
+        <li><strong>Grabar y reproducir:</strong> WireMock puede hacer de proxy contra la API real y guardar sus respuestas
+          como stubs. Útil para empezar; luego conviene limpiar los datos.</li>
+      </ul>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>Con JUnit 5, la anotación <code>@WireMockTest</code> arranca un servidor por clase en un puerto libre y lo inyecta
+        en la prueba:</p>
+      <pre><code>@WireMockTest
+class CatalogoClientTest {
+
+    @Test
+    void devuelveLasCategoriasDeLaPrimeraPagina(WireMockRuntimeInfo wm) {
+        stubFor(get(urlPathEqualTo("/categories"))
+                .withQueryParam("page", equalTo("0"))
+                .withHeader("Authorization", matching("Basic .+"))
+                .willReturn(okJson("""
+                        {"totalElements": 2, "data": [{"id": 1}, {"id": 2}]}
+                        """)));
+
+        var cliente = new CatalogoClient(wm.getHttpBaseUrl(), credenciales);
+
+        assertThat(cliente.categorias(0).data()).hasSize(2);
+    }
+
+    @Test
+    void convierteUnTiempoDeEsperaEnUnErrorControlado(WireMockRuntimeInfo wm) {
+        stubFor(get(anyUrl()).willReturn(ok().withFixedDelay(3_000)));
+
+        var cliente = new CatalogoClient(wm.getHttpBaseUrl(), credenciales, Duration.ofSeconds(1));
+
+        assertThatThrownBy(() -&gt; cliente.categorias(0)).isInstanceOf(ProveedorNoDisponible.class);
+    }
+}</code></pre>
+      <p>En una aplicación de <a href="../tema.html?id=spring-boot">Spring Boot</a> o <a href="quarkus.html">Quarkus</a>, la
+        idea es la misma: se apunta la URL del cliente (una propiedad de configuración) a la de WireMock y se prueba de
+        punta a punta, desde el endpoint propio hasta la respuesta simulada del tercero.</p>
+
+      <h2 id="caso-real">Caso real: Kopi Chess</h2>
+      <p><a href="https://github.com/arquitechthor/kopi-chess" target="_blank" rel="noopener">Kopi Chess</a> resuelve lo
+        mismo sin WireMock: su adaptador que habla con el inicio de sesión y la API de Kopi se prueba contra
+        <code>FakeKopi</code>, un servidor falso escrito con el <code>HttpServer</code> que trae el propio JDK.</p>
+      <ul>
+        <li>Arranca en <code>127.0.0.1</code> con puerto 0, es decir, en un <strong>puerto libre</strong> que se pregunta
+          después, igual que WireMock.</li>
+        <li>Cada prueba declara qué responde cada ruta (<code>on("GET", "/chess/games", ...)</code>), que es la idea de un
+          stub.</li>
+        <li>Guarda todas las peticiones recibidas para comprobar luego qué se envió, que es la verificación de WireMock.</li>
+      </ul>
+      <p>Para un adaptador pequeño y unas pocas rutas, un servidor propio basta y no añade dependencias. Cuando hacen falta
+        coincidencias complejas, fallos de red simulados o escenarios con estado, WireMock ahorra mucho código.</p>
+
+      <h2 id="comparativa">WireMock, Mockito o pruebas de contrato</h2>
+      <ul>
+        <li><strong><a href="../tema.html?id=mockito">Mockito</a>:</strong> sustituye una interfaz Java. Ideal para probar la
+          lógica que usa el cliente; no prueba el cliente.</li>
+        <li><strong>WireMock:</strong> sustituye el servidor. Prueba el cliente HTTP de verdad y sus errores.</li>
+        <li><strong><a href="../tema.html?id=contract-testing">Pruebas de contrato</a></strong> (Pact, Spring Cloud
+          Contract): además comprueban que el proveedor real cumple lo que el stub supone. Útiles entre equipos de la misma
+          empresa; con un tercero que no participa, WireMock con respuestas copiadas de la documentación es lo práctico.</li>
+      </ul>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Stubs que no se parecen a la API real:</strong> si inventas el JSON, la prueba pasa y producción falla.
+          Copia respuestas reales (sin datos sensibles) a ficheros de prueba.</li>
+        <li><strong>Coincidencias demasiado laxas:</strong> un <code>anyUrl()</code> en todo hace que la prueba pase aunque
+          envíes los parámetros mal. Comprueba ruta, parámetros y cabeceras importantes.</li>
+        <li><strong>Puerto fijo:</strong> choca en la integración continua. Usa el puerto dinámico que te da WireMock.</li>
+        <li><strong>Probar solo el caso feliz:</strong> la razón de ser de WireMock es simular el 500, el 403 y el tiempo de
+          espera. Escribe esas pruebas.</li>
+        <li><strong>Confundirlo con una prueba de la API real:</strong> WireMock comprueba tu lado. Si el tercero cambia su
+          contrato, te enterarás en producción; vigila sus avisos de versiones.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="wiremock"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://wiremock.org/docs/" target="_blank" rel="noopener">WireMock documentation</a> (documentación oficial, consultada el 27/11/2026).</li>
+        <li><a href="https://wiremock.org/docs/junit-jupiter/" target="_blank" rel="noopener">JUnit 5+ Jupiter</a> (WireMock: <code>@WireMockTest</code> y puertos dinámicos, consultada el 27/11/2026).</li>
+        <li><a href="https://wiremock.org/docs/request-matching/" target="_blank" rel="noopener">Request Matching</a> (WireMock, consultada el 27/11/2026).</li>
+        <li><a href="https://wiremock.org/docs/simulating-faults/" target="_blank" rel="noopener">Simulating Faults</a> (WireMock: retrasos y fallos de red, consultada el 27/11/2026).</li>
+        <li><a href="https://wiremock.org/docs/stateful-behaviour/" target="_blank" rel="noopener">Stateful Behaviour</a> (WireMock: escenarios, consultada el 27/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=e24f3b1d" defer></script>
+<script src="../assets/cuenta.js?v=c2bd2d97" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=c65bfe9f" defer></script>
+</body>
+</html>

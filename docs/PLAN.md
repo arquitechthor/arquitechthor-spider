@@ -12,6 +12,12 @@ línea al "Registro de sesiones".
 
 ## Estado actual
 
+- **Diez fichas nuevas (2026-11-27, petición del usuario), sin probar en el navegador:** Quarkus (tema nuevo del
+  área Backend), LangChain4j, Structured Outputs, Tool Calling, Evals, Rate Limits/Retries/Fallbacks, WireMock,
+  Kubernetes, Apache Kafka y Git, elegidas por su uso diario en un backend Java con IA. 8 preguntas originales por
+  tema (80 en total), con las opciones barajadas y la correcta como opción más larga solo en 19 de las 69 de
+  respuesta única. «Caso real: Kopi Chess» en WireMock (`FakeKopi`) y Git (PR, Conventional Commits, git-cliff).
+  Fuentes comprobadas el 27/11/2026. Validador en verde.
 - **Cola de estudio (2026-11-27, petición del usuario), sin probar en el navegador:** botón «＋ Añadir a la
   cola» en la cabecera de cada ficha escrita (`tema.js`; ya en la cola dice su posición y pulsarlo la quita),
   enlace «Cola» en el menú y página `cola.html` (`assets/cola.js`, noindex) con las fichas de la primera añadida a
@@ -508,6 +514,16 @@ relacionados recíprocos con `integration-testing` y `docker`. Sin nodos nuevos.
 «Aprendizaje automático», como los demás bloques; `importar_aws.py` lo conserva con `NOMBRE_ES_BLOQUE`, sin tocar
 aws-cert-study. Relacionados recíprocos `machine-learning` ↔ `aws-machine-learning` y, por coherencia,
 `containers` ↔ `aws-containers`. Sin nodos nuevos.
+
+**2026-11-27: Quarkus y nueve fichas para el día a día de backend con IA** (petición del usuario): nodo nuevo
+`quarkus` (tema directo del área `backend`, detrás del bloque `spring-framework`, `prioridad` 2). Publicadas con
+frase, alias y relacionados las fichas de `quarkus`, `langchain4j`, `structured-outputs`, `tool-calling`, `evals`,
+`rate-limits-retries-fallbacks`, `wiremock`, `kubernetes`, `kafka` y `git`. Relacionados recíprocos nuevos:
+`spring-boot`, `dependency-injection` ↔ `quarkus`; `structured-outputs` ↔ `evals`; `evals`, `llm-cost-latency` ↔
+`rate-limits-retries-fallbacks`; `integration-testing`, `test-doubles`, `contract-testing`, `testcontainers` ↔
+`wiremock`; `docker`, `helm`, `kustomize` ↔ `kubernetes`; `rabbitmq`, `outbox-pattern`, `idempotency` ↔ `kafka`;
+`code-reviews`, `github-actions` ↔ `git`. Siglas nuevas en el glosario: CDI, PR (enlace a `git`), IP, GPG, SSH.
+554 nodos.
 
 ### 4.3 Preguntas: `data/preguntas/<id>.json`
 
@@ -1132,6 +1148,7 @@ aunque casi todo esté en "Próximamente", porque la autoevaluación ya funciona
 
 | Fecha | Qué se hizo |
 |---|---|
+| 2026-11-27 | **Diez fichas para el día a día de backend con IA** (petición del usuario): nodo nuevo `quarkus` y fichas publicadas de `quarkus`, `langchain4j`, `structured-outputs`, `tool-calling`, `evals`, `rate-limits-retries-fallbacks`, `wiremock`, `kubernetes`, `kafka` y `git`, con 8 preguntas cada una (ver 4.2.1). Siglas CDI, PR, IP, GPG y SSH en el glosario. URL de fuentes y preguntas comprobadas (una corregida: el capítulo de rebase de Pro Git). `versionar.py` y validador en verde; sin probar en navegador. |
 | 2026-11-27 | **Cola de estudio** (petición del usuario, a la vez que en aws-cert-study): botón en `tema.js`, `cola.html` + `assets/cola.js`, enlace «Cola» antes de «Arquitechthor» en las 42 páginas, helpers `leerCola/ordenCola/posicionEnCola/ponerEnCola` en `datos.js`, clave `cola` sincronizada en `cuenta.js`, estilos `.cola-*`, aviso legal, `cuenta.html` y `CLAUDE.md`. `versionar.py` y validador en verde; lógica probada en Node; sin probar en navegador. |
 | 2026-11-26 | **Aprendizaje automático: tema frente a categoría de AWS y resumen en audio** (petición del usuario): el bloque `aws-machine-learning` se llama ahora «Aprendizaje automático (*Machine Learning*)» como el tema `machine-learning`, y los dos se enlazan con relacionados recíprocos; igual con `containers` ↔ `aws-containers` (ver 4.2.1). `importar_aws.py` gana `NOMBRE_ES_BLOQUE` para que la traducción sobreviva a la importación (`--comprobar` en verde). Resumen en audio en `temas/machine-learning.html`: recurso público de Kopi `6cb97ab6-facb-4eb4-83bd-8e9b70a93cef` (AUDIO, «Machine Learning», `Machine_Learning.m4a`, comprobado en la API pública) antes de "Qué es", con `assets/audio-kopi.js` y `"audio": true`. Validador en verde; sin probar en navegador. |
 | 2026-11-25 | **Caso real de Kopi Chess en la ficha de inteligencia artificial** (petición del usuario, a raíz de «¿Stockfish es IA simbólica o basada en datos?»): búsqueda frente a evaluación; `PAWN` y `KNIGHT` como IA simbólica pura (pesos y evaluación escritos a mano, alfa-beta a dos medias jugadas); Stockfish 19 como híbrido (búsqueda simbólica, evaluación NNUE aprendida desde la 12 y sin evaluación manual desde la 16; ML pero no deep learning); clasificación de jugadas por umbrales; Leela Chess Zero como motor de deep learning. El ejemplo de IA de la tabla pasa a «motor de ajedrez clásico». Glosario: NNUE. `revisado` 2026-11-25. Validador en verde. |

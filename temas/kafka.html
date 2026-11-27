@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apache Kafka — Tech Spider</title>
+<meta name="description" content="Plataforma de transmisión de eventos: topics, particiones, offsets, grupos de consumidores y garantías de entrega, y cuándo elegirla frente a una cola.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/kafka.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=4b40b594">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="../cola.html">Cola</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="kafka">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p><strong>Apache Kafka</strong> es una plataforma de <strong>transmisión de eventos</strong>: un registro distribuido,
+        duradero y ordenado donde unas aplicaciones escriben eventos («se ha creado el pedido 42», «ha cambiado el precio
+        de este producto») y otras los leen, cada una a su ritmo, ahora o días después. Nació en LinkedIn en 2011, es un
+        proyecto de la Apache Software Foundation y la línea actual es la <strong>4.x</strong>.</p>
+      <p>A diferencia de una cola clásica, Kafka <strong>no borra un mensaje cuando alguien lo lee</strong>: lo guarda
+        durante el tiempo configurado, y cada consumidor lleva la cuenta de por dónde va. Eso permite que muchos sistemas
+        lean los mismos eventos y que uno nuevo los relea desde el principio.</p>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <ul>
+        <li><strong>Evento:</strong> un hecho que ya ha ocurrido, con una clave, un valor (normalmente JSON o Avro) y una
+          marca de tiempo.</li>
+        <li><strong>Productor y consumidor:</strong> la aplicación que escribe eventos y la que los lee.</li>
+        <li><strong><em>Broker</em>:</strong> cada servidor de Kafka. Un clúster tiene varios para repartir carga y no perder
+          datos si uno cae.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Es la pieza central de la <a href="../tema.html?id=event-driven-architecture">arquitectura orientada a eventos</a>:
+        en lugar de que el servicio de pedidos llame uno a uno a facturación, almacén y notificaciones, publica «pedido
+        creado» y cada uno reacciona. Los servicios quedan desacoplados (el productor no sabe quién lee), el sistema aguanta
+        picos (los eventos esperan en Kafka) y se puede reconstruir el estado o alimentar análisis releyendo el historial.
+        Lo usan la mayoría de grandes empresas, a menudo gestionado (Confluent Cloud, Amazon MSK).</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>Topic:</strong> una categoría de eventos con nombre (<code>pedidos</code>, <code>precios</code>).</li>
+        <li><strong>Partición:</strong> cada topic se divide en particiones, que son registros ordenados donde solo se añade
+          al final. Kafka garantiza el orden <strong>dentro de una partición</strong>, no en todo el topic. Las particiones
+          permiten repartir la carga entre brokers y consumidores.</li>
+        <li><strong>Clave y orden:</strong> los eventos con la misma clave van a la misma partición. Si la clave es el id del
+          pedido, todos los eventos de un pedido se leen en orden.</li>
+        <li><strong>Offset:</strong> la posición de cada evento en su partición. El consumidor guarda (<em>commit</em>) el
+          último offset procesado para continuar desde ahí tras reiniciarse.</li>
+        <li><strong>Grupo de consumidores:</strong> varias instancias de la misma aplicación con el mismo
+          <code>group.id</code> se reparten las particiones: cada partición la lee una sola instancia del grupo. Por eso no
+          tiene sentido tener más instancias que particiones. Grupos distintos leen todos los eventos, cada uno por su
+          cuenta.</li>
+        <li><strong>Retención y compactación:</strong> los eventos se borran por tiempo o tamaño; en un topic compactado se
+          conserva solo el último valor de cada clave (útil para el estado actual de algo).</li>
+        <li><strong>Replicación:</strong> cada partición tiene copias en varios brokers. Con <code>acks=all</code>, el
+          productor espera a que las réplicas sincronizadas confirmen la escritura, y no se pierde el evento si cae un
+          broker.</li>
+        <li><strong>Garantías de entrega:</strong> por defecto, <em>al menos una vez</em>: un evento puede llegar repetido
+          (por ejemplo, si el consumidor procesa y muere antes de guardar el offset). Por eso los consumidores deben ser
+          <a href="../tema.html?id=idempotency">idempotentes</a>. Kafka ofrece productores idempotentes y transacciones para
+          «exactamente una vez» dentro de Kafka.</li>
+        <li><strong>KRaft:</strong> desde Kafka 4.0, el clúster se coordina solo, sin ZooKeeper, que era un sistema aparte
+          obligatorio en versiones anteriores.</li>
+        <li><strong>Schema Registry:</strong> un servicio que guarda los esquemas de los eventos (Avro, JSON Schema,
+          Protobuf) y evita que un productor publique un formato que rompa a los consumidores.</li>
+      </ul>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>Productor y consumidor con el cliente oficial de Java, usando el id del producto como clave para mantener el orden
+        por producto:</p>
+      <pre><code>// Productor
+var props = new Properties();
+props.put("bootstrap.servers", "localhost:9092");
+props.put("acks", "all");
+props.put("key.serializer", StringSerializer.class.getName());
+props.put("value.serializer", StringSerializer.class.getName());
+try (var productor = new KafkaProducer&lt;String, String&gt;(props)) {
+    productor.send(new ProducerRecord&lt;&gt;("precios", "producto-123", "{\"precio\": 29.99}"));
+}
+
+// Consumidor
+props.put("group.id", "servicio-catalogo");
+props.put("enable.auto.commit", "false");
+try (var consumidor = new KafkaConsumer&lt;String, String&gt;(props)) {
+    consumidor.subscribe(List.of("precios"));
+    while (true) {
+        for (var registro : consumidor.poll(Duration.ofSeconds(1))) {
+            actualizarPrecio(registro.key(), registro.value());   // idempotente
+        }
+        consumidor.commitSync();                                  // después de procesar
+    }
+}</code></pre>
+      <p>En la práctica se usa a través del framework: Spring for Apache Kafka (<code>@KafkaListener</code>) o SmallRye
+        Reactive Messaging en <a href="quarkus.html">Quarkus</a> (<code>@Incoming</code>, <code>@Outgoing</code>).</p>
+
+      <h2 id="comparativa">Kafka, RabbitMQ o una cola gestionada</h2>
+      <table>
+        <thead><tr><th></th><th>Kafka</th><th><a href="../tema.html?id=rabbitmq">RabbitMQ</a></th><th>Cola gestionada (p. ej. Amazon SQS)</th></tr></thead>
+        <tbody>
+          <tr><td>Modelo</td><td>Registro que se conserva</td><td>Broker de mensajes con enrutado</td><td>Cola simple</td></tr>
+          <tr><td>¿Se borra al leer?</td><td>No, por retención</td><td>Sí, al confirmar</td><td>Sí, al confirmar</td></tr>
+          <tr><td>Varios lectores del mismo mensaje</td><td>Sí, un grupo por lector</td><td>Con intercambios y varias colas</td><td>Con un tema de difusión delante</td></tr>
+          <tr><td>Releer el pasado</td><td>Sí</td><td>No</td><td>No</td></tr>
+          <tr><td>Operación</td><td>Más compleja</td><td>Media</td><td>Ninguna</td></tr>
+        </tbody>
+      </table>
+      <p>Kafka encaja cuando hay mucho volumen, varios consumidores del mismo flujo, necesidad de orden por clave o de
+        releer. Para repartir tareas entre trabajadores sin más, una cola es más sencilla.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Esperar orden global:</strong> solo hay orden por partición. Elige bien la clave.</li>
+        <li><strong>Consumidores no idempotentes:</strong> los duplicados ocurren. Procesar dos veces el mismo evento no
+          debería cambiar el resultado.</li>
+        <li><strong>Guardar el offset antes de procesar:</strong> si el proceso muere a mitad, el evento se pierde. Guárdalo
+          después.</li>
+        <li><strong>Pocas particiones:</strong> limitan cuántas instancias pueden consumir en paralelo, y aumentarlas después
+          cambia a qué partición va cada clave.</li>
+        <li><strong>Mensajes venenosos:</strong> un evento que siempre falla bloquea su partición. Prevé reintentos limitados
+          y un topic de mensajes fallidos (<em>dead letter</em>).</li>
+        <li><strong>Escribir en la base de datos y en Kafka sin coordinar:</strong> si una de las dos falla, quedan
+          desincronizadas. El <a href="../tema.html?id=outbox-pattern">patrón outbox</a> lo resuelve.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="kafka"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://kafka.apache.org/intro" target="_blank" rel="noopener">Introduction</a> (Apache Kafka, consultada el 27/11/2026).</li>
+        <li><a href="https://kafka.apache.org/documentation/" target="_blank" rel="noopener">Documentation</a> (Apache Kafka: productores, consumidores, replicación y KRaft, consultada el 27/11/2026).</li>
+        <li><a href="https://kafka.apache.org/uses" target="_blank" rel="noopener">Use cases</a> (Apache Kafka, consultada el 27/11/2026).</li>
+        <li><a href="https://developer.confluent.io/courses/apache-kafka/events/" target="_blank" rel="noopener">Apache Kafka 101</a> (Confluent Developer, consultada el 27/11/2026).</li>
+        <li><a href="https://microservices.io/patterns/data/transactional-outbox.html" target="_blank" rel="noopener">Pattern: Transactional outbox</a> (microservices.io, consultada el 27/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=e24f3b1d" defer></script>
+<script src="../assets/cuenta.js?v=c2bd2d97" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=c65bfe9f" defer></script>
+</body>
+</html>

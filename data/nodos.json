@@ -647,9 +647,21 @@
     "tipo": "tema",
     "padre": "development-environment",
     "area": "fundamentals",
-    "estado": "pendiente",
+    "frase": "Historia del proyecto en commits, ramas para trabajar en paralelo y fusiones entre ellas",
+    "estado": "publicado",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "code-reviews",
+      "github-actions"
+    ],
+    "revisado": "2026-11-27",
+    "alias": [
+      "merge",
+      "rebase",
+      "Pull request",
+      "Control de versiones"
+    ]
   },
   {
     "id": "linux",
@@ -731,7 +743,8 @@
     "evaluable": true,
     "prioridad": 1,
     "relacionados": [
-      "testcontainers"
+      "testcontainers",
+      "wiremock"
     ]
   },
   {
@@ -752,7 +765,10 @@
     "area": "testing",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "wiremock"
+    ]
   },
   {
     "id": "end-to-end-testing",
@@ -824,7 +840,8 @@
     "prioridad": 1,
     "relacionados": [
       "hexagonal-architecture",
-      "solid"
+      "solid",
+      "wiremock"
     ]
   },
   {
@@ -888,7 +905,8 @@
     "prioridad": 1,
     "relacionados": [
       "integration-testing",
-      "docker"
+      "docker",
+      "wiremock"
     ],
     "revisado": "2026-11-20",
     "alias": [
@@ -903,9 +921,22 @@
     "tipo": "tema",
     "padre": "java-testing-ecosystem",
     "area": "testing",
-    "estado": "pendiente",
+    "frase": "Servidor HTTP falso para probar clientes de otras APIs sin depender del servicio real",
+    "estado": "publicado",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "integration-testing",
+      "test-doubles",
+      "contract-testing",
+      "testcontainers"
+    ],
+    "revisado": "2026-11-27",
+    "alias": [
+      "Stubs HTTP",
+      "@WireMockTest",
+      "Mock de API"
+    ]
   },
   {
     "id": "rest-assured",
@@ -967,7 +998,10 @@
     ],
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "git"
+    ]
   },
   {
     "id": "backend",
@@ -1014,7 +1048,8 @@
       "spring-core",
       "hexagonal-architecture",
       "clean-architecture",
-      "solid"
+      "solid",
+      "quarkus"
     ]
   },
   {
@@ -1069,7 +1104,10 @@
     "estado": "pendiente",
     "evaluable": true,
     "prioridad": 1,
-    "volatil": true
+    "volatil": true,
+    "relacionados": [
+      "quarkus"
+    ]
   },
   {
     "id": "spring-mvc",
@@ -1158,6 +1196,29 @@
     "prioridad": 2,
     "relacionados": [
       "concurrency"
+    ]
+  },
+  {
+    "id": "quarkus",
+    "nombre": "Quarkus",
+    "tipo": "tema",
+    "padre": "backend",
+    "area": "backend",
+    "frase": "Framework Java para servicios que arrancan rápido y gastan poca memoria en contenedores",
+    "estado": "publicado",
+    "evaluable": true,
+    "prioridad": 2,
+    "relacionados": [
+      "spring-boot",
+      "langchain4j",
+      "kubernetes",
+      "dependency-injection"
+    ],
+    "revisado": "2026-11-27",
+    "alias": [
+      "@QuarkusTest",
+      "MicroProfile",
+      "GraalVM"
     ]
   },
   {
@@ -1982,7 +2043,10 @@
     "area": "architecture",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "kafka"
+    ]
   },
   {
     "id": "distributed-transactions",
@@ -2041,7 +2105,10 @@
     "area": "architecture",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "kafka"
+    ]
   },
   {
     "id": "strangler-fig",
@@ -2078,11 +2145,21 @@
     "tipo": "tema",
     "padre": "messaging-event-streaming",
     "area": "architecture",
-    "estado": "pendiente",
+    "frase": "Registro distribuido de eventos que muchas aplicaciones leen, cada una a su ritmo",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
     "relacionados": [
-      "event-driven-architecture"
+      "event-driven-architecture",
+      "rabbitmq",
+      "outbox-pattern",
+      "idempotency"
+    ],
+    "revisado": "2026-11-27",
+    "alias": [
+      "Topic",
+      "Consumer group",
+      "Event streaming"
     ]
   },
   {
@@ -2093,7 +2170,10 @@
     "area": "architecture",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "kafka"
+    ]
   },
   {
     "id": "security",
@@ -2333,7 +2413,8 @@
     "evaluable": true,
     "prioridad": 2,
     "relacionados": [
-      "testcontainers"
+      "testcontainers",
+      "kubernetes"
     ]
   },
   {
@@ -2371,9 +2452,23 @@
     "tipo": "tema",
     "padre": "container-orchestration",
     "area": "devops",
-    "estado": "pendiente",
+    "frase": "Ejecuta contenedores en un clúster y los mantiene como describes: copias, red y ajustes",
+    "estado": "publicado",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "docker",
+      "helm",
+      "kustomize",
+      "quarkus"
+    ],
+    "revisado": "2026-11-27",
+    "alias": [
+      "k8s",
+      "kubectl",
+      "Pod",
+      "Deployment"
+    ]
   },
   {
     "id": "helm",
@@ -2383,7 +2478,10 @@
     "area": "devops",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "kubernetes"
+    ]
   },
   {
     "id": "kustomize",
@@ -2393,7 +2491,10 @@
     "area": "devops",
     "estado": "pendiente",
     "evaluable": true,
-    "prioridad": 2
+    "prioridad": 2,
+    "relacionados": [
+      "kubernetes"
+    ]
   },
   {
     "id": "iac",
@@ -2466,7 +2567,8 @@
     "evaluable": true,
     "prioridad": 2,
     "relacionados": [
-      "terraform"
+      "terraform",
+      "git"
     ]
   },
   {
@@ -7143,13 +7245,22 @@
     "tipo": "tema",
     "padre": "ai-agents",
     "area": "ai",
-    "estado": "pendiente",
+    "frase": "El modelo pide ejecutar funciones de tu aplicación y sigue con lo que devuelven",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
       "mcp",
-      "spring-ai"
+      "spring-ai",
+      "langchain4j",
+      "structured-outputs"
+    ],
+    "revisado": "2026-11-27",
+    "alias": [
+      "Function calling",
+      "Llamada a herramientas",
+      "@Tool"
     ]
   },
   {
@@ -7311,13 +7422,23 @@
     "tipo": "tema",
     "padre": "model-apis",
     "area": "ai",
-    "estado": "pendiente",
+    "frase": "Respuestas del modelo en JSON que cumplen un esquema y se leen como datos en código",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
       "spring-ai",
-      "sampling-parameters"
+      "sampling-parameters",
+      "langchain4j",
+      "tool-calling",
+      "evals"
+    ],
+    "revisado": "2026-11-27",
+    "alias": [
+      "Salidas estructuradas",
+      "JSON Schema",
+      "Modo JSON"
     ]
   },
   {
@@ -7352,12 +7473,21 @@
     "tipo": "tema",
     "padre": "model-apis",
     "area": "ai",
-    "estado": "pendiente",
+    "frase": "Cómo seguir funcionando cuando la API del modelo falla, tarda o te frena por exceso de uso",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
-      "resilience-patterns"
+      "resilience-patterns",
+      "evals",
+      "llm-cost-latency"
+    ],
+    "revisado": "2026-11-27",
+    "alias": [
+      "Error 429",
+      "Backoff exponencial",
+      "Reintentos"
     ]
   },
   {
@@ -7460,12 +7590,22 @@
     "tipo": "tema",
     "padre": "ai-java-ecosystem",
     "area": "ai",
-    "estado": "pendiente",
+    "frase": "Biblioteca Java para usar modelos de lenguaje con interfaces, herramientas y memoria",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
-      "spring-ai"
+      "spring-ai",
+      "tool-calling",
+      "structured-outputs",
+      "quarkus"
+    ],
+    "revisado": "2026-11-27",
+    "alias": [
+      "AI Services",
+      "ChatModel",
+      "Quarkus LangChain4j"
     ]
   },
   {
@@ -7498,13 +7638,22 @@
     "tipo": "tema",
     "padre": "llmops",
     "area": "ai",
-    "estado": "pendiente",
+    "frase": "Casos de referencia para medir con números si una aplicación con IA hace bien su trabajo",
+    "estado": "publicado",
     "evaluable": true,
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
       "sampling-parameters",
-      "model-evaluation-metrics"
+      "model-evaluation-metrics",
+      "structured-outputs",
+      "rate-limits-retries-fallbacks"
+    ],
+    "revisado": "2026-11-27",
+    "alias": [
+      "Evaluaciones",
+      "Golden dataset",
+      "LLM como juez"
     ]
   },
   {
@@ -7533,7 +7682,8 @@
     "prioridad": 2,
     "volatil": true,
     "relacionados": [
-      "model-selection"
+      "model-selection",
+      "rate-limits-retries-fallbacks"
     ]
   },
   {

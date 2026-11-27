@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git — Tech Spider</title>
+<meta name="description" content="Control de versiones distribuido: commits, ramas, merge y rebase, cómo resolver conflictos sin romper nada y cómo deshacer cambios con seguridad.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/git.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=4b40b594">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="../cola.html">Cola</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="git">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p><strong>Git</strong> es un sistema de <strong>control de versiones distribuido</strong>: guarda la historia completa
+        de un proyecto como una serie de fotos (<em>commits</em>), permite trabajar en paralelo en ramas y combinarlas
+        después. «Distribuido» significa que cada copia del repositorio tiene toda la historia: se puede trabajar sin
+        conexión y no hay un único servidor imprescindible.</p>
+      <p>Lo creó Linus Torvalds en 2005 para el núcleo de Linux y hoy es el estándar casi universal. GitHub, GitLab y
+        Bitbucket son servicios que alojan repositorios Git y añaden revisión de código (<em>pull requests</em>), integración
+        continua y permisos.</p>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <ul>
+        <li><strong>Repositorio:</strong> la carpeta del proyecto más su historia (guardada en la carpeta oculta
+          <code>.git</code>).</li>
+        <li><strong>Remoto:</strong> otra copia del repositorio, normalmente en un servidor, con un nombre (por convención
+          <code>origin</code>).</li>
+        <li><strong>Área de preparación (<em>staging</em>):</strong> la zona intermedia donde eliges qué cambios entran en el
+          siguiente commit (<code>git add</code>).</li>
+        <li><strong>PR (<em>pull request</em>):</strong> la propuesta, en GitHub o similar, de fusionar una rama en otra, con
+          revisión y comprobaciones automáticas antes de aceptarla.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Todo el trabajo en equipo pasa por Git: cada cambio que haces, cada revisión, cada despliegue que sale de una rama.
+        Saber usarlo más allá de <code>add</code>, <code>commit</code> y <code>push</code> marca la diferencia cuando algo se
+        tuerce: un conflicto al fusionar, una rama que va 40 commits por detrás, un commit que hay que deshacer en una rama
+        compartida o un despliegue que no tiene lo que creías.</p>
+
+      <h2 id="modelo">El modelo mental</h2>
+      <ul>
+        <li><strong>Commit:</strong> una foto completa del proyecto, con autor, fecha, mensaje y un enlace a su commit padre
+          (o a dos, si es una fusión). Se identifica por un <em>hash</em>, una huella de 40 caracteres calculada a partir de
+          su contenido.</li>
+        <li><strong>Rama:</strong> solo una etiqueta móvil que apunta a un commit. Crear una rama es instantáneo.</li>
+        <li><strong><code>HEAD</code>:</strong> dónde estás ahora: normalmente, la rama en la que trabajas.</li>
+        <li><strong>Ramas remotas:</strong> <code>origin/main</code> es tu copia local de cómo estaba <code>main</code> en el
+          servidor la última vez que preguntaste. <code>git fetch</code> la actualiza sin tocar tu trabajo;
+          <code>git pull</code> hace <code>fetch</code> y además fusiona.</li>
+      </ul>
+
+      <h2 id="combinar">Combinar ramas: merge y rebase</h2>
+      <ul>
+        <li><strong>Merge con avance rápido:</strong> si tu rama no ha cambiado desde que salió la otra, Git solo mueve la
+          etiqueta hacia delante. No hay commit nuevo.</li>
+        <li><strong>Merge con commit de fusión:</strong> si las dos ramas avanzaron, Git crea un commit con dos padres que
+          junta ambas. La historia conserva cómo pasó todo.</li>
+        <li><strong>Rebase:</strong> reescribe tus commits como si hubieran salido del punto más reciente de la otra rama.
+          La historia queda lineal, pero los commits son nuevos (otro hash). <strong>No hagas rebase de commits que otros ya
+          tienen</strong>: obligarías a todos a arreglar su copia.</li>
+        <li><strong>Conflicto:</strong> cuando las dos ramas cambiaron las mismas líneas, Git no decide y marca el fichero
+          con las dos versiones entre <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code> y
+          <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>. Resolverlo es escribir el resultado correcto, que a menudo no es «el
+          mío», ni «el suyo», ni «los dos pegados».</li>
+      </ul>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>Poner al día una rama de trabajo con la rama principal, comprobando antes si habrá conflictos:</p>
+      <pre><code>git fetch origin
+git rev-list --left-right --count origin/main...mi-rama    # cuántos commits por detrás / por delante
+git merge-tree --write-tree --name-only origin/main mi-rama  # simula la fusión sin tocar nada
+git switch mi-rama
+git merge origin/main                                       # o: git rebase origin/main, si nadie más la usa
+# ...resolver conflictos, git add, y ejecutar las pruebas antes de hacer commit
+git push</code></pre>
+      <p>Deshacer sin miedo:</p>
+      <pre><code>git restore fichero.txt          # descarta cambios sin guardar de un fichero
+git revert a1b2c3d               # crea un commit que deshace otro (seguro en ramas compartidas)
+git reset --soft HEAD~1          # deshace el último commit local, conservando los cambios
+git reflog                       # dónde ha estado HEAD: rescata commits "perdidos"</code></pre>
+      <p><strong>Buenos mensajes de commit:</strong> muchos equipos siguen <em>Conventional Commits</em>
+        (<code>feat:</code>, <code>fix:</code>, <code>docs:</code>…) o empiezan por el código del ticket. Un mensaje dice qué
+        cambia y por qué; el cómo ya está en el código.</p>
+      <p><strong>Commits firmados:</strong> con una clave GPG o SSH, el servidor puede verificar que el commit lo hizo quien
+        dice. Algunos repositorios rechazan los que no van firmados.</p>
+
+      <h2 id="caso-real">Caso real: Kopi Chess</h2>
+      <p>En <a href="https://github.com/arquitechthor/kopi-chess" target="_blank" rel="noopener">Kopi Chess</a> cada cambio
+        llega a <code>main</code> por una pull request desde una rama con prefijo (<code>feat/</code>, <code>docs/</code>…),
+        y se fusiona con commit de fusión, así que la historia muestra cada PR como una unidad. Los mensajes siguen
+        Conventional Commits con ámbito opcional (<code>feat(web): …</code>, <code>ci: …</code>), y eso permite generar el
+        <code>CHANGELOG.md</code> de cada versión automáticamente con git-cliff a partir de la historia. Las versiones se
+        marcan con etiquetas (<code>v1.1.0</code>).</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Resolver un conflicto quitando solo las marcas:</strong> dejar las dos versiones pegadas puede producir
+          un fichero válido para Git pero roto para el programa. En YAML, por ejemplo, una clave puede quedarse sin su
+          contenido y valer nulo. Lee el resultado y ejecuta las pruebas antes de hacer commit.</li>
+        <li><strong>Trabajar con una rama muy desfasada:</strong> cuanto más tardas en traer los cambios de la principal,
+          peores son los conflictos. Actualiza a menudo.</li>
+        <li><strong><code>git push --force</code> en una rama compartida:</strong> borras el trabajo de otros. Si de verdad
+          hace falta, usa <code>--force-with-lease</code>, que falla si alguien subió algo nuevo.</li>
+        <li><strong>Commits gigantes con mensajes vagos:</strong> «cambios» no ayuda a revisar ni a encontrar un error
+          después. Commits pequeños y con sentido.</li>
+        <li><strong>Subir secretos:</strong> una clave en un commit queda en la historia aunque la borres después. Rótala y
+          usa un <code>.gitignore</code> y un gestor de secretos.</li>
+        <li><strong>Confundir la rama base de una PR:</strong> una PR contra la rama equivocada arrastra commits que no son
+          tuyos. Revisa la base antes de pedir revisión.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="git"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://git-scm.com/book/es/v2" target="_blank" rel="noopener">Pro Git (en español)</a> (Scott Chacon y Ben Straub, consultada el 27/11/2026).</li>
+        <li><a href="https://git-scm.com/docs/git-merge" target="_blank" rel="noopener">git-merge</a> (documentación de Git, consultada el 27/11/2026).</li>
+        <li><a href="https://git-scm.com/docs/git-rebase" target="_blank" rel="noopener">git-rebase</a> (documentación de Git, consultada el 27/11/2026).</li>
+        <li><a href="https://git-scm.com/docs/git-merge-tree" target="_blank" rel="noopener">git-merge-tree</a> (documentación de Git, consultada el 27/11/2026).</li>
+        <li><a href="https://git-scm.com/docs/git-revert" target="_blank" rel="noopener">git-revert</a> (documentación de Git, consultada el 27/11/2026).</li>
+        <li><a href="https://www.conventionalcommits.org/es/v1.0.0/" target="_blank" rel="noopener">Conventional Commits 1.0.0</a> (especificación, consultada el 27/11/2026).</li>
+        <li><a href="https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification" target="_blank" rel="noopener">About commit signature verification</a> (documentación de GitHub, consultada el 27/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=e24f3b1d" defer></script>
+<script src="../assets/cuenta.js?v=c2bd2d97" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=c65bfe9f" defer></script>
+</body>
+</html>

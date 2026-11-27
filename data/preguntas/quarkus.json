@@ -1,0 +1,155 @@
+[
+  {
+    "id": "quarkus-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué diferencia principal tiene Quarkus frente a un framework que lo prepara todo al arrancar?",
+    "opciones": [
+      "Hace casi todo el análisis y la conexión de piezas al compilar.",
+      "Sustituye la inyección de dependencias por llamadas estáticas.",
+      "Solo admite aplicaciones reactivas escritas en Kotlin.",
+      "Ejecuta las aplicaciones sin necesidad de ninguna JVM nunca."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "Quarkus mueve al momento de compilar el escaneo de clases, la lectura de anotaciones y la conexión de beans, así que al arrancar solo ejecuta código ya preparado. La JVM sigue siendo lo normal (la imagen nativa es opcional), usa CDI y admite Java imperativo.",
+    "fuentes": [
+      "https://quarkus.io/container-first/"
+    ]
+  },
+  {
+    "id": "quarkus-002",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "En application.yaml, ¿cómo se da a una propiedad un valor que solo se aplica en las pruebas?",
+    "opciones": [
+      "Creando un fichero application-test.yaml junto al principal.",
+      "Con una variable de entorno llamada QUARKUS_TEST_MODE.",
+      "Con la anotación @TestValue en el campo de configuración.",
+      "Con una clave \"%test\" que contenga la propiedad."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "Quarkus usa perfiles con el prefijo %: %dev, %test y %prod vienen de serie, y en YAML se escriben como clave \"%test\". El fichero application-<perfil> es la convención de Spring, no la principal de Quarkus.",
+    "fuentes": [
+      "https://quarkus.io/guides/config-reference"
+    ]
+  },
+  {
+    "id": "quarkus-003",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Una aplicación Quarkus empaquetada arranca en el entorno de preproducción y no aplica los valores de \"%pre\". ¿Qué es lo más probable?",
+    "opciones": [
+      "El perfil %pre se reserva para las imágenes nativas.",
+      "Quarkus no admite más de tres perfiles por fichero.",
+      "Nadie ha activado ese perfil con QUARKUS_PROFILE.",
+      "Los perfiles propios solo funcionan en modo desarrollo."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "Al ejecutar el paquete, el perfil por defecto es prod. Un perfil propio como pre solo se aplica si el despliegue lo activa, por ejemplo con la variable QUARKUS_PROFILE. Se pueden crear tantos perfiles como se quiera y funcionan igual en JVM y nativo.",
+    "fuentes": [
+      "https://quarkus.io/guides/config-reference"
+    ]
+  },
+  {
+    "id": "quarkus-004",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "Cambias en producción una propiedad que la documentación marca con un candado y no tiene efecto. ¿Por qué?",
+    "opciones": [
+      "Quarkus guarda la configuración en caché durante 24 horas.",
+      "Las variables de entorno tienen menos prioridad que el fichero.",
+      "Las propiedades con candado solo se leen en el perfil dev.",
+      "Es una propiedad de tiempo de compilación y hay que reconstruir."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "Algunas propiedades se fijan al compilar porque determinan el código que se genera; cambiarlas en tiempo de ejecución no sirve. En cambio, las variables de entorno tienen más prioridad que el fichero, y no hay ninguna caché de 24 horas.",
+    "fuentes": [
+      "https://quarkus.io/guides/config-reference"
+    ]
+  },
+  {
+    "id": "quarkus-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué hace @InjectMock en una prueba con @QuarkusTest?",
+    "opciones": [
+      "Arranca una base de datos de prueba en un contenedor Docker.",
+      "Sustituye un bean por un mock de Mockito solo en esa clase de prueba.",
+      "Crea un servidor HTTP falso que responde a todas las llamadas del REST Client.",
+      "Desactiva la inyección de dependencias durante la prueba."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "@InjectMock reemplaza un bean de la aplicación por un mock de Mockito durante esa clase de prueba, sin afectar a las demás. Los servidores HTTP falsos son cosa de WireMock y las bases de datos de prueba, de Dev Services o Testcontainers.",
+    "fuentes": [
+      "https://quarkus.io/guides/getting-started-testing"
+    ]
+  },
+  {
+    "id": "quarkus-006",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Con @RegisterRestClient(configKey = \"catalogo\"), ¿dónde se configura la URL del cliente?",
+    "opciones": [
+      "En quarkus.rest-client.catalogo.url (o su versión en YAML).",
+      "En un fichero rest-clients.json en la raíz del proyecto.",
+      "En la anotación @Path de cada método de la interfaz.",
+      "En un parámetro obligatorio del constructor de la interfaz."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "configKey da nombre al bloque de configuración del cliente: quarkus.rest-client.\"catalogo\".url, y también sus tiempos de espera. @Path define la ruta dentro de esa URL, y la interfaz no tiene constructor.",
+    "fuentes": [
+      "https://quarkus.io/guides/rest-client"
+    ]
+  },
+  {
+    "id": "quarkus-007",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "¿Qué dos cosas son ventajas reales de compilar una aplicación Quarkus como imagen nativa con GraalVM? (elige dos)",
+    "opciones": [
+      "Compila mucho más rápido que en JVM.",
+      "Usa bastante menos memoria.",
+      "Admite cualquier reflexión sin configurar.",
+      "Arranca en milisegundos."
+    ],
+    "correctas": [
+      1,
+      3
+    ],
+    "explicacion": "La imagen nativa arranca muy rápido y consume menos memoria. A cambio, la compilación es mucho más lenta y la reflexión hay que declararla (por ejemplo con @RegisterForReflection).",
+    "fuentes": [
+      "https://quarkus.io/guides/building-native-image"
+    ]
+  },
+  {
+    "id": "quarkus-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Tras resolver un conflicto en application.yaml, una clave de modelo se queda escrita sin nada debajo. ¿Qué ocurre al arrancar?",
+    "opciones": [
+      "El YAML se convierte a properties y la clave toma un valor vacío que la extensión acepta.",
+      "Quarkus hereda automáticamente los valores de la clave anterior.",
+      "La clave vale nulo y la extensión que necesitaba sus propiedades falla.",
+      "La clave se ignora y se usan los valores del perfil prod."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "En YAML, una clave sin contenido vale nulo: todas las propiedades que colgaban de ella desaparecen. Si una extensión las necesita (por ejemplo, el proveedor de un modelo), la aplicación no arranca. Ni se heredan valores ni se toman los de otro perfil.",
+    "fuentes": [
+      "https://quarkus.io/guides/config-reference"
+    ]
+  }
+]

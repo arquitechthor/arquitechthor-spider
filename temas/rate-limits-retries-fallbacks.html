@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rate Limits, Retries & Fallbacks — Tech Spider</title>
+<meta name="description" content="Límites de uso, reintentos con espera exponencial, tiempos de espera y planes B para que un servicio que llama a modelos de lenguaje siga funcionando cuando la API falla.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/rate-limits-retries-fallbacks.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=4b40b594">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="../cola.html">Cola</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="rate-limits-retries-fallbacks">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>Esta ficha reúne las técnicas para que una aplicación que llama a <a href="llms.html">modelos de lenguaje</a> siga
+        funcionando cuando la API falla, va lenta o te frena: respetar los <strong>límites de uso</strong> (<em>rate
+        limits</em>), <strong>reintentar</strong> bien lo que merece reintentarse y tener un <strong>plan B</strong>
+        (<em>fallback</em>) cuando no hay manera.</p>
+      <p>Son los mismos <a href="../tema.html?id=resilience-patterns">patrones de resiliencia</a> de cualquier llamada
+        remota, con particularidades: las llamadas a un LLM tardan segundos, cuestan dinero por token y fallan más que una
+        API tradicional.</p>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <ul>
+        <li><strong>Límite de uso:</strong> lo máximo que el proveedor te deja consumir por minuto, medido en peticiones y en
+          tokens (de entrada y de salida). Superarlo devuelve un error 429.</li>
+        <li><strong>Código de estado HTTP:</strong> el número con el que la API dice cómo fue la petición: 2xx bien, 4xx
+          culpa de la petición (400 mal formada, 401 sin permiso, 429 demasiadas), 5xx culpa del servidor.</li>
+        <li><strong>Idempotente:</strong> una operación que se puede repetir sin efectos extra. Ver
+          <a href="../tema.html?id=idempotency">idempotencia</a>.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Un servicio con IA depende de un tercero que a veces está saturado (Anthropic devuelve un 529 cuando sus servidores
+        están sobrecargados), que te limita en horas punta y que puede tardar 30 segundos en una respuesta larga. Si cada
+        fallo llega tal cual al usuario como un error genérico, la funcionalidad parece rota aunque el 95 % de las llamadas
+        vaya bien. Y si se reintenta mal (de golpe, sin esperar, todos los clientes a la vez), se agrava la saturación que
+        provocó el fallo.</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>Qué se reintenta:</strong> 429, 5xx (incluido 529) y errores de red o tiempos de espera. <strong>No se
+          reintenta</strong> lo que va a fallar igual: 400 (petición mal formada, contexto demasiado largo, contenido
+          bloqueado por un filtro), 401 o 403.</li>
+        <li><strong>Espera exponencial con <em>jitter</em>:</strong> esperar 1 s, 2 s, 4 s… y añadir a cada espera un
+          componente aleatorio para que miles de clientes no reintenten en el mismo instante. Si la API manda la cabecera
+          <code>Retry-After</code>, respétala.</li>
+        <li><strong>Pocos reintentos:</strong> dos o tres, no diez. Cada reintento de una llamada a un LLM son segundos de
+          espera para el usuario.</li>
+        <li><strong>Presupuesto de tiempo de toda la cadena:</strong> si delante de tu servicio hay un balanceador o un
+          <em>gateway</em> que corta a los 30 segundos, de nada sirve que tu cliente espere 60 y reintente. Fija los
+          <a href="../tema.html?id=timeout">tiempos de espera</a> de dentro hacia fuera, cada uno menor que el de la capa
+          anterior.</li>
+        <li><strong>Fallback:</strong> qué hacer cuando no hay respuesta: otro modelo del mismo proveedor (más pequeño o en
+          otra región), otro proveedor, una respuesta en caché, un resultado degradado («no he podido analizarlo,
+          inténtalo de nuevo») o pasar el caso a una persona.</li>
+        <li><strong><a href="../tema.html?id=circuit-breaker">Circuit breaker</a>:</strong> si un proveedor falla una y otra
+          vez, dejar de llamarlo un rato y usar directamente el plan B, en lugar de que cada usuario espere su propio
+          tiempo de espera.</li>
+        <li><strong>Error controlado:</strong> distinguir en la respuesta un «el modelo no lo ha entendido» de un «el
+          proveedor no está disponible», y no enseñar nunca al usuario el mensaje crudo del proveedor.</li>
+        <li><strong>Gastar menos para chocar menos:</strong> respuestas más cortas, contextos más pequeños,
+          <a href="../tema.html?id=prompt-caching">caché de prompts</a> y modelos más pequeños para tareas sencillas reducen
+          tokens y, con ellos, los 429.</li>
+      </ul>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>Un reintento con espera exponencial y <em>jitter</em>, sin bibliotecas, solo para errores que lo merecen:</p>
+      <pre><code>Respuesta llamarConReintentos(Peticion p) {
+    int intentos = 3;
+    for (int i = 1; ; i++) {
+        try {
+            return cliente.llamar(p);
+        } catch (ApiException e) {
+            boolean reintentable = e.status() == 429 || e.status() &gt;= 500;
+            if (!reintentable || i == intentos) {
+                throw e;
+            }
+            long base = e.retryAfterMillis().orElse(1000L * (1L &lt;&lt; (i - 1)));
+            long espera = base / 2 + ThreadLocalRandom.current().nextLong(base / 2 + 1);
+            dormir(espera);
+        }
+    }
+}</code></pre>
+      <p>En la práctica rara vez se escribe a mano: bibliotecas como Resilience4j, SmallRye Fault Tolerance (en
+        <a href="quarkus.html">Quarkus</a>, con <code>@Retry</code>, <code>@Timeout</code>, <code>@CircuitBreaker</code> y
+        <code>@Fallback</code>) o los propios clientes de <a href="langchain4j.html">LangChain4j</a> (opción
+        <code>maxRetries</code>) ya lo traen. Lo importante es decidir qué errores entran, cuántas veces y con qué tiempo
+        total.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Reintentar un 400:</strong> el filtro de contenido o una petición demasiado larga van a fallar igual;
+          solo gastas tiempo. Trátalo como respuesta controlada.</li>
+        <li><strong>Reintentos en varias capas:</strong> si el cliente reintenta 3 veces, el servicio otras 3 y el que llama
+          otras 3, un fallo se convierte en 27 llamadas. Reintenta en un solo sitio.</li>
+        <li><strong>Tiempo de espera mayor que el de la capa de fuera:</strong> el usuario recibe un 504 del gateway mientras
+          tu servicio sigue esperando al modelo.</li>
+        <li><strong>Fallback que cambia el comportamiento sin avisar:</strong> un modelo de respaldo más pequeño puede
+          responder distinto. Mídelo también con <a href="evals.html">evals</a>.</li>
+        <li><strong>Tratar un fallo como «sin resultado»:</strong> si el modelo no responde, no es lo mismo que si respondió
+          que no hay nada. Confundirlos puede aplicar una decisión a más casos de los debidos.</li>
+        <li><strong>No mirar los límites hasta producción:</strong> con muchos usuarios simultáneos, los límites por minuto
+          se alcanzan enseguida. Revísalos y pide ampliación antes de lanzar.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="rate-limits-retries-fallbacks"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://platform.claude.com/docs/en/api/rate-limits" target="_blank" rel="noopener">Rate limits</a> (documentación de Anthropic, consultada el 27/11/2026).</li>
+        <li><a href="https://platform.claude.com/docs/en/api/errors" target="_blank" rel="noopener">Errors</a> (documentación de Anthropic: códigos 429, 529 y otros, consultada el 27/11/2026).</li>
+        <li><a href="https://platform.openai.com/docs/guides/rate-limits" target="_blank" rel="noopener">Rate limits</a> (documentación de OpenAI, consultada el 27/11/2026).</li>
+        <li><a href="https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/" target="_blank" rel="noopener">Timeouts, retries, and backoff with jitter</a> (Amazon Builders' Library, consultada el 27/11/2026).</li>
+        <li><a href="https://martinfowler.com/bliki/CircuitBreaker.html" target="_blank" rel="noopener">CircuitBreaker</a> (Martin Fowler, consultada el 27/11/2026).</li>
+        <li><a href="https://quarkus.io/guides/smallrye-fault-tolerance" target="_blank" rel="noopener">SmallRye Fault Tolerance</a> (Quarkus, consultada el 27/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=e24f3b1d" defer></script>
+<script src="../assets/cuenta.js?v=c2bd2d97" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=c65bfe9f" defer></script>
+</body>
+</html>

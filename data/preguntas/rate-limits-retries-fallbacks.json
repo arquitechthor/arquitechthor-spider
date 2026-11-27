@@ -1,0 +1,155 @@
+[
+  {
+    "id": "rate-limits-retries-fallbacks-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué código de estado devuelve normalmente una API de LLM cuando superas su límite de uso?",
+    "opciones": [
+      "302",
+      "429",
+      "404",
+      "401"
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "429 (Too Many Requests) indica que se ha superado el límite. 401 es falta de autenticación, 404 recurso inexistente y 302 una redirección.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/api/rate-limits"
+    ]
+  },
+  {
+    "id": "rate-limits-retries-fallbacks-002",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "¿Qué dos errores suele tener sentido reintentar? (elige dos)",
+    "opciones": [
+      "Un 429 por límite de uso.",
+      "Un 503 o 529 por saturación.",
+      "Un 401 por clave inválida.",
+      "Un 400 por contenido bloqueado."
+    ],
+    "correctas": [
+      0,
+      1
+    ],
+    "explicacion": "Los errores temporales (límite de uso, saturación, red) pueden ir bien al reintentar. Un 400 o un 401 fallarán igual mientras no cambie la petición o la credencial.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/api/errors"
+    ]
+  },
+  {
+    "id": "rate-limits-retries-fallbacks-003",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Para qué sirve añadir jitter a la espera exponencial entre reintentos?",
+    "opciones": [
+      "Para que el reintento use un modelo distinto.",
+      "Para reducir el número de tokens de cada petición.",
+      "Para que el proveedor dé prioridad a tus peticiones frente a las de otros clientes.",
+      "Para que muchos clientes no reintenten en el mismo instante."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "El componente aleatorio reparte los reintentos en el tiempo y evita oleadas sincronizadas que vuelvan a saturar el servicio.",
+    "fuentes": [
+      "https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/"
+    ]
+  },
+  {
+    "id": "rate-limits-retries-fallbacks-004",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "La respuesta 429 trae la cabecera Retry-After. ¿Qué conviene hacer?",
+    "opciones": [
+      "Reintentar de inmediato, porque es solo informativa.",
+      "Descartar la petición sin reintentarla nunca.",
+      "Cambiar de clave de API y reintentar al instante.",
+      "Esperar al menos ese tiempo antes de reintentar."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "Retry-After indica cuánto esperar. Respetarla es lo más eficaz y lo que espera el proveedor.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/api/rate-limits"
+    ]
+  },
+  {
+    "id": "rate-limits-retries-fallbacks-005",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Delante de tu servicio hay un gateway que corta a los 30 segundos y tu cliente del LLM espera 60. ¿Qué ocurre?",
+    "opciones": [
+      "El usuario recibe un error del gateway mientras tu servicio sigue esperando.",
+      "El gateway amplía su tiempo de espera hasta los 60 segundos.",
+      "El cliente del LLM se adapta solo al límite del gateway.",
+      "La respuesta llega igual porque el gateway la guarda en caché y la entrega en cuanto está lista."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "Cada capa debe esperar menos que la de fuera. Si no, la capa exterior corta antes y el trabajo interior se desperdicia.",
+    "fuentes": [
+      "https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/"
+    ]
+  },
+  {
+    "id": "rate-limits-retries-fallbacks-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "El cliente HTTP reintenta 3 veces, el servicio otras 3 y quien lo llama otras 3. ¿Qué problema hay?",
+    "opciones": [
+      "Los reintentos se cancelan entre sí y no se reintenta nada.",
+      "Un solo fallo puede acabar en 27 llamadas.",
+      "Ninguno: más reintentos siempre dan más fiabilidad.",
+      "Solo se aplica la configuración de la capa más externa."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "Los reintentos en varias capas se multiplican (3 × 3 × 3) y agravan la saturación. Se reintenta en un solo sitio.",
+    "fuentes": [
+      "https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/"
+    ]
+  },
+  {
+    "id": "rate-limits-retries-fallbacks-007",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué hace un circuit breaker cuando un proveedor falla una y otra vez?",
+    "opciones": [
+      "Reintenta cada petición hasta que el proveedor responda.",
+      "Deja de llamarlo un tiempo y usa directamente el plan B.",
+      "Envía las peticiones al proveedor en orden inverso.",
+      "Reinicia la aplicación para limpiar las conexiones."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "Tras un número de fallos, el circuito se abre: las llamadas fallan rápido (o van al fallback) sin esperar, y pasado un tiempo prueba de nuevo.",
+    "fuentes": [
+      "https://martinfowler.com/bliki/CircuitBreaker.html"
+    ]
+  },
+  {
+    "id": "rate-limits-retries-fallbacks-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un filtro de contenido del proveedor bloquea la petición con un 400. ¿Qué es lo más adecuado?",
+    "opciones": [
+      "Mostrar al usuario el error crudo del proveedor.",
+      "Tratarlo como si no hubiera ningún resultado.",
+      "Reintentar tres veces con espera exponencial.",
+      "Responder con un mensaje controlado, sin reintentar."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "Reintentar la misma petición dará el mismo bloqueo. Lo correcto es una respuesta controlada (pedir que reformule, por ejemplo), sin exponer el mensaje del proveedor ni confundirlo con «sin resultados».",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/api/errors"
+    ]
+  }
+]

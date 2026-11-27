@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tool Calling — Tech Spider</title>
+<meta name="description" content="El mecanismo por el que un modelo de lenguaje pide ejecutar funciones de tu aplicación: cómo funciona el bucle y cómo diseñar buenas herramientas.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/tool-calling.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=4b40b594">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="../cola.html">Cola</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="tool-calling">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>El <strong>Tool Calling</strong> (o <em>function calling</em>) es el mecanismo por el que un modelo de lenguaje puede
+        <strong>pedir que se ejecute una función</strong> de tu aplicación: consultar una base de datos, buscar en un
+        catálogo, llamar a otra API. El modelo no ejecuta nada: devuelve el nombre de la
+        <a class="concepto" data-concepto="herramienta">herramienta</a> y los argumentos en JSON; tu código la ejecuta y le
+        devuelve el resultado para que siga.</p>
+      <p>Es la pieza que convierte un chat en un <a href="ai-agents.html">agente</a>: un modelo que, además de hablar, puede
+        consultar datos reales y actuar.</p>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <ul>
+        <li><strong>Definición de herramienta:</strong> lo que el modelo ve de cada función: un nombre, una descripción en
+          lenguaje natural y un esquema JSON de sus parámetros.</li>
+        <li><strong>Turno:</strong> cada ida y vuelta con la API. Una pregunta del usuario puede necesitar varios turnos si
+          el modelo pide herramientas en cadena.</li>
+        <li><strong>Orquestador:</strong> el código que gestiona ese ir y venir (en Java, normalmente
+          <a href="langchain4j.html">LangChain4j</a> o <a href="spring-ai.html">Spring AI</a>). Ver
+          <a class="concepto" data-concepto="orquestacion">orquestación</a>.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>Un LLM solo sabe lo que aprendió al entrenarse y lo que le pones en el contexto. Con herramientas puede trabajar
+        con datos actuales y propios (el stock de hoy, las reglas que ya existen, el árbol de categorías de un cliente) sin
+        meterlos todos en el prompt. Además permite repartir el trabajo: lo que necesita lenguaje lo hace el modelo; lo que
+        es determinista (buscar un id, comprobar una regla, calcular un precio) lo hace Java, que no se equivoca ni cuesta
+        tokens.</p>
+
+      <h2 id="como-funciona">Cómo funciona: el bucle</h2>
+      <ol>
+        <li>La aplicación envía el mensaje del usuario junto con la lista de herramientas disponibles.</li>
+        <li>El modelo responde con texto o con una o varias <strong>peticiones de herramienta</strong> (nombre y
+          argumentos).</li>
+        <li>La aplicación valida los argumentos, ejecuta cada herramienta y añade los resultados a la conversación.</li>
+        <li>Vuelve a llamar al modelo con todo lo anterior. Se repite hasta que el modelo da la respuesta final o se llega a
+          un límite de pasos.</li>
+      </ol>
+      <p>Este bucle es la base del <a href="../tema.html?id=agent-loop">bucle de agente</a>. Los proveedores permiten además
+        forzar el comportamiento con una opción de elección de herramienta: que decida el modelo, que use alguna
+        obligatoriamente o que use una concreta.</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>La descripción es el contrato:</strong> el modelo elige herramienta por su nombre y su descripción.
+          Explica cuándo usarla, cuándo no, y qué devuelve. Las instrucciones del prompt de sistema («usa siempre X antes de
+          proponer una regla») refuerzan cuándo llamarla.</li>
+        <li><strong>Argumentos no fiables:</strong> los argumentos los inventa el modelo. Valídalos como cualquier entrada
+          de usuario y no aceptes del modelo datos que ya conoces por otra vía (el usuario autenticado, el cliente de la
+          ruta).</li>
+        <li><strong>Resultados compactos:</strong> lo que devuelve la herramienta entra en el contexto y se paga en tokens.
+          Devuelve solo lo necesario: los cinco nodos que coinciden, no el árbol entero.</li>
+        <li><strong>Errores como resultado:</strong> si la herramienta falla, devuelve un mensaje que el modelo entienda
+          («no existe la categoría 123») en lugar de lanzar una excepción que corte el bucle.</li>
+        <li><strong>Subagentes como herramienta:</strong> una herramienta puede ser otro agente especializado (por ejemplo,
+          uno que solo traduce frases a códigos). El agente principal delega y recibe una respuesta acotada.</li>
+        <li><strong>Herramientas en paralelo:</strong> muchos modelos pueden pedir varias herramientas en el mismo turno; el
+          orquestador puede ejecutarlas a la vez.</li>
+        <li><strong>MCP:</strong> un protocolo estándar para publicar herramientas en un servidor y que cualquier
+          aplicación o asistente las use. Ver <a href="../tema.html?id=mcp">MCP</a>.</li>
+      </ul>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>En LangChain4j, una herramienta es un método Java anotado. El orquestador genera la definición a partir de la
+        firma y las descripciones:</p>
+      <pre><code>class CatalogoTools {
+
+    private final Catalogo catalogo;
+
+    CatalogoTools(Catalogo catalogo) { this.catalogo = catalogo; }
+
+    @Tool("Busca categorías por id o por nombre. Devuelve como mucho 5 coincidencias con su ruta completa.")
+    List&lt;CategoriaResumen&gt; buscarCategoria(@P("Id numérico o texto a buscar") String consulta) {
+        return catalogo.buscar(consulta, 5);
+    }
+}
+
+interface Asistente {
+    String chat(@UserMessage String mensaje);
+}
+
+Asistente asistente = AiServices.builder(Asistente.class)
+        .chatModel(modelo)
+        .tools(new CatalogoTools(catalogo))
+        .build();</code></pre>
+      <p>Cuando el usuario escribe «manda los bolsos a la 3020», el modelo puede pedir <code>buscarCategoria("3020")</code>,
+        recibir la ruta real de esa categoría y proponer la regla con un dato comprobado, en vez de dar por buena una
+        categoría que quizá no existe.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Demasiadas herramientas:</strong> con decenas de herramientas parecidas, el modelo se confunde. Agrupa,
+          renombra o reparte entre subagentes.</li>
+        <li><strong>Pasar datos enormes al modelo:</strong> mandar un catálogo de miles de nodos en cada llamada es caro,
+          lento y empeora la precisión. Busca en Java y devuelve solo lo relevante.</li>
+        <li><strong>Herramientas con efectos sin confirmación:</strong> borrar, pagar o guardar algo importante debería
+          pasar por una confirmación humana (ver <a href="../tema.html?id=human-in-the-loop">humano en el bucle</a>).</li>
+        <li><strong>Bucles sin límite:</strong> fija un número máximo de pasos para que un error no encadene llamadas sin
+          fin.</li>
+        <li><strong>Confiar en que siempre la llamará:</strong> el modelo puede decidir no usarla. Si una comprobación es
+          obligatoria, hazla también en código después.</li>
+        <li><strong>Inyección de prompts por los resultados:</strong> un texto devuelto por una herramienta (una web, un
+          correo) puede contener instrucciones maliciosas. Ver <a href="../tema.html?id=prompt-injection">inyección de
+          prompts</a>.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="tool-calling"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview" target="_blank" rel="noopener">Tool use with Claude</a> (documentación de Anthropic, consultada el 27/11/2026).</li>
+        <li><a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" rel="noopener">Function calling</a> (documentación de OpenAI, consultada el 27/11/2026).</li>
+        <li><a href="https://www.anthropic.com/engineering/writing-tools-for-agents" target="_blank" rel="noopener">Writing effective tools for agents</a> (Anthropic, consultada el 27/11/2026).</li>
+        <li><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building effective agents</a> (Anthropic, consultada el 27/11/2026).</li>
+        <li><a href="https://docs.langchain4j.dev/tutorials/tools" target="_blank" rel="noopener">Tools (Function Calling)</a> (documentación de LangChain4j, consultada el 27/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=e24f3b1d" defer></script>
+<script src="../assets/cuenta.js?v=c2bd2d97" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=c65bfe9f" defer></script>
+</body>
+</html>

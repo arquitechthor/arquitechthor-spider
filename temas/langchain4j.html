@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LangChain4j — Tech Spider</title>
+<meta name="description" content="Biblioteca de Java para usar modelos de lenguaje con interfaces declarativas, salidas estructuradas, herramientas, memoria y RAG.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/langchain4j.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=4b40b594">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="../cola.html">Cola</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="langchain4j">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p><strong>LangChain4j</strong> es una biblioteca de Java para usar <a href="llms.html">modelos de lenguaje</a> desde
+        una aplicación: enviarles mensajes, recibir respuestas con forma de objeto Java, dejar que pidan ejecutar
+        <a class="concepto" data-concepto="herramienta">herramientas</a>, recordar la conversación o buscar en documentos
+        propios (<a href="rag.html">RAG</a>). Es software libre, nació en 2023 inspirada en LangChain (de Python) y desde
+        2025 está en la línea <strong>1.x</strong>, con una API estable.</p>
+      <p>Su idea central es que no tengas que escribir peticiones HTTP a cada proveedor: declaras una <strong>interfaz
+        Java</strong> y la biblioteca genera la implementación que habla con el modelo, sea de OpenAI, Anthropic, Google,
+        Mistral, Ollama o un despliegue en la nube.</p>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <ul>
+        <li><strong>Proveedor:</strong> la empresa o plataforma que sirve el modelo por una API (OpenAI, Anthropic, Azure,
+          Amazon Bedrock…). Cada uno tiene su formato de petición.</li>
+        <li><strong>Mensaje de sistema:</strong> instrucciones fijas que el modelo recibe antes del mensaje del usuario
+          (quién es, qué puede hacer, en qué formato responder). Ver <a href="prompt-engineering.html">ingeniería de
+          prompts</a>.</li>
+        <li><strong>Memoria de chat:</strong> los mensajes anteriores de una conversación, que hay que reenviar en cada
+          llamada porque el modelo no recuerda nada por sí mismo.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>La mayoría de aplicaciones de empresa están en Java, y llamar a un LLM a mano obliga a resolver siempre lo mismo:
+        el formato de cada proveedor, convertir el JSON de respuesta en objetos, el bucle de herramientas, la memoria, los
+        reintentos. LangChain4j lo resuelve una vez y deja cambiar de proveedor tocando la configuración, no el código.
+        Tiene integraciones oficiales con <a href="spring-framework.html">Spring Boot</a> y con <a href="quarkus.html">Quarkus</a>
+        (la extensión <em>Quarkus LangChain4j</em>).</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong><code>ChatModel</code>:</strong> la interfaz de bajo nivel que representa un modelo de chat de un
+          proveedor concreto (<code>OpenAiChatModel</code>, <code>AnthropicChatModel</code>…). Recibe mensajes y devuelve una
+          respuesta. Hasta la 1.0 se llamaba <code>ChatLanguageModel</code>.</li>
+        <li><strong>AI Services:</strong> el nivel alto. Una interfaz anotada con <code>@SystemMessage</code> y
+          <code>@UserMessage</code> (con variables <code>{{nombre}}</code> que se rellenan con parámetros marcados con
+          <code>@V</code>). <code>AiServices.create(...)</code> genera la implementación.</li>
+        <li><strong>Salida estructurada:</strong> si el método de la interfaz devuelve un <code>record</code> o un enum en
+          lugar de <code>String</code>, LangChain4j pide al modelo un JSON con esa forma y lo convierte. Ver
+          <a href="structured-outputs.html">Structured Outputs</a>.</li>
+        <li><strong>Herramientas:</strong> métodos Java anotados con <code>@Tool</code> (y sus parámetros con
+          <code>@P</code>, que lleva la descripción). El modelo puede pedir ejecutarlos; la biblioteca los ejecuta y le
+          devuelve el resultado. Ver <a href="tool-calling.html">Tool Calling</a>.</li>
+        <li><strong><code>ChatMemory</code>:</strong> guarda la conversación con una política de ventana (los últimos N
+          mensajes o los últimos N tokens). Con <code>@MemoryId</code> se separa por usuario o por sesión.</li>
+        <li><strong>RAG:</strong> piezas para trocear documentos, calcular embeddings, guardarlos en un almacén vectorial y
+          recuperar los fragmentos relevantes antes de preguntar.</li>
+      </ul>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>Un servicio que clasifica un texto en una categoría, devolviendo un objeto:</p>
+      <pre><code>enum Linea { MUJER, HOMBRE, NINA, NINO, NINGUNA }
+
+record Clasificacion(Linea linea, String motivo) {}
+
+interface Clasificador {
+    @SystemMessage("Clasifica el texto del usuario en una línea de producto. Si no se puede saber, usa NINGUNA.")
+    Clasificacion clasificar(@UserMessage String texto);
+}
+
+ChatModel modelo = OpenAiChatModel.builder()
+        .apiKey(System.getenv("OPENAI_API_KEY"))
+        .modelName("gpt-5-mini")
+        .build();
+
+Clasificador clasificador = AiServices.create(Clasificador.class, modelo);
+Clasificacion c = clasificador.clasificar("vestidos de fiesta para ella");</code></pre>
+      <p>Con <strong>Quarkus LangChain4j</strong> no se construye nada a mano: la interfaz lleva
+        <code>@RegisterAiService</code> y el modelo sale de la configuración. Se pueden declarar varios modelos con nombre
+        (<code>@ModelName("clasificador")</code>), cada uno con su proveedor, modelo y límites:</p>
+      <pre><code>quarkus:
+  langchain4j:
+    clasificador:
+      chat-model:
+        provider: openai
+    openai:
+      clasificador:
+        chat-model:
+          model-name: gpt-5-mini
+          max-completion-tokens: 4000</code></pre>
+      <p>Cuando hay más de una extensión de proveedor en el proyecto (por ejemplo, OpenAI y Anthropic), cada modelo con
+        nombre <strong>tiene que decir su <code>provider</code></strong>; si falta, la aplicación no arranca.</p>
+
+      <h2 id="comparativa">LangChain4j o Spring AI</h2>
+      <p><a href="spring-ai.html">Spring AI</a> resuelve lo mismo con el estilo de Spring (un <code>ChatClient</code> fluido,
+        autoconfiguración por propiedades). LangChain4j es independiente del framework, tiene las interfaces declarativas
+        como pieza principal y funciona igual en Spring, en Quarkus o sin framework. En un proyecto Spring puro, Spring AI
+        encaja de forma más natural; en Quarkus, o si se quiere no atarse a Spring, LangChain4j es la opción habitual.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Límite de tokens de salida demasiado bajo:</strong> los modelos de razonamiento gastan parte de ese
+          límite «pensando»; si se acaba, la respuesta llega cortada y el JSON no se puede convertir. Dale margen y vigila
+          el motivo de fin de la respuesta.</li>
+        <li><strong>Confiar ciegamente en la salida:</strong> aunque se pida un enum, valida en código lo que llega antes de
+          usarlo para algo importante.</li>
+        <li><strong>Descripciones de herramientas pobres:</strong> el modelo decide llamarlas solo por su nombre y su
+          descripción; si son ambiguas, no las usa o las usa mal.</li>
+        <li><strong>Memoria compartida entre usuarios:</strong> sin <code>@MemoryId</code>, todos los usuarios comparten la
+          misma conversación.</li>
+        <li><strong>Registrar peticiones y respuestas en producción:</strong> los registros de depuración
+          (<code>log-requests</code>, <code>log-responses</code>) pueden contener datos personales. Actívalos solo en local.</li>
+        <li><strong>Copiar ejemplos de versiones 0.x:</strong> varios nombres cambiaron en la 1.0
+          (<code>ChatLanguageModel</code> pasó a <code>ChatModel</code>).</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="langchain4j"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://docs.langchain4j.dev/intro" target="_blank" rel="noopener">Introduction</a> (documentación de LangChain4j, consultada el 27/11/2026).</li>
+        <li><a href="https://docs.langchain4j.dev/tutorials/ai-services" target="_blank" rel="noopener">AI Services</a> (documentación de LangChain4j, consultada el 27/11/2026).</li>
+        <li><a href="https://docs.langchain4j.dev/tutorials/tools" target="_blank" rel="noopener">Tools (Function Calling)</a> (documentación de LangChain4j, consultada el 27/11/2026).</li>
+        <li><a href="https://docs.langchain4j.dev/tutorials/structured-outputs" target="_blank" rel="noopener">Structured Outputs</a> (documentación de LangChain4j, consultada el 27/11/2026).</li>
+        <li><a href="https://docs.langchain4j.dev/tutorials/chat-memory" target="_blank" rel="noopener">Chat Memory</a> (documentación de LangChain4j, consultada el 27/11/2026).</li>
+        <li><a href="https://docs.quarkiverse.io/quarkus-langchain4j/dev/index.html" target="_blank" rel="noopener">Quarkus LangChain4j</a> (documentación de la extensión: modelos con nombre y proveedores, consultada el 27/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=e24f3b1d" defer></script>
+<script src="../assets/cuenta.js?v=c2bd2d97" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=c65bfe9f" defer></script>
+</body>
+</html>

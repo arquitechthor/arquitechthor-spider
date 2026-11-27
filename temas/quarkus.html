@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quarkus — Tech Spider</title>
+<meta name="description" content="Framework de Java para servicios de servidor que hace casi todo el trabajo al compilar: arranca rápido y gasta poca memoria en contenedores.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/quarkus.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=4b40b594">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="../cola.html">Cola</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="quarkus">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p><strong>Quarkus</strong> es un framework de Java para escribir servicios de servidor (APIs REST, consumidores de
+        mensajes, tareas programadas) pensado desde el principio para <strong>contenedores y Kubernetes</strong>: arranca en
+        muy poco tiempo y consume poca memoria. Lo creó Red Hat en 2019, es software libre y la línea actual es la
+        <strong>3.x</strong>.</p>
+      <p>Ocupa el mismo hueco que <a href="../tema.html?id=spring-boot">Spring Boot</a>: inyección de dependencias,
+        configuración, servidor web, acceso a datos, pruebas… La diferencia está en <em>cuándo</em> hace el trabajo pesado:
+        Quarkus lo hace casi todo <strong>al compilar</strong>, no al arrancar.</p>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <ul>
+        <li><strong>Framework:</strong> conjunto de piezas ya hechas (servidor web, configuración, conexión a bases de
+          datos) sobre las que escribes solo la lógica de tu aplicación.</li>
+        <li><strong><a href="../tema.html?id=dependency-injection">Inyección de dependencias</a>:</strong> en lugar de que
+          cada clase cree los objetos que necesita, el framework se los entrega ya construidos. Cada objeto gestionado así se
+          llama <em>bean</em>.</li>
+        <li><strong>Extensión:</strong> en Quarkus, cada integración (REST, Kafka, PostgreSQL, un cliente de LLM) es una
+          extensión que se añade como dependencia y que trae su configuración y su parte de compilación.</li>
+        <li><strong>Imagen nativa:</strong> un ejecutable del sistema operativo generado con GraalVM a partir del código Java,
+          que no necesita una JVM para arrancar.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>En un clúster con decenas de microservicios, cada uno con varias réplicas, el tiempo de arranque y la memoria se
+        pagan muchas veces: en la factura, al escalar cuando sube la carga y al desplegar. Quarkus se diseñó para eso.
+        Además, su modo de desarrollo (recarga en caliente al guardar un fichero) y los <strong>Dev Services</strong>
+        (arranca solo una base de datos o un Kafka de prueba en Docker si no configuras uno) hacen que el ciclo de cambiar y
+        probar sea muy corto.</p>
+      <p>Es habitual encontrarlo en empresas que conviven con Spring: muchos de sus conceptos (CDI, JAX-RS, MicroProfile
+        Config) son estándares de Jakarta EE y MicroProfile, así que quien viene de Java empresarial los reconoce.</p>
+
+      <h2 id="como-funciona">Cómo funciona: el trabajo se hace al compilar</h2>
+      <p>Un framework clásico, al arrancar, escanea el <em>classpath</em> (todas las clases disponibles), lee anotaciones con
+        reflexión, decide qué beans crear y monta proxies. Quarkus mueve casi todo eso a la compilación:</p>
+      <ol>
+        <li>Al compilar, cada extensión analiza tu código y genera el código que conecta las piezas (qué beans hay, qué
+          rutas REST, qué clientes).</li>
+        <li>El resultado es una aplicación que, al arrancar, solo tiene que ejecutar ese código ya preparado.</li>
+        <li>Opcionalmente, GraalVM la convierte en una <strong>imagen nativa</strong>: arranca en milisegundos y usa una
+          fracción de la memoria, a cambio de una compilación mucho más lenta y de limitaciones con la reflexión.</li>
+      </ol>
+      <p>Una consecuencia práctica: <strong>parte de la configuración se fija al compilar</strong>. Si cambias una propiedad
+        de tiempo de compilación en el entorno de producción, no tiene efecto; hay que volver a construir. La documentación
+        marca cada propiedad con un candado cuando es de este tipo.</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>CDI con ArC:</strong> Quarkus implementa el estándar CDI con su propio motor (ArC), resuelto al compilar.
+          Los beans se declaran con <code>@ApplicationScoped</code> (una instancia para toda la aplicación) o
+          <code>@RequestScoped</code>, y se inyectan por constructor o con <code>@Inject</code>.</li>
+        <li><strong>Configuración:</strong> se lee de <code>application.properties</code> (o <code>application.yaml</code> con
+          la extensión <code>quarkus-config-yaml</code>), de variables de entorno y de propiedades del sistema, con este
+          orden de prioridad de mayor a menor: sistema, entorno, fichero. Se inyecta con <code>@ConfigProperty</code> o se
+          agrupa en interfaces con <code>@ConfigMapping</code>.</li>
+        <li><strong>Perfiles:</strong> una propiedad puede tener un valor distinto por entorno con el prefijo
+          <code>%perfil.</code> (en YAML, una clave <code>"%perfil"</code>). Vienen tres de serie: <code>dev</code> (modo
+          desarrollo), <code>test</code> (pruebas) y <code>prod</code> (por defecto al ejecutar el paquete). Se pueden crear
+          otros (por ejemplo, uno por entorno) y activarlos con <code>QUARKUS_PROFILE</code>.</li>
+        <li><strong>Quarkus REST:</strong> el servidor REST (antes llamado RESTEasy Reactive), con las anotaciones de JAX-RS:
+          <code>@Path</code>, <code>@GET</code>, <code>@QueryParam</code>…</li>
+        <li><strong>REST Client:</strong> un cliente HTTP declarativo: escribes una interfaz anotada y Quarkus genera la
+          implementación. Se registra con <code>@RegisterRestClient(configKey = "…")</code> y su URL, tiempos de espera y
+          filtros se configuran bajo <code>quarkus.rest-client."clave".*</code>.</li>
+        <li><strong>Pruebas:</strong> <code>@QuarkusTest</code> arranca la aplicación una vez para todas las pruebas de ese
+          tipo; <code>@InjectMock</code> sustituye un bean por un <a href="../tema.html?id=mockito">mock de Mockito</a> solo
+          en esa clase de prueba.</li>
+      </ul>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>Un recurso REST que delega en un servicio, y el servicio que llama a otra API con un REST Client:</p>
+      <pre><code>@Path("/api/v1/categorias")
+@Produces(MediaType.APPLICATION_JSON)
+public class CategoriaResource {
+
+    private final CategoriaService servicio;
+
+    CategoriaResource(CategoriaService servicio) {
+        this.servicio = servicio;
+    }
+
+    @GET
+    public List&lt;Categoria&gt; listar(@QueryParam("limit") @DefaultValue("100") int limit) {
+        return servicio.listar(limit);
+    }
+}
+
+@RegisterRestClient(configKey = "catalogo-externo")
+public interface CatalogoClient {
+    @GET
+    @Path("/categories")
+    List&lt;Categoria&gt; categorias(@QueryParam("size") int size);
+}</code></pre>
+      <p>Y su configuración, con un valor por defecto y otro solo para producción:</p>
+      <pre><code>quarkus:
+  rest-client:
+    catalogo-externo:
+      url: ${CATALOGO_URL:http://localhost:8089}
+      read-timeout: 10000
+"%prod":
+  quarkus:
+    log:
+      level: WARN</code></pre>
+      <p>El día a día se hace con <code>quarkus dev</code> (o <code>./mvnw quarkus:dev</code>, <code>./gradlew
+        quarkusDev</code>): la aplicación se recarga al guardar, y la página <code>/q/dev-ui</code> enseña los beans, la
+        configuración y las extensiones.</p>
+
+      <h2 id="comparativa">Quarkus o Spring Boot</h2>
+      <table>
+        <thead><tr><th></th><th>Quarkus</th><th>Spring Boot</th></tr></thead>
+        <tbody>
+          <tr><td>Cuándo conecta las piezas</td><td>Al compilar</td><td>Al arrancar (con AOT opcional)</td></tr>
+          <tr><td>Inyección</td><td>CDI (estándar), resuelto al compilar</td><td>Contenedor propio de Spring</td></tr>
+          <tr><td>Imagen nativa</td><td>Desde el principio, muy pulida</td><td>Soportada con GraalVM</td></tr>
+          <tr><td>Ecosistema</td><td>Grande, centrado en la nube</td><td>El más grande de Java</td></tr>
+          <tr><td>Configuración por entorno</td><td>Perfiles <code>%dev</code>, <code>%test</code>, <code>%prod</code>…</td><td>Perfiles con <code>application-&lt;perfil&gt;.yml</code></td></tr>
+        </tbody>
+      </table>
+      <p>Los dos sirven para lo mismo. Quarkus brilla cuando el arranque y la memoria cuentan (muchas réplicas, escalado
+        rápido, funciones serverless); Spring gana en número de bibliotecas, ejemplos y gente que lo conoce.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Esperar que una propiedad de compilación cambie en tiempo de ejecución:</strong> no lo hará. Revisa si
+          lleva el candado en la documentación y reconstruye.</li>
+        <li><strong>Inyectar en campos privados:</strong> funciona, pero obliga a Quarkus a usar reflexión. Prefiere
+          constructor o campos con visibilidad de paquete.</li>
+        <li><strong>Romper el YAML al fusionar ramas:</strong> en <code>application.yaml</code>, una clave sin contenido
+          (<code>"modelo":</code> sin nada debajo) vale nulo y la extensión que la necesitaba no arranca. Tras resolver un
+          conflicto, ejecuta las pruebas: un <code>@QuarkusTest</code> falla en cuanto falta una propiedad obligatoria.</li>
+        <li><strong>Olvidar el perfil activo:</strong> si creas perfiles propios por entorno, el paquete arranca con
+          <code>prod</code> salvo que el despliegue fije <code>QUARKUS_PROFILE</code>.</li>
+        <li><strong>Reflexión sin registrar en imagen nativa:</strong> lo que se carga por reflexión (algunas bibliotecas
+          de JSON, por ejemplo) hay que declararlo con <code>@RegisterForReflection</code>.</li>
+        <li><strong>Pruebas lentas por cambiar de perfil:</strong> cada <code>@TestProfile</code> distinto obliga a
+          reiniciar la aplicación de pruebas. Agrupa las pruebas que comparten configuración.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="quarkus"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://quarkus.io/container-first/" target="_blank" rel="noopener">Container First</a> (Quarkus: el trabajo en tiempo de compilación, consultada el 27/11/2026).</li>
+        <li><a href="https://quarkus.io/guides/config-reference" target="_blank" rel="noopener">Configuration Reference Guide</a> (Quarkus: fuentes, prioridades, perfiles y propiedades de compilación, consultada el 27/11/2026).</li>
+        <li><a href="https://quarkus.io/guides/cdi-reference" target="_blank" rel="noopener">Contexts and Dependency Injection</a> (Quarkus: ArC y CDI, consultada el 27/11/2026).</li>
+        <li><a href="https://quarkus.io/guides/rest-client" target="_blank" rel="noopener">Using the REST Client</a> (Quarkus: <code>@RegisterRestClient</code> y <code>configKey</code>, consultada el 27/11/2026).</li>
+        <li><a href="https://quarkus.io/guides/getting-started-testing" target="_blank" rel="noopener">Testing Your Application</a> (Quarkus: <code>@QuarkusTest</code>, <code>@InjectMock</code> y perfiles de prueba, consultada el 27/11/2026).</li>
+        <li><a href="https://quarkus.io/guides/dev-services" target="_blank" rel="noopener">Dev Services Overview</a> (Quarkus, consultada el 27/11/2026).</li>
+        <li><a href="https://quarkus.io/guides/building-native-image" target="_blank" rel="noopener">Building a Native Executable</a> (Quarkus: GraalVM e imagen nativa, consultada el 27/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=e24f3b1d" defer></script>
+<script src="../assets/cuenta.js?v=c2bd2d97" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=c65bfe9f" defer></script>
+</body>
+</html>

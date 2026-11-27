@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Structured Outputs — Tech Spider</title>
+<meta name="description" content="Cómo conseguir que un modelo de lenguaje devuelva JSON que cumple un esquema, y por qué hay que seguir validando su contenido.">
+<link rel="canonical" href="https://arquitechthor.github.io/arquitechthor-spider/temas/structured-outputs.html">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css?v=4b40b594">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img class="nav-logo" src="../assets/logo.svg" alt="" width="32" height="32">
+      Tech Spider
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#mapa">Telaraña</a>
+      <a href="../glosario.html">Glosario</a>
+      <a href="../cola.html">Cola</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<main id="contenido" tabindex="-1" data-ficha="structured-outputs">
+<section class="page-section" style="padding-top:32px">
+  <div class="container">
+    <header class="ficha-cab" id="ficha-cab"></header>
+
+    <article class="doc">
+      <h2 id="que-es">Qué es</h2>
+      <p>Las <strong>salidas estructuradas</strong> (<em>Structured Outputs</em>) son la capacidad de una API de modelo de
+        lenguaje de devolver la respuesta en un <strong>formato fijo y verificable</strong>, normalmente un JSON que cumple
+        un esquema que le das tú, en lugar de texto libre. Así el programa que llama puede leer la respuesta como datos
+        (<a class="concepto" data-concepto="datos-estructurados">datos estructurados</a>) sin adivinar dónde empieza y dónde
+        acaba cada cosa.</p>
+      <p>Hay tres niveles, de menos a más fiable: pedirlo en el prompt («responde solo con JSON»), el <strong>modo
+        JSON</strong> (la API garantiza que la respuesta es JSON válido, pero no su forma) y el <strong>esquema
+        estricto</strong> (la API garantiza que el JSON cumple tu esquema: campos, tipos y valores permitidos).</p>
+
+      <h2 id="vocabulario">Vocabulario para empezar</h2>
+      <ul>
+        <li><strong>JSON Schema:</strong> un estándar para describir la forma de un JSON: qué campos tiene, de qué tipo
+          es cada uno, cuáles son obligatorios y qué valores admite (por ejemplo, una lista cerrada con <code>enum</code>).</li>
+        <li><strong>Decodificación restringida:</strong> la técnica que usa el proveedor para cumplir el esquema: mientras
+          el modelo genera cada <a class="concepto" data-concepto="token">token</a>, se descartan los que harían que el JSON
+          dejara de encajar.</li>
+        <li><strong>Motivo de fin:</strong> el campo de la respuesta que dice por qué paró el modelo: porque terminó, porque
+          llegó al límite de tokens o porque se negó.</li>
+      </ul>
+
+      <h2 id="por-que">Por qué importa</h2>
+      <p>En cuanto la respuesta de un LLM alimenta código (guardar una regla, rellenar un formulario, decidir el siguiente
+        paso de un agente), el texto libre es un riesgo: un campo con otro nombre, una coma de más o una frase de cortesía
+        antes del JSON rompen el programa. Con un esquema estricto, esos fallos desaparecen y el código que valida puede
+        centrarse en el <strong>significado</strong> (¿este valor tiene sentido?) en lugar de en la forma.</p>
+
+      <h2 id="conceptos">Conceptos clave</h2>
+      <ul>
+        <li><strong>Forma no es verdad:</strong> el esquema garantiza que el campo <code>categoria</code> existe y es un
+          número, no que sea la categoría correcta. Un modelo puede devolver un JSON perfecto con datos inventados (ver
+          <a href="hallucinations.html">alucinaciones</a>).</li>
+        <li><strong>Listas cerradas:</strong> un <code>enum</code> en el esquema es la forma más eficaz de que el modelo
+          elija entre opciones válidas en vez de inventar valores. Aun así, conviene comprobarlas en código.</li>
+        <li><strong>Restricciones del modo estricto:</strong> los proveedores solo admiten una parte de JSON Schema. En el de
+          OpenAI, por ejemplo, todos los campos tienen que ser obligatorios (lo opcional se expresa permitiendo
+          <code>null</code>) y hay que prohibir campos extra con <code>additionalProperties: false</code>.</li>
+        <li><strong>Respuesta cortada:</strong> si el modelo llega al límite de tokens de salida antes de cerrar el JSON, la
+          respuesta es inválida aunque el modo estricto estuviera activado. Se detecta por el motivo de fin
+          (<code>length</code> en OpenAI, <code>max_tokens</code> en Anthropic).</li>
+        <li><strong>Negativas:</strong> si el modelo rechaza responder por seguridad, algunas APIs lo indican en un campo
+          aparte (<code>refusal</code>) en lugar de rellenar el esquema.</li>
+        <li><strong>Herramientas como alternativa:</strong> antes de existir el modo estricto, el truco habitual era definir
+          una <a href="tool-calling.html">herramienta</a> con el esquema deseado y obligar al modelo a llamarla: sus
+          argumentos eran la salida estructurada.</li>
+      </ul>
+
+      <h2 id="en-la-practica">En la práctica</h2>
+      <p>Un esquema para que el modelo devuelva un estado, una lista de códigos válidos y una pregunta opcional:</p>
+      <pre><code>{
+  "type": "object",
+  "properties": {
+    "status":   { "type": "string", "enum": ["OK", "AMBIGUOUS", "NOT_FOUND"] },
+    "codes":    { "type": "array", "items": { "type": "string", "enum": ["A", "B", "C"] } },
+    "question": { "type": ["string", "null"] }
+  },
+  "required": ["status", "codes", "question"],
+  "additionalProperties": false
+}</code></pre>
+      <p>Con <a href="langchain4j.html">LangChain4j</a> o <a href="spring-ai.html">Spring AI</a> no se escribe el esquema a
+        mano: se genera a partir de un <code>record</code> Java. Lo que sí hay que escribir es la <strong>validación
+        posterior</strong>, porque el modelo puede seguir equivocándose dentro del formato:</p>
+      <pre><code>record Respuesta(String status, List&lt;String&gt; codes, String question) {}
+
+Respuesta r = servicio.traducir(mensaje);
+if (r == null || r.status() == null) {
+    return Resultado.error();                 // no se puede interpretar: no adivinar
+}
+List&lt;String&gt; validos = r.codes().stream()
+        .filter(CODIGOS_PERMITIDOS::contains)  // descarta lo que no existe
+        .distinct()
+        .toList();</code></pre>
+      <p>Una regla útil: si la respuesta no se puede interpretar, devuelve un estado de <strong>error</strong> explícito,
+        distinto de «no encontrado». Confundirlos puede hacer que un fallo del modelo se trate como «sin filtro» y la
+        decisión se aplique a todo.</p>
+
+      <h2 id="errores">Errores frecuentes</h2>
+      <ul>
+        <li><strong>Pedir JSON solo en el prompt:</strong> funciona casi siempre, que es peor que nunca: los fallos llegan a
+          producción. Usa el modo estricto si el proveedor lo ofrece.</li>
+        <li><strong>Límite de salida justo:</strong> con modelos de razonamiento, el pensamiento consume tokens del mismo
+          límite. Revisa el motivo de fin antes de convertir el JSON.</li>
+        <li><strong>Objeto vacío como «nada»:</strong> unos modelos devuelven <code>null</code> y otros <code>{}</code> cuando
+          no hay resultado. Trata los dos igual en código.</li>
+        <li><strong>Saltarse la validación:</strong> el esquema no sabe qué valores existen en tu base de datos. Comprueba
+          los identificadores contra la fuente real.</li>
+        <li><strong>Esquemas enormes:</strong> cuantos más campos y niveles, más tokens y más errores. Pide solo lo que vas a
+          usar.</li>
+        <li><strong>Mostrar la respuesta cruda al usuario cuando falla:</strong> registra el detalle para depurar y enseña
+          un mensaje controlado.</li>
+      </ul>
+
+      <section data-seccion-contiene>
+        <h2 id="contiene">Qué contiene</h2>
+        <div id="ficha-contiene"></div>
+      </section>
+
+      <h2 id="evaluacion">Evaluación</h2>
+      <p class="text-faint">Preguntas originales escritas para estas fichas; no son preguntas reales de ningún examen.</p>
+      <div class="quiz" data-quiz="structured-outputs"></div>
+
+      <section data-seccion-relacionados>
+        <h2 id="relacionados">Relacionados</h2>
+        <div id="ficha-relacionados"></div>
+      </section>
+
+      <h2 id="fuentes">Fuentes</h2>
+      <ul>
+        <li><a href="https://platform.openai.com/docs/guides/structured-outputs" target="_blank" rel="noopener">Structured model outputs</a> (documentación de OpenAI: modo estricto y sus restricciones, consultada el 27/11/2026).</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/structured-outputs" target="_blank" rel="noopener">Structured outputs</a> (documentación de Anthropic, consultada el 27/11/2026).</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview" target="_blank" rel="noopener">Tool use with Claude</a> (documentación de Anthropic, consultada el 27/11/2026).</li>
+        <li><a href="https://json-schema.org/understanding-json-schema/" target="_blank" rel="noopener">Understanding JSON Schema</a> (JSON Schema, consultada el 27/11/2026).</li>
+        <li><a href="https://docs.langchain4j.dev/tutorials/structured-outputs" target="_blank" rel="noopener">Structured Outputs</a> (documentación de LangChain4j, consultada el 27/11/2026).</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="nav-logo" src="../assets/logo.svg" alt="" width="24" height="24" style="width:24px;height:24px;">
+        © 2026 Héctor Guzmán · Proyecto personal
+      </div>
+      <div class="footer-links">
+        <a href="../aviso-legal.html">Aviso legal</a>
+        <a href="https://github.com/arquitechthor/arquitechthor-spider">Código fuente</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      Sitio personal, educativo y sin fines comerciales: sin publicidad, sin cookies y sin
+      seguimiento. No está afiliado, patrocinado ni respaldado por los titulares de las tecnologías,
+      productos o certificaciones que trata, no es material oficial de ninguno de ellos y no
+      contiene preguntas reales de examen. Los nombres de tecnologías y productos son marcas de sus
+      respectivos titulares. Contenido original bajo
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="license">CC BY-SA 4.0</a>
+      · <a href="../aviso-legal.html">Aviso legal y privacidad</a>.
+    </p>
+    <nav class="footer-sitios" aria-label="Webs de Héctor Guzmán">
+      <a href="https://kopitools.link">Kopi Tools</a>
+      <a href="https://arquitechthor.github.io/aws-cert-study/">Apuntes AWS</a>
+      <a href="https://arquitechthor.github.io/arquitechthor-spider/" aria-current="true">Tech Spider</a>
+      <a href="https://arquitechthor.github.io/#kopi-chess">Kopi Chess</a>
+      <a href="https://arquitechthor.github.io/#prompt-quest">Prompt Quest</a>
+      <a href="https://arquitechthor.github.io/">Arquitechthor</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js?v=4e4aae23" defer></script>
+<script src="../assets/datos.js?v=e24f3b1d" defer></script>
+<script src="../assets/cuenta.js?v=c2bd2d97" defer></script>
+<script src="../assets/arbol.js?v=068f8919" defer></script>
+<script src="../assets/siglas.js?v=37d6121f" defer></script>
+<script src="../assets/preguntas.js?v=0162ee4c" defer></script>
+<script src="../assets/quiz.js?v=5636a632" defer></script>
+<script src="../assets/lectura.js?v=92e5613b" defer></script>
+<script src="../assets/tema.js?v=c65bfe9f" defer></script>
+</body>
+</html>

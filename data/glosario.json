@@ -1,5 +1,10 @@
 {
   "siglas": {
+    "CDI": { "en": "Contexts and Dependency Injection", "es": "estándar de Java para la inyección de dependencias y el ciclo de vida de los objetos" },
+    "PR": { "en": "Pull Request", "es": "propuesta de fusionar una rama en otra, con revisión antes de aceptarla", "enlace": "git" },
+    "IP": { "en": "Internet Protocol", "es": "protocolo de red; una dirección IP identifica a un equipo en la red" },
+    "GPG": { "en": "GNU Privacy Guard", "es": "programa libre para cifrar y firmar con claves públicas" },
+    "SSH": { "en": "Secure Shell", "es": "protocolo para conectarse de forma segura a otro equipo; sus claves también sirven para firmar" },
     "DTO": { "en": "Data Transfer Object", "es": "objeto que solo transporta datos entre partes de un sistema, sin lógica" },
     "ADR": { "en": "Architecture Decision Record", "es": "documento corto que registra una decisión de arquitectura, su contexto y sus consecuencias" },
     "CAP": { "leer": "cap", "en": "Consistency, Availability, Partition tolerance", "es": "teorema según el cual, si la red se parte, un sistema distribuido debe elegir entre consistencia y disponibilidad", "enlace": "cap-theorem" },

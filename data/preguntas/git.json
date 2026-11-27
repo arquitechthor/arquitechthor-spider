@@ -1,0 +1,155 @@
+[
+  {
+    "id": "git-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "En Git, ¿qué es una rama?",
+    "opciones": [
+      "Una carpeta con los cambios sin guardar.",
+      "Un repositorio independiente en el servidor.",
+      "Una copia completa de todos los ficheros.",
+      "Una etiqueta móvil que apunta a un commit."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "Una rama es solo un puntero a un commit que avanza al hacer commits nuevos. Por eso crearla es instantáneo.",
+    "fuentes": [
+      "https://git-scm.com/book/es/v2/Ramificaciones-en-Git-%C2%BFQu%C3%A9-es-una-rama%3F"
+    ]
+  },
+  {
+    "id": "git-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué diferencia hay entre git fetch y git pull?",
+    "opciones": [
+      "fetch trae los cambios del remoto sin fusionar; pull además fusiona.",
+      "fetch sube tus commits al servidor; pull descarga los de los demás y los fusiona.",
+      "Son equivalentes, pull es solo un alias de fetch.",
+      "fetch borra las ramas locales; pull las restaura."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "fetch actualiza las ramas remotas (origin/main) sin tocar tu trabajo; pull hace fetch y después merge (o rebase) en tu rama actual.",
+    "fuentes": [
+      "https://git-scm.com/docs/git-pull"
+    ]
+  },
+  {
+    "id": "git-003",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Cuándo hace Git un merge con avance rápido (fast-forward)?",
+    "opciones": [
+      "Cuando la rama que se fusiona tiene un solo commit.",
+      "Cuando se usa la opción --rebase al hacer pull.",
+      "Cuando las dos ramas modificaron ficheros distintos y no hay ningún conflicto entre ellas.",
+      "Cuando la rama de destino no ha avanzado desde que salió la otra."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "Si la rama destino es antecesora de la otra, basta con mover la etiqueta hacia delante: no hace falta commit de fusión.",
+    "fuentes": [
+      "https://git-scm.com/docs/git-merge"
+    ]
+  },
+  {
+    "id": "git-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Por qué no conviene hacer rebase de commits que otras personas ya tienen?",
+    "opciones": [
+      "Porque el rebase crea commits nuevos y obliga a todos a arreglar su copia.",
+      "Porque el rebase borra los commits del servidor de forma permanente.",
+      "Porque el rebase convierte todos los commits en uno solo.",
+      "Porque Git no permite hacer rebase de ramas que existen en el remoto."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "El rebase reescribe los commits (cambian de hash). Quien ya tenía los originales verá una historia divergente. No borra nada del servidor por sí solo ni junta commits salvo que se pida.",
+    "fuentes": [
+      "https://git-scm.com/book/es/v2/Ramificaciones-en-Git-Reorganizar-el-Trabajo-Realizado"
+    ]
+  },
+  {
+    "id": "git-005",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Necesitas deshacer un commit que ya está en una rama compartida. ¿Qué es lo más seguro?",
+    "opciones": [
+      "git reset --hard y luego git push --force.",
+      "git revert, que crea un commit que deshace el otro.",
+      "git commit --amend sobre el commit equivocado.",
+      "Borrar la rama y crearla de nuevo con el mismo nombre."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "revert no reescribe la historia: añade un commit inverso que todos reciben con normalidad. reset con push forzado y amend reescriben historia compartida.",
+    "fuentes": [
+      "https://git-scm.com/docs/git-revert"
+    ]
+  },
+  {
+    "id": "git-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Al resolver un conflicto, quitas las marcas y dejas las dos versiones pegadas. Git acepta el commit. ¿Qué riesgo queda?",
+    "opciones": [
+      "El commit no se podrá subir al servidor remoto.",
+      "Ninguno: si Git lo acepta, el resultado es correcto.",
+      "El fichero puede quedar roto para el programa aunque Git lo acepte.",
+      "Git volverá a marcar el conflicto en el siguiente pull y bloqueará la rama hasta resolverlo."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "Git solo comprueba que no quedan marcas; no entiende el contenido. Mezclar las dos versiones puede romper un YAML, duplicar código o dejar claves vacías. Hay que leer el resultado y pasar las pruebas.",
+    "fuentes": [
+      "https://git-scm.com/book/es/v2/Ramificaciones-en-Git-Procedimientos-B%C3%A1sicos-para-Ramificar-y-Fusionar"
+    ]
+  },
+  {
+    "id": "git-007",
+    "tipo": "multiple",
+    "nivel": 3,
+    "enunciado": "¿Qué dos comandos ayudan a saber cómo quedará una fusión antes de hacerla? (elige dos)",
+    "opciones": [
+      "git rev-list --left-right --count A...B",
+      "git stash drop",
+      "git gc --aggressive",
+      "git merge-tree --write-tree A B"
+    ],
+    "correctas": [
+      0,
+      3
+    ],
+    "explicacion": "rev-list cuenta cuántos commits tiene cada rama que la otra no tiene; merge-tree simula la fusión y lista los conflictos sin tocar el directorio de trabajo. gc limpia el repositorio y stash drop borra cambios guardados.",
+    "fuentes": [
+      "https://git-scm.com/docs/git-merge-tree"
+    ]
+  },
+  {
+    "id": "git-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Qué ventaja tiene git push --force-with-lease frente a --force?",
+    "opciones": [
+      "Firma automáticamente los commits antes de subirlos.",
+      "Crea una copia de seguridad de la rama en el servidor.",
+      "Falla si alguien ha subido commits nuevos que no tienes.",
+      "Sube los cambios más rápido porque comprime mejor."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "--force-with-lease solo sobrescribe si la rama remota sigue donde creías; así no borras sin querer el trabajo de otra persona.",
+    "fuentes": [
+      "https://git-scm.com/docs/git-push"
+    ]
+  }
+]

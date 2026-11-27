@@ -1,0 +1,156 @@
+[
+  {
+    "id": "structured-outputs-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué garantiza un modo de salida estructurada con esquema estricto?",
+    "opciones": [
+      "Que los datos del JSON son correctos.",
+      "Que la respuesta llega en menos tiempo.",
+      "Que el modelo nunca se niega a responder.",
+      "Que el JSON cumple el esquema dado."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "El esquema estricto garantiza la forma (campos, tipos, valores permitidos), no la verdad del contenido: el modelo puede rellenar el esquema con datos equivocados. Tampoco cambia la latencia ni elimina las negativas.",
+    "fuentes": [
+      "https://platform.openai.com/docs/guides/structured-outputs"
+    ]
+  },
+  {
+    "id": "structured-outputs-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué diferencia hay entre el modo JSON y el esquema estricto?",
+    "opciones": [
+      "Son dos nombres distintos para la misma opción.",
+      "El modo JSON es más estricto que el esquema estricto.",
+      "El esquema estricto solo funciona con respuestas en texto.",
+      "El modo JSON asegura JSON válido, pero no su forma."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "El modo JSON solo garantiza que la respuesta es JSON bien formado; el esquema estricto garantiza además que sigue tu esquema.",
+    "fuentes": [
+      "https://platform.openai.com/docs/guides/structured-outputs"
+    ]
+  },
+  {
+    "id": "structured-outputs-003",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "El modelo devuelve un JSON incompleto aunque el modo estricto estaba activo. ¿Qué miras primero?",
+    "opciones": [
+      "El motivo de fin, por si se alcanzó el límite de tokens.",
+      "El idioma del prompt, por si no estaba en inglés y el modelo mezcló dos idiomas.",
+      "El nombre del esquema, por si tenía espacios.",
+      "La temperatura, por si estaba por encima de 0,5."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "Si el modelo llega al límite de tokens de salida antes de cerrar el JSON, la respuesta queda cortada. Se ve en el motivo de fin (length, max_tokens).",
+    "fuentes": [
+      "https://platform.openai.com/docs/guides/structured-outputs"
+    ]
+  },
+  {
+    "id": "structured-outputs-004",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Por qué conviene validar en código los valores de una salida estructurada aunque el esquema tenga un enum?",
+    "opciones": [
+      "Validar en código reduce el número de tokens de salida.",
+      "Los enums de JSON Schema no se pueden usar con LLM.",
+      "Las APIs ignoran los enums cuando hay más de cinco valores.",
+      "El esquema no sabe qué datos existen en tu sistema."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "Un identificador puede tener el formato correcto y no existir en tu base de datos, y la conversión entre proveedores o bibliotecas puede relajar restricciones. La validación en código protege lo que se guarda.",
+    "fuentes": [
+      "https://platform.openai.com/docs/guides/structured-outputs"
+    ]
+  },
+  {
+    "id": "structured-outputs-005",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "En el modo estricto de OpenAI, ¿cómo se expresa un campo opcional?",
+    "opciones": [
+      "Poniéndolo al final de la lista de propiedades.",
+      "Con la palabra clave optional dentro del campo.",
+      "Quitándolo de required y dejando additionalProperties con su valor por defecto.",
+      "Obligatorio en required, pero admitiendo null en su tipo."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "El modo estricto de OpenAI exige que todos los campos estén en required y additionalProperties: false; lo opcional se modela como un tipo que admite null.",
+    "fuentes": [
+      "https://platform.openai.com/docs/guides/structured-outputs"
+    ]
+  },
+  {
+    "id": "structured-outputs-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Si el modelo no puede interpretar la petición, ¿qué conviene devolver al resto del sistema?",
+    "opciones": [
+      "Una lista vacía, como si no hubiera nada que aplicar.",
+      "El texto crudo del modelo para que lo lea el usuario.",
+      "Un estado de error explícito, distinto de «sin resultados».",
+      "Un valor por defecto que aplique la decisión a todo."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "Confundir un fallo con «no hay nada» puede ampliar una decisión a todos los casos. Un error explícito permite pedir aclaración o reintentar, sin enseñar al usuario la respuesta cruda.",
+    "fuentes": [
+      "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency"
+    ]
+  },
+  {
+    "id": "structured-outputs-007",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "¿Qué dos técnicas permiten obtener JSON con una forma concreta de un LLM? (elige dos)",
+    "opciones": [
+      "Un formato de respuesta con esquema JSON.",
+      "Subir la temperatura para que el modelo siga mejor el formato.",
+      "Una herramienta con ese esquema que el modelo debe llamar.",
+      "Pedir la respuesta en Markdown y convertirla a JSON."
+    ],
+    "correctas": [
+      0,
+      2
+    ],
+    "explicacion": "Los modos de esquema y forzar la llamada a una herramienta con el esquema deseado son las dos formas habituales. Subir la temperatura hace la salida más variable, y convertir Markdown no garantiza nada.",
+    "fuentes": [
+      "https://platform.openai.com/docs/guides/structured-outputs",
+      "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+    ]
+  },
+  {
+    "id": "structured-outputs-008",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un proveedor devuelve null y otro devuelve {} cuando no hay resultado. ¿Qué es lo correcto en el código?",
+    "opciones": [
+      "Lanzar un error 500 cuando llegue {}.",
+      "Reintentar hasta que llegue null.",
+      "Tratar {} como un resultado válido vacío.",
+      "Tratar los dos casos como «sin resultado»."
+    ],
+    "correctas": [
+      3
+    ],
+    "explicacion": "Son dos formas de decir lo mismo según el modelo. Normalizarlas evita errores al cambiar de proveedor; tratar {} como un resultado válido produce objetos sin datos.",
+    "fuentes": [
+      "https://platform.openai.com/docs/guides/structured-outputs"
+    ]
+  }
+]

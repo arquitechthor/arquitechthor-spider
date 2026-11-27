@@ -1,0 +1,156 @@
+[
+  {
+    "id": "langchain4j-001",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Qué es un AI Service en LangChain4j?",
+    "opciones": [
+      "Un servicio en la nube de pago para alojar y escalar agentes escritos en Java.",
+      "Una clase abstracta de la que heredan todos los modelos.",
+      "Una interfaz Java anotada cuya implementación genera la biblioteca.",
+      "Un servidor de modelos propio que incluye la biblioteca."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "Con AI Services declaras una interfaz con @SystemMessage y @UserMessage, y AiServices genera una implementación que monta los mensajes, llama al modelo y convierte la respuesta. No es un servidor ni un servicio de pago.",
+    "fuentes": [
+      "https://docs.langchain4j.dev/tutorials/ai-services"
+    ]
+  },
+  {
+    "id": "langchain4j-002",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "Un método de un AI Service devuelve un record en lugar de String. ¿Qué hace LangChain4j?",
+    "opciones": [
+      "Pide al modelo un JSON con esa forma y lo convierte al record.",
+      "Devuelve el texto del modelo dentro del primer campo del record.",
+      "Lanza una excepción porque solo se admite devolver texto.",
+      "Rellena el record con valores por defecto sin llamar al modelo."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "Si el tipo de retorno es un objeto, un enum o una lista, LangChain4j pide una salida estructurada (en JSON, con esquema si el proveedor lo admite) y la convierte al tipo Java.",
+    "fuentes": [
+      "https://docs.langchain4j.dev/tutorials/structured-outputs"
+    ]
+  },
+  {
+    "id": "langchain4j-003",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "¿Para qué sirve @MemoryId en un AI Service con memoria de chat?",
+    "opciones": [
+      "Para separar la conversación de cada usuario o sesión.",
+      "Para guardar la memoria en una base de datos vectorial.",
+      "Para limitar el número de tokens de cada respuesta.",
+      "Para identificar qué modelo responde a cada mensaje."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "Sin @MemoryId, todas las llamadas comparten una misma memoria. Con él, cada id (usuario, sesión, conversación) tiene su propia ChatMemory.",
+    "fuentes": [
+      "https://docs.langchain4j.dev/tutorials/chat-memory"
+    ]
+  },
+  {
+    "id": "langchain4j-004",
+    "tipo": "unica",
+    "nivel": 3,
+    "enunciado": "En Quarkus LangChain4j, con las extensiones de OpenAI y de Anthropic a la vez, un modelo con nombre no dice su provider. ¿Qué pasa?",
+    "opciones": [
+      "Se usa OpenAI porque es el primer proveedor por orden alfabético.",
+      "La aplicación no arranca hasta que se indique el proveedor.",
+      "Se usa el proveedor que tenga la clave de API configurada.",
+      "Se reparte el tráfico entre los dos proveedores al azar."
+    ],
+    "correctas": [
+      1
+    ],
+    "explicacion": "Cuando hay varios proveedores disponibles, Quarkus LangChain4j no puede elegir por ti: falla al construir la aplicación pidiendo que se fije quarkus.langchain4j.<nombre>.chat-model.provider.",
+    "fuentes": [
+      "https://docs.quarkiverse.io/quarkus-langchain4j/dev/index.html"
+    ]
+  },
+  {
+    "id": "langchain4j-005",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Cómo decide el modelo cuándo llamar a un método anotado con @Tool?",
+    "opciones": [
+      "Por la anotación @Priority que lleva cada método Java.",
+      "Llamándolas todas en cada mensaje y quedándose con la mejor.",
+      "Por el nombre y la descripción de la herramienta y sus parámetros.",
+      "Por el orden en que se registraron las herramientas en el servicio."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "El modelo solo ve la definición de cada herramienta: nombre, descripción y esquema de parámetros (con las descripciones de @P). Si son claras, la usa cuando corresponde.",
+    "fuentes": [
+      "https://docs.langchain4j.dev/tutorials/tools"
+    ]
+  },
+  {
+    "id": "langchain4j-006",
+    "tipo": "unica",
+    "nivel": 2,
+    "enunciado": "Un modelo de razonamiento devuelve a veces un JSON cortado y la conversión falla. ¿Cuál es la causa más probable?",
+    "opciones": [
+      "El límite de tokens de salida se agota con el razonamiento.",
+      "El esquema del record tiene campos con nombres en español.",
+      "LangChain4j corta las respuestas que superan un kilobyte.",
+      "La temperatura es demasiado baja para generar JSON completo."
+    ],
+    "correctas": [
+      0
+    ],
+    "explicacion": "Los modelos de razonamiento gastan parte del límite de salida pensando. Si se acaba, la respuesta llega truncada (motivo de fin length o max_tokens). Hay que subir el límite y comprobar el motivo de fin.",
+    "fuentes": [
+      "https://platform.openai.com/docs/guides/reasoning"
+    ]
+  },
+  {
+    "id": "langchain4j-007",
+    "tipo": "multiple",
+    "nivel": 2,
+    "enunciado": "¿Qué dos afirmaciones sobre LangChain4j y Spring AI son correctas? (elige dos)",
+    "opciones": [
+      "LangChain4j funciona sin ningún framework.",
+      "LangChain4j solo funciona con modelos de OpenAI.",
+      "Spring AI sigue las convenciones de Spring Boot.",
+      "Spring AI no admite llamadas a herramientas."
+    ],
+    "correctas": [
+      0,
+      2
+    ],
+    "explicacion": "LangChain4j es independiente del framework (con integraciones para Spring y Quarkus) y admite muchos proveedores. Spring AI está pensado al estilo Spring y también admite herramientas.",
+    "fuentes": [
+      "https://docs.langchain4j.dev/intro",
+      "https://docs.spring.io/spring-ai/reference/"
+    ]
+  },
+  {
+    "id": "langchain4j-008",
+    "tipo": "unica",
+    "nivel": 1,
+    "enunciado": "¿Por qué conviene desactivar log-requests y log-responses del modelo en producción?",
+    "opciones": [
+      "Duplican el número de tokens que cobra el proveedor por cada petición y cada respuesta.",
+      "Impiden que funcionen las salidas estructuradas.",
+      "Pueden registrar datos personales de los mensajes de usuarios.",
+      "Hacen que el modelo responda siempre en inglés."
+    ],
+    "correctas": [
+      2
+    ],
+    "explicacion": "Esos registros guardan el contenido completo de peticiones y respuestas, que puede incluir datos personales o confidenciales. No afectan a lo que cobra el proveedor ni al formato de la respuesta.",
+    "fuentes": [
+      "https://docs.quarkiverse.io/quarkus-langchain4j/dev/index.html"
+    ]
+  }
+]
