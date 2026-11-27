@@ -9,7 +9,7 @@
 <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="stylesheet" href="styles.css?v=fa3f61fc">
+<link rel="stylesheet" href="styles.css?v=4b40b594">
 </head>
 <body>
 <a class="saltar" href="#contenido">Saltar al contenido</a>
@@ -24,6 +24,7 @@
       <a href="index.html">Inicio</a>
       <a href="index.html#mapa">Telaraña</a>
       <a href="glosario.html">Glosario</a>
+      <a href="cola.html">Cola</a>
       <a href="https://arquitechthor.github.io/">Arquitechthor</a>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
@@ -146,7 +147,7 @@
         más allá de los que envía cualquier navegador (dirección IP, navegador).</li>
       <li>Algunas funciones guardan datos en el <strong>almacenamiento local de tu navegador</strong>
         (<code>localStorage</code>, claves que empiezan por <code>spider.</code>): tus preferencias del
-        mapa (vista, filtros y color) y de la lectura en voz alta (velocidad y voz), tu autoevaluación de cada tema, qué fichas has marcado como leídas (con la fecha), tu progreso en las preguntas de
+        mapa (vista, filtros y color) y de la lectura en voz alta (velocidad y voz), tu autoevaluación de cada tema, qué fichas has marcado como leídas (con la fecha), tu cola de estudio (las fichas que has añadido y cuándo), tu progreso en las preguntas de
         práctica (cuáles has acertado y cuáles fallaste para repasarlas) y el resultado de tus
         evaluaciones y simulacros (fecha, tema o certificación y aciertos). Se irán activando a medida
         que se publiquen esas funciones. Si no entras con una cuenta Kopi, esos datos solo existen en
@@ -161,7 +162,7 @@
       <li><strong>Cuenta Kopi (opcional)</strong>, en <a href="cuenta.html">Tu cuenta Kopi</a>: si
         tienes cuenta en Kopi Tools, el proyecto personal del mismo autor, puedes entrar con ella para
         guardar también en Kopi tu progreso de estudio (resultados de las evaluaciones, nivel de cada
-        tema y fichas leídas, cada dato con la hora de su último cambio) y tenerlo en cualquier
+        tema, fichas leídas y cola de estudio, cada dato con la hora de su último cambio) y tenerlo en cualquier
         dispositivo. Las preferencias del mapa y de la lectura no se suben. El inicio de sesión se
         hace en la página de Kopi (servicio Amazon Cognito de AWS, en la Unión Europea), que usa sus
         propias cookies de sesión; tu contraseña nunca pasa por esta web. Esta web guarda en el
@@ -235,7 +236,7 @@
 </footer>
 
 <script src="assets/nav.js?v=4e4aae23" defer></script>
-<script src="assets/datos.js?v=010a227e" defer></script>
-<script src="assets/cuenta.js?v=d08c2823" defer></script>
+<script src="assets/datos.js?v=e24f3b1d" defer></script>
+<script src="assets/cuenta.js?v=c2bd2d97" defer></script>
 </body>
 </html>

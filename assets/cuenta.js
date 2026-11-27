@@ -25,6 +25,7 @@
       leidas: 'spider.leidas',
       evaluaciones: 'spider.evaluaciones',
       simulacros: 'spider.simulacros',
+      cola: 'spider.cola',
     },
     unir: {},                           // clave -> fn(remoto, local) para la primera sincronización
     claveSync: 'spider.sincronizacion',

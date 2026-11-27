@@ -10,6 +10,8 @@
  * Fichas leídas (spider.leidas, ver SpiderDatos.lecturaDe): botón "Marcar como leída" en la cabecera,
  * sugerencia al llegar al final del texto (con el scroll o al terminar "Escuchar") y ✓ en las cajas
  * de "Qué contiene" y en los relacionados.
+ * Cola de estudio (spider.cola, ver SpiderDatos.ponerEnCola): botón "Añadir a la cola" en la cabecera,
+ * que dice su posición cuando ya está; la cola se ve en cola.html.
  * La página indica su nodo con <main data-ficha="<id>">; en tema.html va vacío y se lee ?id=.
  * Después marca las siglas y los conceptos del texto (assets/siglas.js).
  */
@@ -205,11 +207,38 @@
     window.addEventListener('scroll', alDesplazar, { passive: true });
   }
 
+  // ── Cola de estudio ───────────────────────────────────────────────────────────────────
+  const btnCola = document.createElement('button');
+  btnCola.type = 'button';
+  btnCola.className = 'btn btn-secondary btn-sm btn-cola';
+
+  function pintarCola() {
+    const pos = D.posicionEnCola(n.id);
+    btnCola.classList.toggle('en-cola', pos > 0);
+    btnCola.setAttribute('aria-pressed', String(pos > 0));
+    if (pos) {
+      btnCola.innerHTML = `<span aria-hidden="true">✓</span> En la cola (n.º ${pos})`;
+      btnCola.title = 'Pulsa para quitarla de tu cola de estudio';
+    } else {
+      btnCola.innerHTML = '<span aria-hidden="true">＋</span> Añadir a la cola';
+      btnCola.title = 'La guarda al final de tu cola de estudio (menú «Cola»)';
+    }
+  }
+  btnCola.addEventListener('click', () => {
+    D.ponerEnCola(n.id, !D.posicionEnCola(n.id));
+    pintarCola();
+  });
+  pintarCola();
+
+  // Con la cuenta Kopi, lo que llega de otro dispositivo puede cambiar la cola o las leídas.
+  document.addEventListener('spider:sincronizado', () => { pintarCola(); pintarLeida(); });
+
   // "Escuchar" (assets/lectura.js), solo en fichas escritas: la genérica no tiene texto propio.
   if (window.SpiderLectura) {
     window.SpiderLectura.montar(filaAcciones, {
       cab, docs: [...document.querySelectorAll('.doc')], siglas, alTerminar: sugerir,
     });
   }
-  filaAcciones.appendChild(btnLeida); // "Leída" al final, tras "Escuchar"
+  filaAcciones.appendChild(btnCola);  // "Cola" y "Leída" al final, tras "Escuchar"
+  filaAcciones.appendChild(btnLeida);
 })();

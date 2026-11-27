@@ -102,6 +102,7 @@
     vista: 'spider.vista',
     lectura: 'spider.lectura',
     leidas: 'spider.leidas',
+    cola: 'spider.cola',
   };
 
   function leer(nombre, porDefecto = {}) {
@@ -177,6 +178,34 @@
   }
 
   /**
+   * Cola de estudio (spider.cola): { "<id>": "<fecha y hora ISO en que se añadió>" }. Se muestra en
+   * cola.html de la primera añadida a la última. Un objeto (y no una lista) para que la primera
+   * sincronización con la cuenta Kopi una lo de los dos lados sin perder nada (assets/cuenta.js).
+   */
+  function leerCola() {
+    const cola = leer('cola');
+    return cola && typeof cola === 'object' && !Array.isArray(cola) ? cola : {};
+  }
+
+  /** Ids de la cola en orden: primero el que lleva más tiempo. */
+  function ordenCola(cola = leerCola()) {
+    return Object.keys(cola).sort((a, b) => String(cola[a]).localeCompare(String(cola[b])) || a.localeCompare(b));
+  }
+
+  /** Posición (1, 2…) de una ficha en la cola, o 0 si no está. */
+  function posicionEnCola(id, cola = leerCola()) {
+    return ordenCola(cola).indexOf(id) + 1;
+  }
+
+  /** Añade una ficha al final de la cola (si no estaba) o la quita. */
+  function ponerEnCola(id, si) {
+    const cola = leerCola();
+    if (si && !cola[id]) cola[id] = new Date().toISOString();
+    else if (!si) delete cola[id];
+    return guardar('cola', Object.keys(cola).length ? cola : null);
+  }
+
+  /**
    * Una sola vez por navegador: los cuestionarios aprobados al 100 % antes de que existiera esta
    * regla marcan su ficha como leída, con la fecha en que se aprobaron. Después ya no se repite,
    * para respetar a quien desmarque una ficha (la regla nueva la aplica SpiderPreguntas.registrar).
@@ -240,6 +269,7 @@
   window.SpiderDatos = {
     url, json, cargar, temasDe, esc, nombreHtml, nombreTexto, iconoArea, leer, guardar, formatoFecha,
     leerProgreso, guardarProgreso, leerProgresoAws, progresoAws, urlFicha, cargarGlosario, tieneFicha, lecturaDe, marcarLeida, hoy,
+    leerCola, ordenCola, posicionEnCola, ponerEnCola,
     claves: CLAVES,
   };
 })();

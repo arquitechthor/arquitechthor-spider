@@ -127,13 +127,17 @@ no third-party requests).
   end of "Escuchar"); `mapa.js` shows ✓ (↻ when `revisado` is later than the read date: "actualizada
   desde que la leíste") in both views via `decorar()`, filters them in Estado ("Mi lectura") and
   counts read fichas per branch in the panel. Bumping `revisado` is what flags a ficha as updated.
+- Study queue: `spider.cola` (`{ id: "<ISO date-time added>" }`, an object so the first account sync can merge it),
+  helpers `SpiderDatos.leerCola/ordenCola/posicionEnCola/ponerEnCola`. `tema.js` adds "＋ Añadir a la cola" (shows the
+  position once queued; clicking again removes it) on written fichas; `cola.html` + `assets/cola.js` ("Cola" in the nav,
+  noindex) lists them oldest first with date added, read state and "Quitar". aws-cert-study has the same feature.
 - `assets/cuenta.js` (`SpiderCuenta`) + `cuenta.html` (+ `assets/pagina-cuenta.js`): optional **Kopi
   account** (`docs/PLAN.md` 4.5.1). Login with Cognito's managed login page, Authorization Code + PKCE,
   no library; `cuenta.html` is the redirect URI. Backend in `../../kopi/kopi-media-admin`
   (`/study/{site}/progress`, own App Client `kopi-study-client` and **own authorizer**, so these tokens
   are useless for the rest of the Kopi API: keep it that way, every arquitechthor.github.io site shares
   this origin's `localStorage`). Synced keys: `progreso`, `autoevaluacion`, `leidas`, `evaluaciones`,
-  `simulacros` (never device prefs); per-key change time in `spider.sincronizacion`, newest wins per
+  `simulacros`, `cola` (never device prefs); per-key change time in `spider.sincronizacion`, newest wins per
   key, union on the first sync. `datos.js` `guardar()` fires `spider:guardado`; applied remote changes
   fire `spider:sincronizado` (the map repaints). Session in `kopi.estudio.sesion` (shared with the
   other study sites on purpose). Every page that loads `datos.js` must load `cuenta.js` right after it (also `aviso-legal.html`): `cuenta.js` adds the nav link to `cuenta.html` right before "Arquitechthor" ("Guardar progreso" signed out, "Mi cuenta" signed in; `aria-current="page"` on `cuenta.html`). If the nav has a submenu marked `data-cuenta-destino` (aws-cert-study's "Mi estudio"), the link goes at the end of it instead.
